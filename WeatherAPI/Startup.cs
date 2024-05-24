@@ -16,6 +16,8 @@ namespace WeatherAPI.Patches
     {
       Plugin.logger.LogInfo("Terminal Start Patch");
 
+      WeatherManager.Reset();
+
       WeatherEffect[] effects = TimeOfDay.Instance.effects;
       List<WeatherEffect> weatherList = TimeOfDay.Instance.effects.ToList();
 
@@ -54,13 +56,15 @@ namespace WeatherAPI.Patches
       Plugin.logger.LogMessage("Creating NoneWeather type");
 
       // Register clear weather as a weather
-      Weather noneWeather = new Weather("None", new WeatherApiEffect(null, null))
-      {
-        Type = WeatherType.Clear,
-        Color = VanillaWeatherColors[LevelWeatherType.None],
-        VanillaWeatherType = LevelWeatherType.None
-      };
-      WeatherManager.RegisteredWeathers.Add(noneWeather);
+      Weather noneWeather =
+        new("None", new WeatherApiEffect(null, null))
+        {
+          Type = WeatherType.Clear,
+          Color = VanillaWeatherColors[LevelWeatherType.None],
+          VanillaWeatherType = LevelWeatherType.None,
+          Origin = WeatherOrigin.Vanilla,
+        };
+      // WeatherManager.RegisteredWeathers.Add(noneWeather);
 
       // Extend the weather enum to have the modded weathers
 
@@ -83,9 +87,10 @@ namespace WeatherAPI.Patches
             Type = weatherTypeType,
             Color = weatherColor,
             VanillaWeatherType = weatherType,
+            Origin = WeatherOrigin.Vanilla,
           };
 
-        WeatherManager.RegisteredWeathers.Add(weather);
+        // WeatherManager.RegisteredWeathers.Add(weather);
       }
 
       // Get all LethalLib weathers and add them to effects list
@@ -102,6 +107,25 @@ namespace WeatherAPI.Patches
           WeatherManager.RegisteredWeathers.Add(weather);
         }
       }
+
+      // at this point we need to assing enum value for every registered modded weather that's not from lethallib
+
+      int biggestKeyInModdedWeathersDictionary = Enum.GetValues(typeof(LevelWeatherType)).Length - 1;
+      if (WeatherManager.ModdedWeatherEnumExtension.Count > 0)
+      {
+        biggestKeyInModdedWeathersDictionary = WeatherManager.ModdedWeatherEnumExtension.Keys.Max();
+      }
+
+      WeatherManager
+        .RegisteredWeathers.Where(weather => weather.Origin == WeatherOrigin.WeatherAPI)
+        .ToList()
+        .ForEach(weather =>
+        {
+          int newKey = biggestKeyInModdedWeathersDictionary;
+
+          weather.VanillaWeatherType = (LevelWeatherType)newKey;
+          WeatherManager.ModdedWeatherEnumExtension.Add(newKey, weather);
+        });
 
       #region Extend the enum
 
@@ -139,11 +163,17 @@ namespace WeatherAPI.Patches
 
       #endregion
 
-      for (int i = 0; i < WeatherManager.RegisteredWeathers.Count; i++)
-      {
-        Plugin.logger.LogWarning($"Registered Weather: {WeatherManager.RegisteredWeathers[i].Name}");
+      List<Weather> RegisteredWeathers = WeatherManager.RegisteredWeathers.Distinct().ToList();
+      RegisteredWeathers.Sort((a, b) => a.VanillaWeatherType.CompareTo(b.VanillaWeatherType));
 
-        Weather weather = WeatherManager.RegisteredWeathers[i];
+      for (int i = 0; i < RegisteredWeathers.Count; i++)
+      {
+        Plugin.logger.LogWarning($"Registered Weather: {RegisteredWeathers[i].Name}");
+
+        Weather weather = RegisteredWeathers[i];
+
+        if (weather.Type == WeatherType.Modded) { }
+
         WeatherManager.Weathers.Add(weather);
       }
 
@@ -166,14 +196,16 @@ namespace WeatherAPI.Patches
 
           List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.ToList();
 
-          if (level.PlanetName == "71 Gordion")
-          {
-            Plugin.logger.LogWarning("Removing all weathers from the company moon");
+          // i'm leaving it at that for now
 
-            randomWeathers.Clear();
-            level.randomWeathers = randomWeathers.ToArray();
-            continue;
-          }
+          // if (level.PlanetName == "71 Gordion")
+          // {
+          //   Plugin.logger.LogWarning("Removing all weathers from the company moon");
+
+          //   randomWeathers.Clear();
+          //   level.randomWeathers = randomWeathers.ToArray();
+          //   continue;
+          // }
 
           LevelWeather levelWeather =
             new()

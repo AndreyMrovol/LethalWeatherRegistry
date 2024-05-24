@@ -41,7 +41,8 @@ namespace WeatherAPI.Patches
             DefaultVariable2 = llWeather.weatherVariable2,
           };
 
-        Weather weather = new(llWeather.name, effect) { VanillaWeatherType = (LevelWeatherType)LethalLibWeatherEntry.Key };
+        Weather weather =
+          new(llWeather.name, effect) { VanillaWeatherType = (LevelWeatherType)LethalLibWeatherEntry.Key, Origin = WeatherOrigin.LethalLib };
         weathers.Add(weather);
 
         WeatherManager.ModdedWeatherEnumExtension.Add(LethalLibWeatherEntry.Key, weather);

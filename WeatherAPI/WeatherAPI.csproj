@@ -18,14 +18,13 @@
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="UnityEngine.Modules" Version="2022.3.9" IncludeAssets="compile" />
 
-
         <Reference Include="LethalLib" PrivateAssets="All">
             <HintPath>../lib/LethalLib.dll</HintPath>
         </Reference>
 
         <Reference Include="MMHOOK_Assembly-CSharp">
-                <HintPath>../lib/MMHOOK_Assembly-CSharp.dll</HintPath>
-            </Reference>
+            <HintPath>../lib/MMHOOK_Assembly-CSharp.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">

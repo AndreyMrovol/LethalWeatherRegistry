@@ -12,6 +12,14 @@ namespace WeatherAPI
     Modded,
   }
 
+  public enum WeatherOrigin
+  {
+    Vanilla,
+    WeatherAPI,
+    LethalLib,
+    LethalLevelLoader
+  }
+
   [JsonObject(MemberSerialization.OptIn)]
   [CreateAssetMenu(fileName = "Weather", menuName = "LC Weather API/WeatherDefinition", order = 5)]
   public class Weather : ScriptableObject
@@ -20,10 +28,13 @@ namespace WeatherAPI
     public string Name;
 
     [JsonProperty]
-    public LevelWeatherType VanillaWeatherType = LevelWeatherType.None;
+    public LevelWeatherType VanillaWeatherType { get; set; } = LevelWeatherType.None;
+
+    [JsonIgnore]
+    internal WeatherOrigin Origin { get; set; } = WeatherOrigin.WeatherAPI;
 
     [JsonProperty]
-    public WeatherType Type = WeatherType.Modded;
+    public WeatherType Type { get; set; } = WeatherType.Modded;
 
     [JsonIgnore]
     public Dictionary<SelectableLevel, LevelWeatherVariables> WeatherVariables = [];
@@ -31,14 +42,24 @@ namespace WeatherAPI
     [JsonIgnore]
     public WeatherApiEffect Effect;
 
-    public float ScrapAmountMultiplier = 1;
-    public float ScrapValueMultiplier = 1;
+    [field: SerializeField]
+    public float ScrapAmountMultiplier { get; set; } = 1;
 
-    public List<string> LevelBlacklist = [];
+    [field: SerializeField]
+    public float ScrapValueMultiplier { get; set; } = 1;
+
+    [field: SerializeField]
+    public List<string> LevelBlacklist { get; set; } = [];
 
     [JsonIgnore]
-    public Color Color;
-    public int DefaultWeight = 50;
+    [field: SerializeField]
+    public Color Color { get; set; }
+
+    [field: SerializeField]
+    public int DefaultWeight { get; set; } = 50;
+
+    [field: SerializeField]
+    public Dictionary<LevelWeatherType, int> WeatherWeights { get; set; } = [];
 
     [JsonIgnore]
     public AnimationClip AnimationClip;
@@ -50,7 +71,15 @@ namespace WeatherAPI
 
       this.name = name;
 
-      // WeatherManager.RegisteredWeathers.Add(this);
+      WeatherManager.RegisteredWeathers.Add(this);
+    }
+
+    void Reset()
+    {
+      Type = WeatherType.Modded;
+      ScrapAmountMultiplier = 1;
+      ScrapValueMultiplier = 1;
+      DefaultWeight = 50;
     }
   }
 
@@ -79,13 +108,14 @@ namespace WeatherAPI
 
     private bool _effectEnabled;
 
-    public string SunAnimatorBool;
+    [field: SerializeField]
+    public string SunAnimatorBool { get; set; }
 
-    public int DefaultVariable1 = 0;
-    public int DefaultVariable2 = 0;
+    [field: SerializeField]
+    public int DefaultVariable1 { get; set; } = 0;
 
-    [JsonIgnore]
-    public WeatherEffect WeatherEffect;
+    [field: SerializeField]
+    public int DefaultVariable2 { get; set; } = 0;
 
     public bool EffectEnabled
     {

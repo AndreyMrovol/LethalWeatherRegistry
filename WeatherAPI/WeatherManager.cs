@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 
-// using WeatherAPI.Definitions;
-
 namespace WeatherAPI
 {
   public class WeatherManager
@@ -18,6 +16,14 @@ namespace WeatherAPI
     public static Weather GetWeather(LevelWeatherType levelWeatherType)
     {
       return Weathers.Find(weather => weather.VanillaWeatherType == levelWeatherType);
+    }
+
+    public static void Reset()
+    {
+      // RegisteredWeathers.Clear();
+      LevelWeathers.Clear();
+      Weathers.Clear();
+      ModdedWeatherEnumExtension.Clear();
     }
   }
 }
