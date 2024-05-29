@@ -15,26 +15,26 @@ namespace WeatherAPI.Patches
     internal static List<LevelWeatherType> VanillaWeathers =
     [
       LevelWeatherType.None,
-        LevelWeatherType.DustClouds,
-        LevelWeatherType.Foggy,
-        LevelWeatherType.Rainy,
-        LevelWeatherType.Stormy,
-        LevelWeatherType.Flooded,
-        LevelWeatherType.Eclipsed
+      LevelWeatherType.DustClouds,
+      LevelWeatherType.Foggy,
+      LevelWeatherType.Rainy,
+      LevelWeatherType.Stormy,
+      LevelWeatherType.Flooded,
+      LevelWeatherType.Eclipsed
     ];
 
     internal static Dictionary<LevelWeatherType, Color> VanillaWeatherColors =
       new()
       {
-          { LevelWeatherType.None, new Color(0.41f, 1f, 0.42f, 1f) },
-          { LevelWeatherType.DustClouds, new Color(0.41f, 1f, 0.42f, 1f) },
-          { LevelWeatherType.Foggy, new Color(1f, 0.86f, 0f, 1f) },
-          { LevelWeatherType.Rainy, new Color(1f, 0.86f, 0f, 1f) },
-          { LevelWeatherType.Stormy, new Color(1f, 0.57f, 0f, 1f) },
-          { LevelWeatherType.Flooded, new Color(1f, 0.57f, 0f, 1f) },
-          { LevelWeatherType.Eclipsed, new Color(1f, 0f, 0f, 1f) }
+        { LevelWeatherType.None, new Color(0.41f, 1f, 0.42f, 1f) },
+        { LevelWeatherType.DustClouds, new Color(0.41f, 1f, 0.42f, 1f) },
+        { LevelWeatherType.Foggy, new Color(1f, 0.86f, 0f, 1f) },
+        { LevelWeatherType.Rainy, new Color(1f, 0.86f, 0f, 1f) },
+        { LevelWeatherType.Stormy, new Color(1f, 0.57f, 0f, 1f) },
+        { LevelWeatherType.Flooded, new Color(1f, 0.57f, 0f, 1f) },
+        { LevelWeatherType.Eclipsed, new Color(1f, 0f, 0f, 1f) }
       };
-    
+
     [HarmonyPatch(typeof(RoundManager), "Awake")]
     [HarmonyPostfix]
     internal static void RoundManagerAwakePostfix(RoundManager __instance)
@@ -222,19 +222,15 @@ namespace WeatherAPI.Patches
         {
           continue;
         }
-        
+
         AddWeatherToLevels(weather, ref levels);
       }
 
       WeatherManager.IsSetupFinished = true;
       StartOfRound.Instance.SetPlanetsWeather();
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
-
-      if (!StartOfRound.Instance.IsHost)
-      {
-        new WeatherSync().SendWeathersRequest();
-      }
     }
+
     static void AddWeatherToLevels(Weather weather, ref List<SelectableLevel> levels)
     {
       List<LevelWeatherVariables> levelWeatherVariables = [];
@@ -262,7 +258,8 @@ namespace WeatherAPI.Patches
           $"Random Weather for weather {weather.Name} for level {level.PlanetName}: " + randomWeather?.weatherType.ToString() ?? "null"
         );
 
-        if (randomWeather == null && !InitializeRandomWeather(ref randomWeather, ref weather, level, ref randomWeathers)) continue;
+        if (randomWeather == null && !InitializeRandomWeather(ref randomWeather, ref weather, level, ref randomWeathers))
+          continue;
 
         levelWeather.Variables.Level = level;
         levelWeather.Variables.WeatherVariable1 = randomWeather?.weatherVariable ?? 1;
@@ -273,37 +270,41 @@ namespace WeatherAPI.Patches
         weather.WeatherVariables.Add(level, levelWeather.Variables);
       }
 
-      static bool InitializeRandomWeather(ref RandomWeatherWithVariables randomWeather, ref Weather weather, SelectableLevel level, ref List<RandomWeatherWithVariables> randomWeathers)
+      static bool InitializeRandomWeather(
+        ref RandomWeatherWithVariables randomWeather,
+        ref Weather weather,
+        SelectableLevel level,
+        ref List<RandomWeatherWithVariables> randomWeathers
+      )
       {
         switch (weather.Type)
         {
           case WeatherType.Vanilla:
-            {
-              Plugin.logger.LogWarning("Random Weather is null");
-              return false;
-            }
+          {
+            Plugin.logger.LogWarning("Random Weather is null");
+            return false;
+          }
           case WeatherType.Modded:
+          {
+            Plugin.logger.LogWarning($"Random Weather is null, injecting modded weather {weather.Name}");
+
+            if (weather.LevelBlacklist.Contains(level.name))
+              return false;
+            Plugin.logger.LogInfo($"Injecting modded weather {weather.Name} for level {level.name}");
+            RandomWeatherWithVariables newWeather = new RandomWeatherWithVariables()
             {
-              Plugin.logger.LogWarning($"Random Weather is null, injecting modded weather {weather.Name}");
+              weatherType = weather.VanillaWeatherType,
+              weatherVariable = weather.Effect.DefaultVariable1,
+              weatherVariable2 = weather.Effect.DefaultVariable2
+            };
 
-              if (weather.LevelBlacklist.Contains(level.name)) return false;
-              Plugin.logger.LogInfo($"Injecting modded weather {weather.Name} for level {level.name}");
-              RandomWeatherWithVariables newWeather = new RandomWeatherWithVariables()
-              {
-                weatherType = weather.VanillaWeatherType,
-                weatherVariable = weather.Effect.DefaultVariable1,
-                weatherVariable2 = weather.Effect.DefaultVariable2
-              };
+            Plugin.logger.LogInfo($"New Random Weather: {newWeather.weatherType}, {newWeather.weatherVariable}, {newWeather.weatherVariable2}");
 
-              Plugin.logger.LogInfo(
-                $"New Random Weather: {newWeather.weatherType}, {newWeather.weatherVariable}, {newWeather.weatherVariable2}"
-              );
-
-              randomWeather = newWeather;
-              randomWeathers.Add(newWeather);
-              level.randomWeathers = randomWeathers.ToArray();
-              break;
-            }
+            randomWeather = newWeather;
+            randomWeathers.Add(newWeather);
+            level.randomWeathers = randomWeathers.ToArray();
+            break;
+          }
         }
         return true;
       }
