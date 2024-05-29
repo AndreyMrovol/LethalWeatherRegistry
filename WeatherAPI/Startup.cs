@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace WeatherAPI.Patches
@@ -10,7 +11,6 @@ namespace WeatherAPI.Patches
   public static class TerminalStartPatch
   {
     internal static WeatherEffect[] vanillaEffectsArray { get; private set; } = null;
-
 
     internal static List<LevelWeatherType> VanillaWeathers =
     [
@@ -34,6 +34,25 @@ namespace WeatherAPI.Patches
           { LevelWeatherType.Flooded, new Color(1f, 0.57f, 0f, 1f) },
           { LevelWeatherType.Eclipsed, new Color(1f, 0f, 0f, 1f) }
       };
+    
+    [HarmonyPatch(typeof(RoundManager), "Awake")]
+    [HarmonyPostfix]
+    internal static void RoundManagerAwakePostfix(RoundManager __instance)
+    {
+      Plugin.logger.LogInfo("RoundManager Awake Patch");
+
+      Plugin.logger.LogDebug(GameNetworkManager.Instance);
+      Plugin.logger.LogDebug(GameNetworkManager.Instance.GetComponent<NetworkManager>());
+      Plugin.logger.LogDebug(WeatherSync.WeatherSyncPrefab);
+      Plugin.logger.LogDebug(WeatherSync.WeatherSyncPrefab.GetComponent<WeatherSync>());
+      Plugin.logger.LogDebug(WeatherSync.WeatherSyncPrefab.GetComponent<NetworkObject>());
+
+      if (GameNetworkManager.Instance.GetComponent<NetworkManager>().IsServer)
+      {
+        WeatherSync WeatherSyncPrefab = GameObject.Instantiate(WeatherSync.WeatherSyncPrefab).GetComponent<WeatherSync>();
+        WeatherSyncPrefab.GetComponent<NetworkObject>().Spawn(destroyWithScene: false);
+      }
+    }
 
     [HarmonyPostfix]
     [HarmonyPatch("Start")]
@@ -288,6 +307,11 @@ namespace WeatherAPI.Patches
         }
         return true;
       }
+      }
+
+      WeatherManager.IsSetupFinished = true;
+      StartOfRound.Instance.SetPlanetsWeather();
+      StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
     }
   }
 }

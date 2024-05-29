@@ -33,7 +33,12 @@ namespace WeatherAPI.Patches
 
         Dictionary<string, LevelWeatherType> newWeathers = WeatherCalculation.NewWeathers(__instance);
 
-        new WeatherSync().SendWeathers(newWeathers);
+        Plugin.logger.LogDebug($"Instance: {WeatherSync.Instance}");
+        Plugin.logger.LogDebug($"Weathers: {newWeathers}");
+        Plugin.logger.LogDebug($"WeatherSync: {WeatherSync.Instance.WeathersSynced}");
+        Plugin.logger.LogDebug($"WeathersSynced: {WeatherSync.Instance.WeathersSynced.Value}");
+
+        WeatherSync.Instance.SetNew(JsonConvert.SerializeObject(newWeathers));
       }
 
       return false;

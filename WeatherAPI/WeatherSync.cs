@@ -1,36 +1,70 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Unity.Collections;
 using Unity.Netcode;
+using UnityEngine;
 
 namespace WeatherAPI
 {
-  internal class WeatherSync
+  internal class WeatherSync : NetworkBehaviour
   {
+    public static GameObject WeatherSyncPrefab;
+    private static WeatherSync _instance;
+    public static WeatherSync Instance
+    {
+      get
+      {
+        if (_instance == null)
+          _instance = UnityEngine.Object.FindObjectOfType<WeatherSync>();
+        if (_instance == null)
+          Plugin.logger.LogError("WeatherSync instance is null");
+        return _instance;
+      }
+      set { _instance = value; }
+    }
+    public static NetworkManager networkManager;
+
+    public override void OnNetworkSpawn()
+    {
+      base.OnNetworkSpawn();
+      gameObject.name = "WeatherSync";
+      Instance = this;
+      DontDestroyOnLoad(gameObject);
+
+      // WeathersSynced = new NetworkVariable<FixedString512Bytes>();
+
+      Plugin.logger.LogFatal($"WeathersSynced: {WeathersSynced.Value}");
+
+      WeathersSynced.OnValueChanged += WeathersReceived;
+    }
+
     private string LatestWeathersReceived = "";
+
+    public NetworkVariable<FixedString512Bytes> WeathersSynced = new NetworkVariable<FixedString512Bytes>("a default value");
+    public string Weather
+    {
+      get => WeathersSynced.Value.ToString();
+      set => WeathersSynced.Value = new FixedString512Bytes(value);
+    }
+
+    public void SetNew(string weathers)
+    {
+      Plugin.logger.LogInfo($"Setting new weathers: {weathers}");
+      Plugin.logger.LogInfo($"Current weathers: {Weather} (is null? {Weather == null}) (is empty? {Weather == ""}");
+      Weather = weathers;
+    }
 
     // this whole stuff is not working at all (yet)
 
-    [ServerRpc]
-    public void SendWeathersRequest()
+    public void WeathersReceived(FixedString512Bytes oldWeathers, FixedString512Bytes weathers)
     {
-      Plugin.logger.LogInfo("Received weather request, sending");
-      Dictionary<string, LevelWeatherType> weathers = WeatherCalculation.NewWeathers(StartOfRound.Instance);
-      SendWeathers(weathers);
+      Plugin.logger.LogInfo($"Weathers received: {weathers}");
+      ApplyWeathers(weathers.ToString());
     }
 
-    [ServerRpc]
-    public void SendWeathers(Dictionary<string, LevelWeatherType> weathers)
-    {
-      string serialized = JsonConvert.SerializeObject(weathers);
-      Plugin.logger.LogInfo($"Sending weathers: {serialized}");
-
-      ApplyWeathers(serialized);
-    }
-
-    [ClientRpc]
     public void ApplyWeathers(string weathers)
     {
-      Plugin.logger.LogInfo($"Received weathers: {weathers}");
+      Plugin.logger.LogInfo($"Weathers to apply: {weathers}");
 
       if (LatestWeathersReceived == weathers)
       {
@@ -45,6 +79,7 @@ namespace WeatherAPI
         level.currentWeather = newWeathers[level.PlanetName];
       }
 
+      LatestWeathersReceived = weathers;
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
     }
   }
