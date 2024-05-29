@@ -9,6 +9,8 @@ namespace WeatherAPI.Patches
   [HarmonyPatch(typeof(Terminal))]
   public class TerminalStartPatch
   {
+    internal static WeatherEffect[] vanillaEffectsArray { get; private set; } = null;
+
     [HarmonyPostfix]
     [HarmonyPatch("Start")]
     [HarmonyPriority(Priority.First)]
@@ -19,7 +21,18 @@ namespace WeatherAPI.Patches
       WeatherManager.Reset();
 
       WeatherEffect[] effects = TimeOfDay.Instance.effects;
-      List<WeatherEffect> weatherList = TimeOfDay.Instance.effects.ToList();
+      List<WeatherEffect> weatherList = effects.ToList();
+
+      // a hacky bit of magic to reset vanilla effects array after reloading lobby
+      if (vanillaEffectsArray == null)
+      {
+        vanillaEffectsArray = effects;
+      }
+      else
+      {
+        Plugin.logger.LogWarning("Vanilla effects array is not null");
+        effects = vanillaEffectsArray;
+      }
 
       if (effects == null || effects.Count() == 0)
       {

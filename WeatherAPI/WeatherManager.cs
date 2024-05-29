@@ -24,6 +24,8 @@ namespace WeatherAPI
       LevelWeathers.Clear();
       Weathers.Clear();
       ModdedWeatherEnumExtension.Clear();
+
+      RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherAPI);
     }
   }
 }
