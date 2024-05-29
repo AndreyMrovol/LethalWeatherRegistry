@@ -34,9 +34,13 @@ namespace WeatherAPI
       }
       else
       {
-        logger.LogWarning("LethalLib is not loaded!");
-        WeatherTypeEnumHook = new Hook(typeof(Enum).GetMethod("ToString", new Type[] { }), typeof(TerminalStartPatch).GetMethod("ToStringHook"));
+        logger.LogInfo("LethalLib not detected!");
       }
+
+      WeatherTypeEnumHook = new Hook(
+        typeof(Enum).GetMethod("ToString", []),
+        typeof(WeatherManager).GetMethod(nameof(WeatherManager.LevelWeatherTypeEnumHook))
+      );
 
       // Plugin startup logic
       Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
