@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace WeatherAPI
@@ -26,6 +27,20 @@ namespace WeatherAPI
       ModdedWeatherEnumExtension.Clear();
 
       RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherAPI);
+    }
+
+    public static string LevelWeatherTypeEnumHook(Func<Enum, string> orig, Enum self)
+    {
+      if (self.GetType() == typeof(LevelWeatherType))
+      {
+        Plugin.logger.LogDebug($"LevelWeatherTypeEnumHook");
+        if (WeatherManager.ModdedWeatherEnumExtension.ContainsKey((int)(LevelWeatherType)self))
+        {
+          return WeatherManager.ModdedWeatherEnumExtension[(int)(LevelWeatherType)self].name;
+        }
+      }
+
+      return orig(self);
     }
   }
 }

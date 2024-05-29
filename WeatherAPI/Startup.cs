@@ -285,19 +285,5 @@ namespace WeatherAPI.Patches
       WeatherManager.IsSetupFinished = true;
       StartOfRound.Instance.SetPlanetsWeather();
     }
-
-    public static string ToStringHook(Func<Enum, string> orig, Enum self)
-    {
-      if (self.GetType() == typeof(LevelWeatherType))
-      {
-        Plugin.logger.LogDebug("ToStringHook");
-        if (WeatherManager.ModdedWeatherEnumExtension.ContainsKey((int)(LevelWeatherType)self))
-        {
-          return WeatherManager.ModdedWeatherEnumExtension[(int)(LevelWeatherType)self].name;
-        }
-      }
-
-      return orig(self);
-    }
   }
 }
