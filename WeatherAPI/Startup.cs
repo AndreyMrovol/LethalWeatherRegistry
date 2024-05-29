@@ -307,7 +307,6 @@ namespace WeatherAPI.Patches
         }
         return true;
       }
-      }
 
       WeatherManager.IsSetupFinished = true;
       StartOfRound.Instance.SetPlanetsWeather();
