@@ -15,7 +15,7 @@ namespace WeatherAPI.Patches
     {
       Plugin.logger.LogMessage("SetPlanetsWeather called.");
 
-      if (WeatherManager.IsSetupFinished == false)
+      if (!WeatherManager.IsSetupFinished)
       {
         Plugin.logger.LogWarning("WeatherManager is not set up yet.");
         return false;

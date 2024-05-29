@@ -30,7 +30,7 @@ namespace WeatherAPI
       if (Chainloader.PluginInfos.ContainsKey("evaisa.lethallib"))
       {
         IsLethalLibLoaded = true;
-        Patches.LethalLibPatch.Init();
+        LethalLibPatch.Init();
       }
       else
       {
@@ -45,5 +45,6 @@ namespace WeatherAPI
       // Plugin startup logic
       Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
+
   }
 }

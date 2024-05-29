@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
+using WeatherAPI.Patches;
 
 namespace WeatherAPI
 {
@@ -63,8 +64,7 @@ namespace WeatherAPI
 
     [JsonIgnore]
     public AnimationClip AnimationClip;
-
-    public Weather(string name, ImprovedWeatherEffect effect)
+    public Weather(string name = "None", ImprovedWeatherEffect effect = default)
     {
       Name = name;
       Effect = effect;
@@ -78,6 +78,17 @@ namespace WeatherAPI
       ScrapAmountMultiplier = 1;
       ScrapValueMultiplier = 1;
       DefaultWeight = 50;
+    }
+
+    public static Weather CreateCanvasWeather()
+    {
+      return new Weather()
+      {
+        Type = WeatherType.Clear,
+        Color = TerminalStartPatch.VanillaWeatherColors[LevelWeatherType.None],
+        VanillaWeatherType = LevelWeatherType.None,
+        Origin = WeatherOrigin.Vanilla,
+      };
     }
   }
 
