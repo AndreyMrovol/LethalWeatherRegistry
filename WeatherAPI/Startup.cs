@@ -307,11 +307,6 @@ namespace WeatherAPI.Patches
       WeatherManager.IsSetupFinished = true;
       StartOfRound.Instance.SetPlanetsWeather();
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
-
-      if (!StartOfRound.Instance.IsHost)
-      {
-        new WeatherSync().SendWeathersRequest();
-      }
     }
   }
 }
