@@ -40,7 +40,7 @@ namespace WeatherAPI
     public Dictionary<SelectableLevel, LevelWeatherVariables> WeatherVariables = [];
 
     [JsonIgnore]
-    public WeatherApiEffect Effect;
+    public ImprovedWeatherEffect Effect;
 
     [field: SerializeField]
     public float ScrapAmountMultiplier { get; set; } = 1;
@@ -64,14 +64,12 @@ namespace WeatherAPI
     [JsonIgnore]
     public AnimationClip AnimationClip;
 
-    public Weather(string name, WeatherApiEffect effect)
+    public Weather(string name, ImprovedWeatherEffect effect)
     {
       Name = name;
       Effect = effect;
 
       this.name = name;
-
-      WeatherManager.RegisteredWeathers.Add(this);
     }
 
     void Reset()
@@ -98,7 +96,7 @@ namespace WeatherAPI
   }
 
   [CreateAssetMenu(fileName = "WeatherEffect", menuName = "LC Weather API/WeatherEffect", order = 10)]
-  public class WeatherApiEffect : ScriptableObject
+  public class ImprovedWeatherEffect : ScriptableObject
   {
     [JsonIgnore]
     public GameObject EffectObject;
@@ -141,7 +139,7 @@ namespace WeatherAPI
       }
     }
 
-    public WeatherApiEffect(GameObject effectObject, GameObject worldObject)
+    public ImprovedWeatherEffect(GameObject effectObject, GameObject worldObject)
     {
       EffectObject = effectObject;
       WorldObject = worldObject;

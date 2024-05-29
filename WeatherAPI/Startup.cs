@@ -70,14 +70,14 @@ namespace WeatherAPI.Patches
 
       // Register clear weather as a weather
       Weather noneWeather =
-        new("None", new WeatherApiEffect(null, null))
+        new("None", new ImprovedWeatherEffect(null, null))
         {
           Type = WeatherType.Clear,
           Color = VanillaWeatherColors[LevelWeatherType.None],
           VanillaWeatherType = LevelWeatherType.None,
           Origin = WeatherOrigin.Vanilla,
         };
-      // WeatherManager.RegisteredWeathers.Add(noneWeather);
+      WeatherManager.Weathers.Add(noneWeather);
 
       // Extend the weather enum to have the modded weathers
 
@@ -92,7 +92,8 @@ namespace WeatherAPI.Patches
         WeatherType weatherTypeType = isVanilla ? WeatherType.Vanilla : WeatherType.Modded;
         Color weatherColor = isVanilla ? VanillaWeatherColors[weatherType] : Color.blue;
 
-        WeatherApiEffect weatherEffect = new(effect.effectObject, effect.effectPermanentObject) { SunAnimatorBool = effect.sunAnimatorBool, };
+        ImprovedWeatherEffect weatherEffect =
+          new(effect.effectObject, effect.effectPermanentObject) { SunAnimatorBool = effect.sunAnimatorBool, };
 
         Weather weather =
           new(weatherType.ToString(), weatherEffect)
@@ -103,7 +104,7 @@ namespace WeatherAPI.Patches
             Origin = WeatherOrigin.Vanilla,
           };
 
-        // WeatherManager.RegisteredWeathers.Add(weather);
+        WeatherManager.Weathers.Add(weather);
       }
 
       // Get all LethalLib weathers and add them to effects list
@@ -284,6 +285,7 @@ namespace WeatherAPI.Patches
 
       WeatherManager.IsSetupFinished = true;
       StartOfRound.Instance.SetPlanetsWeather();
+      StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
     }
   }
 }
