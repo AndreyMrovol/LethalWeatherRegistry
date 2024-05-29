@@ -78,6 +78,7 @@ namespace WeatherAPI.Patches
           Origin = WeatherOrigin.Vanilla,
         };
       WeatherManager.Weathers.Add(noneWeather);
+      WeatherManager.NoneWeather = noneWeather;
 
       // Extend the weather enum to have the modded weathers
 
@@ -286,6 +287,11 @@ namespace WeatherAPI.Patches
       WeatherManager.IsSetupFinished = true;
       StartOfRound.Instance.SetPlanetsWeather();
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
+
+      if (!StartOfRound.Instance.IsHost)
+      {
+        new WeatherSync().SendWeathersRequest();
+      }
     }
   }
 }
