@@ -1,11 +1,36 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Unity.Netcode;
+using UnityEngine;
 
 namespace WeatherAPI
 {
-  internal class WeatherSync
+  internal class WeatherSync : NetworkBehaviour
   {
+    public static GameObject WeatherSyncPrefab;
+    private static WeatherSync _instance;
+    public static WeatherSync Instance
+    {
+      get
+      {
+        if (_instance == null)
+          _instance = UnityEngine.Object.FindObjectOfType<WeatherSync>();
+        if (_instance == null)
+          Plugin.logger.LogError("WeatherSync instance is null");
+        return _instance;
+      }
+      set { _instance = value; }
+    }
+    public static NetworkManager networkManager;
+
+    public override void OnNetworkSpawn()
+    {
+      base.OnNetworkSpawn();
+      gameObject.name = "WeatherSync";
+      Instance = this;
+      DontDestroyOnLoad(gameObject);
+    }
+
     private string LatestWeathersReceived = "";
 
     // this whole stuff is not working at all (yet)
@@ -47,5 +72,12 @@ namespace WeatherAPI
 
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
     }
+
+    // this stuff above isn't working as i want
+    // i want to have:
+    // 1. a function that sends weathers to all clients (only from host)
+    // 2. a function that receives weathers
+    // 3. a function that applies weathers to levels
+    // 4. a function that can call server that it should send weathers
   }
 }

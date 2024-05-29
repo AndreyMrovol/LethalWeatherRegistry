@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace WeatherAPI.Patches
@@ -10,6 +11,25 @@ namespace WeatherAPI.Patches
   public class TerminalStartPatch
   {
     internal static WeatherEffect[] vanillaEffectsArray { get; private set; } = null;
+
+    [HarmonyPatch(typeof(RoundManager), "Awake")]
+    [HarmonyPostfix]
+    internal static void RoundManagerAwakePostfix(RoundManager __instance)
+    {
+      Plugin.logger.LogInfo("RoundManager Awake Patch");
+
+      Plugin.logger.LogDebug(GameNetworkManager.Instance);
+      Plugin.logger.LogDebug(GameNetworkManager.Instance.GetComponent<NetworkManager>());
+      Plugin.logger.LogDebug(WeatherSync.WeatherSyncPrefab);
+      Plugin.logger.LogDebug(WeatherSync.WeatherSyncPrefab.GetComponent<WeatherSync>());
+      Plugin.logger.LogDebug(WeatherSync.WeatherSyncPrefab.GetComponent<NetworkObject>());
+
+      if (GameNetworkManager.Instance.GetComponent<NetworkManager>().IsServer)
+      {
+        WeatherSync WeatherSyncPrefab = GameObject.Instantiate(WeatherSync.WeatherSyncPrefab).GetComponent<WeatherSync>();
+        WeatherSyncPrefab.GetComponent<NetworkObject>().Spawn(destroyWithScene: false);
+      }
+    }
 
     [HarmonyPostfix]
     [HarmonyPatch("Start")]
