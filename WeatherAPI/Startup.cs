@@ -47,8 +47,9 @@ namespace WeatherAPI.Patches
       Plugin.logger.LogDebug(WeatherSync.WeatherSyncPrefab.GetComponent<WeatherSync>());
       Plugin.logger.LogDebug(WeatherSync.WeatherSyncPrefab.GetComponent<NetworkObject>());
 
-      if (GameNetworkManager.Instance.GetComponent<NetworkManager>().IsServer)
+      if (GameNetworkManager.Instance.GetComponent<NetworkManager>().IsHost)
       {
+        Plugin.logger.LogInfo("Host detected, spawning WeatherSync");
         WeatherSync WeatherSyncPrefab = GameObject.Instantiate(WeatherSync.WeatherSyncPrefab).GetComponent<WeatherSync>();
         WeatherSyncPrefab.GetComponent<NetworkObject>().Spawn(destroyWithScene: false);
       }
@@ -310,8 +311,16 @@ namespace WeatherAPI.Patches
       }
 
       WeatherManager.IsSetupFinished = true;
-      StartOfRound.Instance.SetPlanetsWeather();
-      StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
+
+      if (StartOfRound.Instance.IsHost)
+      {
+        StartOfRound.Instance.SetPlanetsWeather();
+        StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
+      }
+      else
+      {
+        WeatherSync.Instance.ApplyWeathers(WeatherSync.Instance.Weather);
+      }
     }
   }
 }

@@ -31,8 +31,6 @@ namespace WeatherAPI
       Instance = this;
       DontDestroyOnLoad(gameObject);
 
-      // WeathersSynced = new NetworkVariable<FixedString512Bytes>();
-
       Plugin.logger.LogFatal($"WeathersSynced: {WeathersSynced.Value}");
 
       WeathersSynced.OnValueChanged += WeathersReceived;
@@ -59,6 +57,12 @@ namespace WeatherAPI
     public void WeathersReceived(FixedString512Bytes oldWeathers, FixedString512Bytes weathers)
     {
       Plugin.logger.LogInfo($"Weathers received: {weathers}");
+
+      if (!WeatherManager.IsSetupFinished)
+      {
+        return;
+      }
+
       ApplyWeathers(weathers.ToString());
     }
 
