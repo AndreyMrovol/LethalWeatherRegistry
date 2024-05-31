@@ -12,29 +12,6 @@ namespace WeatherAPI.Patches
   {
     internal static WeatherEffect[] vanillaEffectsArray { get; private set; } = null;
 
-    internal static List<LevelWeatherType> VanillaWeathers =
-    [
-      LevelWeatherType.None,
-      LevelWeatherType.DustClouds,
-      LevelWeatherType.Foggy,
-      LevelWeatherType.Rainy,
-      LevelWeatherType.Stormy,
-      LevelWeatherType.Flooded,
-      LevelWeatherType.Eclipsed
-    ];
-
-    internal static Dictionary<LevelWeatherType, Color> VanillaWeatherColors =
-      new()
-      {
-        { LevelWeatherType.None, new Color(0.41f, 1f, 0.42f, 1f) },
-        { LevelWeatherType.DustClouds, new Color(0.41f, 1f, 0.42f, 1f) },
-        { LevelWeatherType.Foggy, new Color(1f, 0.86f, 0f, 1f) },
-        { LevelWeatherType.Rainy, new Color(1f, 0.86f, 0f, 1f) },
-        { LevelWeatherType.Stormy, new Color(1f, 0.57f, 0f, 1f) },
-        { LevelWeatherType.Flooded, new Color(1f, 0.57f, 0f, 1f) },
-        { LevelWeatherType.Eclipsed, new Color(1f, 0f, 0f, 1f) }
-      };
-
     [HarmonyPatch(typeof(RoundManager), "Awake")]
     [HarmonyPostfix]
     internal static void RoundManagerAwakePostfix(RoundManager __instance)
@@ -103,10 +80,10 @@ namespace WeatherAPI.Patches
         Plugin.logger.LogWarning($"Effect: {effect.name}");
 
         LevelWeatherType weatherType = (LevelWeatherType)i;
-        bool isVanilla = VanillaWeathers.Contains(weatherType);
+        bool isVanilla = Defaults.VanillaWeathers.Contains(weatherType);
 
         WeatherType weatherTypeType = isVanilla ? WeatherType.Vanilla : WeatherType.Modded;
-        Color weatherColor = isVanilla ? VanillaWeatherColors[weatherType] : Color.blue;
+        Color weatherColor = isVanilla ? Defaults.VanillaWeatherColors[weatherType] : Color.blue;
 
         ImprovedWeatherEffect weatherEffect =
           new(effect.effectObject, effect.effectPermanentObject) { SunAnimatorBool = effect.sunAnimatorBool, };
