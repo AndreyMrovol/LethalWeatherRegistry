@@ -64,6 +64,7 @@ namespace WeatherAPI
 
     [JsonIgnore]
     public AnimationClip AnimationClip;
+
     public Weather(string name = "None", ImprovedWeatherEffect effect = default)
     {
       Name = name;
@@ -85,7 +86,7 @@ namespace WeatherAPI
       return new Weather()
       {
         Type = WeatherType.Clear,
-        Color = TerminalStartPatch.VanillaWeatherColors[LevelWeatherType.None],
+        Color = Defaults.VanillaWeatherColors[LevelWeatherType.None],
         VanillaWeatherType = LevelWeatherType.None,
         Origin = WeatherOrigin.Vanilla,
       };
