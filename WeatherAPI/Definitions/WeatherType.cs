@@ -71,6 +71,8 @@ namespace WeatherAPI
       Effect = effect;
 
       this.name = name;
+
+      Settings.ScreenMapColors.Add(this.Name, this.Color);
     }
 
     void Reset()

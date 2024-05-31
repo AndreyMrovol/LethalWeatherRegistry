@@ -217,7 +217,7 @@ namespace WeatherAPI.Patches
 
     static void SaveWeatherColor(Weather weather)
     {
-      Settings.ScreenMapColors.Add(weather.Name, weather.Color);
+      // Settings.ScreenMapColors.Add(weather.Name, weather.Color);
     }
 
     static void AddWeatherToLevels(Weather weather, ref List<SelectableLevel> levels)
