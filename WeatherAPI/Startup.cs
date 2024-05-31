@@ -208,6 +208,11 @@ namespace WeatherAPI.Patches
       WeatherManager.IsSetupFinished = true;
       StartOfRound.Instance.SetPlanetsWeather();
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
+
+      if (!StartOfRound.Instance.IsHost)
+      {
+        WeatherSync.Instance.ApplyWeathers(WeatherSync.Instance.Weather);
+      }
     }
 
     static void SaveWeatherColor(Weather weather)
@@ -291,18 +296,6 @@ namespace WeatherAPI.Patches
           }
         }
         return true;
-      }
-
-      WeatherManager.IsSetupFinished = true;
-
-      if (StartOfRound.Instance.IsHost)
-      {
-        StartOfRound.Instance.SetPlanetsWeather();
-        StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
-      }
-      else
-      {
-        WeatherSync.Instance.ApplyWeathers(WeatherSync.Instance.Weather);
       }
     }
   }
