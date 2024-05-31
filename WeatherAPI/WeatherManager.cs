@@ -29,6 +29,8 @@ namespace WeatherAPI
 
     public static void Reset()
     {
+      IsSetupFinished = false;
+
       // RegisteredWeathers.Clear();
       LevelWeathers.Clear();
       Weathers.Clear();
