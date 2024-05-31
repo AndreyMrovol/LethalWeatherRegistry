@@ -34,9 +34,7 @@
         <PackageReference Include="Lib.Harmony" Version="2.3.3" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
-        <Reference Include="LethalLib" PrivateAssets="All">
-            <HintPath>../lib/LethalLib.dll</HintPath>
-        </Reference>
+        <PackageReference Include="Evaisa.LethalLib" Version="0.16.0" />
 
         <Reference Include="MMHOOK_Assembly-CSharp">
             <HintPath>../lib/MMHOOK_Assembly-CSharp.dll</HintPath>
