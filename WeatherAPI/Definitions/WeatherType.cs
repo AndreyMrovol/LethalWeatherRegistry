@@ -54,7 +54,7 @@ namespace WeatherAPI
 
     [JsonIgnore]
     [field: SerializeField]
-    public Color Color { get; set; }
+    public Color Color { get; set; } = Color.cyan;
 
     [field: SerializeField]
     public int DefaultWeight { get; set; } = 50;
