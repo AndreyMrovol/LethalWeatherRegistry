@@ -107,5 +107,15 @@ namespace WeatherAPI
 
       return weatherList;
     }
+
+    internal static Weather GetCurrentWeather(SelectableLevel level)
+    {
+      if (CurrentWeathers.TryGetValue(level, out Weather currentWeather))
+      {
+        return currentWeather;
+      }
+
+      return NoneWeather;
+    }
   }
 }
