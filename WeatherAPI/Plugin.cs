@@ -27,6 +27,8 @@ namespace WeatherAPI
       logger = Logger;
       harmony.PatchAll();
 
+      ConfigManager.Init(Config);
+
       if (Chainloader.PluginInfos.ContainsKey("evaisa.lethallib"))
       {
         IsLethalLibLoaded = true;
@@ -45,6 +47,5 @@ namespace WeatherAPI
       // Plugin startup logic
       Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
-
   }
 }
