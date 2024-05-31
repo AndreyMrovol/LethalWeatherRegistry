@@ -27,5 +27,7 @@ namespace WeatherAPI
         { LevelWeatherType.Flooded, new Color(1f, 0.57f, 0f, 1f) },
         { LevelWeatherType.Eclipsed, new Color(1f, 0f, 0f, 1f) }
       };
+
+    internal static Color LethalLibColor = new(r: 0f, g: 0.44f, b: 0.76f, a: 1f);
   }
 }
