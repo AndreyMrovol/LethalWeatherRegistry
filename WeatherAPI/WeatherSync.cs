@@ -38,11 +38,11 @@ namespace WeatherAPI
 
     private string LatestWeathersReceived = "";
 
-    public NetworkVariable<FixedString512Bytes> WeathersSynced = new NetworkVariable<FixedString512Bytes>("a default value");
+    public NetworkVariable<FixedString4096Bytes> WeathersSynced = new NetworkVariable<FixedString4096Bytes>("a default value");
     public string Weather
     {
       get => WeathersSynced.Value.ToString();
-      set => WeathersSynced.Value = new FixedString512Bytes(value);
+      set => WeathersSynced.Value = new FixedString4096Bytes(value);
     }
 
     public void SetNew(string weathers)
@@ -54,7 +54,7 @@ namespace WeatherAPI
 
     // this whole stuff is not working at all (yet)
 
-    public void WeathersReceived(FixedString512Bytes oldWeathers, FixedString512Bytes weathers)
+    public void WeathersReceived(FixedString4096Bytes oldWeathers, FixedString4096Bytes weathers)
     {
       Plugin.logger.LogInfo($"Weathers received: {weathers}");
 
