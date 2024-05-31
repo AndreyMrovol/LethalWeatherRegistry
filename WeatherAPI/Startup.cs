@@ -202,11 +202,17 @@ namespace WeatherAPI.Patches
         }
 
         AddWeatherToLevels(weather, ref levels);
+        SaveWeatherColor(weather);
       }
 
       WeatherManager.IsSetupFinished = true;
       StartOfRound.Instance.SetPlanetsWeather();
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
+    }
+
+    static void SaveWeatherColor(Weather weather)
+    {
+      Settings.ScreenMapColors.Add(weather.Name, weather.Color);
     }
 
     static void AddWeatherToLevels(Weather weather, ref List<SelectableLevel> levels)
