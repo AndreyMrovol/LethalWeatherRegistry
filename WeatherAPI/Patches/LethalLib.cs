@@ -44,7 +44,8 @@ namespace WeatherAPI.Patches
           {
             VanillaWeatherType = (LevelWeatherType)LethalLibWeatherEntry.Key,
             Origin = WeatherOrigin.LethalLib,
-            Color = Defaults.LethalLibColor
+            Color = Defaults.LethalLibColor,
+            DefaultWeight = 50,
           };
         weathers.Add(weather);
 

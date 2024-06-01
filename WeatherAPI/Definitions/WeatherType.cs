@@ -57,7 +57,7 @@ namespace WeatherAPI
     public Color Color { get; set; } = Color.cyan;
 
     [field: SerializeField]
-    public int DefaultWeight { get; set; } = 50;
+    public int DefaultWeight { get; set; } = 100;
 
     [field: SerializeField]
     public Dictionary<LevelWeatherType, int> WeatherWeights { get; set; } = [];
