@@ -9,17 +9,22 @@ namespace WeatherAPI
   {
     internal static bool IsSetupFinished = false;
 
-    public static List<Weather> RegisteredWeathers = [];
-    public static List<LevelWeather> LevelWeathers = [];
+    public static List<Weather> RegisteredWeathers { get; internal set; } = [];
+    public static List<LevelWeather> LevelWeathers { get; internal set; } = [];
 
     // i would love to have weathers as an array with indexes corresponding to the enum values
     // but none is -1 so i have to do this
-    public static List<Weather> Weathers = [];
-    public static Weather NoneWeather;
+    public static List<Weather> Weathers { get; internal set; } = [];
+    public static Weather NoneWeather { get; internal set; }
 
     public static Dictionary<int, Weather> ModdedWeatherEnumExtension = [];
 
     public static Dictionary<SelectableLevel, Weather> CurrentWeathers = [];
+
+    public static void RegisterWeather(Weather weather)
+    {
+      RegisteredWeathers.Add(weather);
+    }
 
     public static Weather GetWeather(LevelWeatherType levelWeatherType)
     {
