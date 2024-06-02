@@ -25,12 +25,6 @@ namespace WeatherAPI.Patches
         new HarmonyMethod(typeof(SunAnimator), "SetBoolStringPatch")
       );
       logger.LogWarning("Patching Animator.SetBool(string, bool)");
-
-      // harmony.Patch(
-      //   AccessTools.Method(typeof(UnityEngine.Animator), "SetBool", new Type[] { typeof(int), typeof(bool) }),
-      //   new HarmonyMethod(typeof(SunAnimator), "SetBoolIntPatch")
-      // );
-      // logger.LogWarning("Patching Animator.SetBool(int, bool)");
     }
 
     public static bool SetBoolPatch(Animator __instance, object nameOrId, bool value)
@@ -70,12 +64,7 @@ namespace WeatherAPI.Patches
       return SetBoolPatch(__instance, name, value);
     }
 
-    public static bool SetBoolIntPatch(Animator __instance, int id, bool value)
-    {
-      return SetBoolPatch(__instance, id, value);
-    }
-
-    internal static ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource("WeatherTweaks SunAnimator");
+    internal static ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource("WeatherAPI SunAnimator");
 
     internal static Dictionary<LevelWeatherType, string> clipNames =
       new()
@@ -109,11 +98,6 @@ namespace WeatherAPI.Patches
 
     public static void OverrideSunAnimator(LevelWeatherType weatherType)
     {
-      // Right now the possible transitions are:
-      // state TimeOfDaySun -> state TimeOfDaySunEclipse (bool eclipsed = true is the condition)
-      // state TimeOfDaySun -> state TimeOfDaySunStormy (bool overcast = true is the condition)
-      // i want to change the animation clip of the sun based on the weather type
-
       if (animator == null)
       {
         animator = TimeOfDay.Instance.sunAnimator;
@@ -136,9 +120,6 @@ namespace WeatherAPI.Patches
         logger.LogWarning($"Animator controller {animatorControllerName} is blacklisted");
         return;
       }
-
-      // TODO: this requires testing + correct implementation (to be extensible by weathertweaks)
-      animator.runtimeAnimatorController.animationClips.Add(WeatherManager.GetWeatherAnimationClip(weatherType));
 
       if (animatorOverrideController == null)
       {
@@ -173,6 +154,27 @@ namespace WeatherAPI.Patches
           { LevelWeatherType.Rainy, clipStormy },
           { LevelWeatherType.None, clipNone },
         };
+
+        // TODO: this requires testing + correct implementation (to be extensible by weathertweaks)
+
+        if (WeatherManager.GetWeatherAnimationClip(weatherType) != null)
+        {
+          AnimationClip customAnimationClip = WeatherManager.GetWeatherAnimationClip(weatherType);
+
+          animator.runtimeAnimatorController.animationClips.Add(customAnimationClip);
+          animationClips.Add(customAnimationClip);
+          clips[weatherType] = customAnimationClip;
+
+          logger.LogInfo($"Added animation clip for weather type {weatherType}");
+
+          // log all clips
+          animator
+            .runtimeAnimatorController.animationClips.ToList()
+            .ForEach(clip =>
+            {
+              logger.LogInfo($"clip: {clip.name}");
+            });
+        }
 
         if (clipEclipsed == null || clipStormy == null || clipNone == null)
         {

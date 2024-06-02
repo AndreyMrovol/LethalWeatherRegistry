@@ -28,6 +28,7 @@ namespace WeatherAPI
       harmony.PatchAll();
 
       ConfigManager.Init(Config);
+      SunAnimator.Init();
 
       if (Chainloader.PluginInfos.ContainsKey("evaisa.lethallib"))
       {
