@@ -133,8 +133,10 @@ namespace WeatherAPI.Patches
       int biggestKeyInModdedWeathersDictionary = Enum.GetValues(typeof(LevelWeatherType)).Length - 1;
       if (WeatherManager.ModdedWeatherEnumExtension.Count > 0)
       {
-        biggestKeyInModdedWeathersDictionary = WeatherManager.ModdedWeatherEnumExtension.Keys.Max();
+        biggestKeyInModdedWeathersDictionary = WeatherManager.ModdedWeatherEnumExtension.Keys.Max() + 1;
       }
+      Plugin.logger.LogDebug(WeatherManager.ModdedWeatherEnumExtension.Count > 0);
+      Plugin.logger.LogDebug("Biggest key in modded weathers dictionary: " + biggestKeyInModdedWeathersDictionary);
 
       WeatherManager
         .RegisteredWeathers.Where(weather => weather.Origin == WeatherOrigin.WeatherAPI)
