@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <AssemblyName>WeatherAPI</AssemblyName>
+        <AssemblyName>WeatherRegistry</AssemblyName>
         <Description>A Weather API for Lethal Company</Description>
         <Version>0.0.1</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

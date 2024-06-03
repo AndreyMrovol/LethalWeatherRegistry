@@ -10,14 +10,14 @@ using MonoMod.Cil;
 using UnityEngine;
 using UnityEngine.ProBuilder;
 
-namespace WeatherAPI.Patches
+namespace WeatherRegistry.Patches
 {
   internal class SunAnimator
   {
     public static void Init()
     {
       // create separate harmony instance for Animator
-      var harmony = new Harmony("WeatherAPI.SunAnimator");
+      var harmony = new Harmony("WeatherRegistry.SunAnimator");
 
       // patch the Animator class with the SetBool method
       harmony.Patch(
@@ -64,7 +64,7 @@ namespace WeatherAPI.Patches
       return SetBoolPatch(__instance, name, value);
     }
 
-    internal static ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource("WeatherAPI SunAnimator");
+    internal static ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource("WeatherRegistry SunAnimator");
 
     internal static Dictionary<LevelWeatherType, string> clipNames =
       new()

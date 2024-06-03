@@ -7,9 +7,9 @@ using BepInEx.Bootstrap;
 using BepInEx.Logging;
 using HarmonyLib;
 using MonoMod.RuntimeDetour;
-using WeatherAPI.Patches;
+using WeatherRegistry.Patches;
 
-namespace WeatherAPI
+namespace WeatherRegistry
 {
   [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
   [BepInDependency("evaisa.lethallib", BepInDependency.DependencyFlags.SoftDependency)]

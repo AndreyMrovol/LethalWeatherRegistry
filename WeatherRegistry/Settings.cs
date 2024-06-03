@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Unity;
 using UnityEngine;
 
-namespace WeatherAPI
+namespace WeatherRegistry
 {
   public class Settings
   {

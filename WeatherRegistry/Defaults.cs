@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace WeatherAPI
+namespace WeatherRegistry
 {
   internal class Defaults
   {

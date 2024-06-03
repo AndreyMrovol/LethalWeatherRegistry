@@ -4,7 +4,7 @@ using LethalLib.Modules;
 using Newtonsoft.Json;
 using Unity.Netcode;
 
-namespace WeatherAPI.Patches
+namespace WeatherRegistry.Patches
 {
   [HarmonyPatch(typeof(StartOfRound))]
   class SetPlanetsWeatherPatch

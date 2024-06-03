@@ -6,9 +6,9 @@ using HarmonyLib;
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
-using WeatherAPI;
+using WeatherRegistry;
 
-namespace WeatherAPI.Patches
+namespace WeatherRegistry.Patches
 {
   [HarmonyPatch(typeof(StartOfRound))]
   public static class SetMapScreenInfoToCurrentLevelPatch

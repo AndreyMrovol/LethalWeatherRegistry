@@ -10,7 +10,7 @@ using MonoMod.RuntimeDetour;
 using UnityEngine;
 using static LethalLib.Modules.Weathers;
 
-namespace WeatherAPI.Patches
+namespace WeatherRegistry.Patches
 {
   [HarmonyPatch(typeof(LethalLib.Modules.Weathers))]
   public class LethalLibPatch

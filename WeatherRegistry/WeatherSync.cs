@@ -4,7 +4,7 @@ using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace WeatherAPI
+namespace WeatherRegistry
 {
   internal class WeatherSync : NetworkBehaviour
   {

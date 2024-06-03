@@ -5,7 +5,7 @@ using HarmonyLib;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace WeatherAPI.Patches
+namespace WeatherRegistry.Patches
 {
   [HarmonyPatch(typeof(Terminal))]
   public static class TerminalStartPatch
@@ -139,7 +139,7 @@ namespace WeatherAPI.Patches
       Plugin.logger.LogDebug("Biggest key in modded weathers dictionary: " + biggestKeyInModdedWeathersDictionary);
 
       WeatherManager
-        .RegisteredWeathers.Where(weather => weather.Origin == WeatherOrigin.WeatherAPI)
+        .RegisteredWeathers.Where(weather => weather.Origin == WeatherOrigin.WeatherRegistry)
         .ToList()
         .ForEach(weather =>
         {

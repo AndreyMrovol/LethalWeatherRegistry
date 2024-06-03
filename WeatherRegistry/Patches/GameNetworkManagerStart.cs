@@ -6,7 +6,7 @@ using HarmonyLib;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace WeatherAPI.Patches
+namespace WeatherRegistry.Patches
 {
   [HarmonyPatch(typeof(GameNetworkManager), "Start")]
   class GameNetworkManagerStartPatch
@@ -14,7 +14,7 @@ namespace WeatherAPI.Patches
     [HarmonyPostfix]
     public static void GameMethodPatch(GameNetworkManager __instance)
     {
-      var prefab = new GameObject("WeatherAPISyncInit");
+      var prefab = new GameObject("WeatherRegistrySyncInit");
       prefab.hideFlags = HideFlags.HideAndDontSave;
       prefab.AddComponent<WeatherSync>();
       prefab.AddComponent<NetworkObject>();

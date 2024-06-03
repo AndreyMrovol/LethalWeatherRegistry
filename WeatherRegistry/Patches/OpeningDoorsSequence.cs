@@ -4,9 +4,9 @@ using HarmonyLib;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Newtonsoft.Json;
-using WeatherAPI.Patches;
+using WeatherRegistry.Patches;
 
-namespace WeatherAPI
+namespace WeatherRegistry
 {
   [HarmonyPatch(typeof(StartOfRound))]
   internal class OpeningDoorsSequencePatch

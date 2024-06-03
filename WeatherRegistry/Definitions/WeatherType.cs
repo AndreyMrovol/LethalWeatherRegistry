@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
-using WeatherAPI.Patches;
+using WeatherRegistry.Patches;
 
-namespace WeatherAPI
+namespace WeatherRegistry
 {
   public enum WeatherType
   {
@@ -16,7 +16,7 @@ namespace WeatherAPI
   public enum WeatherOrigin
   {
     Vanilla,
-    WeatherAPI,
+    WeatherRegistry,
     LethalLib,
     LethalLevelLoader
   }
@@ -32,7 +32,7 @@ namespace WeatherAPI
     public LevelWeatherType VanillaWeatherType { get; set; } = LevelWeatherType.None;
 
     [JsonIgnore]
-    internal WeatherOrigin Origin { get; set; } = WeatherOrigin.WeatherAPI;
+    internal WeatherOrigin Origin { get; set; } = WeatherOrigin.WeatherRegistry;
 
     [JsonProperty]
     public WeatherType Type { get; set; } = WeatherType.Modded;

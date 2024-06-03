@@ -4,7 +4,7 @@ using HarmonyLib;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace WeatherAPI
+namespace WeatherRegistry
 {
   public class WeatherCalculation
   {

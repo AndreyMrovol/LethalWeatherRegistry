@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace WeatherAPI
+namespace WeatherRegistry
 {
   public class WeatherManager
   {
@@ -42,7 +42,7 @@ namespace WeatherAPI
       Weathers.Clear();
       ModdedWeatherEnumExtension.Clear();
 
-      // RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherAPI);
+      // RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherRegistry);
     }
 
     public static string LevelWeatherTypeEnumHook(Func<Enum, string> orig, Enum self)

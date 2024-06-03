@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using BepInEx.Configuration;
 
-namespace WeatherAPI
+namespace WeatherRegistry
 {
   public class ConfigManager
   {
