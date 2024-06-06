@@ -30,29 +30,17 @@ namespace WeatherRegistry.Patches
     public static bool SetBoolPatch(Animator __instance, object nameOrId, bool value)
     {
       string name = nameOrId as string;
-      // int id = (nameOrId is int) ? (int)nameOrId : -1; // Assuming -1 is not a valid ID
 
-      if (name == "overcast" || name == "eclipse")
-      {
-        return false;
-      }
-
-      if (SunAnimator.animator == null)
+      if (TimeOfDay.Instance == null)
       {
         return true;
       }
 
-      if (__instance == SunAnimator.animator)
+      if (name == "overcast" || name == "eclipse")
       {
-        if (name != null)
+        if (ConfigManager.SunAnimatorBlacklistLevels.Contains(StartOfRound.Instance.currentLevel))
         {
-          if ((name == "overcast" || name == "eclipse") && value == true)
-          {
-            // SunAnimator.logger.LogInfo($"Setting {name} to {false}");
-            //
-            // __instance.SetBool(name, false);
-            return false;
-          }
+          return true;
         }
       }
 
@@ -76,9 +64,6 @@ namespace WeatherRegistry.Patches
 
     internal static List<string> animatorControllerBlacklist = ["SunAnimContainerCompanyLevel"];
 
-    internal static Animator animator;
-    internal static AnimatorOverrideController animatorOverrideController;
-
     public class AnimationClipOverrides : List<KeyValuePair<AnimationClip, AnimationClip>>
     {
       public AnimationClipOverrides(int capacity)
@@ -96,34 +81,31 @@ namespace WeatherRegistry.Patches
       }
     }
 
+    internal static AnimatorOverrideController animatorOverrideController;
+
     public static void OverrideSunAnimator(LevelWeatherType weatherType)
     {
-      if (animator == null)
-      {
-        animator = TimeOfDay.Instance.sunAnimator;
-      }
-
       if (TimeOfDay.Instance.sunAnimator == null)
       {
         logger.LogWarning("sunAnimator is null, skipping");
         return;
       }
 
-      logger.LogInfo($"Current clip: {animator.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
+      logger.LogInfo($"Current clip: {TimeOfDay.Instance.sunAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
 
-      // get the name of the sun animator controller
-      string animatorControllerName = animator.runtimeAnimatorController.name;
+      // get the name of the sun TimeOfDay.Instance.sunAnimator controller
+      string animatorControllerName = TimeOfDay.Instance.sunAnimator.runtimeAnimatorController.name;
       logger.LogInfo($"animatorControllerName: {animatorControllerName}, weatherType: {weatherType}");
 
       if (animatorControllerBlacklist.Contains(animatorControllerName))
       {
-        logger.LogWarning($"Animator controller {animatorControllerName} is blacklisted");
+        logger.LogWarning($"TimeOfDay.Instance.sunAnimator controller {animatorControllerName} is blacklisted");
         return;
       }
 
       if (animatorOverrideController == null)
       {
-        animatorOverrideController = new AnimatorOverrideController(animator.runtimeAnimatorController)
+        animatorOverrideController = new AnimatorOverrideController(TimeOfDay.Instance.sunAnimator.runtimeAnimatorController)
         {
           name = $"{animatorControllerName}override"
         };
@@ -161,15 +143,15 @@ namespace WeatherRegistry.Patches
         {
           AnimationClip customAnimationClip = WeatherManager.GetWeatherAnimationClip(weatherType);
 
-          animator.runtimeAnimatorController.animationClips.Add(customAnimationClip);
+          TimeOfDay.Instance.sunAnimator.runtimeAnimatorController.animationClips.Add(customAnimationClip);
           animationClips.Add(customAnimationClip);
           clips[weatherType] = customAnimationClip;
 
           logger.LogInfo($"Added animation clip for weather type {weatherType}");
 
           // log all clips
-          animator
-            .runtimeAnimatorController.animationClips.ToList()
+          TimeOfDay
+            .Instance.sunAnimator.runtimeAnimatorController.animationClips.ToList()
             .ForEach(clip =>
             {
               logger.LogInfo($"clip: {clip.name}");
@@ -224,19 +206,21 @@ namespace WeatherRegistry.Patches
           }
         });
 
-      logger.LogDebug($"Current bools: {animator.GetBool("overcast")} {animator.GetBool("eclipsed")}");
+      logger.LogDebug(
+        $"Current bools: {TimeOfDay.Instance.sunAnimator.GetBool("overcast")} {TimeOfDay.Instance.sunAnimator.GetBool("eclipsed")}"
+      );
 
       if (weatherType != LevelWeatherType.None)
       {
         animatorOverrideController.ApplyOverrides(clipOverrides);
-        animator.runtimeAnimatorController = animatorOverrideController;
+        TimeOfDay.Instance.sunAnimator.runtimeAnimatorController = animatorOverrideController;
       }
       else
       {
-        animator.runtimeAnimatorController = animatorOverrideController.runtimeAnimatorController;
+        TimeOfDay.Instance.sunAnimator.runtimeAnimatorController = animatorOverrideController.runtimeAnimatorController;
       }
 
-      logger.LogInfo($"Current clip: {animator.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
+      logger.LogInfo($"Current clip: {TimeOfDay.Instance.sunAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
     }
 
     internal static void LogOverrides(AnimationClipOverrides clipOverrides)
@@ -252,7 +236,7 @@ namespace WeatherRegistry.Patches
 
     internal static void Clear()
     {
-      animator = null;
+      // animator = null;
       animatorOverrideController = null;
     }
   }
