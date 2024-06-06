@@ -217,7 +217,8 @@ namespace WeatherRegistry.Patches
         }
 
         AddWeatherToLevels(weather, ref levels);
-        SaveWeatherColor(weather);
+
+        // Plugin.logger.LogInfo($"Registered weather: {weather.Name} under ID {weather.VanillaWeatherType}");
       }
 
       WeatherManager.IsSetupFinished = true;
@@ -230,18 +231,14 @@ namespace WeatherRegistry.Patches
       }
     }
 
-    static void SaveWeatherColor(Weather weather)
-    {
-      // Settings.ScreenMapColors.Add(weather.Name, weather.Color);
-    }
-
     static void AddWeatherToLevels(Weather weather, ref List<SelectableLevel> levels)
     {
       List<LevelWeatherVariables> levelWeatherVariables = [];
+      weather.WeatherVariables.Clear();
 
       foreach (SelectableLevel level in levels)
       {
-        Plugin.logger.LogInfo($"Level: {level.name}, weather: {weather.Name}");
+        Plugin.logger.LogInfo($"Level: {level.name} ({ConfigHelper.GetNumberlessName(level)}), weather: {weather.Name}");
 
         List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.ToList();
 
@@ -258,20 +255,25 @@ namespace WeatherRegistry.Patches
         // do that, but [continue] the loop when the result is null
         randomWeather = level.randomWeathers.FirstOrDefault(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
 
-        Plugin.logger.LogWarning(
-          $"Random Weather for weather {weather.Name} for level {level.PlanetName}: " + randomWeather?.weatherType.ToString() ?? "null"
-        );
-
         if (randomWeather == null && !InitializeRandomWeather(ref randomWeather, ref weather, level, ref randomWeathers))
+        {
+          Plugin.logger.LogDebug("Random Weather is null, skipping");
           continue;
+        }
+
+        Plugin.logger.LogDebug("we're outside of the woods now");
 
         levelWeather.Variables.Level = level;
         levelWeather.Variables.WeatherVariable1 = randomWeather?.weatherVariable ?? 1;
         levelWeather.Variables.WeatherVariable2 = randomWeather?.weatherVariable2 ?? 1;
+        Plugin.logger.LogDebug("logged after variables assignment");
 
         WeatherManager.LevelWeathers.Add(levelWeather);
+        Plugin.logger.LogDebug("logged after dict1");
         levelWeatherVariables.Add(levelWeather.Variables);
+        Plugin.logger.LogDebug("logged after dict2");
         weather.WeatherVariables.Add(level, levelWeather.Variables);
+        Plugin.logger.LogDebug("logged after dict3");
       }
 
       static bool InitializeRandomWeather(
@@ -285,7 +287,6 @@ namespace WeatherRegistry.Patches
         {
           case WeatherType.Vanilla:
           {
-            Plugin.logger.LogWarning("Random Weather is null");
             return false;
           }
           case WeatherType.Modded:
@@ -295,12 +296,13 @@ namespace WeatherRegistry.Patches
             if (weather.LevelBlacklist.Contains(level.name))
               return false;
             Plugin.logger.LogInfo($"Injecting modded weather {weather.Name} for level {level.name}");
-            RandomWeatherWithVariables newWeather = new RandomWeatherWithVariables()
-            {
-              weatherType = weather.VanillaWeatherType,
-              weatherVariable = weather.Effect.DefaultVariable1,
-              weatherVariable2 = weather.Effect.DefaultVariable2
-            };
+            RandomWeatherWithVariables newWeather =
+              new()
+              {
+                weatherType = weather.VanillaWeatherType,
+                weatherVariable = weather.Effect.DefaultVariable1,
+                weatherVariable2 = weather.Effect.DefaultVariable2
+              };
 
             Plugin.logger.LogInfo($"New Random Weather: {newWeather.weatherType}, {newWeather.weatherVariable}, {newWeather.weatherVariable2}");
 
