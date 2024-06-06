@@ -15,7 +15,7 @@ namespace WeatherRegistry.Patches
   {
     [HarmonyPatch("SetMapScreenInfoToCurrentLevel")]
     [HarmonyPostfix]
-    [HarmonyPriority(Priority.HigherThanNormal)]
+    [HarmonyPriority(Priority.Last)]
     internal static void GameMethodPatch(ref TextMeshProUGUI ___screenLevelDescription, ref SelectableLevel ___currentLevel)
     {
       if (!WeatherManager.IsSetupFinished)
