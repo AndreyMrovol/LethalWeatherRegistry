@@ -42,6 +42,8 @@ namespace WeatherRegistry
       Weathers.Clear();
       ModdedWeatherEnumExtension.Clear();
 
+      Settings.ScreenMapColors.Clear();
+
       // RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherRegistry);
     }
 
