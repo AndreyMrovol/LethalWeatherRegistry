@@ -60,7 +60,7 @@ namespace WeatherRegistry
       SunAnimator.OverrideSunAnimator(currentWeather.VanillaWeatherType);
 
       Plugin.logger.LogDebug(
-        $"Landing at {TimeOfDay.Instance.currentLevel.PlanetName} with weather {JsonConvert.SerializeObject(
+        $"Landing at {ConfigHelper.GetNumberlessName(StartOfRound.Instance.currentLevel)} with weather {JsonConvert.SerializeObject(
         currentWeather,
         Formatting.None,
         new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }
