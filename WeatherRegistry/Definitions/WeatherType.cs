@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using BepInEx.Configuration;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Patches;
@@ -29,13 +30,13 @@ namespace WeatherRegistry
     public string Name;
 
     [JsonProperty]
-    public LevelWeatherType VanillaWeatherType { get; set; } = LevelWeatherType.None;
+    public LevelWeatherType VanillaWeatherType { get; internal set; } = LevelWeatherType.None;
 
     [JsonIgnore]
     internal WeatherOrigin Origin { get; set; } = WeatherOrigin.WeatherRegistry;
 
     [JsonProperty]
-    public WeatherType Type { get; set; } = WeatherType.Modded;
+    public WeatherType Type { get; internal set; } = WeatherType.Modded;
 
     [JsonIgnore]
     public Dictionary<SelectableLevel, LevelWeatherVariables> WeatherVariables = [];
@@ -71,6 +72,8 @@ namespace WeatherRegistry
       Effect = effect;
 
       this.name = name;
+
+      // {(this.Origin != WeatherOrigin.Vanilla ? $"({this.Origin})" : "")}
 
       Settings.ScreenMapColors.Add(this.Name, this.Color);
     }
