@@ -21,6 +21,12 @@ namespace WeatherRegistry.Patches
         return false;
       }
 
+      if (!Settings.SelectWeathers)
+      {
+        Plugin.logger.LogInfo("Weather selection is disabled.");
+        return true;
+      }
+
       if (__instance == null)
       {
         Plugin.logger.LogWarning("Instance is null");
