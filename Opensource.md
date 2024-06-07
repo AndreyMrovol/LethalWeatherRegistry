@@ -1,10 +1,11 @@
-# ConsoleTables
+# LethalLib
 
-https://github.com/khalidabuhakmeh/ConsoleTables
+https://github.com/EvaisaDev/LethalLib
+https://thunderstore.io/c/lethal-company/p/Evaisa/LethalLib/
 
-The MIT License (MIT)
+MIT License
 
-Copyright (c) 2012 Khalid Abuhakmeh
+Copyright (c) 2024 Evaisa
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
