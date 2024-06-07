@@ -20,7 +20,7 @@ namespace WeatherRegistry
 
     // sun animator settings
     private static ConfigEntry<string> SunAnimatorBlacklist { get; set; }
-    public static SelectableLevel[] SunAnimatorBlacklistLevels => ConfigHelper.ConvertStringToLevels(SunAnimatorBlacklist.Value);
+    public static SelectableLevel[] SunAnimatorBlacklistLevels { get; private set; }
 
     private ConfigManager(ConfigFile config)
     {
@@ -33,6 +33,7 @@ namespace WeatherRegistry
         "Asteroid-13;",
         "Semicolon-separated list of level names to blacklist from being patched by sun animator"
       );
+      SunAnimatorBlacklistLevels = ConfigHelper.ConvertStringToLevels(SunAnimatorBlacklist.Value);
     }
   }
 }
