@@ -34,6 +34,7 @@ namespace WeatherRegistry.Patches
         ImprovedWeatherEffect effect =
           new(llWeather.weatherEffect.effectObject, llWeather.weatherEffect.effectPermanentObject)
           {
+            name = llWeather.name,
             SunAnimatorBool = llWeather.weatherEffect.sunAnimatorBool,
             DefaultVariable1 = llWeather.weatherVariable1,
             DefaultVariable2 = llWeather.weatherVariable2,
