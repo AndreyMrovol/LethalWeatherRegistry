@@ -47,6 +47,11 @@ namespace WeatherRegistry
         typeof(WeatherManager).GetMethod(nameof(WeatherManager.LevelWeatherTypeEnumHook))
       );
 
+      if (Chainloader.PluginInfos.ContainsKey("BMX.LobbyCompatibility"))
+      {
+        LobbyCompatibilityCompatibility.Init();
+      }
+
       // Plugin startup logic
       Logger.LogInfo($"Plugin {Plugin.GUID} is loaded!");
     }
