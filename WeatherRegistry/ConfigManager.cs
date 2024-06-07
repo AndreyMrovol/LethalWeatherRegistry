@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using BepInEx.Configuration;
 
@@ -33,6 +34,12 @@ namespace WeatherRegistry
         "Asteroid-13;",
         "Semicolon-separated list of level names to blacklist from being patched by sun animator"
       );
+      SunAnimatorBlacklist.SettingChanged += OnConfigChange;
+      SunAnimatorBlacklistLevels = ConfigHelper.ConvertStringToLevels(SunAnimatorBlacklist.Value);
+    }
+
+    private static void OnConfigChange(object sender, EventArgs eventArgs)
+    {
       SunAnimatorBlacklistLevels = ConfigHelper.ConvertStringToLevels(SunAnimatorBlacklist.Value);
     }
   }
