@@ -68,14 +68,19 @@ namespace WeatherRegistry
 
     public Weather(string name = "None", ImprovedWeatherEffect effect = default)
     {
+      Plugin.logger.LogDebug($"Called Weather constructor for weather {name}");
+
       Name = name;
       Effect = effect;
 
       this.name = name;
 
-      // {(this.Origin != WeatherOrigin.Vanilla ? $"({this.Origin})" : "")}
+      if (effect != null)
+      {
+        Effect.name = name;
+      }
 
-      Settings.ScreenMapColors.Add(this.Name, this.Color);
+      // {(this.Origin != WeatherOrigin.Vanilla ? $"({this.Origin})" : "")}
     }
 
     void Reset()
