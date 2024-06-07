@@ -37,8 +37,9 @@ namespace WeatherRegistry
     }
 
     private string LatestWeathersReceived = "";
+    private static string DefaultValue = "{}";
 
-    public NetworkVariable<FixedString4096Bytes> WeathersSynced = new NetworkVariable<FixedString4096Bytes>("a default value");
+    public NetworkVariable<FixedString4096Bytes> WeathersSynced = new NetworkVariable<FixedString4096Bytes>(DefaultValue);
     public string Weather
     {
       get => WeathersSynced.Value.ToString();
@@ -73,6 +74,12 @@ namespace WeatherRegistry
       if (LatestWeathersReceived == weathers)
       {
         Plugin.logger.LogInfo("Weathers are the same as last ones, skipping");
+        return;
+      }
+
+      if (weathers == DefaultValue)
+      {
+        Plugin.logger.LogInfo("Weathers are not set, skipping");
         return;
       }
 
