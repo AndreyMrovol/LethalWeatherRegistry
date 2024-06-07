@@ -21,6 +21,8 @@ namespace WeatherRegistry
 
     public static Dictionary<SelectableLevel, Weather> CurrentWeathers = [];
 
+    internal static WeatherEffect[] VanillaWeatherEffects = [];
+
     public static void RegisterWeather(Weather weather)
     {
       RegisteredWeathers.Add(weather);
@@ -118,12 +120,19 @@ namespace WeatherRegistry
 
     internal static Weather GetCurrentWeather(SelectableLevel level)
     {
-      if (CurrentWeathers.TryGetValue(level, out Weather currentWeather))
+      if (CurrentWeathers.ContainsKey(level))
       {
-        return currentWeather;
+        return CurrentWeathers[level];
       }
+      else
+      {
+        return GetWeather(level.currentWeather);
+      }
+    }
 
-      return NoneWeather;
+    internal static string GetCurrentWeatherName(SelectableLevel level)
+    {
+      return GetCurrentWeather(level).Name;
     }
 
     internal static AnimationClip GetWeatherAnimationClip(LevelWeatherType weatherType)
