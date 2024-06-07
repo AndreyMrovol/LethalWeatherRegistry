@@ -11,7 +11,7 @@ namespace WeatherRegistry
       Version pluginVersion = Version.Parse(PluginInfo.PLUGIN_VERSION);
 
       LobbyCompatibility.Features.PluginHelper.RegisterPlugin(
-        PluginInfo.PLUGIN_GUID,
+        Plugin.GUID,
         pluginVersion,
         LobbyCompatibility.Enums.CompatibilityLevel.Everyone,
         LobbyCompatibility.Enums.VersionStrictness.None
