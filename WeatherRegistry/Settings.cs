@@ -8,6 +8,6 @@ namespace WeatherRegistry
   {
     public static Dictionary<string, Color> ScreenMapColors = [];
 
-    public bool SelectWeathers = true;
+    public static bool SelectWeathers = true;
   }
 }
