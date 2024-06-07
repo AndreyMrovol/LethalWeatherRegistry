@@ -146,6 +146,7 @@ namespace WeatherRegistry.Patches
           int newKey = biggestKeyInModdedWeathersDictionary;
 
           weather.VanillaWeatherType = (LevelWeatherType)newKey;
+          // weather.Effect.VanillaWeatherType = (LevelWeatherType)newKey;
           WeatherManager.ModdedWeatherEnumExtension.Add(newKey, weather);
         });
 
@@ -182,6 +183,7 @@ namespace WeatherRegistry.Patches
         };
       }
       TimeOfDay.Instance.effects = weatherList.ToArray();
+      WeatherManager.VanillaWeatherEffects = TimeOfDay.Instance.effects;
 
       #endregion
 
@@ -193,15 +195,6 @@ namespace WeatherRegistry.Patches
         Plugin.logger.LogWarning($"Registered Weather: {RegisteredWeathers[i].Name}");
 
         Weather weather = RegisteredWeathers[i];
-        switch (weather.Type)
-        {
-          case WeatherType.Clear:
-          case WeatherType.Vanilla:
-          case WeatherType.Modded:
-          default:
-            break;
-        }
-
         WeatherManager.Weathers.Add(weather);
       }
 
@@ -211,6 +204,8 @@ namespace WeatherRegistry.Patches
 
       foreach (Weather weather in WeatherManager.Weathers)
       {
+        Settings.ScreenMapColors.Add(weather.Name, weather.Color);
+
         if (weather.Type == WeatherType.Clear)
         {
           continue;
