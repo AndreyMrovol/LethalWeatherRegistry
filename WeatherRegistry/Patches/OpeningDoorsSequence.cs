@@ -21,7 +21,7 @@ namespace WeatherRegistry
     {
       var cursor = new ILCursor(il);
 
-      if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdfld<SelectableLevel>("currentWeather")))
+      if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchStfld<StartOfRound>("shipDoorsEnabled")))
       {
         Plugin.logger.LogError("Failed IL weather hook for StartOfRound.openingDoorsSequence");
         return;
@@ -30,6 +30,7 @@ namespace WeatherRegistry
       {
         Plugin.logger.LogInfo("IL weather hook for StartOfRound.openingDoorsSequence");
       }
+      cursor.EmitDelegate<Action>(RunWeatherPatches);
       cursor.EmitDelegate<Action>(SetWeatherEffects);
 
       if (!cursor.TryGotoNext(MoveType.After, instr => instr.MatchLdfld<SelectableLevel>("LevelDescription")))
@@ -43,7 +44,7 @@ namespace WeatherRegistry
         (desc, self) =>
         {
           var weatherName =
-            self.currentLevel.currentWeather != LevelWeatherType.None ? WeatherManager.GetCurrentWeather(self.currentLevel).Name : "Clear";
+            self.currentLevel.currentWeather != LevelWeatherType.None ? WeatherManager.GetCurrentWeatherName(self.currentLevel) : "Clear";
           var weatherLine = $"WEATHER: {weatherName}";
 
           return $"{weatherLine}\n{desc}";
@@ -51,11 +52,14 @@ namespace WeatherRegistry
       );
     }
 
+    internal static void RunWeatherPatches()
+    {
+      TimeOfDay.Instance.nextTimeSync = 0;
+    }
+
     internal static void SetWeatherEffects()
     {
       Weather currentWeather = WeatherManager.GetCurrentWeather(StartOfRound.Instance.currentLevel);
-
-      TimeOfDay.Instance.nextTimeSync = 0;
 
       SunAnimator.OverrideSunAnimator(currentWeather.VanillaWeatherType);
 
