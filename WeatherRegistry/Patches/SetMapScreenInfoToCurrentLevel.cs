@@ -33,17 +33,17 @@ namespace WeatherRegistry.Patches
       ___screenLevelDescription.text = stringBuilder.ToString();
     }
 
+    private static string GetDisplayWeatherString(SelectableLevel level, Weather weather)
+    {
+      return weather.Name;
+    }
+
     private static string GetColoredString(SelectableLevel level)
     {
       Weather currentWeather = WeatherManager.GetCurrentWeather(level);
-      string currentWeatherString = currentWeather.Name;
+      string currentWeatherString = GetDisplayWeatherString(level, currentWeather);
 
       Plugin.logger.LogWarning($"Current weather: {currentWeatherString}");
-
-      Color weatherColor = currentWeather.Color;
-      string weatherColorString = ColorUtility.ToHtmlStringRGB(weatherColor);
-
-      Plugin.logger.LogWarning($"Current weather color: {weatherColor} => {weatherColorString}");
 
       if (!ConfigManager.ColoredWeathers.Value)
       {
@@ -59,25 +59,14 @@ namespace WeatherRegistry.Patches
         .ToList()
         .ForEach(word =>
         {
-          Plugin.logger.LogInfo(word);
-
           string newWord = word.Trim();
-          Plugin.logger.LogDebug(newWord);
-
           string pickedColor;
 
           // resolve weather name string into color using Settings.ScreenMapColors dictionary
           // so other mods (like weathertweaks) can add their own colors and symbols
           pickedColor = ColorUtility.ToHtmlStringRGB(Settings.ScreenMapColors.TryGetValue(newWord, out Color value) ? value : Color.black);
 
-          Plugin.logger.LogDebug(ColorUtility.ToHtmlStringRGB(Color.black));
-          Plugin.logger.LogDebug(newWord);
-          Plugin.logger.LogDebug(pickedColor);
-
-          if (pickedColor != "000000")
-          {
-            pickedColor = weatherColorString;
-          }
+          Plugin.logger.LogDebug($"{newWord} : {pickedColor}");
 
           outputString += pickedColor != "000000" ? $"<color=#{pickedColor}>{word}</color>" : $"{newWord}";
         });
