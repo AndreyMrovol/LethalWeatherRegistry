@@ -12,6 +12,8 @@ namespace WeatherRegistry
     [JsonIgnore]
     public GameObject WorldObject;
 
+    // public LevelWeatherType VanillaWeatherType;
+
     private bool _effectEnabled;
 
     [field: SerializeField]
@@ -28,6 +30,8 @@ namespace WeatherRegistry
       get { return _effectEnabled; }
       set
       {
+        Plugin.logger.LogWarning($"Setting effect {this.name} to {value}");
+
         EffectObject?.SetActive(value);
         WorldObject?.SetActive(value);
 
