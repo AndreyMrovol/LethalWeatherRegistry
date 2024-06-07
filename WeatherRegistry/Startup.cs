@@ -217,6 +217,7 @@ namespace WeatherRegistry.Patches
       }
 
       WeatherManager.IsSetupFinished = true;
+      ConfigManager.StartupActions();
       StartOfRound.Instance.SetPlanetsWeather();
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
 
@@ -256,19 +257,13 @@ namespace WeatherRegistry.Patches
           continue;
         }
 
-        Plugin.logger.LogDebug("we're outside of the woods now");
-
         levelWeather.Variables.Level = level;
         levelWeather.Variables.WeatherVariable1 = randomWeather?.weatherVariable ?? 1;
         levelWeather.Variables.WeatherVariable2 = randomWeather?.weatherVariable2 ?? 1;
-        Plugin.logger.LogDebug("logged after variables assignment");
 
         WeatherManager.LevelWeathers.Add(levelWeather);
-        Plugin.logger.LogDebug("logged after dict1");
         levelWeatherVariables.Add(levelWeather.Variables);
-        Plugin.logger.LogDebug("logged after dict2");
         weather.WeatherVariables.Add(level, levelWeather.Variables);
-        Plugin.logger.LogDebug("logged after dict3");
       }
 
       static bool InitializeRandomWeather(
