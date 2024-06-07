@@ -11,12 +11,14 @@ using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
 {
-  [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+  [BepInPlugin(GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
   [BepInDependency("evaisa.lethallib", BepInDependency.DependencyFlags.SoftDependency)]
   public class Plugin : BaseUnityPlugin
   {
+    public const string GUID = "mrov.WeatherRegistry";
+
     internal static ManualLogSource logger;
-    internal static Harmony harmony = new(PluginInfo.PLUGIN_GUID);
+    internal static Harmony harmony = new(Plugin.GUID);
 
     internal static bool IsLethalLibLoaded = false;
 
@@ -46,7 +48,7 @@ namespace WeatherRegistry
       );
 
       // Plugin startup logic
-      Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+      Logger.LogInfo($"Plugin {Plugin.GUID} is loaded!");
     }
   }
 }
