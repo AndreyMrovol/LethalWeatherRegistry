@@ -24,6 +24,9 @@ namespace WeatherRegistry
     }
     public static NetworkManager networkManager;
 
+    private static List<GameObject> queuedNetworkPrefabs = [];
+    public static bool networkHasStarted = false;
+
     public override void OnNetworkSpawn()
     {
       base.OnNetworkSpawn();
@@ -92,6 +95,51 @@ namespace WeatherRegistry
 
       LatestWeathersReceived = weathers;
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
+    }
+
+    public static void RegisterNetworkPrefab(GameObject prefab)
+    {
+      if (networkHasStarted == false)
+      {
+        Plugin.logger.LogWarning("Registering NetworkPrefab: " + prefab);
+        queuedNetworkPrefabs.Add(prefab);
+      }
+      else
+      {
+        Plugin.logger.LogWarning("Attempted To Register NetworkPrefab: " + prefab + " After GameNetworkManager Has Started!");
+      }
+    }
+
+    internal static void RegisterPrefabs(NetworkManager networkManager)
+    {
+      //DebugHelper.Log("Game NetworkManager Start");
+      Plugin.logger.LogWarning("Registering NetworkPrefabs in NetworkManager");
+
+      List<GameObject> addedNetworkPrefabs = new List<GameObject>();
+
+      foreach (NetworkPrefab networkPrefab in networkManager.NetworkConfig.Prefabs.m_Prefabs)
+      {
+        addedNetworkPrefabs.Add(networkPrefab.Prefab);
+      }
+
+      int debugCounter = 0;
+
+      foreach (GameObject queuedNetworkPrefab in queuedNetworkPrefabs)
+      {
+        Plugin.logger.LogDebug("Trying To Register Prefab: " + queuedNetworkPrefab);
+        if (!addedNetworkPrefabs.Contains(queuedNetworkPrefab))
+        {
+          //DebugHelper.Log("Trying To Register Prefab: " + queuedNetworkPrefab);
+          networkManager.AddNetworkPrefab(queuedNetworkPrefab);
+          addedNetworkPrefabs.Add(queuedNetworkPrefab);
+        }
+        else
+          debugCounter++;
+      }
+
+      Plugin.logger.LogDebug("Skipped Registering " + debugCounter + " NetworkObjects As They Were Already Registered.");
+
+      networkHasStarted = true;
     }
   }
 }

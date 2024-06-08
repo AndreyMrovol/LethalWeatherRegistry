@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -11,26 +12,31 @@ namespace WeatherRegistry.Patches
   [HarmonyPatch(typeof(GameNetworkManager), "Start")]
   class GameNetworkManagerStartPatch
   {
-    [HarmonyPostfix]
+    [HarmonyPrefix]
     public static void GameMethodPatch(GameNetworkManager __instance)
     {
+      WeatherSync.networkManager = __instance.GetComponent<NetworkManager>();
+
       var prefab = new GameObject("WeatherRegistrySyncInit");
       prefab.hideFlags = HideFlags.HideAndDontSave;
-      prefab.AddComponent<WeatherSync>();
+
       prefab.AddComponent<NetworkObject>();
-
-      GameObject.DontDestroyOnLoad(prefab);
-
-      WeatherSync.networkManager = __instance.GetComponent<NetworkManager>();
-      WeatherSync.WeatherSyncPrefab = prefab;
-      // WeatherSync.Instance = prefab.GetComponent<WeatherSync>();
-
-      var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(Assembly.GetCallingAssembly().GetName().Name + "weathersync"));
+      var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes("weatherregistryweathersync"));
       prefab.GetComponent<NetworkObject>().GlobalObjectIdHash = BitConverter.ToUInt32(hash, 0);
 
-      // GameObject.Instantiate(prefab);
+      // prefab.AddComponent<WeatherSync>();
+      // prefab.SetActive(false);
 
-      WeatherSync.networkManager.AddNetworkPrefab(prefab);
+      prefab.AddComponent<WeatherSync>();
+      prefab.GetComponent<NetworkObject>().DontDestroyWithOwner = true;
+      prefab.GetComponent<NetworkObject>().SceneMigrationSynchronization = true;
+      prefab.GetComponent<NetworkObject>().DestroyWithScene = false;
+      GameObject.DontDestroyOnLoad(prefab);
+
+      WeatherSync.WeatherSyncPrefab = prefab;
+      WeatherSync.RegisterNetworkPrefab(prefab);
+
+      WeatherSync.RegisterPrefabs(__instance.GetComponent<NetworkManager>());
 
       Plugin.logger.LogWarning("WeatherSync initialized in GameNetworkManager.Start");
     }

@@ -12,11 +12,12 @@ namespace WeatherRegistry.Patches
   {
     internal static WeatherEffect[] vanillaEffectsArray { get; private set; } = null;
 
-    [HarmonyPatch(typeof(RoundManager), "Awake")]
-    [HarmonyPostfix]
-    internal static void RoundManagerAwakePostfix(RoundManager __instance)
+    [HarmonyPatch(typeof(StartOfRound), "Awake")]
+    [HarmonyPrefix]
+    [HarmonyPriority(Priority.First)]
+    internal static void StartOfRoundAwakePrefix(RoundManager __instance)
     {
-      Plugin.logger.LogInfo("RoundManager Awake Patch");
+      Plugin.logger.LogInfo("StartOfRoundAwakePrefix Patch");
 
       Plugin.logger.LogDebug(GameNetworkManager.Instance);
       Plugin.logger.LogDebug(GameNetworkManager.Instance.GetComponent<NetworkManager>());
