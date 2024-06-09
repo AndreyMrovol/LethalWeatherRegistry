@@ -81,7 +81,14 @@ namespace WeatherRegistry.Patches
       Plugin.logger.LogMessage("Creating NoneWeather type");
 
       // Register clear weather as a weather
-      Weather noneWeather = Weather.CreateCanvasWeather();
+      Weather noneWeather =
+        new(effect: new ImprovedWeatherEffect(null, null))
+        {
+          Type = WeatherType.Clear,
+          Color = Defaults.VanillaWeatherColors[LevelWeatherType.None],
+          VanillaWeatherType = LevelWeatherType.None,
+          Origin = WeatherOrigin.Vanilla,
+        };
 
       WeatherManager.Weathers.Add(noneWeather);
       WeatherManager.NoneWeather = noneWeather;
@@ -206,6 +213,7 @@ namespace WeatherRegistry.Patches
       foreach (Weather weather in WeatherManager.Weathers)
       {
         Settings.ScreenMapColors.Add(weather.Name, weather.Color);
+        weather.Init();
 
         if (weather.Type == WeatherType.Clear)
         {
@@ -252,7 +260,7 @@ namespace WeatherRegistry.Patches
         // do that, but [continue] the loop when the result is null
         randomWeather = level.randomWeathers.FirstOrDefault(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
 
-        if (randomWeather == null && !InitializeRandomWeather(ref randomWeather, ref weather, level, ref randomWeathers))
+        if (randomWeather == null && !InitializeRandomWeather(ref randomWeather, weather, level, ref randomWeathers))
         {
           Plugin.logger.LogDebug("Random Weather is null, skipping");
           continue;
@@ -269,11 +277,34 @@ namespace WeatherRegistry.Patches
 
       static bool InitializeRandomWeather(
         ref RandomWeatherWithVariables randomWeather,
-        ref Weather weather,
+        Weather weather,
         SelectableLevel level,
         ref List<RandomWeatherWithVariables> randomWeathers
       )
       {
+        List<SelectableLevel> LevelsToApply = [];
+
+        if (weather.LevelFilteringOption == FilteringOption.Include)
+        {
+          LevelsToApply = weather.LevelFilters;
+        }
+        else if (weather.LevelFilteringOption == FilteringOption.Exclude)
+        {
+          LevelsToApply = StartOfRound.Instance.levels.ToList();
+          LevelsToApply.RemoveAll(level => weather.LevelFilters.Contains(level));
+        }
+
+        LevelsToApply.ForEach(level => Plugin.logger.LogInfo($"Level to apply: {level.name}"));
+
+        if (level.PlanetName == "71 Gordion" && !LevelsToApply.Contains(level))
+        {
+          Plugin.logger.LogWarning("Removing all weathers from the company moon");
+
+          randomWeathers.Clear();
+          level.randomWeathers = randomWeathers.ToArray();
+          return false;
+        }
+
         switch (weather.Type)
         {
           case WeatherType.Vanilla:
@@ -284,8 +315,12 @@ namespace WeatherRegistry.Patches
           {
             Plugin.logger.LogWarning($"Random Weather is null, injecting modded weather {weather.Name}");
 
-            if (weather.LevelBlacklist.Contains(level.name))
+            if (!LevelsToApply.Contains(level))
+            {
+              Plugin.logger.LogInfo($"Level {level.name} is not in the list of levels to apply weather to");
               return false;
+            }
+
             Plugin.logger.LogInfo($"Injecting modded weather {weather.Name} for level {level.name}");
             RandomWeatherWithVariables newWeather =
               new()
