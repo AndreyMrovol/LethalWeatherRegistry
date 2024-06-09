@@ -19,7 +19,7 @@ namespace WeatherRegistry
     // convert string to array of strings
     public static string[] ConvertStringToArray(string str)
     {
-      string[] output = str.Split(';').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
+      string[] output = str.Split(';').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray().Select(s => s.Trim()).ToArray();
 
       return output;
     }
@@ -29,6 +29,11 @@ namespace WeatherRegistry
       string[] levelNames = ConvertStringToArray(str);
       Dictionary<string, SelectableLevel> Levels = StartOfRound.Instance.levels.ToDictionary(level => GetNumberlessName(level), level => level);
       List<SelectableLevel> output = [];
+
+      if (levelNames.Count() == 0)
+      {
+        return [];
+      }
 
       foreach (string level in levelNames)
       {
