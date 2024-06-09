@@ -57,6 +57,9 @@ namespace WeatherRegistry.Patches
 
       WeatherManager.Reset();
 
+      GameObject.FindObjectsOfType<Weather>().ToList().ForEach(gameobject => GameObject.Destroy(gameobject));
+      GameObject.FindObjectsOfType<ImprovedWeatherEffect>().ToList().ForEach(gameobject => GameObject.Destroy(gameobject));
+
       WeatherEffect[] effects = TimeOfDay.Instance.effects;
       List<WeatherEffect> weatherList = effects.ToList();
 
