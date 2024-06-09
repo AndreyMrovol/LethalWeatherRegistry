@@ -13,6 +13,10 @@
         <IsPackable>true</IsPackable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <None Include="$(ProjectDir)../README.md" Pack="true" PackagePath="/" />
+    </ItemGroup>
+
     <PropertyGroup>
         <GameDirectory>V:\Steam\steamapps\common\Lethal Company</GameDirectory>
     </PropertyGroup>
