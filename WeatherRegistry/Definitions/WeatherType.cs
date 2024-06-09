@@ -27,8 +27,6 @@ namespace WeatherRegistry
   {
     Include,
     Exclude,
-    Whitelist = Include,
-    Blacklist = Exclude
   }
 
   [JsonObject(MemberSerialization.OptIn)]
@@ -61,7 +59,10 @@ namespace WeatherRegistry
 
     [field: SerializeField]
     [JsonIgnore]
-    public List<SelectableLevel> LevelFilters { get; set; } = [];
+    public string[] DefaultLevelFilters { get; set; } = ["Gordion"];
+
+    [JsonIgnore]
+    public List<SelectableLevel> LevelFilters { get; internal set; } = [];
 
     [field: SerializeField]
     [JsonIgnore]
@@ -123,7 +124,7 @@ namespace WeatherRegistry
       this._filteringOptionConfig = ConfigManager.configFile.Bind(
         configCategory,
         $"Filtering option",
-        false,
+        this.LevelFilteringOption == FilteringOption.Include,
         new ConfigDescription("Whether to make the filter a whitelist (false is blacklist, true is whitelist)", null)
       );
 
@@ -132,7 +133,7 @@ namespace WeatherRegistry
       this._filterConfig = ConfigManager.configFile.Bind(
         configCategory,
         $"Level filter",
-        "Gordion;",
+        String.Join(";", DefaultLevelFilters),
         new ConfigDescription("Semicolon-separated list of level names to filter", null)
       );
 
