@@ -147,12 +147,12 @@ namespace WeatherRegistry
       DefaultWeight = 50;
     }
 
-    void RemoveFromMoon(string moonName)
+    public void RemoveFromMoon(string moonNames)
     {
-      ConfigHelper.ConvertStringToLevels(moonName).ToList().ForEach(level => LevelFilters.Remove(level));
+      ConfigHelper.ConvertStringToLevels(moonNames).ToList().ForEach(level => LevelFilters.Remove(level));
     }
 
-    void RemoveFromMoon(SelectableLevel moon)
+    public void RemoveFromMoon(SelectableLevel moon)
     {
       LevelFilters.Remove(moon);
     }
