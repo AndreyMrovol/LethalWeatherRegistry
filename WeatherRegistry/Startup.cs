@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ConsoleTables;
 using HarmonyLib;
+using Newtonsoft.Json;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -224,6 +226,17 @@ namespace WeatherRegistry.Patches
 
         // Plugin.logger.LogInfo($"Registered weather: {weather.Name} under ID {weather.VanillaWeatherType}");
       }
+
+      var possibleWeathersTable = new ConsoleTables.ConsoleTable("Planet", "Random weathers");
+
+      levels.Sort((a, b) => a.name.CompareTo(b.name));
+      levels.ForEach(level =>
+      {
+        var stringifiedRandomWeathers = JsonConvert.SerializeObject(level.randomWeathers.Select(x => x.weatherType.ToString()).ToList());
+        possibleWeathersTable.AddRow(ConfigHelper.GetNumberlessName(level), stringifiedRandomWeathers);
+      });
+
+      Plugin.logger.LogInfo("Possible weathers:\n" + possibleWeathersTable.ToMinimalString());
 
       WeatherManager.IsSetupFinished = true;
 
