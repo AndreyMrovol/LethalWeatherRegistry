@@ -58,16 +58,17 @@ namespace WeatherRegistry.Patches
       WeatherEffect[] effects = TimeOfDay.Instance.effects;
       List<WeatherEffect> weatherList = effects.ToList();
 
+      // this shit was not working lmao
       // a hacky bit of magic to reset vanilla effects array after reloading lobby
-      if (vanillaEffectsArray == null)
-      {
-        vanillaEffectsArray = effects;
-      }
-      else
-      {
-        Plugin.logger.LogWarning("Vanilla effects array is not null");
-        effects = vanillaEffectsArray;
-      }
+      // if (vanillaEffectsArray == null)
+      // {
+      //   vanillaEffectsArray = effects;
+      // }
+      // else
+      // {
+      //   Plugin.logger.LogWarning("Vanilla effects array is not null");
+      //   effects = vanillaEffectsArray;
+      // }
 
       if (effects == null || effects.Count() == 0)
       {
@@ -191,7 +192,6 @@ namespace WeatherRegistry.Patches
         };
       }
       TimeOfDay.Instance.effects = weatherList.ToArray();
-      WeatherManager.VanillaWeatherEffects = TimeOfDay.Instance.effects;
 
       #endregion
 

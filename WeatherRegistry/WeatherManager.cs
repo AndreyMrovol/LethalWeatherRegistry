@@ -21,8 +21,6 @@ namespace WeatherRegistry
 
     public static Dictionary<SelectableLevel, Weather> CurrentWeathers = [];
 
-    internal static WeatherEffect[] VanillaWeatherEffects = [];
-
     public static void RegisterWeather(Weather weather)
     {
       RegisteredWeathers.Add(weather);
