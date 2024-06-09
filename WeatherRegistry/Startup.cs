@@ -309,8 +309,6 @@ namespace WeatherRegistry.Patches
           LevelsToApply.RemoveAll(level => weather.LevelFilters.Contains(level));
         }
 
-        LevelsToApply.ForEach(level => Plugin.logger.LogInfo($"Level to apply: {level.name}"));
-
         if (level.PlanetName == "71 Gordion" && !LevelsToApply.Contains(level))
         {
           Plugin.logger.LogWarning("Removing all weathers from the company moon");
@@ -329,6 +327,7 @@ namespace WeatherRegistry.Patches
           case WeatherType.Modded:
           {
             Plugin.logger.LogWarning($"Random Weather is null, injecting modded weather {weather.Name}");
+            LevelsToApply.ForEach(level => Plugin.logger.LogInfo($"Level to apply: {level.name}"));
 
             if (!LevelsToApply.Contains(level))
             {
