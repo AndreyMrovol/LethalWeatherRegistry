@@ -27,8 +27,18 @@ namespace WeatherRegistry
     public static SelectableLevel[] ConvertStringToLevels(string str)
     {
       string[] levelNames = ConvertStringToArray(str);
-      Dictionary<string, SelectableLevel> Levels = StartOfRound.Instance.levels.ToDictionary(level => GetNumberlessName(level), level => level);
+      Dictionary<string, SelectableLevel> Levels = [];
+      // StartOfRound.Instance.levels.ToDictionary(level => GetNumberlessName(level), level => level);
       List<SelectableLevel> output = [];
+
+      StartOfRound
+        .Instance.levels.ToList()
+        .ForEach(level =>
+        {
+          Levels.TryAdd(GetNumberlessName(level), level);
+          Levels.TryAdd(level.PlanetName, level);
+          Levels.TryAdd(level.name, level);
+        });
 
       if (levelNames.Count() == 0)
       {
@@ -40,6 +50,11 @@ namespace WeatherRegistry
         SelectableLevel selectableLevel = Levels.GetValueOrDefault(level);
 
         Plugin.logger.LogDebug($"Selectable level: {selectableLevel}");
+
+        if (output.Contains(selectableLevel))
+        {
+          continue;
+        }
 
         output.Add(selectableLevel);
       }
