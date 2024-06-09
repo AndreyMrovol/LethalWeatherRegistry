@@ -12,7 +12,6 @@ using static LethalLib.Modules.Weathers;
 
 namespace WeatherRegistry.Patches
 {
-  [HarmonyPatch(typeof(LethalLib.Modules.Weathers))]
   public class LethalLibPatch
   {
     public static Dictionary<int, CustomWeather> GetLethalLibWeathers()
@@ -66,10 +65,18 @@ namespace WeatherRegistry.Patches
       var weatherEnumHookField = typeof(LethalLib.Modules.Weathers).GetField("weatherEnumHook", BindingFlags.NonPublic | BindingFlags.Static);
       Hook weatherEnumHook = (Hook)weatherEnumHookField.GetValue(null);
       weatherEnumHook.Undo();
+
+      Plugin.harmony.Patch(
+        AccessTools.Method(typeof(LethalLib.Modules.Weathers), "RegisterLevelWeathers_StartOfRound_Awake"),
+        prefix: new HarmonyMethod(typeof(LethalLibPatch), nameof(StartOfRoundAwakePrefix))
+      );
+
+      Plugin.harmony.Patch(
+        AccessTools.Method(typeof(LethalLib.Modules.Weathers), "TimeOfDay_Awake"),
+        prefix: new HarmonyMethod(typeof(LethalLibPatch), nameof(TimeOfDayAwakePrefix))
+      );
     }
 
-    [HarmonyPatch("RegisterLevelWeathers_StartOfRound_Awake")]
-    [HarmonyPrefix]
     internal static bool StartOfRoundAwakePrefix(On.StartOfRound.orig_Awake orig, StartOfRound self)
     {
       Plugin.logger.LogWarning("Skipping LethalLib StartOfRound method");
@@ -77,8 +84,6 @@ namespace WeatherRegistry.Patches
       return false;
     }
 
-    [HarmonyPatch("TimeOfDay_Awake")]
-    [HarmonyPrefix]
     internal static bool TimeOfDayAwakePrefix(On.TimeOfDay.orig_Awake orig, TimeOfDay self)
     {
       Plugin.logger.LogWarning("Skipping LethalLib TimeOfDay method");
