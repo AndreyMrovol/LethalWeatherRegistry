@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BepInEx.Configuration;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -20,6 +21,14 @@ namespace WeatherRegistry
     WeatherRegistry,
     LethalLib,
     LethalLevelLoader
+  }
+
+  public enum FilteringOption
+  {
+    Include,
+    Exclude,
+    Whitelist = Include,
+    Blacklist = Exclude
   }
 
   [JsonObject(MemberSerialization.OptIn)]
@@ -51,11 +60,23 @@ namespace WeatherRegistry
     public float ScrapValueMultiplier { get; set; } = 1;
 
     [field: SerializeField]
-    public List<string> LevelBlacklist { get; set; } = [];
-
     [JsonIgnore]
+    public List<SelectableLevel> LevelFilters { get; set; } = [];
+
+    [field: SerializeField]
+    [JsonIgnore]
+    public FilteringOption LevelFilteringOption { get; set; } = FilteringOption.Exclude;
+
+    internal ConfigEntry<string> _filterConfig { get; private set; }
+
     [field: SerializeField]
     public Color Color { get; set; } = Color.cyan;
+
+    [JsonIgnore]
+    internal ConfigEntry<int> _defaultWeightConfig { get; private set; }
+
+    [JsonIgnore]
+    internal ConfigEntry<bool> _filteringOptionConfig { get; private set; }
 
     [field: SerializeField]
     public int DefaultWeight { get; set; } = 100;
@@ -83,6 +104,41 @@ namespace WeatherRegistry
       // {(this.Origin != WeatherOrigin.Vanilla ? $"({this.Origin})" : "")}
     }
 
+    internal virtual void Init()
+    {
+      string configCategory = $"Weather: {name}{(this.Origin != WeatherOrigin.Vanilla ? $" ({this.Origin})" : "")}";
+
+      this._defaultWeightConfig = ConfigManager.configFile.Bind(
+        configCategory,
+        $"Default weight",
+        DefaultWeight,
+        new ConfigDescription("The default weight of this weather", new AcceptableValueRange<int>(0, 10000))
+      );
+
+      if (DefaultWeight != _defaultWeightConfig.Value)
+      {
+        this.DefaultWeight = _defaultWeightConfig.Value;
+      }
+
+      this._filteringOptionConfig = ConfigManager.configFile.Bind(
+        configCategory,
+        $"Filtering option",
+        false,
+        new ConfigDescription("Whether to make the filter a whitelist (false is blacklist, true is whitelist)", null)
+      );
+
+      this.LevelFilteringOption = _filteringOptionConfig.Value ? FilteringOption.Include : FilteringOption.Exclude;
+
+      this._filterConfig = ConfigManager.configFile.Bind(
+        configCategory,
+        $"Level filter",
+        "Gordion;",
+        new ConfigDescription("Semicolon-separated list of level names to filter", null)
+      );
+
+      this.LevelFilters = ConfigHelper.ConvertStringToLevels(_filterConfig.Value).ToList();
+    }
+
     void Reset()
     {
       Type = WeatherType.Modded;
@@ -91,15 +147,14 @@ namespace WeatherRegistry
       DefaultWeight = 50;
     }
 
-    public static Weather CreateCanvasWeather()
+    void RemoveFromMoon(string moonName)
     {
-      return new Weather()
-      {
-        Type = WeatherType.Clear,
-        Color = Defaults.VanillaWeatherColors[LevelWeatherType.None],
-        VanillaWeatherType = LevelWeatherType.None,
-        Origin = WeatherOrigin.Vanilla,
-      };
+      ConfigHelper.ConvertStringToLevels(moonName).ToList().ForEach(level => LevelFilters.Remove(level));
+    }
+
+    void RemoveFromMoon(SelectableLevel moon)
+    {
+      LevelFilters.Remove(moon);
     }
   }
 
