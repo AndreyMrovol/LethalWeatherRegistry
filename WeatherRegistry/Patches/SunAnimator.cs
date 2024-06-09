@@ -85,13 +85,22 @@ namespace WeatherRegistry.Patches
 
     public static void OverrideSunAnimator(LevelWeatherType weatherType)
     {
+      Plugin.logger.LogDebug("OverrideSunAnimator called");
+
       if (TimeOfDay.Instance.sunAnimator == null)
       {
         logger.LogWarning("sunAnimator is null, skipping");
         return;
       }
 
-      logger.LogInfo($"Current clip: {TimeOfDay.Instance.sunAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
+      AnimatorClipInfo[] currentClips = TimeOfDay.Instance.sunAnimator.GetCurrentAnimatorClipInfo(0);
+      if (currentClips.Length == 0)
+      {
+        logger.LogWarning("There are no SunAnimator clips, skipping");
+        return;
+      }
+
+      logger.LogInfo($"Current clip: {currentClips[0].clip.name}");
 
       // get the name of the sun TimeOfDay.Instance.sunAnimator controller
       string animatorControllerName = TimeOfDay.Instance.sunAnimator.runtimeAnimatorController.name;
