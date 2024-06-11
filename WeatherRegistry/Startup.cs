@@ -225,7 +225,21 @@ namespace WeatherRegistry.Patches
           continue;
         }
 
-        AddWeatherToLevels(weather, ref levels);
+        List<SelectableLevel> LevelsToApply = [];
+
+        if (weather.LevelFilteringOption == FilteringOption.Include)
+        {
+          LevelsToApply = weather.LevelFilters;
+        }
+        else if (weather.LevelFilteringOption == FilteringOption.Exclude)
+        {
+          LevelsToApply = StartOfRound.Instance.levels.ToList();
+          LevelsToApply.RemoveAll(level => weather.LevelFilters.Contains(level));
+        }
+
+        Plugin.logger.LogWarning($"Weather {weather.name} has {weather.LevelFilteringOption.ToString()} filtering option set up");
+
+        AddWeatherToLevels(weather, levels, LevelsToApply);
 
         // Plugin.logger.LogInfo($"Registered weather: {weather.Name} under ID {weather.VanillaWeatherType}");
       }
@@ -254,7 +268,7 @@ namespace WeatherRegistry.Patches
       }
     }
 
-    static void AddWeatherToLevels(Weather weather, ref List<SelectableLevel> levels)
+    static void AddWeatherToLevels(Weather weather, List<SelectableLevel> levels, List<SelectableLevel> LevelsToApply)
     {
       List<LevelWeatherVariables> levelWeatherVariables = [];
       weather.WeatherVariables.Clear();
@@ -278,7 +292,7 @@ namespace WeatherRegistry.Patches
         // do that, but [continue] the loop when the result is null
         randomWeather = level.randomWeathers.FirstOrDefault(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
 
-        if (randomWeather == null && !InitializeRandomWeather(ref randomWeather, weather, level, ref randomWeathers))
+        if (!InitializeRandomWeather(ref randomWeather, weather, level, ref randomWeathers, LevelsToApply) && randomWeather == null)
         {
           Plugin.logger.LogDebug("Random Weather is null, skipping");
           continue;
@@ -297,19 +311,17 @@ namespace WeatherRegistry.Patches
         ref RandomWeatherWithVariables randomWeather,
         Weather weather,
         SelectableLevel level,
-        ref List<RandomWeatherWithVariables> randomWeathers
+        ref List<RandomWeatherWithVariables> randomWeathers,
+        List<SelectableLevel> LevelsToApply
       )
       {
-        List<SelectableLevel> LevelsToApply = [];
-
-        if (weather.LevelFilteringOption == FilteringOption.Include)
+        // TODO: rework this bit
+        // because the shit condition above skips executing the blacklisting when the weather is possible
+        // which (as you can imagine) is the exact fucking point
+        // debugging this took me almost 2 hours
+        if (randomWeather == null)
         {
-          LevelsToApply = weather.LevelFilters;
-        }
-        else if (weather.LevelFilteringOption == FilteringOption.Exclude)
-        {
-          LevelsToApply = StartOfRound.Instance.levels.ToList();
-          LevelsToApply.RemoveAll(level => weather.LevelFilters.Contains(level));
+          return false;
         }
 
         if (level.PlanetName == "71 Gordion" && !LevelsToApply.Contains(level))
@@ -321,16 +333,42 @@ namespace WeatherRegistry.Patches
           return false;
         }
 
+        // Plugin.logger.LogDebug(
+        //   $"Weather {weather.Name} has type {weather.Type.ToString()}, is level {level.name} in the list? : {LevelsToApply.Contains(level)}"
+        // );
+
         switch (weather.Type)
         {
           case WeatherType.Vanilla:
           {
-            return false;
+            // this will possibly break some things when it's not set up correctly
+            // when that happens i'll send someone a link with this part of code
+            // and blame them instead
+
+            // vanilla weathers will not have an option of being added by configs
+            // they have to be explicitly defined by moon makers
+            // because that's how the variables work
+            // but there will be an option to blacklist them on my end
+
+            if (!LevelsToApply.Contains(level))
+            {
+              Plugin.logger.LogInfo($"Level {level.name} is not in the list of levels to apply weather to");
+
+              if (randomWeather != null)
+              {
+                Plugin.logger.LogInfo($"Removing weather {weather.Name} from level {level.name}");
+                randomWeathers.RemoveAll(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
+                level.randomWeathers = randomWeathers.ToArray();
+              }
+
+              return false;
+            }
+
+            return true;
           }
           case WeatherType.Modded:
           {
             Plugin.logger.LogWarning($"Random Weather is null, injecting modded weather {weather.Name}");
-            LevelsToApply.ForEach(level => Plugin.logger.LogInfo($"Level to apply: {level.name}"));
 
             if (!LevelsToApply.Contains(level))
             {
