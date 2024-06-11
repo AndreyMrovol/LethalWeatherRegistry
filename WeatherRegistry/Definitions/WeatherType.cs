@@ -133,7 +133,7 @@ namespace WeatherRegistry
       this._filterConfig = ConfigManager.configFile.Bind(
         configCategory,
         $"Level filter",
-        String.Join(";", DefaultLevelFilters),
+        $"{String.Join(";", DefaultLevelFilters)};",
         new ConfigDescription("Semicolon-separated list of level names to filter", null)
       );
 
