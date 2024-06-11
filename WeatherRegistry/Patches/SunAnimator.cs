@@ -95,6 +95,12 @@ namespace WeatherRegistry.Patches
     {
       Plugin.logger.LogDebug("OverrideSunAnimator called");
 
+      if (ConfigManager.SunAnimatorBlacklistLevels.Contains(StartOfRound.Instance.currentLevel))
+      {
+        logger.LogWarning($"Current level {StartOfRound.Instance.currentLevel} is blacklisted");
+        return;
+      }
+
       if (TimeOfDay.Instance.sunAnimator == null)
       {
         logger.LogWarning("sunAnimator is null, skipping");
