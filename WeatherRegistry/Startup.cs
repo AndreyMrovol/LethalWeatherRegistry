@@ -232,7 +232,7 @@ namespace WeatherRegistry.Patches
 
       var possibleWeathersTable = new ConsoleTables.ConsoleTable("Planet", "Random weathers");
 
-      levels.Sort((a, b) => a.name.CompareTo(b.name));
+      levels.Sort((a, b) => ConfigHelper.GetNumberlessName(a).CompareTo(ConfigHelper.GetNumberlessName(b)));
       levels.ForEach(level =>
       {
         var stringifiedRandomWeathers = JsonConvert.SerializeObject(level.randomWeathers.Select(x => x.weatherType.ToString()).ToList());
