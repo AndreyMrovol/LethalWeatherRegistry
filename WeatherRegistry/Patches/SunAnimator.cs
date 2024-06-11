@@ -54,6 +54,14 @@ namespace WeatherRegistry.Patches
 
     internal static ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource("WeatherRegistry SunAnimator");
 
+    internal static Dictionary<string, LevelWeatherType> vanillaBools =
+      new()
+      {
+        { "", LevelWeatherType.None },
+        { "overcast", LevelWeatherType.Stormy },
+        { "eclipse", LevelWeatherType.Eclipsed },
+      };
+
     internal static Dictionary<LevelWeatherType, string> clipNames =
       new()
       {
@@ -128,6 +136,8 @@ namespace WeatherRegistry.Patches
 
       Dictionary<LevelWeatherType, AnimationClip> clips = [];
 
+      Weather currentWeather = WeatherManager.GetWeather(weatherType);
+
       try
       {
         AnimationClip clipEclipsed = animationClips.Find(clip => clip.name.Contains(clipNames[LevelWeatherType.Eclipsed]));
@@ -165,6 +175,21 @@ namespace WeatherRegistry.Patches
             {
               logger.LogInfo($"clip: {clip.name}");
             });
+        }
+        else if (currentWeather.Type != WeatherType.Vanilla)
+        {
+          logger.LogWarning($"No custom animation clip found for weather type {weatherType}");
+          logger.LogDebug("Trying to apply vanilla animator bool");
+
+          bool doesUseVanillaBool = vanillaBools.TryGetValue(currentWeather.Effect.SunAnimatorBool, out LevelWeatherType vanillaBool);
+
+          if (!doesUseVanillaBool)
+          {
+            logger.LogInfo($"No vanilla bool found for weather type {weatherType}");
+            return;
+          }
+
+          clips[weatherType] = clips[vanillaBools[currentWeather.Effect.SunAnimatorBool]];
         }
 
         if (clipEclipsed == null || clipStormy == null || clipNone == null)
