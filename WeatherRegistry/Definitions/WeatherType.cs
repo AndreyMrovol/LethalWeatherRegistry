@@ -138,6 +138,9 @@ namespace WeatherRegistry
       );
 
       this.LevelFilters = ConfigHelper.ConvertStringToLevels(_filterConfig.Value).ToList();
+
+      this.hideFlags = HideFlags.HideAndDontSave;
+      GameObject.DontDestroyOnLoad(this);
     }
 
     void Reset()
