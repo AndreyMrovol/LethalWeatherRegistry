@@ -34,7 +34,7 @@ namespace WeatherRegistry
       Instance = this;
       DontDestroyOnLoad(gameObject);
 
-      Plugin.logger.LogFatal($"WeathersSynced: {WeathersSynced.Value}");
+      Plugin.logger.LogWarning($"WeathersSynced: {WeathersSynced.Value}");
 
       WeathersSynced.OnValueChanged += WeathersReceived;
     }

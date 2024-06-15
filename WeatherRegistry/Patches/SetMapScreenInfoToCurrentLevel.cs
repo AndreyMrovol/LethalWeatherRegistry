@@ -43,8 +43,6 @@ namespace WeatherRegistry.Patches
       Weather currentWeather = WeatherManager.GetCurrentWeather(level);
       string currentWeatherString = GetDisplayWeatherString(level, currentWeather);
 
-      Plugin.logger.LogWarning($"Current weather: {currentWeatherString}");
-
       if (!ConfigManager.ColoredWeathers.Value)
       {
         return currentWeatherString;
@@ -66,12 +64,8 @@ namespace WeatherRegistry.Patches
           // so other mods (like weathertweaks) can add their own colors and symbols
           pickedColor = ColorUtility.ToHtmlStringRGB(Settings.ScreenMapColors.TryGetValue(newWord, out Color value) ? value : Color.black);
 
-          Plugin.logger.LogDebug($"{newWord} : {pickedColor}");
-
           outputString += pickedColor != "000000" ? $"<color=#{pickedColor}>{word}</color>" : $"{newWord}";
         });
-
-      Plugin.logger.LogWarning($"Output string: {outputString}");
 
       return outputString;
     }
