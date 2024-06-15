@@ -37,6 +37,15 @@ namespace WeatherRegistry
     {
       IsSetupFinished = false;
 
+      Weathers.ForEach(weather =>
+      {
+        if (weather.Origin != WeatherOrigin.WeatherRegistry)
+        {
+          GameObject.Destroy(weather.Effect);
+          GameObject.Destroy(weather);
+        }
+      });
+
       // RegisteredWeathers.Clear();
       LevelWeathers.Clear();
       Weathers.Clear();
