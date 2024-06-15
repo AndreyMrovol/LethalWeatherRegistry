@@ -220,11 +220,6 @@ namespace WeatherRegistry.Patches
         Settings.ScreenMapColors.Add(weather.Name, weather.Color);
         weather.Init();
 
-        if (weather.Type == WeatherType.Clear)
-        {
-          continue;
-        }
-
         List<SelectableLevel> LevelsToApply = [];
 
         if (weather.LevelFilteringOption == FilteringOption.Include)
@@ -328,6 +323,7 @@ namespace WeatherRegistry.Patches
         {
           return false;
         }
+        // why would you make me do that
         else if (weather.Type == WeatherType.Clear)
         {
           randomWeathers.RemoveAll(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
