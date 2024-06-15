@@ -50,10 +50,11 @@ namespace WeatherRegistry
       LevelWeathers.Clear();
       Weathers.Clear();
       ModdedWeatherEnumExtension.Clear();
+      CurrentWeathers.Clear();
 
       Settings.ScreenMapColors.Clear();
 
-      // RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherRegistry);
+      RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherRegistry);
     }
 
     public static string LevelWeatherTypeEnumHook(Func<Enum, string> orig, Enum self)
