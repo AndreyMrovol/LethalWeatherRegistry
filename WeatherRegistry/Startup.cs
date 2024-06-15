@@ -292,7 +292,7 @@ namespace WeatherRegistry.Patches
         // do that, but [continue] the loop when the result is null
         randomWeather = level.randomWeathers.FirstOrDefault(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
 
-        if (!InitializeRandomWeather(ref randomWeather, weather, level, ref randomWeathers, LevelsToApply) && randomWeather == null)
+        if (!InitializeRandomWeather(ref randomWeather, weather, level, ref randomWeathers, LevelsToApply))
         {
           Plugin.logger.LogDebug("Random Weather is null, skipping");
           continue;
@@ -319,16 +319,25 @@ namespace WeatherRegistry.Patches
         // because the shit condition above skips executing the blacklisting when the weather is possible
         // which (as you can imagine) is the exact fucking point
         // debugging this took me almost 2 hours
-        if (randomWeather == null)
+
+        // this has to execute only when the vanilla weather wasn't defined by a moon creator (cause they can)
+        if (randomWeather == null && weather.Type == WeatherType.Vanilla)
         {
           return false;
         }
+        else if (weather.Type == WeatherType.Clear)
+        {
+          randomWeathers.RemoveAll(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
+          level.randomWeathers = randomWeathers.ToArray();
+          return false;
+        }
 
+        // remove all weathers from company moon, because that's the point
         if (level.PlanetName == "71 Gordion" && !LevelsToApply.Contains(level))
         {
-          Plugin.logger.LogWarning("Removing all weathers from the company moon");
+          Plugin.logger.LogWarning($"Removing weather {weather.Name} from the company moon");
 
-          randomWeathers.Clear();
+          randomWeathers.RemoveAll(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
           level.randomWeathers = randomWeathers.ToArray();
           return false;
         }
@@ -368,11 +377,11 @@ namespace WeatherRegistry.Patches
           }
           case WeatherType.Modded:
           {
-            Plugin.logger.LogWarning($"Random Weather is null, injecting modded weather {weather.Name}");
+            Plugin.logger.LogInfo($"Adding modded weather {weather.Name}");
 
             if (!LevelsToApply.Contains(level))
             {
-              Plugin.logger.LogInfo($"Level {level.name} is not in the list of levels to apply weather to");
+              Plugin.logger.LogDebug($"Level {level.name} is not in the list of levels to apply weather to");
               return false;
             }
 
