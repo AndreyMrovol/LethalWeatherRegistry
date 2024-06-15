@@ -27,7 +27,7 @@ namespace WeatherRegistry
     {
       configFile = config;
 
-      EventManager.setupFinished.AddListener(StartupActions);
+      EventManager.SetupFinished.AddListener(StartupActions);
 
       ColoredWeathers = configFile.Bind("|General", "Colored Weathers", true, "Enable colored weathers in map screen");
       SunAnimatorBlacklist = configFile.Bind(

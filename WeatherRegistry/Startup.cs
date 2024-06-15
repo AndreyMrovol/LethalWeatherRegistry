@@ -257,7 +257,7 @@ namespace WeatherRegistry.Patches
 
       WeatherManager.IsSetupFinished = true;
 
-      EventManager.setupFinished.Invoke();
+      EventManager.SetupFinished.Invoke();
 
       StartOfRound.Instance.SetPlanetsWeather();
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
