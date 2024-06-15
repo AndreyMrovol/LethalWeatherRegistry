@@ -249,7 +249,10 @@ namespace WeatherRegistry.Patches
       levels.Sort((a, b) => ConfigHelper.GetNumberlessName(a).CompareTo(ConfigHelper.GetNumberlessName(b)));
       levels.ForEach(level =>
       {
-        var stringifiedRandomWeathers = JsonConvert.SerializeObject(level.randomWeathers.Select(x => x.weatherType.ToString()).ToList());
+        List<LevelWeatherType> randomWeathers = level.randomWeathers.Select(x => x.weatherType).ToList();
+        randomWeathers.Sort();
+
+        var stringifiedRandomWeathers = JsonConvert.SerializeObject(randomWeathers.Select(x => x.ToString()).ToList());
         possibleWeathersTable.AddRow(ConfigHelper.GetNumberlessName(level), stringifiedRandomWeathers);
       });
 
