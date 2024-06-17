@@ -2,6 +2,12 @@
 
 A Lethal Company mod for controlling game's weather system.
 
+## Features
+
+- A system for registering custom weathers and weather effects
+- Weight-based weather selection system
+- Level-based weather filtering system
+
 ## License
 
 This project is licensed under [GNU Lesser General Public License v3.0](https://github.com/AndreyMrovol/LethalWeatherRegistry/blob/main/LICENSE.md).
@@ -17,5 +23,3 @@ This project uses code from [LethalLib](https://thunderstore.io/c/lethal-company
 This project uses code from [LethalLevelLoader](https://thunderstore.io/c/lethal-company/p/IAmBatby/LethalLevelLoader/), licensed under [MIT License](https://github.com/IAmBatby/LethalLevelLoader/blob/main/LICENSE).
 
 This project uses code from [LC-SimpleWeatherDisplay](https://thunderstore.io/c/lethal-company/p/SylviBlossom/SimpleWeatherDisplay/), licensed under [MIT License](https://github.com/SylviBlossom/LC-SimpleWeatherDisplay/blob/main/LICENSE).
-
-This project uses code from [MeteoMultiplier](https://thunderstore.io/c/lethal-company/p/Fredolx/MeteoMultiplier/), licensed under [GNU General Public License v3.0](https://github.com/Fredolx/lc-meteo-multiplier/blob/main/LICENSE).
