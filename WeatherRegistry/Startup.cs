@@ -161,7 +161,11 @@ namespace WeatherRegistry.Patches
 
           weather.VanillaWeatherType = (LevelWeatherType)newKey;
           // weather.Effect.VanillaWeatherType = (LevelWeatherType)newKey;
+
+          Plugin.logger.LogInfo($"Registering weather {weather.Name} under ID {newKey}");
+
           WeatherManager.ModdedWeatherEnumExtension.Add(newKey, weather);
+          biggestKeyInModdedWeathersDictionary++;
         });
 
       #region Extend the enum
