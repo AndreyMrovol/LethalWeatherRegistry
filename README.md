@@ -8,6 +8,15 @@ A Lethal Company mod for controlling game's weather system.
 - Weight-based weather selection system
 - Level-based weather filtering system
 
+i don't want to work on readme, i'll list it later
+
+## to do
+
+- [ ] Add matching via LLL tags
+- [ ] Add an option for weather creators to add their configs to the Registry
+- [ ] Save generated weather data to save file
+- [ ] Add a patch to disable all weather effect on StartOfRound.OnDisable
+
 ## License
 
 This project is licensed under [GNU Lesser General Public License v3.0](https://github.com/AndreyMrovol/LethalWeatherRegistry/blob/main/LICENSE.md).
