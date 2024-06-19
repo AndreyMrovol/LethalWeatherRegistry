@@ -77,6 +77,7 @@
             <BepInExPluginVersion>$(PlainVersion)</BepInExPluginVersion>
         </PropertyGroup>
     </Target>
+    
 
     <Target Name="PackThunderstore" DependsOnTargets="NetcodePatch;SetPluginVersion" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
         <MakeDir Directories="$(ProjectDir)assets/bundles" Condition="!Exists('$(ProjectDir)assets/bundles')" />
