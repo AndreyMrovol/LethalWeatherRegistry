@@ -84,30 +84,34 @@ jobs:
         run: |
           dotnet nuget push ./*/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
 
-  # deploy-thunderstore:
-  #   name: Deploy to Thunderstore
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Fetch Sources
-  #       uses: actions/checkout@v4
+  deploy-thunderstore:
+    name: Deploy to Thunderstore
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v4
 
-  #     - name: Download Thunderstore artifact
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: thunderstore-build
+      - name: Download Thunderstore artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: thunderstore-build
 
-  #     - name: Setup .NET environment
-  #       uses: actions/setup-dotnet@v3
-  #       with:
-  #         dotnet-version: "8.0.100"
+      - name: Setup .NET environment
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.100"
 
-  #     - name: Restore dotnet tools
-  #       run: |
-  #         dotnet tool restore
+      - name: Install Evaisa's netcode-patcher
+        run: |
+          dotnet tool install -g Evaisa.NetcodePatcher.Cli
 
-  #     - name: Publish to Thunderstore
-  #       env:
-  #         TCLI_AUTH_TOKEN: ${{ secrets.THUNDERSTORE_API_TOKEN }}
-  #       run: |
-  #         dotnet build -target:PublishThunderstore
+      - name: Restore dotnet tools
+        run: |
+          dotnet tool restore
+
+      - name: Publish to Thunderstore
+        env:
+          TCLI_AUTH_TOKEN: ${{ secrets.THUNDERSTORE_API_KEY }}
+        run: |
+          dotnet build -target:PublishThunderstore
