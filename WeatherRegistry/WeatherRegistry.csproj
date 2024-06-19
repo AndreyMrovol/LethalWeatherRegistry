@@ -63,6 +63,13 @@
         <Exec Command="netcode-patch -nv 1.5.2 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')"/>
     </Target>
 
+    <Target Name="SetPluginVersion" BeforeTargets="AddGeneratedFile" DependsOnTargets="MinVer">
+        <PropertyGroup>
+            <PlainVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PlainVersion>
+            <BepInExPluginVersion>$(PlainVersion)</BepInExPluginVersion>
+        </PropertyGroup>
+    </Target>
+
     <Target Name="PackThunderstore" DependsOnTargets="NetcodePatch;SetPluginVersion" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
         <MakeDir Directories="$(ProjectDir)assets/bundles" Condition="!Exists('$(ProjectDir)assets/bundles')" />
         <Exec Command="dotnet tcli build --config-path $(ProjectDir)assets/thunderstore.toml --package-version $(PlainVersion)" />
