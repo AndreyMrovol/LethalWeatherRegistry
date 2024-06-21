@@ -33,8 +33,13 @@ namespace WeatherRegistry
   [CreateAssetMenu(fileName = "Weather", menuName = "WeatherRegistry/WeatherDefinition", order = 5)]
   public class Weather : ScriptableObject
   {
+    #region Base properties
+
     [JsonProperty]
     public string Name;
+
+    [JsonIgnore]
+    public ImprovedWeatherEffect Effect;
 
     [JsonProperty]
     public LevelWeatherType VanillaWeatherType { get; internal set; } = LevelWeatherType.None;
@@ -49,29 +54,20 @@ namespace WeatherRegistry
     public Dictionary<SelectableLevel, LevelWeatherVariables> WeatherVariables = [];
 
     [JsonIgnore]
-    public ImprovedWeatherEffect Effect;
+    public AnimationClip AnimationClip;
 
     [field: SerializeField]
-    public float ScrapAmountMultiplier { get; set; } = 1;
+    public Color Color { get; set; } = Color.cyan;
 
-    [field: SerializeField]
-    public float ScrapValueMultiplier { get; set; } = 1;
+    #endregion
+
+    #region defaults
+
+    public int DefaultWeight { get; set; } = 100;
 
     [field: SerializeField]
     [JsonIgnore]
     public string[] DefaultLevelFilters { get; set; } = ["Gordion"];
-
-    [JsonIgnore]
-    public List<SelectableLevel> LevelFilters { get; internal set; } = [];
-
-    [field: SerializeField]
-    [JsonIgnore]
-    public FilteringOption LevelFilteringOption { get; set; } = FilteringOption.Exclude;
-
-    internal ConfigEntry<string> _filterConfig { get; private set; }
-
-    [field: SerializeField]
-    public Color Color { get; set; } = Color.cyan;
 
     [JsonIgnore]
     internal ConfigEntry<int> _defaultWeightConfig { get; private set; }
@@ -79,14 +75,35 @@ namespace WeatherRegistry
     [JsonIgnore]
     internal ConfigEntry<bool> _filteringOptionConfig { get; private set; }
 
-    [field: SerializeField]
-    public int DefaultWeight { get; set; } = 100;
+    #endregion
+
+    #region stuff from config
 
     [field: SerializeField]
-    public Dictionary<LevelWeatherType, int> WeatherWeights { get; set; } = [];
+    public float ScrapAmountMultiplier { get; set; } = 1;
+
+    [field: SerializeField]
+    public float ScrapValueMultiplier { get; set; } = 1;
 
     [JsonIgnore]
-    public AnimationClip AnimationClip;
+    public List<SelectableLevel> LevelFilters { get; internal set; }
+
+    [field: SerializeField]
+    [JsonIgnore]
+    public FilteringOption LevelFilteringOption { get; set; } = FilteringOption.Exclude;
+
+    [field: SerializeField]
+    public Dictionary<LevelWeatherType, int> WeatherWeights;
+
+    [field: SerializeField]
+    public Dictionary<SelectableLevel, int> LevelWeights;
+
+    #endregion
+
+
+
+    [JsonIgnore]
+    internal WeatherConfig Config;
 
     public Weather(string name = "None", ImprovedWeatherEffect effect = default)
     {
@@ -102,6 +119,8 @@ namespace WeatherRegistry
         Effect.name = name;
       }
 
+      Config = new WeatherConfig();
+
       // {(this.Origin != WeatherOrigin.Vanilla ? $"({this.Origin})" : "")}
     }
 
@@ -109,35 +128,21 @@ namespace WeatherRegistry
     {
       string configCategory = $"Weather: {name}{(this.Origin != WeatherOrigin.Vanilla ? $" ({this.Origin})" : "")}";
 
-      this._defaultWeightConfig = ConfigManager.configFile.Bind(
-        configCategory,
-        $"Default weight",
-        DefaultWeight,
-        new ConfigDescription("The default weight of this weather", new AcceptableValueRange<int>(0, 10000))
-      );
+      this.Config.Init(this);
 
       if (DefaultWeight != _defaultWeightConfig.Value)
       {
         this.DefaultWeight = _defaultWeightConfig.Value;
       }
 
-      this._filteringOptionConfig = ConfigManager.configFile.Bind(
-        configCategory,
-        $"Filtering option",
-        this.LevelFilteringOption == FilteringOption.Include,
-        new ConfigDescription("Whether to make the filter a whitelist (false is blacklist, true is whitelist)", null)
+      this.WeatherWeights = Config.WeatherToWeatherWeights.Value.ToDictionary(
+        rarity => rarity.Weather.VanillaWeatherType,
+        rarity => rarity.Weight
       );
 
-      this.LevelFilteringOption = _filteringOptionConfig.Value ? FilteringOption.Include : FilteringOption.Exclude;
+      this.LevelWeights = Config.LevelWeights.Value.ToDictionary(rarity => rarity.Level, rarity => rarity.Weight);
 
-      this._filterConfig = ConfigManager.configFile.Bind(
-        configCategory,
-        $"Level filter",
-        $"{String.Join(";", DefaultLevelFilters)};",
-        new ConfigDescription("Semicolon-separated list of level names to filter", null)
-      );
-
-      this.LevelFilters = ConfigHelper.ConvertStringToLevels(_filterConfig.Value).ToList();
+      this.LevelFilters = Config.LevelFilters.Value.ToList();
 
       this.hideFlags = HideFlags.HideAndDontSave;
       GameObject.DontDestroyOnLoad(this);
