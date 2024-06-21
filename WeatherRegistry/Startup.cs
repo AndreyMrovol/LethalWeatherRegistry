@@ -199,6 +199,9 @@ namespace WeatherRegistry.Patches
           lerpPosition = false,
           transitioning = false
         };
+
+        weatherList[entry.Key].effectObject?.SetActive(false);
+        weatherList[entry.Key].effectPermanentObject?.SetActive(false);
       }
       TimeOfDay.Instance.effects = weatherList.ToArray();
 
