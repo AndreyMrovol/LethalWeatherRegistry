@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BepInEx.Configuration;
+using HarmonyLib;
 
 namespace WeatherRegistry
 {
@@ -118,6 +119,8 @@ namespace WeatherRegistry
             Levels.TryAdd(level.name.ToLower(), level);
           });
 
+        Levels.Values.Do(value => Plugin.logger.LogDebug($"Level dictionary value: {value}"));
+
         _dictionary = Levels;
 
         // return the result of this setter
@@ -155,7 +158,7 @@ namespace WeatherRegistry
       {
         SelectableLevel selectableLevel = Levels.GetValueOrDefault(level.ToLower());
 
-        Plugin.logger.LogDebug($"Selectable level: {selectableLevel}");
+        Plugin.logger.LogDebug($"String {level} resolved to selectable level: {selectableLevel} (is null: {selectableLevel == null})");
 
         if (output.Contains(selectableLevel))
         {
@@ -185,7 +188,7 @@ namespace WeatherRegistry
 
         if (!int.TryParse(rarityData[1], out int weight))
         {
-          Plugin.logger.LogError($"Invalid rarity weight: {rarityData[1]}");
+          Plugin.logger.LogError($"Invalid rarity weight: {rarityData[1]} - not a number!");
           continue;
         }
 
@@ -215,7 +218,7 @@ namespace WeatherRegistry
 
         if (!int.TryParse(rarityData[1], out int weight))
         {
-          Plugin.logger.LogError($"Invalid rarity weight: {rarityData[1]}");
+          Plugin.logger.LogError($"Invalid rarity weight: {rarityData[1]} - not a number!");
           continue;
         }
 
@@ -253,7 +256,7 @@ namespace WeatherRegistry
 
         if (!int.TryParse(rarityData[1], out int weight))
         {
-          Plugin.logger.LogError($"Invalid rarity weight: {rarityData[1]}");
+          Plugin.logger.LogError($"Invalid rarity weight: {rarityData[1]} - not a number!");
           continue;
         }
 
