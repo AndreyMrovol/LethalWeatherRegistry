@@ -153,7 +153,9 @@ namespace WeatherRegistry
       this.LevelFilteringOption = Config._filteringOptionConfig.Value ? FilteringOption.Include : FilteringOption.Exclude;
 
       this.hideFlags = HideFlags.HideAndDontSave;
+
       GameObject.DontDestroyOnLoad(this);
+      GameObject.Instantiate(this);
     }
 
     void Reset()
