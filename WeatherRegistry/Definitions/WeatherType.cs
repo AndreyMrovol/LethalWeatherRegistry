@@ -103,18 +103,27 @@ namespace WeatherRegistry
 
     #region stuff from config
 
-    [JsonIgnore]
-    public List<SelectableLevel> LevelFilters { get; internal set; }
-
     [field: SerializeField]
     [JsonIgnore]
     public FilteringOption LevelFilteringOption { get; set; } = FilteringOption.Exclude;
 
-    [field: SerializeField]
-    public Dictionary<LevelWeatherType, int> WeatherWeights;
+    [JsonIgnore]
+    public List<SelectableLevel> LevelFilters
+    {
+      get { return Config.LevelFilters.Value.ToList(); }
+    }
 
-    [field: SerializeField]
-    public Dictionary<SelectableLevel, int> LevelWeights;
+    [JsonIgnore]
+    public Dictionary<LevelWeatherType, int> WeatherWeights
+    {
+      get { return Config.WeatherToWeatherWeights.Value.ToDictionary(rarity => rarity.Weather.VanillaWeatherType, rarity => rarity.Weight); }
+    }
+
+    [JsonIgnore]
+    public Dictionary<SelectableLevel, int> LevelWeights
+    {
+      get { return Config.LevelWeights.Value.ToDictionary(rarity => rarity.Level, rarity => rarity.Weight); }
+    }
 
     #endregion
 
@@ -141,14 +150,7 @@ namespace WeatherRegistry
 
       this.Config.Init(this);
 
-      this.WeatherWeights = Config.WeatherToWeatherWeights.Value.ToDictionary(
-        rarity => rarity.Weather.VanillaWeatherType,
-        rarity => rarity.Weight
-      );
-      this.LevelWeights = Config.LevelWeights.Value.ToDictionary(rarity => rarity.Level, rarity => rarity.Weight);
-
       this.LevelFilteringOption = Config._filteringOptionConfig.Value ? FilteringOption.Include : FilteringOption.Exclude;
-      this.LevelFilters = Config.LevelFilters.Value.ToList();
 
       this.hideFlags = HideFlags.HideAndDontSave;
       GameObject.DontDestroyOnLoad(this);
