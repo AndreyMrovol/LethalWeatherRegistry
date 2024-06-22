@@ -59,31 +59,49 @@ namespace WeatherRegistry
     [field: SerializeField]
     public Color Color { get; set; } = Color.cyan;
 
+    [JsonIgnore]
+    internal WeatherConfig Config = new();
+
+    #endregion
+
+    #region backing fields
+
+    internal int _defaultWeight = 100;
+    internal float _scrapAmountMultiplier = 1;
+    internal float _scrapValueMultiplier = 1;
+
     #endregion
 
     #region defaults
 
-    public int DefaultWeight { get; set; } = 100;
+    [property: SerializeField]
+    public int DefaultWeight
+    {
+      get { return Config.DefaultWeight.Value; }
+      set { _defaultWeight = value; }
+    }
 
     [field: SerializeField]
     [JsonIgnore]
     public string[] DefaultLevelFilters { get; set; } = ["Gordion"];
 
-    [JsonIgnore]
-    internal ConfigEntry<int> _defaultWeightConfig { get; private set; }
+    [property: SerializeField]
+    public float ScrapAmountMultiplier
+    {
+      get { return Config.ScrapAmountMultiplier.Value; }
+      set { _scrapAmountMultiplier = value; }
+    }
 
-    [JsonIgnore]
-    internal ConfigEntry<bool> _filteringOptionConfig { get; private set; }
+    [property: SerializeField]
+    public float ScrapValueMultiplier
+    {
+      get { return Config.ScrapValueMultiplier.Value; }
+      set { _scrapValueMultiplier = value; }
+    }
 
     #endregion
 
     #region stuff from config
-
-    [field: SerializeField]
-    public float ScrapAmountMultiplier { get; set; } = 1;
-
-    [field: SerializeField]
-    public float ScrapValueMultiplier { get; set; } = 1;
 
     [JsonIgnore]
     public List<SelectableLevel> LevelFilters { get; internal set; }
@@ -100,11 +118,6 @@ namespace WeatherRegistry
 
     #endregion
 
-
-
-    [JsonIgnore]
-    internal WeatherConfig Config;
-
     public Weather(string name = "None", ImprovedWeatherEffect effect = default)
     {
       Plugin.logger.LogDebug($"Called Weather constructor for weather {name}");
@@ -119,8 +132,6 @@ namespace WeatherRegistry
         Effect.name = name;
       }
 
-      Config = new WeatherConfig();
-
       // {(this.Origin != WeatherOrigin.Vanilla ? $"({this.Origin})" : "")}
     }
 
@@ -130,18 +141,13 @@ namespace WeatherRegistry
 
       this.Config.Init(this);
 
-      if (DefaultWeight != _defaultWeightConfig.Value)
-      {
-        this.DefaultWeight = _defaultWeightConfig.Value;
-      }
-
       this.WeatherWeights = Config.WeatherToWeatherWeights.Value.ToDictionary(
         rarity => rarity.Weather.VanillaWeatherType,
         rarity => rarity.Weight
       );
-
       this.LevelWeights = Config.LevelWeights.Value.ToDictionary(rarity => rarity.Level, rarity => rarity.Weight);
 
+      this.LevelFilteringOption = Config._filteringOptionConfig.Value ? FilteringOption.Include : FilteringOption.Exclude;
       this.LevelFilters = Config.LevelFilters.Value.ToList();
 
       this.hideFlags = HideFlags.HideAndDontSave;

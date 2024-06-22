@@ -11,10 +11,10 @@ namespace WeatherRegistry
     internal IntegerConfigHandler DefaultWeight;
 
     [JsonIgnore]
-    internal IntegerConfigHandler ScrapAmountMultiplier;
+    internal FloatConfigHandler ScrapAmountMultiplier;
 
     [JsonIgnore]
-    internal IntegerConfigHandler ScrapValueMultiplier;
+    internal FloatConfigHandler ScrapValueMultiplier;
 
     [JsonIgnore]
     internal ConfigEntry<bool> _filteringOptionConfig { get; private set; }
@@ -44,10 +44,32 @@ namespace WeatherRegistry
         _configEntry = ConfigManager.configFile.Bind(
           configCategory,
           $"Default weight",
-          weather.DefaultWeight,
+          weather._defaultWeight,
           new ConfigDescription("The default weight of this weather", new AcceptableValueRange<int>(0, 10000))
         ),
-        DefaultValue = weather.DefaultWeight,
+        DefaultValue = weather._defaultWeight,
+      };
+
+      ScrapAmountMultiplier = new()
+      {
+        _configEntry = ConfigManager.configFile.Bind(
+          configCategory,
+          $"Scrap amount multiplier",
+          weather._scrapAmountMultiplier,
+          new ConfigDescription("Multiplier for the amount of scrap spawned", new AcceptableValueRange<float>(0, 10000))
+        ),
+        DefaultValue = weather._scrapAmountMultiplier,
+      };
+
+      ScrapValueMultiplier = new()
+      {
+        _configEntry = ConfigManager.configFile.Bind(
+          configCategory,
+          $"Scrap value multiplier",
+          weather._scrapValueMultiplier,
+          new ConfigDescription("Multiplier for the value of scrap spawned", new AcceptableValueRange<float>(0, 10000))
+        ),
+        DefaultValue = weather._scrapValueMultiplier,
       };
 
       this._filteringOptionConfig = ConfigManager.configFile.Bind(
@@ -74,7 +96,7 @@ namespace WeatherRegistry
           configCategory,
           $"Level weights",
           $"LevelName@Weight;",
-          new ConfigDescription("Semicolon-separated list of level names to filter", null)
+          new ConfigDescription("Semicolon-separated list of level weights", null)
         ),
         DefaultValue = "",
       };
@@ -85,7 +107,7 @@ namespace WeatherRegistry
           configCategory,
           $"Weather weights",
           $"WeatherName@Weight;",
-          new ConfigDescription("Semicolon-separated list of level names to filter", null)
+          new ConfigDescription("Semicolon-separated list of weather weights", null)
         ),
         DefaultValue = "",
       };

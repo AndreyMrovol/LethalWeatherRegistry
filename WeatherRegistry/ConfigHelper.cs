@@ -87,6 +87,14 @@ namespace WeatherRegistry
     }
   }
 
+  public class FloatConfigHandler : ConfigHandler<float, float>
+  {
+    public override float Value
+    {
+      get { return _configEntry.Value; }
+    }
+  }
+
   internal class ConfigHelper
   {
     internal static Dictionary<string, SelectableLevel> _dictionary = null;
