@@ -56,7 +56,7 @@ namespace WeatherRegistry
           configCategory,
           $"Scrap amount multiplier",
           weather._scrapAmountMultiplier,
-          new ConfigDescription("Multiplier for the amount of scrap spawned", new AcceptableValueRange<float>(0, 10000))
+          new ConfigDescription("Multiplier for the amount of scrap spawned", new AcceptableValueRange<float>(0, 100))
         ),
         DefaultValue = weather._scrapAmountMultiplier,
       };
@@ -67,7 +67,7 @@ namespace WeatherRegistry
           configCategory,
           $"Scrap value multiplier",
           weather._scrapValueMultiplier,
-          new ConfigDescription("Multiplier for the value of scrap spawned", new AcceptableValueRange<float>(0, 10000))
+          new ConfigDescription("Multiplier for the value of scrap spawned", new AcceptableValueRange<float>(0, 100))
         ),
         DefaultValue = weather._scrapValueMultiplier,
       };
