@@ -153,7 +153,7 @@ namespace WeatherRegistry
 
       foreach (string level in levelNames)
       {
-        SelectableLevel selectableLevel = Levels.GetValueOrDefault(level);
+        SelectableLevel selectableLevel = Levels.GetValueOrDefault(level.ToLower());
 
         Plugin.logger.LogDebug($"Selectable level: {selectableLevel}");
 
