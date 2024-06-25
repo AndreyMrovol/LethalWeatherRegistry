@@ -32,45 +32,26 @@ namespace WeatherRegistry
     {
       string configCategory = $"Weather: {weather.name}{(weather.Origin != WeatherOrigin.Vanilla ? $" ({weather.Origin})" : "")}";
 
-      // this._defaultWeightConfig = ConfigManager.configFile.Bind(
-      //   configCategory,
-      //   $"Default weight",
-      //   weather.DefaultWeight,
-      //   new ConfigDescription("The default weight of this weather", new AcceptableValueRange<int>(0, 10000))
-      // );
+      DefaultWeight = new(
+        weather._defaultWeight,
+        weather,
+        "Default weight",
+        new ConfigDescription("The default weight of this weather", new AcceptableValueRange<int>(0, 10000))
+      );
 
-      DefaultWeight = new()
-      {
-        _configEntry = ConfigManager.configFile.Bind(
-          configCategory,
-          $"Default weight",
-          weather._defaultWeight,
-          new ConfigDescription("The default weight of this weather", new AcceptableValueRange<int>(0, 10000))
-        ),
-        DefaultValue = weather._defaultWeight,
-      };
+      ScrapAmountMultiplier = new(
+        weather._scrapAmountMultiplier,
+        weather,
+        "Scrap amount multiplier",
+        new ConfigDescription("Multiplier for the amount of scrap spawned", new AcceptableValueRange<float>(0, 100))
+      );
 
-      ScrapAmountMultiplier = new()
-      {
-        _configEntry = ConfigManager.configFile.Bind(
-          configCategory,
-          $"Scrap amount multiplier",
-          weather._scrapAmountMultiplier,
-          new ConfigDescription("Multiplier for the amount of scrap spawned", new AcceptableValueRange<float>(0, 100))
-        ),
-        DefaultValue = weather._scrapAmountMultiplier,
-      };
-
-      ScrapValueMultiplier = new()
-      {
-        _configEntry = ConfigManager.configFile.Bind(
-          configCategory,
-          $"Scrap value multiplier",
-          weather._scrapValueMultiplier,
-          new ConfigDescription("Multiplier for the value of scrap spawned", new AcceptableValueRange<float>(0, 100))
-        ),
-        DefaultValue = weather._scrapValueMultiplier,
-      };
+      ScrapValueMultiplier = new(
+        weather._scrapValueMultiplier,
+        weather,
+        "Scrap value multiplier",
+        new ConfigDescription("Multiplier for the value of scrap spawned", new AcceptableValueRange<float>(0, 100))
+      );
 
       this._filteringOptionConfig = ConfigManager.configFile.Bind(
         configCategory,
@@ -79,38 +60,26 @@ namespace WeatherRegistry
         new ConfigDescription("Whether to make the filter a whitelist (false is blacklist, true is whitelist)", null)
       );
 
-      LevelFilters = new()
-      {
-        _configEntry = ConfigManager.configFile.Bind(
-          configCategory,
-          $"Level filter",
-          $"{String.Join(";", weather.DefaultLevelFilters)};",
-          new ConfigDescription("Semicolon-separated list of level names to filter", null)
-        ),
-        DefaultValue = $"{String.Join(";", weather.DefaultLevelFilters)};",
-      };
+      LevelFilters = new(
+        $"{String.Join(";", weather.DefaultLevelFilters)};",
+        weather,
+        "Level filter",
+        new ConfigDescription("Semicolon-separated list of level names to filter", null)
+      );
 
-      LevelWeights = new()
-      {
-        _configEntry = ConfigManager.configFile.Bind(
-          configCategory,
-          $"Level weights",
-          $"LevelName@Weight;",
-          new ConfigDescription("Semicolon-separated list of level weights", null)
-        ),
-        DefaultValue = "",
-      };
+      LevelWeights = new(
+        "LevelName@Weight;",
+        weather,
+        "Level weights",
+        new ConfigDescription("Semicolon-separated list of level weights", null)
+      );
 
-      WeatherToWeatherWeights = new()
-      {
-        _configEntry = ConfigManager.configFile.Bind(
-          configCategory,
-          $"Weather weights",
-          $"{(Defaults.VanillaWeatherToWeatherWeights.TryGetValue(weather.VanillaWeatherType, out string weights) ? weights : "")}",
-          new ConfigDescription("Semicolon-separated list of weather weights", null)
-        ),
-        DefaultValue = "",
-      };
+      WeatherToWeatherWeights = new(
+        $"{(Defaults.VanillaWeatherToWeatherWeights.TryGetValue(weather.VanillaWeatherType, out string weights) ? weights : "WeatherName@Weight;")}",
+        weather,
+        "Weather weights",
+        new ConfigDescription("Semicolon-separated list of weather weights", null)
+      );
     }
   }
 }

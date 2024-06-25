@@ -35,64 +35,87 @@ namespace WeatherRegistry
     // and this will resolve to string
     // so bepinex won't shit the bed hehe
 
-    internal ConfigEntry<CT> _configEntry { get; set; }
+    internal ConfigEntry<CT> ConfigEntry { get; }
 
-    internal CT DefaultValue { get; set; }
+    internal CT DefaultValue { get; }
 
     public virtual T Value { get; } = default(T);
 
-    // forgive me for doing this
+    public ConfigHandler(CT defaultValue, Weather weather, string configTitle, ConfigDescription configDescription = null)
+    {
+      Plugin.logger.LogFatal($"Called Init constructor with default value: {defaultValue}");
+
+      DefaultValue = defaultValue;
+      string configCategory = $"Weather: {weather.name}{(weather.Origin != WeatherOrigin.Vanilla ? $" ({weather.Origin})" : "")}";
+
+      ConfigEntry = ConfigManager.configFile.Bind(configCategory, configTitle, DefaultValue, configDescription);
+    }
   }
 
   public class LevelListConfigHandler : ConfigHandler<SelectableLevel[], string>
   {
+    public LevelListConfigHandler(string defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
+      : base(defaultValue, weather, configTitle, configDescription) { }
+
     public override SelectableLevel[] Value
     {
       get
       {
 
-        return ConfigHelper.ConvertStringToLevels(_configEntry.Value);
+        return ConfigHelper.ConvertStringToLevels(ConfigEntry.Value);
       }
     }
   }
 
   public class LevelWeightsConfigHandler : ConfigHandler<LevelRarity[], string>
   {
+    public LevelWeightsConfigHandler(string defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
+      : base(defaultValue, weather, configTitle, configDescription) { }
+
     public override LevelRarity[] Value
     {
       get
       {
 
-        return ConfigHelper.ConvertStringToLevelRarities(_configEntry.Value);
+        return ConfigHelper.ConvertStringToLevelRarities(ConfigEntry.Value);
       }
     }
   }
 
   public class WeatherWeightsConfigHandler : ConfigHandler<WeatherRarity[], string>
   {
+    public WeatherWeightsConfigHandler(string defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
+      : base(defaultValue, weather, configTitle, configDescription) { }
+
     public override WeatherRarity[] Value
     {
       get
       {
 
-        return ConfigHelper.ConvertStringToWeatherWeights(_configEntry.Value);
+        return ConfigHelper.ConvertStringToWeatherWeights(ConfigEntry.Value);
       }
     }
   }
 
   public class IntegerConfigHandler : ConfigHandler<int, int>
   {
+    public IntegerConfigHandler(int defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
+      : base(defaultValue, weather, configTitle, configDescription) { }
+
     public override int Value
     {
-      get { return _configEntry.Value; }
+      get { return ConfigEntry.Value; }
     }
   }
 
   public class FloatConfigHandler : ConfigHandler<float, float>
   {
+    public FloatConfigHandler(float defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
+      : base(defaultValue, weather, configTitle, configDescription) { }
+
     public override float Value
     {
-      get { return _configEntry.Value; }
+      get { return ConfigEntry.Value; }
     }
   }
 
@@ -218,13 +241,13 @@ namespace WeatherRegistry
 
         if (rarityData.Length != 2)
         {
-          Plugin.logger.LogError($"Invalid rarity data: {rarity}");
+          Plugin.logger.LogWarning($"Invalid rarity data: {rarity}");
           continue;
         }
 
         if (!int.TryParse(rarityData[1], out int weight))
         {
-          Plugin.logger.LogError($"Invalid rarity weight: {rarityData[1]} - not a number!");
+          Plugin.logger.LogWarning($"Invalid rarity weight: {rarityData[1]} - not a number!");
           continue;
         }
 
@@ -248,13 +271,13 @@ namespace WeatherRegistry
 
         if (rarityData.Length != 2)
         {
-          Plugin.logger.LogError($"Invalid rarity data: {rarity}");
+          Plugin.logger.LogWarning($"Invalid rarity data: {rarity}");
           continue;
         }
 
         if (!int.TryParse(rarityData[1], out int weight))
         {
-          Plugin.logger.LogError($"Invalid rarity weight: {rarityData[1]} - not a number!");
+          Plugin.logger.LogWarning($"Invalid rarity weight: {rarityData[1]} - not a number!");
           continue;
         }
 
@@ -262,7 +285,7 @@ namespace WeatherRegistry
 
         if (level == null)
         {
-          Plugin.logger.LogError($"Invalid level name: {rarityData[0]}");
+          Plugin.logger.LogWarning($"Invalid level name: {rarityData[0]}");
           continue;
         }
 
@@ -286,13 +309,13 @@ namespace WeatherRegistry
 
         if (rarityData.Length != 2)
         {
-          Plugin.logger.LogError($"Invalid rarity data: {rarity}");
+          Plugin.logger.LogWarning($"Invalid rarity data: {rarity}");
           continue;
         }
 
         if (!int.TryParse(rarityData[1], out int weight))
         {
-          Plugin.logger.LogError($"Invalid rarity weight: {rarityData[1]} - not a number!");
+          Plugin.logger.LogWarning($"Invalid rarity weight: {rarityData[1]} - not a number!");
           continue;
         }
 
@@ -300,7 +323,7 @@ namespace WeatherRegistry
 
         if (weather == null)
         {
-          Plugin.logger.LogError($"Invalid weather name: {rarityData[0]}");
+          Plugin.logger.LogWarning($"Invalid weather name: {rarityData[0]}");
           continue;
         }
 
