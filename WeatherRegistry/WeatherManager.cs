@@ -74,8 +74,6 @@ namespace WeatherRegistry
     // weathertweaks copy-paste:
     internal static List<LevelWeatherType> GetPlanetPossibleWeathers(SelectableLevel level)
     {
-      Plugin.logger.LogDebug($"Getting possible weathers for {level.PlanetName}");
-
       List<LevelWeatherType> possibleWeathers = level
         .randomWeathers.ToList()
         .Where(randomWeather => randomWeather.weatherType != LevelWeatherType.None)

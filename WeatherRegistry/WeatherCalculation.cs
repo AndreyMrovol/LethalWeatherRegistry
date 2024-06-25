@@ -96,6 +96,7 @@ namespace WeatherRegistry
         }
         catch { }
       }
+      Plugin.logger.LogMessage("-------------");
 
       return NewWeather;
     }
