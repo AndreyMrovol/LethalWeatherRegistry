@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BepInEx.Configuration;
@@ -7,7 +8,12 @@ namespace WeatherRegistry
 {
   public class Rarity
   {
-    public int Weight { get; set; }
+    private int _weight;
+    public int Weight
+    {
+      get { return _weight; }
+      set { _weight = Math.Clamp(value, 0, 10000); }
+    }
   }
 
   public class NameRarity : Rarity
