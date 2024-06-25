@@ -131,7 +131,11 @@ namespace WeatherRegistry
           weatherWeight = levelWeight;
         }
         // try to get previous day weather (so - at this point - the current one)
-        else if (weatherWeights.TryGetValue(level.currentWeather, out int weatherWeightFromWeather))
+        // but not on first day because that's completely random
+        else if (
+          weatherWeights.TryGetValue(level.currentWeather, out int weatherWeightFromWeather)
+          && StartOfRound.Instance.gameStats.daysSpent != 0
+        )
         {
           // (2) => weather-weather weights
           Plugin.logger.LogDebug($"{typeOfWeather.Name} has weather>weather weight {weatherWeightFromWeather}");
