@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BepInEx.Configuration;
 using Newtonsoft.Json;
 
@@ -68,14 +69,14 @@ namespace WeatherRegistry
       );
 
       LevelWeights = new(
-        "LevelName@Weight;",
+        $"{String.Join(';', weather.DefaultLevelWeights)};",
         weather,
         "Level weights",
         new ConfigDescription("Semicolon-separated list of level weights", null)
       );
 
       WeatherToWeatherWeights = new(
-        $"{(Defaults.VanillaWeatherToWeatherWeights.TryGetValue(weather.VanillaWeatherType, out string weights) ? weights : "WeatherName@Weight;")}",
+        $"{(Defaults.VanillaWeatherToWeatherWeights.TryGetValue(weather.VanillaWeatherType, out string weights) ? weights : $"{String.Join(';', weather.DefaultWeatherToWeatherWeights)};")}",
         weather,
         "Weather weights",
         new ConfigDescription("Semicolon-separated list of weather weights", null)

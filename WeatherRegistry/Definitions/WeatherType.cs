@@ -85,6 +85,10 @@ namespace WeatherRegistry
     [JsonIgnore]
     public string[] DefaultLevelFilters { get; set; } = ["Gordion"];
 
+    public string[] DefaultLevelWeights { get; set; } = ["MoonName@50"];
+
+    public string[] DefaultWeatherToWeatherWeights { get; set; } = ["WeatherName@50"];
+
     [property: SerializeField]
     public float ScrapAmountMultiplier
     {
