@@ -23,10 +23,6 @@ source = "../WeatherRegistry/bin/Release/netstandard2.1/WeatherRegistry.dll"
 target = "plugins/WeatherRegistry/"
 
 [[build.copy]]
-source = "bundles"
-target = "plugins/WeatherRegistry/"
-
-[[build.copy]]
 source = "../CHANGELOG.md"
 target = "/"
 
