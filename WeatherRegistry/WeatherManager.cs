@@ -97,7 +97,7 @@ namespace WeatherRegistry
       return possibleWeathers;
     }
 
-    internal static List<LevelWeatherType> GetPlanetWeightedList(SelectableLevel level, Dictionary<LevelWeatherType, int> weights)
+    internal static List<LevelWeatherType> GetPlanetWeightedList(SelectableLevel level)
     {
       var weatherList = new List<LevelWeatherType>();
 
@@ -113,9 +113,34 @@ namespace WeatherRegistry
         // clone the object
         Weather typeOfWeather = GetWeather(weather);
 
-        var weatherWeight = weights.TryGetValue(typeOfWeather.VanillaWeatherType, out int weight) ? weight : typeOfWeather.DefaultWeight;
+        // we have 3 weights possible:
+        // 1. level weight
+        // 2. weather-weather weights
+        // 3. default weight
+        // we want to execute them in this exact order
 
-        Plugin.logger.LogDebug($"{typeOfWeather.Name} has weight {weatherWeight}");
+        Dictionary<SelectableLevel, int> levelWeights = typeOfWeather.LevelWeights;
+        Dictionary<LevelWeatherType, int> weatherWeights = typeOfWeather.WeatherWeights;
+
+        var weatherWeight = typeOfWeather.DefaultWeight;
+
+        if (levelWeights.TryGetValue(level, out int levelWeight))
+        {
+          // (1) => level weight
+          Plugin.logger.LogDebug($"{typeOfWeather.Name} has level weight {levelWeight}");
+          weatherWeight = levelWeight;
+        }
+        // try to get previous day weather (so - at this point - the current one)
+        else if (weatherWeights.TryGetValue(level.currentWeather, out int weatherWeightFromWeather))
+        {
+          // (2) => weather-weather weights
+          Plugin.logger.LogDebug($"{typeOfWeather.Name} has weather>weather weight {weatherWeightFromWeather}");
+          weatherWeight = weatherWeightFromWeather;
+        }
+        else
+        {
+          Plugin.logger.LogDebug($"{typeOfWeather.Name} has default weight {weatherWeight}");
+        }
 
         for (var i = 0; i < weatherWeight; i++)
         {

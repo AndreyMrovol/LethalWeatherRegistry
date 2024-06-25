@@ -59,8 +59,8 @@ namespace WeatherRegistry
         // possible weathers taken from level.randomWeathers (modified by me)
         // use random for seeded randomness
 
-        Plugin.logger.LogDebug("-------------");
-        Plugin.logger.LogDebug($"{level.PlanetName}");
+        Plugin.logger.LogMessage("-------------");
+        Plugin.logger.LogMessage($"{level.PlanetName}");
         Plugin.logger.LogDebug($"previousDayWeather: {previousDayWeather[level.PlanetName]}");
 
         NewWeather[level.PlanetName] = LevelWeatherType.None;
@@ -72,7 +72,7 @@ namespace WeatherRegistry
         Dictionary<LevelWeatherType, int> weights = previousDayWeatherWeather.WeatherWeights;
 
         // get the weighted list of weathers from config
-        var weatherWeights = WeatherManager.GetPlanetWeightedList(level, weights);
+        var weatherWeights = WeatherManager.GetPlanetWeightedList(level);
 
         if (weatherWeights.Count == 0)
         {
@@ -80,16 +80,17 @@ namespace WeatherRegistry
           NewWeather[level.PlanetName] = LevelWeatherType.None;
           continue;
         }
+
         var selectedWeather = weatherWeights[random.Next(0, weatherWeights.Count)];
         Weather weather = WeatherManager.GetWeather(selectedWeather);
 
         NewWeather[level.PlanetName] = weather.VanillaWeatherType;
         WeatherManager.CurrentWeathers[level] = weather;
 
-        Plugin.logger.LogDebug($"Selected weather: {weather.Name}");
+        Plugin.logger.LogMessage($"Selected weather: {weather.Name}");
         try
         {
-          Plugin.logger.LogDebug(
+          Plugin.logger.LogMessage(
             $"Chance for that was {weatherWeights.Where(x => x == selectedWeather).Count()} / {weatherWeights.Count} ({(float)weatherWeights.Where(x => x == selectedWeather).Count() / weatherWeights.Count * 100}%)"
           );
         }

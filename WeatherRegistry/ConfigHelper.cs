@@ -98,14 +98,14 @@ namespace WeatherRegistry
 
   internal class ConfigHelper
   {
-    internal static Dictionary<string, SelectableLevel> _dictionary = null;
+    internal static Dictionary<string, SelectableLevel> _levelsDictionary = null;
     public static Dictionary<string, SelectableLevel> StringToLevel
     {
       get
       {
-        if (_dictionary != null)
+        if (_levelsDictionary != null)
         {
-          return _dictionary;
+          return _levelsDictionary;
         }
 
         Dictionary<string, SelectableLevel> Levels = [];
@@ -119,13 +119,49 @@ namespace WeatherRegistry
             Levels.TryAdd(level.name.ToLower(), level);
           });
 
-        Levels.Values.Do(value => Plugin.logger.LogDebug($"Level dictionary value: {value}"));
-
-        _dictionary = Levels;
+        _levelsDictionary = Levels;
 
         // return the result of this setter
         return Levels;
       }
+    }
+
+    internal static Dictionary<string, Weather> _weathersDictionary = null;
+    public static Dictionary<string, Weather> StringToWeather
+    {
+      get
+      {
+        if (_weathersDictionary != null)
+        {
+          return _weathersDictionary;
+        }
+
+        Dictionary<string, Weather> Weathers = [];
+
+        WeatherManager
+          .Weathers.ToList()
+          .ForEach(weather =>
+          {
+            Weathers.TryAdd(weather.name.ToLower(), weather);
+            Weathers.TryAdd(weather.Name.ToLower(), weather);
+            Weathers.TryAdd(((int)weather.VanillaWeatherType).ToString(), weather);
+          });
+
+        _weathersDictionary = Weathers;
+
+        // return the result of this setter
+        return Weathers;
+      }
+    }
+
+    public static SelectableLevel ResolveStringToLevel(string str)
+    {
+      return StringToLevel.GetValueOrDefault(str.ToLower());
+    }
+
+    public static Weather ResolveStringToWeather(string str)
+    {
+      return StringToWeather.GetValueOrDefault(str.ToLower());
     }
 
     // straight-up copied from LLL (it's so fucking useful)
@@ -156,7 +192,7 @@ namespace WeatherRegistry
 
       foreach (string level in levelNames)
       {
-        SelectableLevel selectableLevel = Levels.GetValueOrDefault(level.ToLower());
+        SelectableLevel selectableLevel = ResolveStringToLevel(level);
 
         Plugin.logger.LogDebug($"String {level} resolved to selectable level: {selectableLevel} (is null: {selectableLevel == null})");
 
@@ -222,7 +258,7 @@ namespace WeatherRegistry
           continue;
         }
 
-        SelectableLevel level = StartOfRound.Instance.levels.FirstOrDefault(l => l.PlanetName == rarityData[0]);
+        SelectableLevel level = ResolveStringToLevel(rarityData[0]);
 
         if (level == null)
         {
@@ -260,7 +296,7 @@ namespace WeatherRegistry
           continue;
         }
 
-        Weather weather = WeatherManager.Weathers.FirstOrDefault(w => w.name == rarityData[0]);
+        Weather weather = ResolveStringToWeather(rarityData[0]);
 
         if (weather == null)
         {

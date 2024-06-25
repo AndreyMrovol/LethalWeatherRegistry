@@ -28,6 +28,17 @@ namespace WeatherRegistry
         { LevelWeatherType.Eclipsed, new Color(1f, 0f, 0f, 1f) }
       };
 
+    internal static Dictionary<LevelWeatherType, string> VanillaWeatherToWeatherWeights =
+      new()
+      {
+        { LevelWeatherType.None, "None@160; Rainy@100; Stormy@70; Flooded@20; Foggy@40; Eclipsed@10" },
+        { LevelWeatherType.Rainy, "None@100; Rainy@60; Stormy@40; Flooded@30; Foggy@50; Eclipsed@20" },
+        { LevelWeatherType.Stormy, "None@160; Rainy@110; Stormy@10; Flooded@120; Foggy@20; Eclipsed@80" },
+        { LevelWeatherType.Flooded, "None@160; Rainy@60; Stormy@50; Flooded@10; Foggy@60; Eclipsed@40" },
+        { LevelWeatherType.Foggy, "None@200; Rainy@60; Stormy@50; Flooded@10; Foggy@30; Eclipsed@20" },
+        { LevelWeatherType.Eclipsed, "None@300; Rainy@40; Stormy@16; Flooded@20; Foggy@60; Eclipsed@10" }
+      };
+
     internal static Color LethalLibColor = new(r: 0f, g: 0.44f, b: 0.76f, a: 1f);
   }
 }

@@ -106,7 +106,7 @@ namespace WeatherRegistry
         _configEntry = ConfigManager.configFile.Bind(
           configCategory,
           $"Weather weights",
-          $"WeatherName@Weight;",
+          $"{(Defaults.VanillaWeatherToWeatherWeights.TryGetValue(weather.VanillaWeatherType, out string weights) ? weights : "")}",
           new ConfigDescription("Semicolon-separated list of weather weights", null)
         ),
         DefaultValue = "",
