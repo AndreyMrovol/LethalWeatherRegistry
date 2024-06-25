@@ -112,7 +112,6 @@ namespace WeatherRegistry
 
     internal static void RegisterPrefabs(NetworkManager networkManager)
     {
-      //DebugHelper.Log("Game NetworkManager Start");
       Plugin.logger.LogWarning("Registering NetworkPrefabs in NetworkManager");
 
       List<GameObject> addedNetworkPrefabs = new List<GameObject>();
@@ -129,7 +128,6 @@ namespace WeatherRegistry
         Plugin.logger.LogDebug("Trying To Register Prefab: " + queuedNetworkPrefab);
         if (!addedNetworkPrefabs.Contains(queuedNetworkPrefab))
         {
-          //DebugHelper.Log("Trying To Register Prefab: " + queuedNetworkPrefab);
           networkManager.AddNetworkPrefab(queuedNetworkPrefab);
           addedNetworkPrefabs.Add(queuedNetworkPrefab);
         }

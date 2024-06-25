@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace WeatherRegistry
 {
-  public class WeatherController
+  public static class WeatherController
   {
     public static void ChangeCurrentWeather(Weather weather)
     {

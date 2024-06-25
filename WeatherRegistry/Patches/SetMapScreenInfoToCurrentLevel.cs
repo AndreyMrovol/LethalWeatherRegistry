@@ -48,7 +48,6 @@ namespace WeatherRegistry.Patches
         return currentWeatherString;
       }
 
-      // string outputString = currentWeatherString;
       string outputString = "";
       Regex split = new(@"(\/)|(\?)|(>)|(\+)");
 

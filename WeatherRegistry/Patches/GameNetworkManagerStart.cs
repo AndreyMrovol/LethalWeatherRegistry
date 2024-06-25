@@ -24,9 +24,6 @@ namespace WeatherRegistry.Patches
       var hash = MD5.Create().ComputeHash(Encoding.UTF8.GetBytes("weatherregistryweathersync"));
       prefab.GetComponent<NetworkObject>().GlobalObjectIdHash = BitConverter.ToUInt32(hash, 0);
 
-      // prefab.AddComponent<WeatherSync>();
-      // prefab.SetActive(false);
-
       prefab.AddComponent<WeatherSync>();
       prefab.GetComponent<NetworkObject>().DontDestroyWithOwner = true;
       prefab.GetComponent<NetworkObject>().SceneMigrationSynchronization = true;

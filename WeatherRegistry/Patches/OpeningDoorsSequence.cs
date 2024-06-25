@@ -11,9 +11,9 @@ namespace WeatherRegistry
   [HarmonyPatch(typeof(StartOfRound))]
   internal class OpeningDoorsSequencePatch
   {
-    // // to be completely honest, I have no idea what I'm doing
-    // // https://github.com/SylviBlossom/LC-SimpleWeatherDisplay/blob/2d252b92dcd4d8ef259b8072d9339ff5ccdc4d0b/src/Plugin.cs#L127-L153
-    // // this is just this, but repurposed
+    // to be completely honest, I have no idea what I'm doing
+    // https://github.com/SylviBlossom/LC-SimpleWeatherDisplay/blob/2d252b92dcd4d8ef259b8072d9339ff5ccdc4d0b/src/Plugin.cs#L127-L153
+    // this is just this, but repurposed
 
     [HarmonyILManipulator]
     [HarmonyPatch(typeof(StartOfRound), "openingDoorsSequence", MethodType.Enumerator)]

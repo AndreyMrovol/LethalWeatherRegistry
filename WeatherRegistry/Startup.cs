@@ -57,23 +57,8 @@ namespace WeatherRegistry.Patches
 
       WeatherManager.Reset();
 
-      // GameObject.FindObjectsOfType<Weather>().ToList().ForEach(gameobject => GameObject.Destroy(gameobject));
-      // GameObject.FindObjectsOfType<ImprovedWeatherEffect>().ToList().ForEach(gameobject => GameObject.Destroy(gameobject));
-
       WeatherEffect[] effects = TimeOfDay.Instance.effects;
       List<WeatherEffect> weatherList = effects.ToList();
-
-      // this shit was not working lmao
-      // a hacky bit of magic to reset vanilla effects array after reloading lobby
-      // if (vanillaEffectsArray == null)
-      // {
-      //   vanillaEffectsArray = effects;
-      // }
-      // else
-      // {
-      //   Plugin.logger.LogWarning("Vanilla effects array is not null");
-      //   effects = vanillaEffectsArray;
-      // }
 
       if (effects == null || effects.Count() == 0)
       {
@@ -100,7 +85,6 @@ namespace WeatherRegistry.Patches
       WeatherManager.NoneWeather = noneWeather;
 
       // Extend the weather enum to have the modded weathers
-
       for (int i = 0; i < effects.Count(); i++)
       {
         WeatherEffect effect = effects[i];
@@ -143,7 +127,6 @@ namespace WeatherRegistry.Patches
       }
 
       // at this point we need to assing enum value for every registered modded weather that's not from lethallib
-
       int biggestKeyInModdedWeathersDictionary = Enum.GetValues(typeof(LevelWeatherType)).Length - 1;
       if (WeatherManager.ModdedWeatherEnumExtension.Count > 0)
       {
@@ -242,8 +225,6 @@ namespace WeatherRegistry.Patches
         Plugin.logger.LogWarning($"Weather {weather.name} has {weather.LevelFilteringOption.ToString()} filtering option set up");
 
         AddWeatherToLevels(weather, levels, LevelsToApply);
-
-        // Plugin.logger.LogInfo($"Registered weather: {weather.Name} under ID {weather.VanillaWeatherType}");
       }
 
       var possibleWeathersTable = new ConsoleTables.ConsoleTable("Planet", "Random weathers");

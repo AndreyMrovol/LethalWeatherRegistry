@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace WeatherRegistry
 {
-  public class WeatherManager
+  public static class WeatherManager
   {
     internal static bool IsSetupFinished = false;
 
@@ -54,8 +54,8 @@ namespace WeatherRegistry
 
       Settings.ScreenMapColors.Clear();
 
-      ConfigHelper._weathersDictionary = null;
-      ConfigHelper._levelsDictionary = null;
+      ConfigHelper.StringToWeather = null;
+      ConfigHelper.StringToLevel = null;
 
       RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherRegistry);
     }
@@ -78,8 +78,7 @@ namespace WeatherRegistry
     internal static List<LevelWeatherType> GetPlanetPossibleWeathers(SelectableLevel level)
     {
       List<LevelWeatherType> possibleWeathers = level
-        .randomWeathers.ToList()
-        .Where(randomWeather => randomWeather.weatherType != LevelWeatherType.None)
+        .randomWeathers.Where(randomWeather => randomWeather.weatherType != LevelWeatherType.None)
         .ToList()
         .Select(x => x.weatherType)
         .ToList();

@@ -9,7 +9,6 @@ namespace WeatherRegistry
   public class WeatherCalculation
   {
     internal static Dictionary<string, LevelWeatherType> previousDayWeather = [];
-    internal static SelectableLevel CompanyMoon;
 
     internal static Dictionary<string, LevelWeatherType> NewWeathers(StartOfRound startOfRound)
     {
@@ -24,20 +23,7 @@ namespace WeatherRegistry
       Dictionary<string, LevelWeatherType> NewWeather = [];
 
       int seed = startOfRound.randomMapSeed + 31;
-      System.Random random = new System.Random(seed);
-
-      List<LevelWeatherType> VanillaWeatherTypes =
-      [
-        LevelWeatherType.None,
-        LevelWeatherType.DustClouds,
-        LevelWeatherType.Rainy,
-        LevelWeatherType.Stormy,
-        LevelWeatherType.Foggy,
-        LevelWeatherType.Flooded,
-        LevelWeatherType.Eclipsed,
-      ];
-
-      CompanyMoon = StartOfRound.Instance.levels.ToList().Find(level => level.PlanetName == "71 Gordion");
+      System.Random random = new(seed);
 
       List<SelectableLevel> levels = startOfRound.levels.ToList();
       int day = startOfRound.gameStats.daysSpent;
@@ -65,13 +51,7 @@ namespace WeatherRegistry
 
         NewWeather[level.PlanetName] = LevelWeatherType.None;
 
-        // use weighted lists
-        // get all possible random weathers
-
-        Weather previousDayWeatherWeather = WeatherManager.GetWeather(previousDayWeather[level.PlanetName]);
-        Dictionary<LevelWeatherType, int> weights = previousDayWeatherWeather.WeatherWeights;
-
-        // get the weighted list of weathers from config
+        // get the weighted list of weathers
         var weatherWeights = WeatherManager.GetPlanetWeightedList(level);
 
         if (weatherWeights.Count == 0)

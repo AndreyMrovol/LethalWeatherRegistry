@@ -31,7 +31,7 @@ namespace WeatherRegistry
     public Weather Weather { get; set; }
   }
 
-  public class ConfigHandler<T, CT>
+  public abstract class ConfigHandler<T, CT>
   {
     // i need to make some stupid shit
     // basically a property that wraps around Bepinex ConfigEntry
@@ -39,13 +39,13 @@ namespace WeatherRegistry
     // and a setter that does <something>
 
     // and this will resolve to string
-    // so bepinex won't shit the bed hehe
+    // so bepinex won't shit the bed
 
     internal ConfigEntry<CT> ConfigEntry { get; }
 
     internal CT DefaultValue { get; }
 
-    public virtual T Value { get; } = default(T);
+    public abstract T Value { get; }
 
     public ConfigHandler(CT defaultValue, Weather weather, string configTitle, ConfigDescription configDescription = null)
     {
@@ -127,7 +127,7 @@ namespace WeatherRegistry
 
   internal class ConfigHelper
   {
-    internal static Dictionary<string, SelectableLevel> _levelsDictionary = null;
+    private static Dictionary<string, SelectableLevel> _levelsDictionary = null;
     public static Dictionary<string, SelectableLevel> StringToLevel
     {
       get
@@ -150,12 +150,12 @@ namespace WeatherRegistry
 
         _levelsDictionary = Levels;
 
-        // return the result of this setter
         return Levels;
       }
+      set { _levelsDictionary = value; }
     }
 
-    internal static Dictionary<string, Weather> _weathersDictionary = null;
+    private static Dictionary<string, Weather> _weathersDictionary = null;
     public static Dictionary<string, Weather> StringToWeather
     {
       get
@@ -178,9 +178,9 @@ namespace WeatherRegistry
 
         _weathersDictionary = Weathers;
 
-        // return the result of this setter
         return Weathers;
       }
+      set { _weathersDictionary = value; }
     }
 
     public static SelectableLevel ResolveStringToLevel(string str)
@@ -202,7 +202,7 @@ namespace WeatherRegistry
     // convert string to array of strings
     public static string[] ConvertStringToArray(string str)
     {
-      string[] output = str.Split(';').Where(s => !string.IsNullOrWhiteSpace(s)).ToArray().Select(s => s.Trim()).ToArray();
+      string[] output = str.Split(';').Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).ToArray();
 
       return output;
     }
@@ -210,8 +210,6 @@ namespace WeatherRegistry
     public static SelectableLevel[] ConvertStringToLevels(string str)
     {
       string[] levelNames = ConvertStringToArray(str);
-      Dictionary<string, SelectableLevel> Levels = StringToLevel;
-      // StartOfRound.Instance.levels.ToDictionary(level => GetNumberlessName(level), level => level);
       List<SelectableLevel> output = [];
 
       if (levelNames.Count() == 0)
