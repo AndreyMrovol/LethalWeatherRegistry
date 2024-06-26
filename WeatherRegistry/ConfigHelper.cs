@@ -49,8 +49,6 @@ namespace WeatherRegistry
 
     public ConfigHandler(CT defaultValue, Weather weather, string configTitle, ConfigDescription configDescription = null)
     {
-      Plugin.logger.LogFatal($"Called Init constructor with default value: {defaultValue}");
-
       DefaultValue = defaultValue;
       string configCategory = $"Weather: {weather.name}{(weather.Origin != WeatherOrigin.Vanilla ? $" ({weather.Origin})" : "")}";
 
