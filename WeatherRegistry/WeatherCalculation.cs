@@ -51,27 +51,16 @@ namespace WeatherRegistry
 
         NewWeather[level.PlanetName] = LevelWeatherType.None;
 
-        // get the weighted list of weathers
-        var weatherWeights = WeatherManager.GetPlanetWeightedList(level);
+        (Weather selectedWeather, Dictionary<Weather, int> weights) = WeatherManager.PickNewRandomWeather(level);
 
-        if (weatherWeights.Count == 0)
-        {
-          Plugin.logger.LogWarning($"No possible weathers, setting to None");
-          NewWeather[level.PlanetName] = LevelWeatherType.None;
-          continue;
-        }
+        NewWeather[level.PlanetName] = selectedWeather.VanillaWeatherType;
+        WeatherManager.CurrentWeathers[level] = selectedWeather;
 
-        var selectedWeather = weatherWeights[random.Next(0, weatherWeights.Count)];
-        Weather weather = WeatherManager.GetWeather(selectedWeather);
-
-        NewWeather[level.PlanetName] = weather.VanillaWeatherType;
-        WeatherManager.CurrentWeathers[level] = weather;
-
-        Plugin.logger.LogMessage($"Selected weather: {weather.Name}");
+        Plugin.logger.LogMessage($"Selected weather: {selectedWeather.Name}");
         try
         {
           Plugin.logger.LogMessage(
-            $"Chance for that was {weatherWeights.Where(x => x == selectedWeather).Count()} / {weatherWeights.Count} ({(float)weatherWeights.Where(x => x == selectedWeather).Count() / weatherWeights.Count * 100}%)"
+            $"Chance for that was {weights[selectedWeather]} / {weights.Values.Sum()} ({(float)weights[selectedWeather] / weights.Values.Sum() * 100}%)"
           );
         }
         catch { }

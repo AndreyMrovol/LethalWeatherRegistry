@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
 
 namespace WeatherRegistry
@@ -97,9 +98,9 @@ namespace WeatherRegistry
       return possibleWeathers;
     }
 
-    internal static List<LevelWeatherType> GetPlanetWeightedList(SelectableLevel level)
+    internal static Dictionary<Weather, int> GetPlanetWeightedList(SelectableLevel level)
     {
-      var weatherList = new List<LevelWeatherType>();
+      Dictionary<Weather, int> weightedList = [];
 
       List<LevelWeatherType> weatherTypes = GetPlanetPossibleWeathers(level);
 
@@ -146,13 +147,45 @@ namespace WeatherRegistry
           Plugin.logger.LogDebug($"{typeOfWeather.Name} has default weight {weatherWeight}");
         }
 
-        for (var i = 0; i < weatherWeight; i++)
+        weightedList.Add(typeOfWeather, weatherWeight);
+      }
+
+      return weightedList;
+    }
+
+    internal static (Weather, Dictionary<Weather, int>) PickNewRandomWeather(SelectableLevel level)
+    {
+      Dictionary<Weather, int> weightedList = GetPlanetWeightedList(level);
+
+      if (weightedList.Count == 0)
+      {
+        Plugin.logger.LogError("Weighted list is empty");
+        return (WeatherManager.NoneWeather, weightedList);
+      }
+
+      // sum of all weights
+      int sum = weightedList.Values.Sum();
+
+      if (sum <= 0)
+      {
+        Plugin.logger.LogError("Sum of all weights is 0");
+        return (WeatherManager.NoneWeather, weightedList);
+      }
+
+      int roll = new System.Random().Next(0, sum);
+      int total = 0;
+
+      foreach (KeyValuePair<Weather, int> pair in weightedList.OrderByDescending(v => v.Value))
+      {
+        total += pair.Value;
+
+        if (roll <= total)
         {
-          weatherList.Add(weather);
+          return (pair.Key, weightedList);
         }
       }
 
-      return weatherList;
+      return (weightedList.Keys.FirstOrDefault(), weightedList);
     }
 
     internal static Weather GetCurrentWeather(SelectableLevel level)
