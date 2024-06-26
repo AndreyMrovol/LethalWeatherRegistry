@@ -46,22 +46,6 @@ jobs:
           name: nupkg-build
           path: ./*/bin/Release/*.nupkg
 
-  upload-release-artifacts:
-    name: Upload Release Artifacts
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fetch Sources
-        uses: actions/checkout@v4
-
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-
-      - name: Upload artifacts to Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ github.event.release.tag_name }} thunderstore-build/*/dist/*.zip nupkg-build/*/bin/Release/*.nupkg
-
   deploy-nuget:
     name: Deploy to NuGet
     needs: build
@@ -115,3 +99,19 @@ jobs:
           TCLI_AUTH_TOKEN: ${{ secrets.THUNDERSTORE_API_KEY }}
         run: |
           dotnet build -target:PublishThunderstore
+
+  upload-release-artifacts:
+    name: Add artifacts to Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Upload artifacts to Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ github.event.release.tag_name }} thunderstore-build/*/dist/*.zip nupkg-build/*/bin/Release/*.nupkg
