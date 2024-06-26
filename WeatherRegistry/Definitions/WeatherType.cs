@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using BepInEx.Configuration;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -131,14 +132,18 @@ namespace WeatherRegistry
 
     #endregion
 
+    #region Constructor
+
     public Weather(string name = "None", ImprovedWeatherEffect effect = default)
     {
       Plugin.logger.LogDebug($"Called Weather constructor for weather {name}");
 
-      Name = name;
-      Effect = effect;
+      Regex textTagsRegex = new(@"<.*?>");
 
-      this.name = name;
+      Name = textTagsRegex.Replace(name, "");
+      this.name = textTagsRegex.Replace(name, "");
+
+      Effect = effect;
 
       if (effect != null)
       {
@@ -147,6 +152,8 @@ namespace WeatherRegistry
 
       // {(this.Origin != WeatherOrigin.Vanilla ? $"({this.Origin})" : "")}
     }
+
+    #endregion
 
     internal virtual void Init()
     {
