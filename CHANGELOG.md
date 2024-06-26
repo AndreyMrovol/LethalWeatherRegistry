@@ -1,3 +1,36 @@
+# 0.1.8
+
+- optimized the weight-picking algorithm (thanks, whitespike)
+- changed some logs
+
+# 0.1.7
+
+- LevelWeights and WeatherWeights config options are now functional
+- redid the ConfigHandler completely (it's cursed)
+- added a set of defaults for vanilla weather>weather transitions (this requires testing and feedback!)
+- changed some logs
+- weights are now clamped between 0 and 10000
+- added new options for weather makers: `DefaultLevelWeights` and `DefaultWeatherToWeatherWeights`
+
+# 0.1.6
+
+- fixed an error with config strings not being resolved correctly (thanks, xuxiaolan)
+- changed some logs
+
+# 0.1.5
+
+- changed the scale of weather multipliers from (0,10000) to (0,100)
+
+# 0.1.4
+
+- added ScrapAmountMultiplier, ScrapValueMultiplier config options
+- added LevelWeights and WeatherWeights config options (they don't do anything **yet**)
+- fixed an error with WeatherRegistry not disabling registered weathers' effects when leaving lobby (thanks: endoxicom, xuxiaolan, lunxara)
+
+# 0.1.3
+
+- (hopefully) fixed an error with WeatherRegistry not disabling registered weathers' effects when leaving lobby (thanks, endoxicom)
+
 # 0.1.2
 
 - fixed an error with WeatherRegistry crashing when there were more than 1 weather to register (thanks, xuxiaolan)
