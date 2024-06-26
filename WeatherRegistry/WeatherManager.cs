@@ -87,7 +87,7 @@ namespace WeatherRegistry
       // add None as a possible weather in front of the list
       possibleWeathers.Insert(0, LevelWeatherType.None);
 
-      Plugin.logger.LogInfo($"Possible weathers: {string.Join("; ", possibleWeathers.Select(x => x.ToString()))}");
+      Plugin.logger.LogDebug($"Possible weathers: {string.Join("; ", possibleWeathers.Select(x => x.ToString()))}");
 
       if (possibleWeathers == null || possibleWeathers.Count() == 0)
       {

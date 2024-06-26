@@ -14,7 +14,7 @@ namespace WeatherRegistry
     {
       if (!StartOfRound.Instance.IsHost)
       {
-        Plugin.logger.LogMessage("Not a host, cannot generate weathers!");
+        Plugin.logger.LogInfo("Not a host, cannot generate weathers!");
         return null;
       }
 

@@ -13,7 +13,7 @@ namespace WeatherRegistry.Patches
     [HarmonyPrefix]
     public static bool GameMethodPatch(int connectedPlayersOnServer, StartOfRound __instance)
     {
-      Plugin.logger.LogMessage("SetPlanetsWeather called.");
+      Plugin.logger.LogInfo("SetPlanetsWeather called.");
 
       if (!WeatherManager.IsSetupFinished)
       {
@@ -23,7 +23,7 @@ namespace WeatherRegistry.Patches
 
       if (!Settings.SelectWeathers)
       {
-        Plugin.logger.LogInfo("Weather selection is disabled.");
+        Plugin.logger.LogWarning("Weather selection is disabled.");
         return true;
       }
 
