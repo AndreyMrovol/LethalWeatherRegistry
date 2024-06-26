@@ -243,13 +243,13 @@ namespace WeatherRegistry
 
         if (rarityData.Length != 2)
         {
-          Plugin.logger.LogWarning($"Invalid rarity data: {rarity}");
+          // Plugin.logger.LogWarning($"Invalid rarity data: {rarity}");
           continue;
         }
 
         if (!int.TryParse(rarityData[1], out int weight))
         {
-          Plugin.logger.LogWarning($"Invalid rarity weight: {rarityData[1]} - not a number!");
+          // Plugin.logger.LogWarning($"Invalid rarity weight: {rarityData[1]} - not a number!");
           continue;
         }
 
@@ -273,13 +273,13 @@ namespace WeatherRegistry
 
         if (rarityData.Length != 2)
         {
-          Plugin.logger.LogWarning($"Invalid rarity data: {rarity}");
+          // Plugin.logger.LogWarning($"Invalid rarity data: {rarity}");
           continue;
         }
 
         if (!int.TryParse(rarityData[1], out int weight))
         {
-          Plugin.logger.LogWarning($"Invalid rarity weight: {rarityData[1]} - not a number!");
+          // Plugin.logger.LogWarning($"Invalid rarity weight: {rarityData[1]} - not a number!");
           continue;
         }
 
@@ -287,7 +287,7 @@ namespace WeatherRegistry
 
         if (level == null)
         {
-          Plugin.logger.LogWarning($"Invalid level name: {rarityData[0]}");
+          // Plugin.logger.LogWarning($"Invalid level name: {rarityData[0]}");
           continue;
         }
 
@@ -311,13 +311,13 @@ namespace WeatherRegistry
 
         if (rarityData.Length != 2)
         {
-          Plugin.logger.LogWarning($"Invalid rarity data: {rarity}");
+          // Plugin.logger.LogWarning($"Invalid rarity data: {rarity}");
           continue;
         }
 
         if (!int.TryParse(rarityData[1], out int weight))
         {
-          Plugin.logger.LogWarning($"Invalid rarity weight: {rarityData[1]} - not a number!");
+          // Plugin.logger.LogWarning($"Invalid rarity weight: {rarityData[1]} - not a number!");
           continue;
         }
 
@@ -325,7 +325,7 @@ namespace WeatherRegistry
 
         if (weather == null)
         {
-          Plugin.logger.LogWarning($"Invalid weather name: {rarityData[0]}");
+          // Plugin.logger.LogWarning($"Invalid weather name: {rarityData[0]}");
           continue;
         }
 
