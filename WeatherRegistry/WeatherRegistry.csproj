@@ -13,7 +13,7 @@
         <IsPackable>true</IsPackable>
 
         <RootNamespace>WeatherRegistry</RootNamespace>
-        <PackageIcon>logo.png</PackageIcon>
+        <PackageIcon>icon.png</PackageIcon>
         <PackageTags>lethal;company;bepinex;harmony;debug</PackageTags>
 
         <PackageLicenseExpression>LGPL-3.0-only</PackageLicenseExpression>
@@ -24,7 +24,7 @@
 
     <ItemGroup>
         <None Include="$(ProjectDir)../README.md" Pack="true" PackagePath="/" />
-        <None Include="$(ProjectDir)../logo.png" Pack="true" PackagePath="/"/>
+        <None Include="$(ProjectDir)../icon.png" Pack="true" PackagePath="/"/>
     </ItemGroup>
 
     <PropertyGroup>
