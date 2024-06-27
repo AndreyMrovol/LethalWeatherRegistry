@@ -87,7 +87,7 @@
     </Target>
     
     <Target Name="PackThunderstore" DependsOnTargets="NetcodePatch;SetPluginVersion;SaveVersionAndNameToFiles" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
-        <Copy SourceFiles="$(ProjectDir)bin/Release/netstandard2.1/$(AssemblyName).dll" DestinationFiles="$(ProjectDir)dist/$(AssemblyName).dll" />
+        <Copy SourceFiles="$(ProjectDir)bin/Release/netstandard2.1/$(AssemblyName).dll" DestinationFiles="$(ProjectDir)$(AssemblyName).dll" />
 
         <MakeDir Directories="$(ProjectDir)../assets/bundles" Condition="!Exists('$(ProjectDir)../assets/bundles')" />
         <Exec Command="dotnet tcli build --config-path $(ProjectDir)../assets/thunderstore.toml --package-version $(PlainVersion)" />
