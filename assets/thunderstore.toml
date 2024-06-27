@@ -10,6 +10,7 @@ name = "WeatherRegistry"
 description = "A mod for controlling the game's weather system."
 websiteUrl = "https://github.com/AndreyMrovol/LethalWeatherRegistry"
 containsNsfwContent = false
+
 [package.dependencies]
 BepInEx-BepInExPack = "5.4.2100"
 
@@ -20,7 +21,7 @@ outdir = "../dist"
 
 [[build.copy]]
 source = "../WeatherRegistry/bin/Release/netstandard2.1/WeatherRegistry.dll"
-target = "plugins/WeatherRegistry/"
+target = "/"
 
 [[build.copy]]
 source = "../CHANGELOG.md"
