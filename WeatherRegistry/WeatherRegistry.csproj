@@ -81,12 +81,14 @@
         </PropertyGroup>
     </Target>
 
-    <Target Name="SaveGuidToSomeFile" DependsOnTargets="SetPluginVersion">
+    <Target Name="SaveVersionAndNameToFiles" DependsOnTargets="SetPluginVersion">
         <WriteLinesToFile File="$(ProjectDir)dist/version.txt" Lines="$(CurseForgeVersionName)" Overwrite="true" />
         <WriteLinesToFile File="$(ProjectDir)dist/name.txt" Lines="$(AssemblyName).dll" Overwrite="true" />
     </Target>
-
+    
     <Target Name="PackThunderstore" DependsOnTargets="NetcodePatch;SetPluginVersion;SaveGuidToSomeFile" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
+        <Copy SourceFiles="$(ProjectDir)bin/Release/netstandard2.1/$(AssemblyName).dll" DestinationFiles="$(ProjectDir)dist/$(AssemblyName).dll" />
+
         <MakeDir Directories="$(ProjectDir)../assets/bundles" Condition="!Exists('$(ProjectDir)../assets/bundles')" />
         <Exec Command="dotnet tcli build --config-path $(ProjectDir)../assets/thunderstore.toml --package-version $(PlainVersion)" />
         <ItemGroup>

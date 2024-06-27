@@ -37,7 +37,7 @@ jobs:
           dotnet build -c Release
 
       - name: Set DLL_PATH environment variable
-        run: echo "DLL_PATH=./*/bin/Release/netstandard2.1/$(cat ./*/dist/name.txt )" >> $GITHUB_ENV
+        run: echo "DLL_PATH=./*/dist/$(cat ./*/dist/name.txt )" >> $GITHUB_ENV
 
       - name: Read DLL_PATH environment variable
         run: echo "$DLL_PATH"
@@ -48,20 +48,8 @@ jobs:
           name: mod-dll
           path: ${{ env.DLL_PATH }}
 
-      - name: Upload Version artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: version
-          path: ./*/dist/*.txt
-
       - name: Upload Thunderstore artifact
         uses: actions/upload-artifact@v4
         with:
           name: thunderstore-build
           path: ./*/dist/*.zip
-
-      - name: Upload nupkg artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: nupkg-build
-          path: ./*/bin/Release/*.nupkg
