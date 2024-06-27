@@ -37,7 +37,7 @@ jobs:
           dotnet build -c Release
 
       - name: Set DLL_PATH environment variable
-        run: echo "DLL_PATH=./*/dist/$(cat ./*/dist/name.txt )" >> $GITHUB_ENV
+        run: echo "DLL_PATH=./*/$(cat ./*/dist/name.txt )" >> $GITHUB_ENV
 
       - name: Read DLL_PATH environment variable
         run: echo "$DLL_PATH"
