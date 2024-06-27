@@ -86,7 +86,7 @@
         <WriteLinesToFile File="$(ProjectDir)dist/name.txt" Lines="$(AssemblyName).dll" Overwrite="true" />
     </Target>
     
-    <Target Name="PackThunderstore" DependsOnTargets="NetcodePatch;SetPluginVersion;SaveGuidToSomeFile" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
+    <Target Name="PackThunderstore" DependsOnTargets="NetcodePatch;SetPluginVersion;SaveVersionAndNameToFiles" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
         <Copy SourceFiles="$(ProjectDir)bin/Release/netstandard2.1/$(AssemblyName).dll" DestinationFiles="$(ProjectDir)dist/$(AssemblyName).dll" />
 
         <MakeDir Directories="$(ProjectDir)../assets/bundles" Condition="!Exists('$(ProjectDir)../assets/bundles')" />
@@ -97,7 +97,7 @@
         <Move SourceFiles="@(FilesToRename)" DestinationFiles="@(FilesToRename -&gt; Replace($(PlainVersion), $(MinVerVersion)))" />
     </Target>
 
-    <Target Name="PublishThunderstore" DependsOnTargets="SetPluginVersion;SaveGuidToSomeFile">
+    <Target Name="PublishThunderstore" DependsOnTargets="SetPluginVersion;SaveVersionAndNameToFiles">
         <Exec Command="dotnet tcli publish --config-path $(ProjectDir)../assets/thunderstore.toml --file $(ProjectDir)dist/*-$(MinVerVersion).zip" />
     </Target>
 
