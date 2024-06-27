@@ -1,3 +1,7 @@
+# 0.1.9
+
+- added config options to disable logging startup logs & weather selection logs
+
 # 0.1.8
 
 - optimized the weight-picking algorithm (thanks, whitespike)

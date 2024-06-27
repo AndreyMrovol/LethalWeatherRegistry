@@ -70,16 +70,23 @@
         <MinVerTagPrefix>v</MinVerTagPrefix>
     </PropertyGroup>
 
+
+
         <!-- MinVer Set Mod Version from Git -->
     <Target Name="SetPluginVersion" BeforeTargets="AddGeneratedFile" DependsOnTargets="MinVer">
         <PropertyGroup>
             <PlainVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PlainVersion>
             <BepInExPluginVersion>$(PlainVersion)</BepInExPluginVersion>
+            <CurseForgeVersionName>$(AssemblyName) v$(PlainVersion)</CurseForgeVersionName>
         </PropertyGroup>
     </Target>
-    
 
-    <Target Name="PackThunderstore" DependsOnTargets="NetcodePatch;SetPluginVersion" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
+    <Target Name="SaveGuidToSomeFile" DependsOnTargets="SetPluginVersion">
+        <WriteLinesToFile File="$(ProjectDir)dist/version.txt" Lines="$(CurseForgeVersionName)" Overwrite="true" />
+        <WriteLinesToFile File="$(ProjectDir)dist/name.txt" Lines="$(AssemblyName).dll" Overwrite="true" />
+    </Target>
+
+    <Target Name="PackThunderstore" DependsOnTargets="NetcodePatch;SetPluginVersion;SaveGuidToSomeFile" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
         <MakeDir Directories="$(ProjectDir)../assets/bundles" Condition="!Exists('$(ProjectDir)../assets/bundles')" />
         <Exec Command="dotnet tcli build --config-path $(ProjectDir)../assets/thunderstore.toml --package-version $(PlainVersion)" />
         <ItemGroup>
@@ -88,7 +95,7 @@
         <Move SourceFiles="@(FilesToRename)" DestinationFiles="@(FilesToRename -&gt; Replace($(PlainVersion), $(MinVerVersion)))" />
     </Target>
 
-    <Target Name="PublishThunderstore" DependsOnTargets="SetPluginVersion">
+    <Target Name="PublishThunderstore" DependsOnTargets="SetPluginVersion;SaveGuidToSomeFile">
         <Exec Command="dotnet tcli publish --config-path $(ProjectDir)../assets/thunderstore.toml --file $(ProjectDir)dist/*-$(MinVerVersion).zip" />
     </Target>
 

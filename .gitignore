@@ -552,3 +552,4 @@ $RECYCLE.BIN/
 lib/*
 *.zip
 Thunderstore/*.dll
+*/dist/*

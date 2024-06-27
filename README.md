@@ -15,7 +15,6 @@ i don't want to work on readme, i'll list it later
 - [ ] Add matching via LLL tags
 - [ ] Add an option for weather creators to add their configs to the Registry
 - [ ] Save generated weather data to save file
-- [ ] Add a patch to disable all weather effect on StartOfRound.OnDisable
 
 ## License
 
