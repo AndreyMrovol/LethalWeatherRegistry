@@ -34,6 +34,24 @@ jobs:
         run: |
           dotnet pack -c Release
 
+      - name: Set DLL_PATH environment variable
+        run: echo "DLL_PATH=./*/$(cat ./*/dist/name.txt )" >> $GITHUB_ENV
+
+      - name: Read DLL_PATH environment variable
+        run: echo "$DLL_PATH"
+
+      - name: Upload DLL artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mod-dll
+          path: ${{ env.DLL_PATH }}
+
+      - name: Upload Version artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: version
+          path: ./*/dist/*.txt
+
       - name: Upload Thunderstore artifact
         uses: actions/upload-artifact@v4
         with:
@@ -100,6 +118,40 @@ jobs:
         run: |
           dotnet build -target:PublishThunderstore
 
+  deploy-curseforge:
+    name: Deploy to CurseForge
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Sources
+        uses: actions/checkout@v4
+
+      - name: Download Version artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: version
+
+      - name: Download DLL artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mod-dll
+
+      - name: Set MOD_NAME environment variable
+        run: echo "MOD_NAME=./*/$(cat ./*/dist/version.txt )" >> $GITHUB_ENV
+
+      - name: Read MOD_NAME environment variable
+        run: echo "$MOD_NAME"
+
+      - name: "Upload to CurseForge"
+        uses: itsmeow/curseforge-upload@v3
+        with:
+          token: ${{ secrets.CURSEFORGE_API_KEY }}
+          project_id: ${{ secrets.CURSEFORGE_PROJECTID }}
+          game_endpoint: "lethal-company"
+          game_versions: "0.50.0"
+          file: mod-dll/*/*.dll
+          display_name: ${{ env.MOD_NAME }}
+
   upload-release-artifacts:
     name: Add artifacts to Release
     needs: build
@@ -114,4 +166,4 @@ jobs:
       - name: Upload artifacts to Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB }}
-        run: gh release upload ${{ github.event.release.tag_name }} thunderstore-build/*/dist/*.zip nupkg-build/*/bin/Release/*.nupkg
+        run: gh release upload ${{ github.event.release.tag_name }} thunderstore-build/*/dist/*.zip nupkg-build/*/bin/Release/*.nupkg mod-dll/*/*.dll
