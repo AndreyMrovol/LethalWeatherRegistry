@@ -17,7 +17,7 @@ BepInEx-BepInExPack = "5.4.2100"
 [build]
 icon = "../icon.png"
 readme = "../README.md"
-outdir = "../dist"
+outdir = "../WeatherRegistry/dist"
 
 [[build.copy]]
 source = "../WeatherRegistry/bin/Release/netstandard2.1/WeatherRegistry.dll"
