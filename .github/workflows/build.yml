@@ -39,6 +39,9 @@ jobs:
       - name: Set DLL_PATH environment variable
         run: echo "DLL_PATH=$(cat ./*/dist/name.txt )" >> $GITHUB_ENV
 
+      - name: Read DLL_PATH environment variable
+        run: echo "$DLL_PATH"
+
       - name: Upload DLL artifact
         uses: actions/upload-artifact@v4
         with:
