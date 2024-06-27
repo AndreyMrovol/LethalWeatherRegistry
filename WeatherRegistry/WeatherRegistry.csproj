@@ -77,28 +77,37 @@
         <PropertyGroup>
             <PlainVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PlainVersion>
             <BepInExPluginVersion>$(PlainVersion)</BepInExPluginVersion>
-            <CurseForgeVersionName>$(AssemblyName) v$(PlainVersion)</CurseForgeVersionName>
         </PropertyGroup>
     </Target>
 
     <Target Name="SaveVersionAndNameToFiles" DependsOnTargets="SetPluginVersion">
-        <WriteLinesToFile File="$(ProjectDir)dist/version.txt" Lines="$(CurseForgeVersionName)" Overwrite="true" />
-        <WriteLinesToFile File="$(ProjectDir)dist/name.txt" Lines="$(AssemblyName).dll" Overwrite="true" />
+        <WriteLinesToFile File="$(ProjectDir)dist/name.txt" Lines="$(AssemblyName)" Overwrite="true" />
+        <WriteLinesToFile File="$(ProjectDir)dist/version.txt" Lines="$(PlainVersion)" Overwrite="true" />
     </Target>
     
     <Target Name="PackThunderstore" DependsOnTargets="NetcodePatch;SetPluginVersion;SaveVersionAndNameToFiles" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
-        <Copy SourceFiles="$(ProjectDir)bin/Release/netstandard2.1/$(AssemblyName).dll" DestinationFiles="$(ProjectDir)$(AssemblyName).dll" />
-
+        
         <MakeDir Directories="$(ProjectDir)../assets/bundles" Condition="!Exists('$(ProjectDir)../assets/bundles')" />
+        
         <Exec Command="dotnet tcli build --config-path $(ProjectDir)../assets/thunderstore.toml --package-version $(PlainVersion)" />
         <ItemGroup>
             <FilesToRename Include="$(ProjectDir)dist/*-$(PlainVersion).zip" />
         </ItemGroup>
         <Move SourceFiles="@(FilesToRename)" DestinationFiles="@(FilesToRename -&gt; Replace($(PlainVersion), $(MinVerVersion)))" />
     </Target>
-
+    
     <Target Name="PublishThunderstore" DependsOnTargets="SetPluginVersion;SaveVersionAndNameToFiles">
         <Exec Command="dotnet tcli publish --config-path $(ProjectDir)../assets/thunderstore.toml --file $(ProjectDir)dist/*-$(MinVerVersion).zip" />
+    </Target>
+    
+    <Target Name="ZipCurseForge" AfterTargets="PackThunderstore">
+        <Copy SourceFiles="$(ProjectDir)bin/Release/netstandard2.1/$(AssemblyName).dll" DestinationFiles="$(ProjectDir)dist/output/$(AssemblyName).dll" />
+        <MakeDir Directories="$(ProjectDir)dist/output/" Condition="!Exists('$(ProjectDir)dist/output/')" />
+
+        <ZipDirectory
+            SourceDirectory="$(ProjectDir)dist/output/"
+            DestinationFile="$(ProjectDir)dist/curseforge.zip"
+            Overwrite="true" />
     </Target>
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
