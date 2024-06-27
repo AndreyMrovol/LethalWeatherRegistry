@@ -101,8 +101,8 @@
     </Target>
     
     <Target Name="ZipCurseForge" AfterTargets="PackThunderstore">
-        <Copy SourceFiles="$(ProjectDir)bin/Release/netstandard2.1/$(AssemblyName).dll" DestinationFiles="$(ProjectDir)dist/output/$(AssemblyName).dll" />
         <MakeDir Directories="$(ProjectDir)dist/output/" Condition="!Exists('$(ProjectDir)dist/output/')" />
+        <Copy SourceFiles="$(ProjectDir)bin/Release/netstandard2.1/$(AssemblyName).dll" DestinationFiles="$(ProjectDir)dist/output/$(AssemblyName).dll" />
 
         <ZipDirectory
             SourceDirectory="$(ProjectDir)dist/output/"
