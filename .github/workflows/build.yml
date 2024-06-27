@@ -37,7 +37,7 @@ jobs:
           dotnet build -c Release
 
       - name: Set DLL_PATH environment variable
-        run: echo "DLL_PATH=$(cat ./*/dist/name.txt )" >> $GITHUB_ENV
+        run: echo "DLL_PATH=./*/dist/bin/Release/$(cat ./*/dist/name.txt )" >> $GITHUB_ENV
 
       - name: Read DLL_PATH environment variable
         run: echo "$DLL_PATH"
@@ -46,7 +46,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: mod-dll
-          path: ./*/dist/bin/Release/$DLL_PATH
+          path: "$DLL_PATH"
 
       - name: Upload Version artifact
         uses: actions/upload-artifact@v4
