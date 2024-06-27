@@ -54,7 +54,7 @@ jobs:
           name: mod-dll
 
       - name: Set MOD_NAME environment variable
-        run: echo "MOD_NAME=./*/$(cat ./*/dist/version.txt )" >> $GITHUB_ENV
+        run: echo "MOD_NAME=$(cat ./*/dist/version.txt )" >> $GITHUB_ENV
 
       - name: Read MOD_NAME environment variable
         run: echo "$MOD_NAME"
@@ -66,7 +66,7 @@ jobs:
           project_id: ${{ secrets.CURSEFORGE_PROJECTID }}
           game_endpoint: "lethal-company"
           game_versions: "0.50.0"
-          file_path: mod-dll/*/*.dll
+          file_path: ${{ env.DLL_PATH }}
           display_name: ${{ env.MOD_NAME }}
 
       - name: Upload Thunderstore artifact
