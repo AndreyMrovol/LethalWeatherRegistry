@@ -16,6 +16,10 @@ namespace WeatherRegistry
 
     // general settings
 
+    // logs settings
+    public static ConfigEntry<bool> LogWeatherChanges { get; private set; }
+    public static ConfigEntry<bool> LogStartup { get; private set; }
+
     // map screen settings
     public static ConfigEntry<bool> ColoredWeathers { get; private set; }
 
@@ -28,6 +32,9 @@ namespace WeatherRegistry
       configFile = config;
 
       EventManager.SetupFinished.AddListener(StartupActions);
+
+      LogWeatherChanges = configFile.Bind("|Debugging", "Log Weather Changes", true, "Log weather changes to console");
+      LogStartup = configFile.Bind("|Debugging", "Log Startup", true, "Log startup information to console");
 
       ColoredWeathers = configFile.Bind("|General", "Colored Weathers", true, "Enable colored weathers in map screen");
       SunAnimatorBlacklist = configFile.Bind(

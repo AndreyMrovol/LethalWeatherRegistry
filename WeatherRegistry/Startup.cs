@@ -13,23 +13,24 @@ namespace WeatherRegistry.Patches
   public static class TerminalStartPatch
   {
     internal static WeatherEffect[] vanillaEffectsArray { get; private set; } = null;
+    internal static WeatherRegistry.Logger Logger = new("WeatherRegistry", ConfigManager.LogStartup);
 
     [HarmonyPatch(typeof(StartOfRound), "Awake")]
     [HarmonyPrefix]
     [HarmonyPriority(Priority.First)]
     internal static void StartOfRoundAwakePrefix(RoundManager __instance)
     {
-      Plugin.logger.LogInfo("StartOfRoundAwakePrefix Patch");
+      Logger.LogInfo("StartOfRoundAwakePrefix Patch");
 
-      // Plugin.logger.LogDebug(GameNetworkManager.Instance);
-      // Plugin.logger.LogDebug(GameNetworkManager.Instance.GetComponent<NetworkManager>());
-      // Plugin.logger.LogDebug(WeatherSync.WeatherSyncPrefab);
-      // Plugin.logger.LogDebug(WeatherSync.WeatherSyncPrefab.GetComponent<WeatherSync>());
-      // Plugin.logger.LogDebug(WeatherSync.WeatherSyncPrefab.GetComponent<NetworkObject>());
+      // Logger.LogDebug(GameNetworkManager.Instance);
+      // Logger.LogDebug(GameNetworkManager.Instance.GetComponent<NetworkManager>());
+      // Logger.LogDebug(WeatherSync.WeatherSyncPrefab);
+      // Logger.LogDebug(WeatherSync.WeatherSyncPrefab.GetComponent<WeatherSync>());
+      // Logger.LogDebug(WeatherSync.WeatherSyncPrefab.GetComponent<NetworkObject>());
 
       if (GameNetworkManager.Instance.GetComponent<NetworkManager>().IsHost)
       {
-        Plugin.logger.LogDebug("Host detected, spawning WeatherSync");
+        Logger.LogDebug("Host detected, spawning WeatherSync");
         WeatherSync WeatherSyncPrefab = GameObject.Instantiate(WeatherSync.WeatherSyncPrefab).GetComponent<WeatherSync>();
         WeatherSyncPrefab.GetComponent<NetworkObject>().Spawn(destroyWithScene: false);
       }
@@ -53,7 +54,7 @@ namespace WeatherRegistry.Patches
     [HarmonyPriority(Priority.First)]
     public static void Postfix(Terminal __instance)
     {
-      Plugin.logger.LogInfo("Terminal Start Patch");
+      Logger.LogInfo("Terminal Start Patch");
 
       WeatherManager.Reset();
 
@@ -62,16 +63,16 @@ namespace WeatherRegistry.Patches
 
       if (effects == null || effects.Count() == 0)
       {
-        Plugin.logger.LogInfo("Effects are null");
+        Logger.LogInfo("Effects are null");
       }
       else
       {
-        Plugin.logger.LogInfo($"Effects: {effects.Count()}");
+        Logger.LogInfo($"Effects: {effects.Count()}");
       }
 
       #region None weather
 
-      Plugin.logger.LogInfo("Creating NoneWeather type");
+      Logger.LogInfo("Creating NoneWeather type");
       // Register clear weather as a weather
       Weather noneWeather =
         new(effect: new ImprovedWeatherEffect(null, null))
@@ -92,7 +93,7 @@ namespace WeatherRegistry.Patches
       for (int i = 0; i < effects.Count(); i++)
       {
         WeatherEffect effect = effects[i];
-        Plugin.logger.LogInfo($"Effect: {effect.name}");
+        Logger.LogInfo($"Effect: {effect.name}");
 
         LevelWeatherType weatherType = (LevelWeatherType)i;
         bool isVanilla = Defaults.VanillaWeathers.Contains(weatherType);
@@ -122,13 +123,13 @@ namespace WeatherRegistry.Patches
       // Get all LethalLib weathers and add them to effects list
       if (Plugin.IsLethalLibLoaded)
       {
-        Plugin.logger.LogWarning("Getting LethalLib Weathers");
+        Logger.LogWarning("Getting LethalLib Weathers");
 
         List<Weather> lethalLibWeathers = LethalLibPatch.ConvertLLWeathers();
 
         foreach (Weather weather in lethalLibWeathers)
         {
-          Plugin.logger.LogWarning($"LethalLib Weather: {weather.Name}");
+          Logger.LogWarning($"LethalLib Weather: {weather.Name}");
 
           WeatherManager.RegisteredWeathers.Add(weather);
         }
@@ -144,8 +145,9 @@ namespace WeatherRegistry.Patches
       {
         biggestKeyInModdedWeathersDictionary = WeatherManager.ModdedWeatherEnumExtension.Keys.Max() + 1;
       }
-      Plugin.logger.LogDebug(WeatherManager.ModdedWeatherEnumExtension.Count > 0);
-      Plugin.logger.LogDebug("Biggest key in modded weathers dictionary: " + biggestKeyInModdedWeathersDictionary);
+
+      Logger.LogDebug(WeatherManager.ModdedWeatherEnumExtension.Count > 0);
+      Logger.LogDebug("Biggest key in modded weathers dictionary: " + biggestKeyInModdedWeathersDictionary);
 
       WeatherManager
         .RegisteredWeathers.Where(weather => weather.Origin == WeatherOrigin.WeatherRegistry)
@@ -157,7 +159,7 @@ namespace WeatherRegistry.Patches
           weather.VanillaWeatherType = (LevelWeatherType)newKey;
           // weather.Effect.VanillaWeatherType = (LevelWeatherType)newKey;
 
-          Plugin.logger.LogInfo($"Registering weather {weather.Name} under ID {newKey}");
+          Logger.LogInfo($"Registering weather {weather.Name} under ID {newKey}");
 
           WeatherManager.ModdedWeatherEnumExtension.Add(newKey, weather);
           biggestKeyInModdedWeathersDictionary++;
@@ -209,13 +211,13 @@ namespace WeatherRegistry.Patches
 
       for (int i = 0; i < RegisteredWeathers.Count; i++)
       {
-        Plugin.logger.LogInfo($"Registered Weather: {RegisteredWeathers[i].Name}");
+        Logger.LogInfo($"Registered Weather: {RegisteredWeathers[i].Name}");
 
         Weather weather = RegisteredWeathers[i];
         WeatherManager.Weathers.Add(weather);
       }
 
-      Plugin.logger.LogWarning($"Weathers: {WeatherManager.Weathers.Count}");
+      Logger.LogWarning($"Weathers: {WeatherManager.Weathers.Count}");
 
       List<SelectableLevel> levels = StartOfRound.Instance.levels.ToList();
 
@@ -236,7 +238,7 @@ namespace WeatherRegistry.Patches
           LevelsToApply.RemoveAll(level => weather.LevelFilters.Contains(level));
         }
 
-        Plugin.logger.LogInfo($"Weather {weather.name} has {weather.LevelFilteringOption.ToString()} filtering option set up");
+        Logger.LogInfo($"Weather {weather.name} has {weather.LevelFilteringOption.ToString()} filtering option set up");
 
         AddWeatherToLevels(weather, levels, LevelsToApply);
       }
@@ -253,7 +255,7 @@ namespace WeatherRegistry.Patches
         possibleWeathersTable.AddRow(ConfigHelper.GetNumberlessName(level), stringifiedRandomWeathers);
       });
 
-      Plugin.logger.LogInfo("Possible weathers:\n" + possibleWeathersTable.ToMinimalString());
+      Logger.LogInfo("Possible weathers:\n" + possibleWeathersTable.ToMinimalString());
 
       WeatherManager.IsSetupFinished = true;
 
@@ -275,7 +277,7 @@ namespace WeatherRegistry.Patches
 
       foreach (SelectableLevel level in levels)
       {
-        Plugin.logger.LogDebug($"Level: {ConfigHelper.GetNumberlessName(level)}, weather: {weather.Name}");
+        Logger.LogDebug($"Level: {ConfigHelper.GetNumberlessName(level)}, weather: {weather.Name}");
 
         List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.ToList();
 
@@ -294,7 +296,7 @@ namespace WeatherRegistry.Patches
 
         if (!InitializeRandomWeather(ref randomWeather, weather, level, ref randomWeathers, LevelsToApply))
         {
-          Plugin.logger.LogDebug("randomWeather is null, skipping");
+          Logger.LogDebug("randomWeather is null, skipping");
           continue;
         }
 
@@ -336,14 +338,14 @@ namespace WeatherRegistry.Patches
         // remove all weathers from company moon, because that's the point
         if (level.PlanetName == "71 Gordion" && !LevelsToApply.Contains(level))
         {
-          Plugin.logger.LogDebug($"Removing weather {weather.Name} from the company moon");
+          Logger.LogDebug($"Removing weather {weather.Name} from the company moon");
 
           randomWeathers.RemoveAll(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
           level.randomWeathers = randomWeathers.ToArray();
           return false;
         }
 
-        // Plugin.logger.LogDebug(
+        // Logger.LogDebug(
         //   $"Weather {weather.Name} has type {weather.Type.ToString()}, is level {level.name} in the list? : {LevelsToApply.Contains(level)}"
         // );
 
@@ -362,11 +364,11 @@ namespace WeatherRegistry.Patches
 
             if (!LevelsToApply.Contains(level))
             {
-              Plugin.logger.LogDebug($"Level {level.name} is not in the list of levels to apply weather to");
+              Logger.LogDebug($"Level {level.name} is not in the list of levels to apply weather to");
 
               if (randomWeather != null)
               {
-                Plugin.logger.LogDebug($"Removing weather {weather.Name} from level {level.name}");
+                Logger.LogDebug($"Removing weather {weather.Name} from level {level.name}");
                 randomWeathers.RemoveAll(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
                 level.randomWeathers = randomWeathers.ToArray();
               }
@@ -378,15 +380,15 @@ namespace WeatherRegistry.Patches
           }
           case WeatherType.Modded:
           {
-            Plugin.logger.LogDebug($"Adding modded weather {weather.Name}");
+            Logger.LogDebug($"Adding modded weather {weather.Name}");
 
             if (!LevelsToApply.Contains(level))
             {
-              Plugin.logger.LogDebug($"Level {level.name} is not in the list of levels to apply weather to");
+              Logger.LogDebug($"Level {level.name} is not in the list of levels to apply weather to");
               return false;
             }
 
-            Plugin.logger.LogDebug(
+            Logger.LogDebug(
               $"Injecting modded weather {weather.Name} for level {level.name} (variables {weather.Effect.DefaultVariable1}/{weather.Effect.DefaultVariable2})"
             );
             RandomWeatherWithVariables newWeather =

@@ -101,6 +101,7 @@ namespace WeatherRegistry
     internal static Dictionary<Weather, int> GetPlanetWeightedList(SelectableLevel level)
     {
       Dictionary<Weather, int> weightedList = [];
+      Logger logger = WeatherCalculation.Logger;
 
       List<LevelWeatherType> weatherTypes = GetPlanetPossibleWeathers(level);
 
@@ -128,7 +129,7 @@ namespace WeatherRegistry
         if (levelWeights.TryGetValue(level, out int levelWeight))
         {
           // (1) => level weight
-          Plugin.logger.LogDebug($"{typeOfWeather.Name} has level weight {levelWeight}");
+          logger.LogDebug($"{typeOfWeather.Name} has level weight {levelWeight}");
           weatherWeight = levelWeight;
         }
         // try to get previous day weather (so - at this point - the current one)
@@ -139,12 +140,12 @@ namespace WeatherRegistry
         )
         {
           // (2) => weather-weather weights
-          Plugin.logger.LogDebug($"{typeOfWeather.Name} has weather>weather weight {weatherWeightFromWeather}");
+          logger.LogDebug($"{typeOfWeather.Name} has weather>weather weight {weatherWeightFromWeather}");
           weatherWeight = weatherWeightFromWeather;
         }
         else
         {
-          Plugin.logger.LogDebug($"{typeOfWeather.Name} has default weight {weatherWeight}");
+          logger.LogDebug($"{typeOfWeather.Name} has default weight {weatherWeight}");
         }
 
         weightedList.Add(typeOfWeather, weatherWeight);

@@ -10,11 +10,13 @@ namespace WeatherRegistry
   {
     internal static Dictionary<string, LevelWeatherType> previousDayWeather = [];
 
+    public static WeatherRegistry.Logger Logger = new("WeatherRegistry", ConfigManager.LogWeatherChanges);
+
     internal static Dictionary<string, LevelWeatherType> NewWeathers(StartOfRound startOfRound)
     {
       if (!StartOfRound.Instance.IsHost)
       {
-        Plugin.logger.LogInfo("Not a host, cannot generate weathers!");
+        Logger.LogInfo("Not a host, cannot generate weathers!");
         return null;
       }
 
@@ -36,7 +38,7 @@ namespace WeatherRegistry
 
         if (level.overrideWeather)
         {
-          Plugin.logger.LogDebug($"Override weather present, changing weather to {level.overrideWeatherType}");
+          Logger.LogDebug($"Override weather present, changing weather to {level.overrideWeatherType}");
 
           NewWeather[level.PlanetName] = level.overrideWeatherType;
           continue;
@@ -45,9 +47,9 @@ namespace WeatherRegistry
         // possible weathers taken from level.randomWeathers (modified by me)
         // use random for seeded randomness
 
-        Plugin.logger.LogMessage("-------------");
-        Plugin.logger.LogMessage($"{level.PlanetName}");
-        Plugin.logger.LogDebug($"previousDayWeather: {previousDayWeather[level.PlanetName]}");
+        Logger.LogMessage("-------------");
+        Logger.LogMessage($"{level.PlanetName}");
+        Logger.LogDebug($"previousDayWeather: {previousDayWeather[level.PlanetName]}");
 
         NewWeather[level.PlanetName] = LevelWeatherType.None;
 
@@ -56,16 +58,16 @@ namespace WeatherRegistry
         NewWeather[level.PlanetName] = selectedWeather.VanillaWeatherType;
         WeatherManager.CurrentWeathers[level] = selectedWeather;
 
-        Plugin.logger.LogMessage($"Selected weather: {selectedWeather.Name}");
+        Logger.LogMessage($"Selected weather: {selectedWeather.Name}");
         try
         {
-          Plugin.logger.LogMessage(
+          Logger.LogMessage(
             $"Chance for that was {weights[selectedWeather]} / {weights.Values.Sum()} ({(float)weights[selectedWeather] / weights.Values.Sum() * 100}%)"
           );
         }
         catch { }
       }
-      Plugin.logger.LogMessage("-------------");
+      Logger.LogMessage("-------------");
 
       return NewWeather;
     }
