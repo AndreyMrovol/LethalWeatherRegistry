@@ -80,8 +80,8 @@ namespace WeatherRegistry
     {
       List<LevelWeatherType> possibleWeathers = level
         .randomWeathers.Where(randomWeather => randomWeather.weatherType != LevelWeatherType.None)
-        .ToList()
         .Select(x => x.weatherType)
+        .Distinct()
         .ToList();
 
       // add None as a possible weather in front of the list

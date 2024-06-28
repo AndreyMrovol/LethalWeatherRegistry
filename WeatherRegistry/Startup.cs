@@ -380,6 +380,12 @@ namespace WeatherRegistry.Patches
           }
           case WeatherType.Modded:
           {
+            if (randomWeather != null)
+            {
+              Logger.LogDebug($"Removing weather {weather.Name} from level {level.name} (added before lobby reload)");
+              randomWeathers.RemoveAll(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
+            }
+
             Logger.LogDebug($"Adding modded weather {weather.Name}");
 
             if (!LevelsToApply.Contains(level))
