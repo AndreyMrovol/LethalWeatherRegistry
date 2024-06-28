@@ -61,6 +61,12 @@ jobs:
           name: nupkg-build
           path: ./*/bin/Release/*.nupkg
 
+      - name: Upload Versions artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: versions
+          path: ./*/dist/*.txt
+
   deploy-nuget:
     name: Deploy to NuGet
     needs: build
@@ -127,6 +133,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: curseforge-build
+
+      - name: Download Versions artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: versions
 
       - name: Set MOD_NAME environment variable
         run: echo "MOD_NAME=$(cat ./*/dist/name.txt )" >> $GITHUB_ENV
