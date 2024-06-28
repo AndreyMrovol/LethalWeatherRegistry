@@ -1,3 +1,7 @@
+# 0.1.10
+
+- fixed an issue with randomWeathers having multiple entries of the same modded weather (thanks, xuxiaolan)
+
 # 0.1.9
 
 - added config options to disable logging startup logs & weather selection logs

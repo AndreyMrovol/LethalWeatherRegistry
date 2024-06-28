@@ -8,13 +8,24 @@ A Lethal Company mod for controlling game's weather system.
 - Weight-based weather selection system
 - Level-based weather filtering system
 
-i don't want to work on readme, i'll list it later
+_i don't want to work on readme, i'll list it later_
+
+## Weight-based weather selection system
+
+Contrary to the vanilla algorithm, this mod uses a weight-based system for selecting weathers. You can set the weights based on 3 criteria:
+
+1. Level weight: the weight of the weather based on specific level
+2. Weather-to-weather weight: the weight of the weather based on the previous weather
+3. Default weight: the base weight of the weather
+
+During the weather selection process, the algorithm will try to apply the weights in the order listed above.
 
 ## to do
 
 - [ ] Add matching via LLL tags
 - [ ] Add an option for weather creators to add their configs to the Registry
 - [ ] Save generated weather data to save file
+- [ ] fix the bugs
 
 ## License
 
