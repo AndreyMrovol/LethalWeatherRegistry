@@ -1,3 +1,8 @@
+# 0.1.11
+
+- MrovLib is now a required dependency
+- `WeatherChanged` event is now properly invoked when new weathers are picked
+
 # 0.1.10
 
 - fixed an issue with randomWeathers having multiple entries of the same modded weather (thanks, xuxiaolan)
