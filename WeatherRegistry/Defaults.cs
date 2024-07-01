@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace WeatherRegistry
@@ -38,6 +39,28 @@ namespace WeatherRegistry
         { LevelWeatherType.Foggy, "None@200; Rainy@60; Stormy@50; Flooded@10; Foggy@30; Eclipsed@20" },
         { LevelWeatherType.Eclipsed, "None@300; Rainy@40; Stormy@16; Flooded@20; Foggy@60; Eclipsed@10" }
       };
+
+    internal static List<string> VanillaLevels =
+    [
+      "Gordion",
+      "Experimentation",
+      "Assurance",
+      "Vow",
+      "March",
+      "Offense",
+      "Adamance",
+      "Rend",
+      "Dine",
+      "Titan",
+      "Liquidation",
+      "Embrion",
+      "Artifice"
+    ];
+
+    internal static bool IsVanillaLevel(SelectableLevel level) =>
+      VanillaLevels.Select(l => l.ToLower()).Contains(ConfigHelper.GetNumberlessName(level).ToLower());
+
+    internal static string CompanyLevel = "Gordion";
 
     internal static Color LethalLibColor = new(r: 0f, g: 0.44f, b: 0.76f, a: 1f);
   }

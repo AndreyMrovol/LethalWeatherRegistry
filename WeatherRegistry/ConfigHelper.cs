@@ -188,6 +188,24 @@ namespace WeatherRegistry
       return StringToLevel.GetValueOrDefault(str.ToLower());
     }
 
+    public static SelectableLevel[] ResolveStringPlaceholderLevels(string str)
+    {
+      if (str == null || str == "")
+      {
+        return [];
+      }
+
+      SelectableLevel[] levels = str switch
+      {
+        "all" => StartOfRound.Instance.levels,
+        "vanilla" => StartOfRound.Instance.levels.Where(level => Defaults.IsVanillaLevel(level)).ToArray(), // check intersection of all levels and levels names that are defined in Defaults.VanillaLevels
+        "modded" => StartOfRound.Instance.levels.Where(level => !Defaults.IsVanillaLevel(level)).ToArray(),
+        _ => [],
+      };
+
+      return levels;
+    }
+
     public static Weather ResolveStringToWeather(string str)
     {
       return StringToWeather.GetValueOrDefault(str.ToLower());
