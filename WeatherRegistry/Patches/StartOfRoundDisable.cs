@@ -12,6 +12,8 @@ namespace WeatherRegistry.Patches
       {
         weather.Effect.DisableEffect();
       }
+
+      EventManager.DisableAllWeathers.Invoke();
     }
   }
 }
