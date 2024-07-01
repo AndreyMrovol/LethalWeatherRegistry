@@ -59,6 +59,8 @@ namespace WeatherRegistry
         NewWeather[level.PlanetName] = selectedWeather.VanillaWeatherType;
         WeatherManager.CurrentWeathers[level] = selectedWeather;
 
+        EventManager.WeatherChanged.Invoke((level, selectedWeather));
+
         Logger.LogMessage($"Selected weather: {selectedWeather.Name}");
         try
         {
