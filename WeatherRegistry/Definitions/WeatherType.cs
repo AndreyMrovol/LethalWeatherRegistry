@@ -186,6 +186,42 @@ namespace WeatherRegistry
     {
       LevelFilters.Remove(moon);
     }
+
+    public int GetWeight(SelectableLevel level)
+    {
+      MrovLib.Logger logger = WeatherCalculation.Logger;
+      var weatherWeight = this.DefaultWeight;
+
+      // we have 3 weights possible:
+      // 1. level weight
+      // 2. weather-weather weights
+      // 3. default weight
+      // we want to execute them in this exact order
+
+      if (this.LevelWeights.TryGetValue(level, out int levelWeight))
+      {
+        // (1) => level weight
+        logger.LogDebug($"{this.Name} has level weight {levelWeight}");
+        weatherWeight = levelWeight;
+      }
+      // try to get previous day weather (so - at this point - the current one)
+      // but not on first day because that's completely random
+      else if (
+        this.WeatherWeights.TryGetValue(level.currentWeather, out int weatherWeightFromWeather)
+        && StartOfRound.Instance.gameStats.daysSpent != 0
+      )
+      {
+        // (2) => weather-weather weights
+        logger.LogDebug($"{this.Name} has weather>weather weight {weatherWeightFromWeather}");
+        weatherWeight = weatherWeightFromWeather;
+      }
+      else
+      {
+        logger.LogDebug($"{this.Name} has default weight {weatherWeight}");
+      }
+
+      return weatherWeight;
+    }
   }
 
   public class LevelWeatherVariables

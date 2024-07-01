@@ -53,7 +53,8 @@ namespace WeatherRegistry
 
         NewWeather[level.PlanetName] = LevelWeatherType.None;
 
-        (Weather selectedWeather, Dictionary<Weather, int> weights) = WeatherManager.PickNewRandomWeather(level);
+        MrovLib.WeightHandler<Weather> possibleWeathers = WeatherManager.GetPlanetWeightedList(level);
+        Weather selectedWeather = possibleWeathers.Random();
 
         NewWeather[level.PlanetName] = selectedWeather.VanillaWeatherType;
         WeatherManager.CurrentWeathers[level] = selectedWeather;
@@ -62,7 +63,7 @@ namespace WeatherRegistry
         try
         {
           Logger.LogMessage(
-            $"Chance for that was {weights[selectedWeather]} / {weights.Values.Sum()} ({(float)weights[selectedWeather] / weights.Values.Sum() * 100}%)"
+            $"Chance for that was {possibleWeathers.Get(selectedWeather)} / {possibleWeathers.Sum} ({(float)possibleWeathers.Get(selectedWeather) / possibleWeathers.Sum * 100}%)"
           );
         }
         catch { }
