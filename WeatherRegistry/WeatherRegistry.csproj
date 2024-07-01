@@ -54,6 +54,8 @@
 
         <PackageReference Include="Evaisa.LethalLib" Version="0.16.0" />
 
+        <PackageReference Include="mrov.MrovLib" Version="*-*" />
+
         <PackageReference Include="MinVer" Version="4.*" PrivateAssets="all" Private="false"/>
 
         <Reference Include="MMHOOK_Assembly-CSharp">
