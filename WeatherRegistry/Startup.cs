@@ -13,7 +13,7 @@ namespace WeatherRegistry.Patches
   public static class TerminalStartPatch
   {
     internal static WeatherEffect[] vanillaEffectsArray { get; private set; } = null;
-    internal static WeatherRegistry.Logger Logger = new("WeatherRegistry", ConfigManager.LogStartup);
+    internal static MrovLib.Logger Logger = new("WeatherRegistry", ConfigManager.LogStartup);
 
     [HarmonyPatch(typeof(StartOfRound), "Awake")]
     [HarmonyPrefix]

@@ -10,7 +10,7 @@ namespace WeatherRegistry
   {
     internal static Dictionary<string, LevelWeatherType> previousDayWeather = [];
 
-    public static WeatherRegistry.Logger Logger = new("WeatherRegistry", ConfigManager.LogWeatherChanges);
+    public static MrovLib.Logger Logger = new("WeatherRegistry", ConfigManager.LogWeatherChanges);
 
     internal static Dictionary<string, LevelWeatherType> NewWeathers(StartOfRound startOfRound)
     {

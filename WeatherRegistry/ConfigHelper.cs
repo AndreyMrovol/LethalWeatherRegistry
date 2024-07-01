@@ -125,6 +125,8 @@ namespace WeatherRegistry
 
   internal class ConfigHelper
   {
+    private static MrovLib.Logger logger = new("WeatherRegistry", ConfigManager.LogWeightResolving);
+
     private static Dictionary<string, SelectableLevel> _levelsDictionary = null;
     public static Dictionary<string, SelectableLevel> StringToLevel
     {
