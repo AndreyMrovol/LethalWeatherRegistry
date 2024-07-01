@@ -1,13 +1,14 @@
 name: Release on Nuget
 
 on:
-  workflow_run:
-    workflows: ["Publish"]
-    types:
-      - completed
+  workflow_call:
+    secrets:
+      nuget-token:
+        required: true
+
 jobs:
-  deploy-nuget:
-    name: Deploy
+  nuget:
+    name: Upload
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Sources
@@ -25,4 +26,4 @@ jobs:
 
       - name: Publish to NuGet.org
         run: |
-          dotnet nuget push ./*/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push ./*/bin/Release/*.nupkg --api-key ${{ secrets.nuget-token }} --source https://api.nuget.org/v3/index.json

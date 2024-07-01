@@ -1,14 +1,14 @@
 name: Release on Thunderstore
 
 on:
-  workflow_run:
-    workflows: ["Publish"]
-    types:
-      - completed
+  workflow_call:
+    secrets:
+      thunderstore-token:
+        required: true
 
 jobs:
-  deploy-thunderstore:
-    name: Deploy
+  thunderstore:
+    name: Upload
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Sources
@@ -34,6 +34,6 @@ jobs:
 
       - name: Publish to Thunderstore
         env:
-          TCLI_AUTH_TOKEN: ${{ secrets.THUNDERSTORE_API_KEY }}
+          TCLI_AUTH_TOKEN: ${{ secrets.thunderstore-token }}
         run: |
           dotnet build -target:PublishThunderstore

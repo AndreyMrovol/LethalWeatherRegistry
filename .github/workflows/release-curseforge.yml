@@ -1,13 +1,16 @@
 name: Release on Curseforge
 
 on:
-  workflow_run:
-    workflows: ["Publish"]
-    types:
-      - completed
+  workflow_call:
+    secrets:
+      curseforge-token:
+        required: true
+      project-id:
+        required: true
+
 jobs:
-  deploy-curseforge:
-    name: Deploy to CurseForge
+  curseforge:
+    name: Upload
     runs-on: ubuntu-latest
     steps:
       - name: Fetch Sources
@@ -35,8 +38,8 @@ jobs:
       - name: "Upload to CurseForge"
         uses: itsmeow/curseforge-upload@v3
         with:
-          token: ${{ secrets.CURSEFORGE_API_KEY }}
-          project_id: ${{ secrets.CURSEFORGE_PROJECTID }}
+          token: ${{ secrets.curseforge-token }}
+          project_id: ${{ secrets.project-id }}
           game_endpoint: "lethal-company"
           game_versions: "0.50.0"
           file_path: ${{ env.ZIP_PATH }}
