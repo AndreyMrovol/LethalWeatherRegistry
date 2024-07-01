@@ -243,7 +243,7 @@ namespace WeatherRegistry.Patches
         AddWeatherToLevels(weather, levels, LevelsToApply);
       }
 
-      var possibleWeathersTable = new ConsoleTables.ConsoleTable("Planet", "Random weathers");
+      var possibleWeathersTable = new ConsoleTable("Planet", "Random weathers");
 
       levels.Sort((a, b) => ConfigHelper.GetNumberlessName(a).CompareTo(ConfigHelper.GetNumberlessName(b)));
       levels.ForEach(level =>
