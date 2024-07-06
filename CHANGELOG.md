@@ -1,3 +1,7 @@
+# 0.1.12
+
+- fixed an issue with Nuget propagating wrong LC dependency version further (thanks, giosuel)
+
 # 0.1.11
 
 - MrovLib is now a required dependency
