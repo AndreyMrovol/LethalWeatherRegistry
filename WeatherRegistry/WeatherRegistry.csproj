@@ -45,7 +45,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="50.0.1-ngd.0" Publicize="true"/>
+        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="*-*" Publicize="true">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
 
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*"/>
@@ -54,7 +56,9 @@
 
         <PackageReference Include="Evaisa.LethalLib" Version="0.16.0" />
 
-        <PackageReference Include="mrov.MrovLib" Version="*-*" />
+        <PackageReference Include="mrov.MrovLib" Version="*-*" >
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
 
         <PackageReference Include="MinVer" Version="4.*" PrivateAssets="all" Private="false"/>
 

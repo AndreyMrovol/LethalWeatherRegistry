@@ -36,6 +36,8 @@ namespace WeatherRegistry
       WeatherManager.CurrentWeathers[level] = weather;
       level.currentWeather = weather.VanillaWeatherType;
 
+      Plugin.logger.LogWarning($"Changed weather for {ConfigHelper.GetNumberlessName(level)} to {weather.VanillaWeatherType}");
+
       EventManager.WeatherChanged.Invoke((level, weather));
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
     }
