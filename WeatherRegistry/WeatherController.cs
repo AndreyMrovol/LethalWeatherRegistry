@@ -28,6 +28,11 @@ namespace WeatherRegistry
     // this is the one that every overload should resolve to
     public static void ChangeWeather(SelectableLevel level, Weather weather)
     {
+      if (!Settings.SelectWeathers)
+      {
+        return;
+      }
+
       WeatherManager.CurrentWeathers[level] = weather;
       level.currentWeather = weather.VanillaWeatherType;
 
