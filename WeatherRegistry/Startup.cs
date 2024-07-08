@@ -259,8 +259,6 @@ namespace WeatherRegistry.Patches
 
       WeatherManager.IsSetupFinished = true;
 
-      EventManager.SetupFinished.Invoke();
-
       StartOfRound.Instance.SetPlanetsWeather();
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
 
@@ -268,6 +266,8 @@ namespace WeatherRegistry.Patches
       {
         WeatherSync.Instance.ApplyWeathers(WeatherSync.Instance.Weather);
       }
+
+      EventManager.SetupFinished.Invoke();
     }
 
     static void AddWeatherToLevels(Weather weather, List<SelectableLevel> levels, List<SelectableLevel> LevelsToApply)

@@ -47,6 +47,8 @@ namespace WeatherRegistry.Patches
         WeatherSync.Instance.SetNew(JsonConvert.SerializeObject(newWeathers));
       }
 
+      EventManager.DayChanged.Invoke(__instance.gameStats.daysSpent);
+
       return false;
     }
   }
