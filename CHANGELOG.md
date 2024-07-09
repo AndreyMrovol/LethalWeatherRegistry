@@ -1,3 +1,11 @@
+# 0.1.14
+
+- improved resolving planet and weather names that have spaces in them
+
+# 0.1.13
+
+- fixed `SetupFinished` event firing correctly
+
 # 0.1.12
 
 - fixed an issue with Nuget propagating wrong LC dependency version further (thanks, giosuel)
