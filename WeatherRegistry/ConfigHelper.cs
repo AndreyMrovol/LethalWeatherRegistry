@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using BepInEx.Configuration;
 using HarmonyLib;
 
@@ -144,6 +145,7 @@ namespace WeatherRegistry
           .ForEach(level =>
           {
             Levels.TryAdd(GetNumberlessName(level).ToLower(), level);
+            Levels.TryAdd(GetAlphanumericName(level).ToLower(), level);
             Levels.TryAdd(level.PlanetName.ToLower(), level);
             Levels.TryAdd(level.name.ToLower(), level);
           });
@@ -173,7 +175,7 @@ namespace WeatherRegistry
           {
             Weathers.TryAdd(weather.name.ToLower(), weather);
             Weathers.TryAdd(weather.Name.ToLower(), weather);
-            Weathers.TryAdd(((int)weather.VanillaWeatherType).ToString(), weather);
+            Weathers.TryAdd(GetAlphanumericName(weather).ToLower(), weather);
           });
 
         _weathersDictionary = Weathers;
@@ -215,6 +217,18 @@ namespace WeatherRegistry
     public static string GetNumberlessName(SelectableLevel level)
     {
       return new string(level.PlanetName.SkipWhile(c => !char.IsLetter(c)).ToArray());
+    }
+
+    public static string GetAlphanumericName(SelectableLevel level)
+    {
+      Regex regex = new(@"^[0-9]+|[-_/\\\ ]");
+      return new string(regex.Replace(level.PlanetName, ""));
+    }
+
+    public static string GetAlphanumericName(Weather weather)
+    {
+      Regex regex = new(@"^[0-9]+|[-_/\\\ ]");
+      return new string(regex.Replace(weather.Name, ""));
     }
 
     // convert string to array of strings
