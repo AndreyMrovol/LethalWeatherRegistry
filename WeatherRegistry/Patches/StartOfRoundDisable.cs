@@ -2,6 +2,7 @@ using HarmonyLib;
 
 namespace WeatherRegistry.Patches
 {
+  [HarmonyPatch(typeof(StartOfRound))]
   class StartOfRoundPatch
   {
     [HarmonyPatch("OnDisable")]

@@ -1,3 +1,7 @@
+# 0.1.15
+
+- fixed `StartOfRound.OnDisable` patch not firing correctly
+
 # 0.1.14
 
 - improved resolving planet and weather names that have spaces in them
