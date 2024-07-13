@@ -23,7 +23,9 @@ namespace WeatherRegistry
 
     // map screen settings
     public static ConfigEntry<bool> ColoredWeathers { get; private set; }
-
+    public static ConfigEntry<bool> HiddenMoon { get; private set; }
+    public static ConfigEntry<bool> HiddenWeather { get; private set; }
+    
     // sun animator settings
     private static ConfigEntry<string> SunAnimatorBlacklist { get; set; }
     public static SelectableLevel[] SunAnimatorBlacklistLevels { get; internal set; }
@@ -39,6 +41,8 @@ namespace WeatherRegistry
       LogWeightResolving = configFile.Bind("|Debugging", "Log Weight Resolving", true, "Log weight resolving to console");
 
       ColoredWeathers = configFile.Bind("|General", "Colored Weathers", true, "Enable colored weathers in map screen");
+      HiddenMoon = configFile.Bind("|General", "Hide Moon Name", false, "Hide moon name in map screen");
+      HiddenWeather = configFile.Bind("|General", "Hide Moon Weather", false, "Hide moon weather in map screen");
       SunAnimatorBlacklist = configFile.Bind(
         "|SunAnimator",
         "Blacklist",
