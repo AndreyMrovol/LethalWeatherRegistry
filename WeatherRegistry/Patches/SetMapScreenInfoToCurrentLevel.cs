@@ -24,8 +24,11 @@ namespace WeatherRegistry.Patches
         return;
       }
 
+      Plugin.logger.LogInfo($"Routing to {___currentLevel.PlanetName} (obscured: {ConfigManager.HiddenMoon}), with weather {WeatherManager.GetCurrentWeather(___currentLevel)} (obscured: {ConfigManager.HiddenWeather})");
+
       StringBuilder stringBuilder = new();
-      stringBuilder.Append("ORBITING: " + ___currentLevel.PlanetName + "\n");
+      stringBuilder.Append($"ORBITING: {(ConfigManager.HiddenMoon.Value ? "[REDACTED]" : ___currentLevel.PlanetName)}\n");
+      stringBuilder.Append($"WEATHER: {(ConfigManager.HiddenWeather.Value ? "[REDACTED]" : GetColoredString(___currentLevel))}\n");
       stringBuilder.Append($"WEATHER: {GetColoredString(___currentLevel)}\n");
       stringBuilder.Append(___currentLevel.LevelDescription ?? "");
 
