@@ -56,7 +56,6 @@ namespace WeatherRegistry
       Settings.ScreenMapColors.Clear();
 
       ConfigHelper.StringToWeather = null;
-      ConfigHelper.StringToLevel = null;
 
       RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherRegistry);
     }

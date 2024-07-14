@@ -1,3 +1,8 @@
+# 0.1.16
+
+- WeatherRegistry's scrap value/amount multipliers will be prioritized
+- added `MapScreenUpdated` event
+
 # 0.1.15
 
 - fixed `StartOfRound.OnDisable` patch not firing correctly
