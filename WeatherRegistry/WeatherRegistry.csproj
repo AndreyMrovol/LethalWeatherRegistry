@@ -29,6 +29,8 @@
 
     <PropertyGroup>
         <GameDirectory>V:\Steam\steamapps\common\Lethal Company</GameDirectory>
+        <LibraryDirectory>../lib</LibraryDirectory>
+        <DebugLibraryDirectory>V:\LC-ModLibraries</DebugLibraryDirectory>
     </PropertyGroup>
 
     <ItemGroup>
@@ -63,7 +65,7 @@
         <PackageReference Include="MinVer" Version="4.*" PrivateAssets="all" Private="false"/>
 
         <Reference Include="MMHOOK_Assembly-CSharp">
-            <HintPath>../lib/MMHOOK_Assembly-CSharp.dll</HintPath>
+            <HintPath>$(LibraryDirectory)/MMHOOK_Assembly-CSharp.dll</HintPath>
         </Reference>
     </ItemGroup>
 
