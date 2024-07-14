@@ -32,32 +32,28 @@ namespace WeatherRegistry
     public Weather Weather { get; set; }
   }
 
-  public abstract class ConfigHandler<T, CT>
+  internal abstract class ConfigHandler<T, CT> : MrovLib.ConfigHandler<T, CT>
   {
-    // i need to make some stupid shit
-    // basically a property that wraps around Bepinex ConfigEntry
-    // so a getter would read that and resolve to my types
-    // and a setter that does <something>
-
-    // and this will resolve to string
-    // so bepinex won't shit the bed
-
-    internal ConfigEntry<CT> ConfigEntry { get; }
-
-    internal CT DefaultValue { get; }
-
-    public abstract T Value { get; }
+    // internal ConfigEntry<CT> ConfigEntry { get; }
+    // internal virtual CT DefaultValue { get; }
+    // public override T Value { get; }
 
     public ConfigHandler(CT defaultValue, Weather weather, string configTitle, ConfigDescription configDescription = null)
+      : base(weather.Name, configTitle, defaultValue, configDescription)
     {
-      DefaultValue = defaultValue;
-      string configCategory = $"Weather: {weather.name}{(weather.Origin != WeatherOrigin.Vanilla ? $" ({weather.Origin})" : "")}";
+      // Any additional initialization for the derived class can be done here
 
-      ConfigEntry = ConfigManager.configFile.Bind(configCategory, configTitle, DefaultValue, configDescription);
+      DefaultValue = defaultValue;
+      ConfigEntry = ConfigManager.configFile.Bind(
+        $"Weather: {weather.name}{(weather.Origin != WeatherOrigin.Vanilla ? $" ({weather.Origin})" : "")}",
+        configTitle,
+        DefaultValue,
+        configDescription
+      );
     }
   }
 
-  public class LevelListConfigHandler : ConfigHandler<SelectableLevel[], string>
+  internal class LevelListConfigHandler : ConfigHandler<SelectableLevel[], string>
   {
     public LevelListConfigHandler(string defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
       : base(defaultValue, weather, configTitle, configDescription) { }
@@ -72,7 +68,7 @@ namespace WeatherRegistry
     }
   }
 
-  public class LevelWeightsConfigHandler : ConfigHandler<LevelRarity[], string>
+  internal class LevelWeightsConfigHandler : ConfigHandler<LevelRarity[], string>
   {
     public LevelWeightsConfigHandler(string defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
       : base(defaultValue, weather, configTitle, configDescription) { }
@@ -87,7 +83,7 @@ namespace WeatherRegistry
     }
   }
 
-  public class WeatherWeightsConfigHandler : ConfigHandler<WeatherRarity[], string>
+  internal class WeatherWeightsConfigHandler : ConfigHandler<WeatherRarity[], string>
   {
     public WeatherWeightsConfigHandler(string defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
       : base(defaultValue, weather, configTitle, configDescription) { }
@@ -102,7 +98,7 @@ namespace WeatherRegistry
     }
   }
 
-  public class IntegerConfigHandler : ConfigHandler<int, int>
+  internal class IntegerConfigHandler : ConfigHandler<int, int>
   {
     public IntegerConfigHandler(int defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
       : base(defaultValue, weather, configTitle, configDescription) { }
@@ -113,7 +109,7 @@ namespace WeatherRegistry
     }
   }
 
-  public class FloatConfigHandler : ConfigHandler<float, float>
+  internal class FloatConfigHandler : ConfigHandler<float, float>
   {
     public FloatConfigHandler(float defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
       : base(defaultValue, weather, configTitle, configDescription) { }
@@ -124,38 +120,20 @@ namespace WeatherRegistry
     }
   }
 
+  internal class StringConfigHandler : ConfigHandler<string, string>
+  {
+    public StringConfigHandler(string defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
+      : base(defaultValue, weather, configTitle, configDescription) { }
+
+    public override string Value
+    {
+      get { return ConfigEntry.Value; }
+    }
+  }
+
   internal class ConfigHelper
   {
     private static MrovLib.Logger logger = new("WeatherRegistry", ConfigManager.LogWeightResolving);
-
-    private static Dictionary<string, SelectableLevel> _levelsDictionary = null;
-    public static Dictionary<string, SelectableLevel> StringToLevel
-    {
-      get
-      {
-        if (_levelsDictionary != null)
-        {
-          return _levelsDictionary;
-        }
-
-        Dictionary<string, SelectableLevel> Levels = [];
-
-        StartOfRound
-          .Instance.levels.ToList()
-          .ForEach(level =>
-          {
-            Levels.TryAdd(GetNumberlessName(level).ToLower(), level);
-            Levels.TryAdd(GetAlphanumericName(level).ToLower(), level);
-            Levels.TryAdd(level.PlanetName.ToLower(), level);
-            Levels.TryAdd(level.name.ToLower(), level);
-          });
-
-        _levelsDictionary = Levels;
-
-        return Levels;
-      }
-      set { _levelsDictionary = value; }
-    }
 
     private static Dictionary<string, Weather> _weathersDictionary = null;
     public static Dictionary<string, Weather> StringToWeather
@@ -185,11 +163,6 @@ namespace WeatherRegistry
       set { _weathersDictionary = value; }
     }
 
-    public static SelectableLevel ResolveStringToLevel(string str)
-    {
-      return StringToLevel.GetValueOrDefault(str.ToLower());
-    }
-
     public static SelectableLevel[] ResolveStringPlaceholderLevels(string str)
     {
       if (str == null || str == "")
@@ -216,13 +189,7 @@ namespace WeatherRegistry
     // straight-up copied from LLL (it's so fucking useful)
     public static string GetNumberlessName(SelectableLevel level)
     {
-      return new string(level.PlanetName.SkipWhile(c => !char.IsLetter(c)).ToArray());
-    }
-
-    public static string GetAlphanumericName(SelectableLevel level)
-    {
-      Regex regex = new(@"^[0-9]+|[-_/\\\ ]");
-      return new string(regex.Replace(level.PlanetName, ""));
+      return MrovLib.StringResolver.GetNumberlessName(level);
     }
 
     public static string GetAlphanumericName(Weather weather)
@@ -251,7 +218,15 @@ namespace WeatherRegistry
 
       foreach (string level in levelNames)
       {
-        SelectableLevel selectableLevel = ResolveStringToLevel(level);
+        // if (level.ToLower() == "all" || level.ToLower() == "modded" || level.ToLower() == "vanilla")
+        // {
+        //   SelectableLevel[] resolved = ResolveStringPlaceholderLevels(level);
+
+        //   output.AddRange(resolved);
+        //   continue;
+        // }
+
+        SelectableLevel selectableLevel = MrovLib.StringResolver.ResolveStringToLevel(level);
 
         Plugin.logger.LogDebug($"String {level} resolved to selectable level: {selectableLevel} (is null: {selectableLevel == null})");
 
@@ -317,7 +292,7 @@ namespace WeatherRegistry
           continue;
         }
 
-        SelectableLevel level = ResolveStringToLevel(rarityData[0]);
+        SelectableLevel level = MrovLib.StringResolver.ResolveStringToLevel(rarityData[0]);
 
         if (level == null)
         {
