@@ -31,6 +31,10 @@ namespace WeatherRegistry.Patches
 
       ___screenLevelDescription.fontWeight = FontWeight.Bold;
       ___screenLevelDescription.text = stringBuilder.ToString();
+
+      EventManager.MapScreenUpdated.Invoke(
+        (level: ___currentLevel, weather: WeatherManager.GetCurrentWeather(___currentLevel), screenText: stringBuilder.ToString())
+      );
     }
 
     private static string GetDisplayWeatherString(SelectableLevel level, Weather weather)
