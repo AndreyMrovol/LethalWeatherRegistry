@@ -24,13 +24,19 @@ namespace WeatherRegistry.Patches
         return;
       }
 
-      Plugin.logger.LogInfo($"Routing to {___currentLevel.PlanetName} (obscured: {ConfigManager.HiddenMoon}), with weather {WeatherManager.GetCurrentWeather(___currentLevel)} (obscured: {ConfigManager.HiddenWeather})");
+      bool forceShow = false;
+      if (___currentLevel.PlanetName.Equals("71 Gordion")) {  forceShow = true; }
+      
+      Plugin.logger.LogInfo($"71 Gordion Equals '{___currentLevel.PlanetName}': {___currentLevel.PlanetName.Equals("71 Gordion")}");
+      Plugin.logger.LogInfo($"ForceShow = {forceShow}; HiddenMoon = {ConfigManager.HiddenMoon.Value}");
+      Plugin.logger.LogInfo($"Routing to {___currentLevel.PlanetName} (obscured: {!ConfigManager.HiddenMoon.Value || forceShow}), with weather {WeatherManager.GetCurrentWeather(___currentLevel)} (obscured: {!ConfigManager.HiddenWeather.Value || forceShow})");
 
       StringBuilder stringBuilder = new();
-      stringBuilder.Append($"ORBITING: {(ConfigManager.HiddenMoon.Value ? "[REDACTED]" : ___currentLevel.PlanetName)}\n");
-      stringBuilder.Append($"WEATHER: {(ConfigManager.HiddenWeather.Value ? "[REDACTED]" : GetColoredString(___currentLevel))}\n");
-      stringBuilder.Append($"WEATHER: {GetColoredString(___currentLevel)}\n");
-      stringBuilder.Append(___currentLevel.LevelDescription ?? "");
+      stringBuilder.Append($"ORBITING: {(!ConfigManager.HiddenMoon.Value || forceShow ? ___currentLevel.PlanetName : "[REDACTED]")}\n");
+      stringBuilder.Append($"WEATHER: {(!ConfigManager.HiddenWeather.Value || forceShow ? GetColoredString(___currentLevel) : "[REDACTED]")}\n");
+      if (!ConfigManager.HiddenMoonInfo.Value || forceShow) {
+        stringBuilder.Append(___currentLevel.LevelDescription ?? "");
+      }
 
       ___screenLevelDescription.fontWeight = FontWeight.Bold;
       ___screenLevelDescription.text = stringBuilder.ToString();

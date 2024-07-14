@@ -24,6 +24,7 @@ namespace WeatherRegistry
     // map screen settings
     public static ConfigEntry<bool> ColoredWeathers { get; private set; }
     public static ConfigEntry<bool> HiddenMoon { get; private set; }
+    public static ConfigEntry<bool> HiddenMoonInfo { get; private set; }
     public static ConfigEntry<bool> HiddenWeather { get; private set; }
     
     // sun animator settings
@@ -42,6 +43,7 @@ namespace WeatherRegistry
 
       ColoredWeathers = configFile.Bind("|General", "Colored Weathers", true, "Enable colored weathers in map screen");
       HiddenMoon = configFile.Bind("|General", "Hide Moon Name", false, "Hide moon name in map screen");
+      HiddenMoonInfo = configFile.Bind("|General", "Hide Moon Info", false, "Hide moon info in map screen (population, conditions, etc");
       HiddenWeather = configFile.Bind("|General", "Hide Moon Weather", false, "Hide moon weather in map screen");
       SunAnimatorBlacklist = configFile.Bind(
         "|SunAnimator",
