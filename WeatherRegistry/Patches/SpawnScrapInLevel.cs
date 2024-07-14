@@ -9,6 +9,8 @@ namespace WeatherRegistry.Patches
   public class SpawnScrapInLevelPatches
   {
     [HarmonyPatch("SpawnScrapInLevel")]
+    [HarmonyAfter(["com.github.fredolx.meteomultiplier", "DarthLilo.WeatherBonuses"])]
+    [HarmonyPriority(Priority.Last)]
     [HarmonyPrefix]
     private static void ChangeMultipliers(RoundManager __instance)
     {
@@ -22,6 +24,7 @@ namespace WeatherRegistry.Patches
 
     [HarmonyPatch("SpawnScrapInLevel")]
     [HarmonyPostfix]
+    [HarmonyPriority(Priority.First)]
     private static void LogMultipliers(RoundManager __instance)
     {
       Plugin.logger.LogInfo($"Spawned scrap in level with multipliers: {__instance.scrapValueMultiplier}, {__instance.scrapAmountMultiplier}");
