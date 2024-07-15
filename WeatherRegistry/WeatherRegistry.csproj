@@ -121,4 +121,9 @@
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
         <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all"/>
     </ItemGroup>
+
+    <Target Name="CopyToDebugProfile" AfterTargets="NetcodePatch" Condition="'$(Configuration)' == 'Debug'">
+        <Message Importance="high" Text="Copying To LibraryDir" />
+        <Copy SourceFiles="$(TargetDir)$(AssemblyName).dll" DestinationFolder="$(DebugLibraryDirectory)" />
+    </Target>
 </Project>

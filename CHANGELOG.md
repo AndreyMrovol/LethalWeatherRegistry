@@ -1,3 +1,8 @@
+# 0.1.17
+
+- updated MrovLib's ConfigHandler implementation (sorry for that!)
+- changed the way ship's map screen displays planet info
+
 # 0.1.16
 
 - WeatherRegistry's scrap value/amount multipliers will be prioritized
