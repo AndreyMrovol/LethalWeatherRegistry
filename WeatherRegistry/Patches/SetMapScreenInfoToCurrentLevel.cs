@@ -24,10 +24,12 @@ namespace WeatherRegistry.Patches
         return;
       }
 
+      Regex multiNewLine = new(@"\n{2,}");
+
       StringBuilder stringBuilder = new();
       stringBuilder.Append("ORBITING: " + ___currentLevel.PlanetName + "\n");
       stringBuilder.Append($"WEATHER: {GetColoredString(___currentLevel)}\n");
-      stringBuilder.Append(___currentLevel.LevelDescription ?? "");
+      stringBuilder.Append(multiNewLine.Replace(___currentLevel.LevelDescription, "\n") ?? "");
 
       ___screenLevelDescription.fontWeight = FontWeight.Bold;
       ___screenLevelDescription.text = stringBuilder.ToString();
