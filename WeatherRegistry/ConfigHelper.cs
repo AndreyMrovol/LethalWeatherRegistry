@@ -34,12 +34,7 @@ namespace WeatherRegistry
 
   internal abstract class ConfigHandler<T, CT> : MrovLib.ConfigHandler<T, CT>
   {
-    // internal ConfigEntry<CT> ConfigEntry { get; }
-    // internal virtual CT DefaultValue { get; }
-    // public override T Value { get; }
-
     public ConfigHandler(CT defaultValue, Weather weather, string configTitle, ConfigDescription configDescription = null)
-      : base(weather.Name, configTitle, defaultValue, configDescription)
     {
       // Any additional initialization for the derived class can be done here
 
