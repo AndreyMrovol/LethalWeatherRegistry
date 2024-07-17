@@ -1,3 +1,7 @@
+# 0.1.18
+
+- added `ShipLanding` event
+
 # 0.1.17
 
 - updated MrovLib's ConfigHandler implementation (sorry for that!)

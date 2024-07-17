@@ -59,17 +59,20 @@ namespace WeatherRegistry
 
     internal static void SetWeatherEffects()
     {
-      Weather currentWeather = WeatherManager.GetCurrentWeather(StartOfRound.Instance.currentLevel);
+      SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
+      Weather currentWeather = WeatherManager.GetCurrentWeather(currentLevel);
 
       SunAnimator.OverrideSunAnimator(currentWeather.VanillaWeatherType);
 
       Plugin.logger.LogDebug(
-        $"Landing at {ConfigHelper.GetNumberlessName(StartOfRound.Instance.currentLevel)} with weather {JsonConvert.SerializeObject(
+        $"Landing at {ConfigHelper.GetNumberlessName(currentLevel)} with weather {JsonConvert.SerializeObject(
         currentWeather,
         Formatting.None,
         new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }
       )}"
       );
+
+      EventManager.ShipLanding.Invoke((currentLevel, currentWeather));
     }
   }
 }
