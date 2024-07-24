@@ -11,7 +11,7 @@ namespace WeatherRegistry.Patches
     {
       foreach (Weather weather in WeatherManager.Weathers)
       {
-        weather.Effect.DisableEffect();
+        weather.Effect.DisableEffect(true);
       }
 
       EventManager.DisableAllWeathers.Invoke();
