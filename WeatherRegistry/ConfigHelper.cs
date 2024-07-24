@@ -223,6 +223,11 @@ namespace WeatherRegistry
 
         SelectableLevel selectableLevel = MrovLib.StringResolver.ResolveStringToLevel(level);
 
+        if (selectableLevel == null)
+        {
+          continue;
+        }
+
         Plugin.logger.LogDebug($"String {level} resolved to selectable level: {selectableLevel} (is null: {selectableLevel == null})");
 
         if (output.Contains(selectableLevel))

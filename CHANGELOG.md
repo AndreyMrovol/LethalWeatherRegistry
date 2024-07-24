@@ -1,3 +1,7 @@
+# 0.1.19
+
+- fixed null references when resolving SelectableLevels names
+
 # 0.1.18
 
 - added `ShipLanding` event
