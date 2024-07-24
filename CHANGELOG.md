@@ -1,3 +1,7 @@
+# 0.1.20
+
+- fixed an issue with `StartOfRound.OnDisable` not disabling WorldObjects (thanks, `_v0xx_`!)
+
 # 0.1.19
 
 - fixed null references when resolving SelectableLevels names
