@@ -146,9 +146,9 @@ namespace WeatherRegistry
           .Weathers.ToList()
           .ForEach(weather =>
           {
-            Weathers.TryAdd(weather.name.ToLower(), weather);
-            Weathers.TryAdd(weather.Name.ToLower(), weather);
-            Weathers.TryAdd(GetAlphanumericName(weather).ToLower(), weather);
+            Weathers.TryAdd(weather.name.ToLowerInvariant(), weather);
+            Weathers.TryAdd(weather.Name.ToLowerInvariant(), weather);
+            Weathers.TryAdd(GetAlphanumericName(weather).ToLowerInvariant(), weather);
           });
 
         _weathersDictionary = Weathers;
@@ -158,27 +158,9 @@ namespace WeatherRegistry
       set { _weathersDictionary = value; }
     }
 
-    public static SelectableLevel[] ResolveStringPlaceholderLevels(string str)
-    {
-      if (str == null || str == "")
-      {
-        return [];
-      }
-
-      SelectableLevel[] levels = str switch
-      {
-        "all" => StartOfRound.Instance.levels,
-        "vanilla" => StartOfRound.Instance.levels.Where(level => Defaults.IsVanillaLevel(level)).ToArray(), // check intersection of all levels and levels names that are defined in Defaults.VanillaLevels
-        "modded" => StartOfRound.Instance.levels.Where(level => !Defaults.IsVanillaLevel(level)).ToArray(),
-        _ => [],
-      };
-
-      return levels;
-    }
-
     public static Weather ResolveStringToWeather(string str)
     {
-      return StringToWeather.GetValueOrDefault(str.ToLower());
+      return StringToWeather.GetValueOrDefault(str.ToLowerInvariant());
     }
 
     // straight-up copied from LLL (it's so fucking useful)
@@ -203,42 +185,7 @@ namespace WeatherRegistry
 
     public static SelectableLevel[] ConvertStringToLevels(string str)
     {
-      string[] levelNames = ConvertStringToArray(str);
-      List<SelectableLevel> output = [];
-
-      if (levelNames.Count() == 0)
-      {
-        return [];
-      }
-
-      foreach (string level in levelNames)
-      {
-        // if (level.ToLower() == "all" || level.ToLower() == "modded" || level.ToLower() == "vanilla")
-        // {
-        //   SelectableLevel[] resolved = ResolveStringPlaceholderLevels(level);
-
-        //   output.AddRange(resolved);
-        //   continue;
-        // }
-
-        SelectableLevel selectableLevel = MrovLib.StringResolver.ResolveStringToLevel(level);
-
-        if (selectableLevel == null)
-        {
-          continue;
-        }
-
-        Plugin.logger.LogDebug($"String {level} resolved to selectable level: {selectableLevel} (is null: {selectableLevel == null})");
-
-        if (output.Contains(selectableLevel))
-        {
-          continue;
-        }
-
-        output.Add(selectableLevel);
-      }
-
-      return output.ToArray();
+      return MrovLib.StringResolver.ResolveStringToLevels(str);
     }
 
     public static NameRarity[] ConvertStringToRarities(string str)
@@ -292,15 +239,18 @@ namespace WeatherRegistry
           continue;
         }
 
-        SelectableLevel level = MrovLib.StringResolver.ResolveStringToLevel(rarityData[0]);
+        SelectableLevel[] levels = MrovLib.StringResolver.ResolveStringToLevels(rarityData[0]);
 
-        if (level == null)
+        foreach (SelectableLevel level in levels)
         {
-          // Plugin.logger.LogWarning($"Invalid level name: {rarityData[0]}");
-          continue;
-        }
+          if (level == null)
+          {
+            // Plugin.logger.LogWarning($"Invalid level name: {rarityData[0]}");
+            continue;
+          }
 
-        output.Add(new LevelRarity { Level = level, Weight = weight });
+          output.Add(new LevelRarity { Level = level, Weight = weight });
+        }
       }
 
       return output.ToArray();
