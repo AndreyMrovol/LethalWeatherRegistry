@@ -1,3 +1,11 @@
+# 0.1.21
+
+- added level placeholders for config entries:
+  - `All`: all levels
+  - `Modded`/`Custom`: all modded levels
+  - `Vanilla`: all vanilla levels
+  - `Company`: the company level
+
 # 0.1.20
 
 - fixed an issue with `StartOfRound.OnDisable` not disabling WorldObjects (thanks, `_v0xx_`!)
