@@ -123,13 +123,13 @@ namespace WeatherRegistry.Patches
       // Get all LethalLib weathers and add them to effects list
       if (Plugin.IsLethalLibLoaded)
       {
-        Logger.LogWarning("Getting LethalLib Weathers");
+        Logger.LogDebug("Getting LethalLib Weathers");
 
         List<Weather> lethalLibWeathers = LethalLibPatch.ConvertLLWeathers();
 
         foreach (Weather weather in lethalLibWeathers)
         {
-          Logger.LogWarning($"LethalLib Weather: {weather.Name}");
+          Logger.LogDebug($"LethalLib Weather: {weather.Name}");
 
           WeatherManager.RegisteredWeathers.Add(weather);
         }
@@ -217,7 +217,7 @@ namespace WeatherRegistry.Patches
         WeatherManager.Weathers.Add(weather);
       }
 
-      Logger.LogWarning($"Weathers: {WeatherManager.Weathers.Count}");
+      Logger.LogDebug($"Weathers: {WeatherManager.Weathers.Count}");
 
       List<SelectableLevel> levels = StartOfRound.Instance.levels.ToList();
 

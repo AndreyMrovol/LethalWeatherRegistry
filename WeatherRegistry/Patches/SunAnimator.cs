@@ -24,7 +24,7 @@ namespace WeatherRegistry.Patches
         AccessTools.Method(typeof(UnityEngine.Animator), "SetBool", new Type[] { typeof(string), typeof(bool) }),
         new HarmonyMethod(typeof(SunAnimator), "SetBoolStringPatch")
       );
-      logger.LogWarning("Patching Animator.SetBool(string, bool)");
+      logger.LogDebug("Patching Animator.SetBool(string, bool)");
     }
 
     public static bool SetBoolPatch(Animator __instance, object nameOrId, bool value)
@@ -97,20 +97,20 @@ namespace WeatherRegistry.Patches
 
       if (ConfigManager.SunAnimatorBlacklistLevels.Contains(StartOfRound.Instance.currentLevel))
       {
-        logger.LogWarning($"Current level {StartOfRound.Instance.currentLevel} is blacklisted");
+        logger.LogDebug($"Current level {StartOfRound.Instance.currentLevel} is blacklisted");
         return;
       }
 
       if (TimeOfDay.Instance.sunAnimator == null)
       {
-        logger.LogWarning("sunAnimator is null, skipping");
+        logger.LogDebug("sunAnimator is null, skipping");
         return;
       }
 
       AnimatorClipInfo[] currentClips = TimeOfDay.Instance.sunAnimator.GetCurrentAnimatorClipInfo(0);
       if (currentClips.Length == 0)
       {
-        logger.LogWarning("There are no SunAnimator clips, skipping");
+        logger.LogDebug("There are no SunAnimator clips, skipping");
         return;
       }
 
@@ -122,7 +122,7 @@ namespace WeatherRegistry.Patches
 
       if (animatorControllerBlacklist.Contains(animatorControllerName))
       {
-        logger.LogWarning($"TimeOfDay.Instance.sunAnimator controller {animatorControllerName} is blacklisted");
+        logger.LogDebug($"TimeOfDay.Instance.sunAnimator controller {animatorControllerName} is blacklisted");
         return;
       }
 
@@ -184,7 +184,7 @@ namespace WeatherRegistry.Patches
         }
         else if (currentWeather.Type != WeatherType.Vanilla)
         {
-          logger.LogWarning($"No custom animation clip found for weather type {weatherType}");
+          logger.LogDebug($"No custom animation clip found for weather type {weatherType}");
           logger.LogDebug("Trying to apply vanilla animator bool");
 
           bool doesUseVanillaBool = vanillaBools.TryGetValue(currentWeather.Effect.SunAnimatorBool, out LevelWeatherType vanillaBool);
@@ -209,11 +209,11 @@ namespace WeatherRegistry.Patches
         return;
       }
 
-      logger.LogWarning($"Clips: {clips.Count}");
+      logger.LogDebug($"Clips: {clips.Count}");
 
       if (clips.Keys.Select(key => key == weatherType).Count() == 0)
       {
-        logger.LogWarning($"No animation clip found for weather type {weatherType}");
+        logger.LogDebug($"No animation clip found for weather type {weatherType}");
         return;
       }
 
@@ -224,7 +224,7 @@ namespace WeatherRegistry.Patches
       string animationClipName = clips.TryGetValue(weatherType, out AnimationClip clip) ? clip.name : null;
       if (animationClipName == null)
       {
-        logger.LogWarning($"No animation clip found for weather type {weatherType}");
+        logger.LogDebug($"No animation clip found for weather type {weatherType}");
         return;
       }
 
