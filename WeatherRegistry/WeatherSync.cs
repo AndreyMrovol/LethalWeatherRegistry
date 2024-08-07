@@ -34,7 +34,7 @@ namespace WeatherRegistry
       Instance = this;
       DontDestroyOnLoad(gameObject);
 
-      Plugin.logger.LogWarning($"WeathersSynced: {WeathersSynced.Value}");
+      Plugin.logger.LogDebug($"WeathersSynced: {WeathersSynced.Value}");
 
       WeathersSynced.OnValueChanged += WeathersReceived;
     }
@@ -101,7 +101,7 @@ namespace WeatherRegistry
     {
       if (networkHasStarted == false)
       {
-        Plugin.logger.LogWarning("Registering NetworkPrefab: " + prefab);
+        Plugin.logger.LogDebug("Registering NetworkPrefab: " + prefab);
         queuedNetworkPrefabs.Add(prefab);
       }
       else
@@ -112,7 +112,7 @@ namespace WeatherRegistry
 
     internal static void RegisterPrefabs(NetworkManager networkManager)
     {
-      Plugin.logger.LogWarning("Registering NetworkPrefabs in NetworkManager");
+      Plugin.logger.LogDebug("Registering NetworkPrefabs in NetworkManager");
 
       List<GameObject> addedNetworkPrefabs = new List<GameObject>();
 

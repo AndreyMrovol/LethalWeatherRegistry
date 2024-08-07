@@ -6,7 +6,7 @@ namespace WeatherRegistry
   {
     public static void Init()
     {
-      Plugin.logger.LogWarning("LobbyCompatibility detected, registering plugin with LobbyCompatibility.");
+      Plugin.logger.LogDebug("LobbyCompatibility detected, registering plugin with LobbyCompatibility.");
 
       Version pluginVersion = Version.Parse(PluginInfo.PLUGIN_VERSION);
 

@@ -30,7 +30,7 @@ namespace WeatherRegistry
       get { return _effectEnabled; }
       set
       {
-        Plugin.logger.LogWarning($"Setting effect {this.name} to {value}");
+        Plugin.logger.LogDebug($"Setting effect {this.name} to {value}");
 
         EffectObject?.SetActive(value);
         WorldObject?.SetActive(value);

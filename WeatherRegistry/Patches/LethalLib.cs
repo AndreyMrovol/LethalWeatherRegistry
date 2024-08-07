@@ -58,7 +58,7 @@ namespace WeatherRegistry.Patches
 
     public static void Init()
     {
-      Plugin.logger.LogWarning("Disabling LethalLib injections");
+      Plugin.logger.LogDebug("Disabling LethalLib injections");
 
       // Access the field: private static Hook? weatherEnumHook;
       // added in lethallib 0.16.0
@@ -79,14 +79,14 @@ namespace WeatherRegistry.Patches
 
     internal static bool StartOfRoundAwakePrefix(On.StartOfRound.orig_Awake orig, StartOfRound self)
     {
-      Plugin.logger.LogWarning("Skipping LethalLib StartOfRound method");
+      Plugin.logger.LogDebug("Skipping LethalLib StartOfRound method");
       orig(self);
       return false;
     }
 
     internal static bool TimeOfDayAwakePrefix(On.TimeOfDay.orig_Awake orig, TimeOfDay self)
     {
-      Plugin.logger.LogWarning("Skipping LethalLib TimeOfDay method");
+      Plugin.logger.LogDebug("Skipping LethalLib TimeOfDay method");
       orig(self);
       return false;
     }
