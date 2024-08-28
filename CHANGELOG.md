@@ -1,3 +1,7 @@
+# 0.1.22
+
+- changed how override weathers are logged
+
 # 0.1.21
 
 - added level placeholders for config entries:

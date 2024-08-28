@@ -36,20 +36,26 @@ namespace WeatherRegistry
       {
         previousDayWeather[level.PlanetName] = level.currentWeather;
 
-        if (level.overrideWeather)
-        {
-          Logger.LogDebug($"Override weather present, changing weather to {level.overrideWeatherType}");
-
-          NewWeather[level.PlanetName] = level.overrideWeatherType;
-          continue;
-        }
-
         // possible weathers taken from level.randomWeathers (modified by me)
         // use random for seeded randomness
 
         Logger.LogMessage("-------------");
         Logger.LogMessage($"{level.PlanetName}");
         Logger.LogDebug($"previousDayWeather: {previousDayWeather[level.PlanetName]}");
+
+        // TODO: simplify this bit
+        if (level.overrideWeather)
+        {
+          Logger.LogMessage($"Override weather present, changing weather to {level.overrideWeatherType}");
+          Weather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
+
+          NewWeather[level.PlanetName] = overrideWeather.VanillaWeatherType;
+
+          WeatherManager.CurrentWeathers[level] = overrideWeather;
+          EventManager.WeatherChanged.Invoke((level, overrideWeather));
+
+          continue;
+        }
 
         NewWeather[level.PlanetName] = LevelWeatherType.None;
 
