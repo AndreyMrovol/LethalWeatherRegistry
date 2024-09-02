@@ -62,8 +62,6 @@ namespace WeatherRegistry
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
       Weather currentWeather = WeatherManager.GetCurrentWeather(currentLevel);
 
-      SunAnimator.OverrideSunAnimator(currentWeather.VanillaWeatherType);
-
       Plugin.logger.LogDebug(
         $"Landing at {ConfigHelper.GetNumberlessName(currentLevel)} with weather {JsonConvert.SerializeObject(
         currentWeather,
@@ -71,6 +69,8 @@ namespace WeatherRegistry
         new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }
       )}"
       );
+
+      SunAnimator.OverrideSunAnimator(currentWeather.VanillaWeatherType);
 
       EventManager.ShipLanding.Invoke((currentLevel, currentWeather));
     }
