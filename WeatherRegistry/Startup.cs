@@ -70,6 +70,28 @@ namespace WeatherRegistry.Patches
         Logger.LogInfo($"Effects: {effects.Count()}");
       }
 
+      #region Remove incorrect weathers from RandomWeathers
+      foreach (SelectableLevel level in StartOfRound.Instance.levels)
+      {
+        List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.ToList();
+
+        foreach (RandomWeatherWithVariables randomWeather in level.randomWeathers)
+        {
+          // if the value is not part of LevelWeatherType enum, remove RandomWeather
+          if (!Enum.IsDefined(typeof(LevelWeatherType), randomWeather.weatherType))
+          {
+            randomWeathers.Remove(randomWeather);
+            Plugin.logger.LogDebug($"Removing weather {randomWeather.weatherType} from level {level.name}");
+          }
+        }
+
+        if (randomWeathers.Count != level.randomWeathers.Count())
+        {
+          level.randomWeathers = randomWeathers.ToArray();
+        }
+      }
+      #endregion
+
       #region None weather
 
       Logger.LogInfo("Creating NoneWeather type");
