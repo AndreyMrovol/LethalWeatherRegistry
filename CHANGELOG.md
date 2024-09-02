@@ -1,3 +1,7 @@
+# 0.1.23
+
+- fixed an issue with **_`6`_** weather on Experimentation (thanks: `_v0xx_`, `giosuel`!)
+
 # 0.1.22
 
 - changed how override weathers are logged
