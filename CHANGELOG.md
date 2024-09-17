@@ -1,7 +1,3 @@
-# 0.1.24
-
-- changed how scrap multipliers are applied: they are not replacing other mod values' anymore
-
 # 0.1.23
 
 - fixed an issue with **_`6`_** weather on Experimentation (thanks: `_v0xx_`, `giosuel`!)
