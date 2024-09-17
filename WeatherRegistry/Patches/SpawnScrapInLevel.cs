@@ -18,8 +18,8 @@ namespace WeatherRegistry.Patches
 
       // why would the default vanilla value be 0.4? no fucking clue
       // but a layer of abstraction is very much welcome
-      __instance.scrapValueMultiplier = currentWeather.ScrapValueMultiplier * 0.4f;
-      __instance.scrapAmountMultiplier = currentWeather.ScrapAmountMultiplier;
+      __instance.scrapValueMultiplier *= currentWeather.ScrapValueMultiplier * 0.4f;
+      __instance.scrapAmountMultiplier *= currentWeather.ScrapAmountMultiplier;
     }
 
     [HarmonyPatch("SpawnScrapInLevel")]
