@@ -192,6 +192,8 @@ namespace WeatherRegistry
       MrovLib.Logger logger = WeatherCalculation.Logger;
       var weatherWeight = this.DefaultWeight;
 
+      var previousWeather = WeatherManager.GetWeather(level.currentWeather);
+
       // we have 3 weights possible:
       // 1. level weight
       // 2. weather-weather weights
@@ -207,11 +209,17 @@ namespace WeatherRegistry
       // try to get previous day weather (so - at this point - the current one)
       // but not on first day because that's completely random
       else if (
-        this.WeatherWeights.TryGetValue(level.currentWeather, out int weatherWeightFromWeather)
+        previousWeather.WeatherWeights.TryGetValue(this.VanillaWeatherType, out int weatherWeightFromWeather)
         && StartOfRound.Instance.gameStats.daysSpent != 0
       )
       {
         // (2) => weather-weather weights
+
+        // this shit is in dire need of a rework
+        // currently the system works in reverse:
+        // `None@200` defined in Rainy means that if None was the previous weather, Rainy is set to 200 weight
+        // what a dumb motherfucking system
+
         logger.LogDebug($"{this.Name} has weather>weather weight {weatherWeightFromWeather}");
         weatherWeight = weatherWeightFromWeather;
       }
@@ -221,6 +229,16 @@ namespace WeatherRegistry
       }
 
       return weatherWeight;
+    }
+
+    public (bool isWTW, int weight) GetWeatherToWeatherWeight(Weather previousWeather)
+    {
+      if (previousWeather.WeatherWeights.TryGetValue(this.VanillaWeatherType, out int weatherWeightFromWeather))
+      {
+        return (true, weatherWeightFromWeather);
+      }
+
+      return (false, DefaultWeight);
     }
   }
 

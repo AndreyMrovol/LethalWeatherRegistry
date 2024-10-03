@@ -265,6 +265,9 @@ namespace WeatherRegistry.Patches
         AddWeatherToLevels(weather, levels, LevelsToApply);
       }
 
+      #region Print possible weathers
+      // print all possible weathers (defined s)
+
       var possibleWeathersTable = new ConsoleTable("Planet", "Random weathers");
 
       levels.Sort((a, b) => ConfigHelper.GetNumberlessName(a).CompareTo(ConfigHelper.GetNumberlessName(b)));
@@ -278,6 +281,41 @@ namespace WeatherRegistry.Patches
       });
 
       Logger.LogInfo("Possible weathers:\n" + possibleWeathersTable.ToMinimalString());
+      #endregion
+
+      #region Print weights
+      // print all defined weather-weather weights
+
+      var weatherNames = WeatherManager.Weathers.Select(weather => weather.Name).ToArray();
+      string[] columnNames = ["From / To"];
+      columnNames = columnNames.Concat(weatherNames).ToArray();
+
+      var weatherWeightsTable = new ConsoleTable(columnNames);
+
+      WeatherManager.Weathers.ForEach(weather =>
+      {
+        var row = new List<string> { weather.Name };
+
+        WeatherManager.Weathers.ForEach(weather2 =>
+        {
+          var (isWTW, weight) = weather2.GetWeatherToWeatherWeight(weather);
+
+          if (isWTW)
+          {
+            row.Add(weight.ToString());
+          }
+          else
+          {
+            row.Add("X");
+          }
+        });
+
+        weatherWeightsTable.AddRow(row.ToArray());
+      });
+
+      Logger.LogInfo("Weather-weather weights:\n" + weatherWeightsTable.ToMinimalString());
+
+      #endregion
 
       WeatherManager.IsSetupFinished = true;
 

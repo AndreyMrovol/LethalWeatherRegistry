@@ -78,8 +78,11 @@ namespace WeatherRegistry
       WeatherToWeatherWeights = new(
         $"{(Defaults.VanillaWeatherToWeatherWeights.TryGetValue(weather.VanillaWeatherType, out string weights) ? weights : $"{String.Join(';', weather.DefaultWeatherToWeatherWeights)};")}",
         weather,
-        "Weather weights",
-        new ConfigDescription("Semicolon-separated list of weather weights", null)
+        "WeatherToWeather weights",
+        new ConfigDescription(
+          $"Semicolon-separated list of weather-to-weather weights - if previous day was {weather.Name}, next day should have weights:",
+          null
+        )
       );
     }
   }
