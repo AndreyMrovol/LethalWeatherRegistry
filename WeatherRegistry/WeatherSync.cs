@@ -6,6 +6,45 @@ using UnityEngine;
 
 namespace WeatherRegistry
 {
+  internal class CurrentlySetWeather : INetworkSerializable
+  {
+    public string LevelName;
+    public LevelWeatherType WeatherEnumValue;
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer)
+      where T : IReaderWriter
+    {
+      serializer.SerializeValue(ref LevelName);
+      serializer.SerializeValue(ref WeatherEnumValue);
+    }
+  }
+
+  internal class CurrentlySetWeatherList : INetworkSerializable
+  {
+    public CurrentlySetWeather[] Weathers;
+
+    // constructor
+    public CurrentlySetWeatherList(string weathers)
+    {
+      Dictionary<string, LevelWeatherType> weathersDict = JsonConvert.DeserializeObject<Dictionary<string, LevelWeatherType>>(weathers);
+
+      List<CurrentlySetWeather> weathersList = [];
+
+      foreach (KeyValuePair<string, LevelWeatherType> weather in weathersDict)
+      {
+        weathersList.Add(new CurrentlySetWeather { LevelName = weather.Key, WeatherEnumValue = weather.Value });
+      }
+
+      Weathers = weathersList.ToArray();
+    }
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer)
+      where T : IReaderWriter
+    {
+      serializer.SerializeValue(ref Weathers);
+    }
+  }
+
   internal class WeatherSync : NetworkBehaviour
   {
     public static GameObject WeatherSyncPrefab;
@@ -42,11 +81,11 @@ namespace WeatherRegistry
     private string LatestWeathersReceived = "";
     private static string DefaultValue = "{}";
 
-    public NetworkVariable<FixedString4096Bytes> WeathersSynced = new NetworkVariable<FixedString4096Bytes>(DefaultValue);
+    public NetworkVariable<CurrentlySetWeatherList> WeathersSynced = new(new CurrentlySetWeatherList(DefaultValue));
     public string Weather
     {
       get => WeathersSynced.Value.ToString();
-      set => WeathersSynced.Value = new FixedString4096Bytes(value);
+      set => WeathersSynced.Value = new CurrentlySetWeatherList(value);
     }
 
     public void SetNew(string weathers)
@@ -58,14 +97,14 @@ namespace WeatherRegistry
 
     // this whole stuff is not working at all (yet)
 
-    public void WeathersReceived(FixedString4096Bytes oldWeathers, FixedString4096Bytes weathers)
+    public void WeathersReceived(CurrentlySetWeatherList oldWeathers, CurrentlySetWeatherList weathers)
     {
-      Plugin.logger.LogInfo($"Weathers received: {weathers}");
-
       if (!WeatherManager.IsSetupFinished)
       {
         return;
       }
+
+      Plugin.logger.LogInfo($"Weathers received: {weathers}");
 
       ApplyWeathers(weathers.ToString());
     }
