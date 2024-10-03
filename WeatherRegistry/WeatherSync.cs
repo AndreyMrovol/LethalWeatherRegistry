@@ -40,9 +40,9 @@ namespace WeatherRegistry
     }
 
     private string LatestWeathersReceived = "";
-    private static string DefaultValue = "{}";
+    private static readonly string DefaultValue = "{}";
 
-    public NetworkVariable<FixedString4096Bytes> WeathersSynced = new NetworkVariable<FixedString4096Bytes>(DefaultValue);
+    public NetworkVariable<FixedString4096Bytes> WeathersSynced = new(DefaultValue);
     public string Weather
     {
       get => WeathersSynced.Value.ToString();
