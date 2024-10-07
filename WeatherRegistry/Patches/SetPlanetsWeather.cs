@@ -37,7 +37,10 @@ namespace WeatherRegistry.Patches
       {
         WeatherManager.CurrentWeathers = [];
 
-        Dictionary<string, LevelWeatherType> newWeathers = WeatherCalculation.NewWeathers(__instance);
+        Dictionary<string, LevelWeatherType> newWeathers = WeatherCalculation.weatherSelectionAlgorithm.SelectWeathers(
+          connectedPlayersOnServer,
+          __instance
+        );
 
         Plugin.logger.LogDebug($"Instance: {WeatherSync.Instance}");
         Plugin.logger.LogDebug($"Weathers: {newWeathers}");
