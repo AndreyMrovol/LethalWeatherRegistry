@@ -14,6 +14,12 @@ namespace WeatherRegistry.Patches
     [HarmonyPrefix]
     private static void ChangeMultipliers(RoundManager __instance)
     {
+      if (!ConfigManager.UseScrapMultipliers.Value)
+      {
+        Plugin.logger.LogDebug("Skipped using WeatherRegistry's scrap multipliers.");
+        return;
+      }
+
       Weather currentWeather = WeatherManager.GetCurrentWeather(__instance.currentLevel);
 
       // why would the default vanilla value be 0.4? no fucking clue
@@ -27,7 +33,9 @@ namespace WeatherRegistry.Patches
     [HarmonyPriority(Priority.First)]
     private static void LogMultipliers(RoundManager __instance)
     {
-      Plugin.logger.LogInfo($"Spawned scrap in level with multipliers: {__instance.scrapValueMultiplier}, {__instance.scrapAmountMultiplier}");
+      Plugin.logger.LogInfo(
+        $"Spawned scrap in level with multipliers: {__instance.scrapValueMultiplier} (value), {__instance.scrapAmountMultiplier} (amount)"
+      );
     }
   }
 }
