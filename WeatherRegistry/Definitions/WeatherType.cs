@@ -138,8 +138,8 @@ namespace WeatherRegistry
     {
       Plugin.logger.LogDebug($"Called Weather constructor for weather {name}");
 
+      // a small hack for Whimsical weather so it doesn't use <color> tags in their name
       Regex textTagsRegex = new(@"<.*?>");
-
       Name = textTagsRegex.Replace(name, "");
       this.name = textTagsRegex.Replace(name, "");
 
