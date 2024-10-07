@@ -23,7 +23,7 @@ namespace WeatherRegistry.Patches
 
       if (!Settings.SelectWeathers)
       {
-        Plugin.logger.LogWarning("Weather selection is disabled.");
+        Plugin.logger.LogDebug("Weather selection is disabled.");
         return true;
       }
 
