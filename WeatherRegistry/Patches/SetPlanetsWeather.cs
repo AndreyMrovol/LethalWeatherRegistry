@@ -35,9 +35,9 @@ namespace WeatherRegistry.Patches
 
       if (__instance.IsHost)
       {
-        WeatherManager.CurrentWeathers = [];
+        // WeatherManager.CurrentWeathers = [];
 
-        Dictionary<string, LevelWeatherType> newWeathers = WeatherCalculation.weatherSelectionAlgorithm.SelectWeathers(
+        Dictionary<SelectableLevel, LevelWeatherType> newWeathers = WeatherCalculation.weatherSelectionAlgorithm.SelectWeathers(
           connectedPlayersOnServer,
           __instance
         );
@@ -47,7 +47,8 @@ namespace WeatherRegistry.Patches
         Plugin.logger.LogDebug($"WeatherSync: {WeatherSync.Instance.WeathersSynced}");
         Plugin.logger.LogDebug($"WeathersSynced: {WeatherSync.Instance.WeathersSynced.Value}");
 
-        WeatherSync.Instance.SetNew(JsonConvert.SerializeObject(newWeathers));
+        WeatherManager.currentWeathers.Entries = newWeathers;
+        WeatherSync.Instance.SetNewOnHost(WeatherManager.currentWeathers.SerializedEntries);
       }
 
       EventManager.DayChanged.Invoke(__instance.gameStats.daysSpent);

@@ -21,7 +21,7 @@ namespace WeatherRegistry
 
     internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
     {
-      public override Dictionary<string, LevelWeatherType> SelectWeathers(int connectedPlayersOnServer, StartOfRound startOfRound)
+      public override Dictionary<SelectableLevel, LevelWeatherType> SelectWeathers(int connectedPlayersOnServer, StartOfRound startOfRound)
       {
         if (!startOfRound.IsHost)
         {
@@ -31,7 +31,7 @@ namespace WeatherRegistry
 
         WeatherCalculation.previousDayWeather.Clear();
 
-        Dictionary<string, LevelWeatherType> NewWeather = [];
+        Dictionary<SelectableLevel, LevelWeatherType> NewWeather = [];
 
         System.Random random = GetRandom(startOfRound);
 
@@ -58,20 +58,20 @@ namespace WeatherRegistry
             Logger.LogMessage($"Override weather present, changing weather to {level.overrideWeatherType}");
             Weather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
 
-            NewWeather[level.PlanetName] = overrideWeather.VanillaWeatherType;
-            WeatherManager.CurrentWeathers[level] = overrideWeather;
+            NewWeather[level] = overrideWeather.VanillaWeatherType;
+            // WeatherManager.CurrentWeathers[level] = overrideWeather;
             EventManager.WeatherChanged.Invoke((level, overrideWeather));
 
             continue;
           }
 
-          NewWeather[level.PlanetName] = LevelWeatherType.None;
+          NewWeather[level] = LevelWeatherType.None;
 
           MrovLib.WeightHandler<Weather> possibleWeathers = WeatherManager.GetPlanetWeightedList(level);
           Weather selectedWeather = possibleWeathers.Random();
 
-          NewWeather[level.PlanetName] = selectedWeather.VanillaWeatherType;
-          WeatherManager.CurrentWeathers[level] = selectedWeather;
+          NewWeather[level] = selectedWeather.VanillaWeatherType;
+          // WeatherManager.CurrentWeathers[level] = selectedWeather;
           EventManager.WeatherChanged.Invoke((level, selectedWeather));
 
           Logger.LogMessage($"Selected weather: {selectedWeather.Name}");
@@ -88,9 +88,9 @@ namespace WeatherRegistry
 
     internal class VanillaWeatherSelection : WeatherSelectionAlgorithm
     {
-      public override Dictionary<string, LevelWeatherType> SelectWeathers(int connectedPlayersOnServer, StartOfRound startOfRound)
+      public override Dictionary<SelectableLevel, LevelWeatherType> SelectWeathers(int connectedPlayersOnServer, StartOfRound startOfRound)
       {
-        Dictionary<string, LevelWeatherType> vanillaSelectedWeather = [];
+        Dictionary<SelectableLevel, LevelWeatherType> vanillaSelectedWeather = [];
 
         // vanilla algorithm tweaked to work within Registry
 
@@ -114,7 +114,7 @@ namespace WeatherRegistry
 
         list.ForEach(level =>
         {
-          vanillaSelectedWeather[level.PlanetName] = LevelWeatherType.None;
+          vanillaSelectedWeather[level] = LevelWeatherType.None;
         });
 
         Logger.LogMessage("Selected vanilla algorithm - weights are not being used!");
@@ -127,13 +127,11 @@ namespace WeatherRegistry
 
           if (selectableLevel.randomWeathers != null && selectableLevel.randomWeathers.Length != 0)
           {
-            vanillaSelectedWeather[selectableLevel.PlanetName] = selectableLevel
+            vanillaSelectedWeather[selectableLevel] = selectableLevel
               .randomWeathers[random.Next(0, selectableLevel.randomWeathers.Length)]
               .weatherType;
 
-            Logger.LogMessage(
-              $"Selected weather for {selectableLevel.PlanetName}: {vanillaSelectedWeather[selectableLevel.PlanetName].ToString()}"
-            );
+            Logger.LogMessage($"Selected weather for {selectableLevel.PlanetName}: {vanillaSelectedWeather[selectableLevel].ToString()}");
           }
           else
           {

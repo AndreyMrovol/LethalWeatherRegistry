@@ -19,7 +19,7 @@ namespace WeatherRegistry.Definitions
       return new(startOfRound.randomMapSeed + 31);
     }
 
-    public virtual Dictionary<string, LevelWeatherType> SelectWeathers(int connectedPlayersOnServer, StartOfRound startOfRound)
+    public virtual Dictionary<SelectableLevel, LevelWeatherType> SelectWeathers(int connectedPlayersOnServer, StartOfRound startOfRound)
     {
       return new();
     }
