@@ -49,8 +49,14 @@ namespace WeatherRegistry
       set => WeathersSynced.Value = new FixedString4096Bytes(value);
     }
 
-    public void SetNew(string weathers)
+    public void SetNewOnHost(string weathers)
     {
+      if (!StartOfRound.Instance.IsHost)
+      {
+        Plugin.logger.LogDebug("Cannot set weathers, not a host!");
+        return;
+      }
+
       Plugin.logger.LogInfo($"Setting new weathers: {weathers}");
       Plugin.logger.LogInfo($"Current weathers: {Weather} (is null? {Weather == null}) (is empty? {Weather == ""}");
       Weather = weathers;
@@ -60,29 +66,29 @@ namespace WeatherRegistry
 
     public void WeathersReceived(FixedString4096Bytes oldWeathers, FixedString4096Bytes weathers)
     {
-      Plugin.logger.LogInfo($"Weathers received: {weathers}");
+      Plugin.logger.LogDebug($"Weathers received: {weathers}");
 
       if (!WeatherManager.IsSetupFinished)
       {
         return;
       }
 
-      ApplyWeathers(weathers.ToString());
+      ApplyReceivedWeathers(weathers.ToString());
     }
 
-    public void ApplyWeathers(string weathers)
+    public void ApplyReceivedWeathers(string weathers)
     {
-      Plugin.logger.LogInfo($"Weathers to apply: {weathers}");
+      Plugin.logger.LogDebug($"Weathers to apply: {weathers}");
 
       if (LatestWeathersReceived == weathers)
       {
-        Plugin.logger.LogInfo("Weathers are the same as last ones, skipping");
+        Plugin.logger.LogDebug("Weathers are the same as last ones, skipping");
         return;
       }
 
       if (weathers == DefaultValue)
       {
-        Plugin.logger.LogInfo("Weathers are not set, skipping");
+        Plugin.logger.LogDebug("Weathers are not set, skipping");
         return;
       }
 
@@ -94,6 +100,7 @@ namespace WeatherRegistry
       }
 
       LatestWeathersReceived = weathers;
+      WeatherManager.currentWeathers.Refresh();
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
     }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using UnityEngine;
+using WeatherRegistry.Definitions;
 
 namespace WeatherRegistry
 {
@@ -20,7 +21,7 @@ namespace WeatherRegistry
 
     public static Dictionary<int, Weather> ModdedWeatherEnumExtension = [];
 
-    public static Dictionary<SelectableLevel, Weather> CurrentWeathers = [];
+    public static CurrentWeathers currentWeathers = new();
 
     public static void RegisterWeather(Weather weather)
     {
@@ -51,7 +52,7 @@ namespace WeatherRegistry
       LevelWeathers.Clear();
       Weathers.Clear();
       ModdedWeatherEnumExtension.Clear();
-      CurrentWeathers.Clear();
+      currentWeathers.Clear();
 
       Settings.ScreenMapColors.Clear();
 
@@ -125,9 +126,9 @@ namespace WeatherRegistry
 
     internal static Weather GetCurrentWeather(SelectableLevel level)
     {
-      if (CurrentWeathers.ContainsKey(level))
+      if (currentWeathers.Contains(level))
       {
-        return CurrentWeathers[level];
+        return currentWeathers.GetLevelWeather(level);
       }
       else
       {
