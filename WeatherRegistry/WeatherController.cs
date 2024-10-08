@@ -1,9 +1,14 @@
 using System.Collections.Generic;
+using System.Linq;
+using BepInEx.Logging;
 
 namespace WeatherRegistry
 {
   public static class WeatherController
   {
+    private static ManualLogSource Logger = new("WeatherController");
+
+    #region Change weather
     public static void ChangeCurrentWeather(Weather weather)
     {
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
@@ -33,13 +38,16 @@ namespace WeatherRegistry
         return;
       }
 
-      WeatherManager.CurrentWeathers[level] = weather;
+      WeatherManager.currentWeathers.SetWeather(level, weather);
       level.currentWeather = weather.VanillaWeatherType;
 
-      Plugin.logger.LogDebug($"Changed weather for {ConfigHelper.GetNumberlessName(level)} to {weather.VanillaWeatherType}");
+      Logger.LogDebug($"Changed weather for {ConfigHelper.GetNumberlessName(level)} to {weather.VanillaWeatherType}");
 
       EventManager.WeatherChanged.Invoke((level, weather));
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
     }
+
+    #endregion
+
   }
 }
