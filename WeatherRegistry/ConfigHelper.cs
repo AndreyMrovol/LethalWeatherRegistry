@@ -169,6 +169,12 @@ namespace WeatherRegistry
       return MrovLib.StringResolver.GetNumberlessName(level);
     }
 
+    public static string GetAlphanumericName(SelectableLevel level)
+    {
+      Regex regex = new(@"^[0-9]+|[-_/\\\ ]");
+      return new string(regex.Replace(level.PlanetName, ""));
+    }
+
     public static string GetAlphanumericName(Weather weather)
     {
       Regex regex = new(@"^[0-9]+|[-_/\\\ ]");

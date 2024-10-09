@@ -49,5 +49,55 @@ namespace WeatherRegistry
 
     #endregion
 
+    #region Change random weathers
+
+    public static void SetRandomWeathers(SelectableLevel level, List<RandomWeatherWithVariables> randomWeathers)
+    {
+      SetRandomWeathers(level, randomWeathers.ToArray());
+    }
+
+    public static void SetRandomWeathers(SelectableLevel level, RandomWeatherWithVariables[] randomWeathers)
+    {
+      level.randomWeathers = randomWeathers.ToArray();
+
+      string levelName = ConfigHelper.GetAlphanumericName(level);
+
+      foreach (RandomWeatherWithVariables randomWeather in randomWeathers)
+      {
+        Logger.LogWarning($"Adding random weather {randomWeather.weatherType} to {levelName}");
+
+        WeatherManager.GetWeather(randomWeather.weatherType).WeatherVariables[level] = new()
+        {
+          Level = level,
+          WeatherVariable1 = randomWeather.weatherVariable,
+          WeatherVariable2 = randomWeather.weatherVariable2
+        };
+      }
+    }
+
+    public static void AddRandomWeather(SelectableLevel level, RandomWeatherWithVariables randomWeather)
+    {
+      List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.ToList();
+      randomWeathers.Add(randomWeather);
+      level.randomWeathers = randomWeathers.ToArray();
+
+      WeatherManager.GetWeather(randomWeather.weatherType).WeatherVariables[level] = new()
+      {
+        Level = level,
+        WeatherVariable1 = randomWeather.weatherVariable,
+        WeatherVariable2 = randomWeather.weatherVariable2
+      };
+    }
+
+    public static void RemoveRandomWeather(SelectableLevel level, RandomWeatherWithVariables randomWeather)
+    {
+      List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.ToList();
+      randomWeathers.Remove(randomWeather);
+      level.randomWeathers = randomWeathers.ToArray();
+
+      WeatherManager.GetWeather(randomWeather.weatherType).WeatherVariables.Remove(level);
+    }
+
+    #endregion
   }
 }
