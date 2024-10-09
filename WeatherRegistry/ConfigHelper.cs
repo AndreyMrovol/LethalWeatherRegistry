@@ -34,9 +34,39 @@ namespace WeatherRegistry
 
   internal abstract class ConfigHandler<T, CT> : MrovLib.ConfigHandler<T, CT>
   {
+    private ConfigDescription _configDescription;
+    private bool _enabled = true;
+
+    public bool Enabled
+    {
+      get { return _enabled; }
+      set
+      {
+        _enabled = value;
+
+        if (!Enabled)
+        {
+          _configDescription = new ConfigDescription(
+            $"{(Enabled ? "" : "**This setting has been disabled by the mod developer and won't take any effect.**\n")}{_configDescription.Description}",
+            _configDescription.AcceptableValues
+          );
+        }
+        var NewConfigEntry = ConfigEntry;
+
+        ConfigManager.configFile.Remove(ConfigEntry.Definition);
+        ConfigEntry = ConfigManager.configFile.Bind(
+          NewConfigEntry.Definition.Section,
+          NewConfigEntry.Definition.Key,
+          DefaultValue,
+          _configDescription
+        );
+      }
+    }
+
     public ConfigHandler(CT defaultValue, Weather weather, string configTitle, ConfigDescription configDescription = null)
     {
       // Any additional initialization for the derived class can be done here
+      _configDescription = configDescription;
 
       DefaultValue = defaultValue;
       ConfigEntry = ConfigManager.configFile.Bind(
@@ -55,11 +85,7 @@ namespace WeatherRegistry
 
     public override SelectableLevel[] Value
     {
-      get
-      {
-
-        return ConfigHelper.ConvertStringToLevels(ConfigEntry.Value);
-      }
+      get { return ConfigHelper.ConvertStringToLevels(this.Enabled ? ConfigEntry.Value : this.DefaultValue); }
     }
   }
 
@@ -73,7 +99,7 @@ namespace WeatherRegistry
       get
       {
 
-        return ConfigHelper.ConvertStringToLevelRarities(ConfigEntry.Value);
+        return ConfigHelper.ConvertStringToLevelRarities(this.Enabled ? ConfigEntry.Value : this.DefaultValue);
       }
     }
   }
@@ -88,7 +114,7 @@ namespace WeatherRegistry
       get
       {
 
-        return ConfigHelper.ConvertStringToWeatherWeights(ConfigEntry.Value);
+        return ConfigHelper.ConvertStringToWeatherWeights(this.Enabled ? ConfigEntry.Value : this.DefaultValue);
       }
     }
   }
@@ -100,7 +126,7 @@ namespace WeatherRegistry
 
     public override int Value
     {
-      get { return ConfigEntry.Value; }
+      get { return this.Enabled ? ConfigEntry.Value : this.DefaultValue; }
     }
   }
 
@@ -111,7 +137,7 @@ namespace WeatherRegistry
 
     public override float Value
     {
-      get { return ConfigEntry.Value; }
+      get { return this.Enabled ? ConfigEntry.Value : this.DefaultValue; }
     }
   }
 
@@ -122,7 +148,7 @@ namespace WeatherRegistry
 
     public override string Value
     {
-      get { return ConfigEntry.Value; }
+      get { return this.Enabled ? ConfigEntry.Value : this.DefaultValue; }
     }
   }
 
