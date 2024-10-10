@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using BepInEx.Configuration;
 using Newtonsoft.Json;
 using UnityEngine;
+using WeatherRegistry.Definitions;
 using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
@@ -62,6 +63,9 @@ namespace WeatherRegistry
 
     [JsonIgnore]
     internal WeatherConfig Config = new();
+
+    [JsonIgnore]
+    internal Dictionary<SelectableLevel, WeatherEffectOverride> WeatherEffectOverrides = [];
 
     #endregion
 
@@ -239,6 +243,16 @@ namespace WeatherRegistry
       }
 
       return (false, DefaultWeight);
+    }
+
+    public WeatherEffectOverride GetEffectOverride(SelectableLevel level)
+    {
+      if (WeatherEffectOverrides.ContainsKey(level))
+      {
+        return WeatherEffectOverrides[level];
+      }
+
+      return null;
     }
   }
 

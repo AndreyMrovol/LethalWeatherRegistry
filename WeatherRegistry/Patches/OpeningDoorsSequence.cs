@@ -4,6 +4,7 @@ using HarmonyLib;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Newtonsoft.Json;
+using WeatherRegistry.Definitions;
 using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
@@ -61,6 +62,13 @@ namespace WeatherRegistry
     {
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
       Weather currentWeather = WeatherManager.GetCurrentWeather(currentLevel);
+
+      WeatherEffectOverride weatherEffectOverride = currentWeather.GetEffectOverride(currentLevel);
+      if (weatherEffectOverride != null)
+      {
+        currentWeather.Effect.EffectEnabled = false;
+        weatherEffectOverride.OverrideEffect.EffectEnabled = true;
+      }
 
       Plugin.logger.LogDebug(
         $"Landing at {ConfigHelper.GetNumberlessName(currentLevel)} with weather {JsonConvert.SerializeObject(

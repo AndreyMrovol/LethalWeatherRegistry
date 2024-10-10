@@ -14,6 +14,8 @@ namespace WeatherRegistry
     public static List<Weather> RegisteredWeathers { get; internal set; } = [];
     public static List<LevelWeather> LevelWeathers { get; internal set; } = [];
 
+    public static List<WeatherEffectOverride> WeatherEffectOverrides { get; internal set; } = [];
+
     // i would love to have weathers as an array with indexes corresponding to the enum values
     // but none is -1 so i have to do this
     public static List<Weather> Weathers { get; internal set; } = [];
@@ -144,6 +146,13 @@ namespace WeatherRegistry
     internal static AnimationClip GetWeatherAnimationClip(LevelWeatherType weatherType)
     {
       return GetWeather(weatherType).AnimationClip;
+    }
+
+    internal static WeatherEffectOverride GetCurrentWeatherOverride(SelectableLevel level, Weather weather)
+    {
+      weather.WeatherEffectOverrides.TryGetValue(level, out WeatherEffectOverride weatherEffectOverride);
+
+      return weatherEffectOverride;
     }
   }
 }
