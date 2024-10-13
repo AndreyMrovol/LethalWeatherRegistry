@@ -37,7 +37,7 @@ namespace WeatherRegistry
       // return Weathers[(int)levelWeatherType];
     }
 
-    public static void Reset()
+    internal static void Reset()
     {
       IsSetupFinished = false;
 
@@ -100,7 +100,7 @@ namespace WeatherRegistry
       return possibleWeathers;
     }
 
-    internal static MrovLib.WeightHandler<Weather> GetPlanetWeightedList(SelectableLevel level)
+    public static MrovLib.WeightHandler<Weather> GetPlanetWeightedList(SelectableLevel level)
     {
       MrovLib.WeightHandler<Weather> weightedList = new();
       MrovLib.Logger logger = WeatherCalculation.Logger;
@@ -126,7 +126,7 @@ namespace WeatherRegistry
       return weightedList;
     }
 
-    internal static Weather GetCurrentWeather(SelectableLevel level)
+    public static Weather GetCurrentWeather(SelectableLevel level)
     {
       if (currentWeathers.Contains(level))
       {
@@ -138,7 +138,7 @@ namespace WeatherRegistry
       }
     }
 
-    internal static string GetCurrentWeatherName(SelectableLevel level)
+    public static string GetCurrentWeatherName(SelectableLevel level)
     {
       return GetCurrentWeather(level).Name;
     }
@@ -148,7 +148,7 @@ namespace WeatherRegistry
       return GetWeather(weatherType).AnimationClip;
     }
 
-    internal static WeatherEffectOverride GetCurrentWeatherOverride(SelectableLevel level, Weather weather)
+    public static WeatherEffectOverride GetCurrentWeatherOverride(SelectableLevel level, Weather weather)
     {
       weather.WeatherEffectOverrides.TryGetValue(level, out WeatherEffectOverride weatherEffectOverride);
 
