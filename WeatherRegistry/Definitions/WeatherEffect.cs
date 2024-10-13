@@ -56,5 +56,11 @@ namespace WeatherRegistry
       EffectObject = effectObject;
       WorldObject = worldObject;
     }
+
+    public ImprovedWeatherEffect(WeatherEffect weatherEffect)
+    {
+      EffectObject = weatherEffect.effectObject;
+      WorldObject = weatherEffect.effectPermanentObject;
+    }
   }
 }
