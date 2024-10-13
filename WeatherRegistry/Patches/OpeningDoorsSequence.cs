@@ -29,7 +29,7 @@ namespace WeatherRegistry
       }
       else
       {
-        Plugin.logger.LogInfo("IL weather hook for StartOfRound.openingDoorsSequence");
+        Plugin.debugLogger.LogInfo("IL weather hook for StartOfRound.openingDoorsSequence");
       }
       cursor.EmitDelegate<Action>(RunWeatherPatches);
       cursor.EmitDelegate<Action>(SetWeatherEffects);
