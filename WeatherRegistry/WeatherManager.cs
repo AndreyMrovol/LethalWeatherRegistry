@@ -54,6 +54,7 @@ namespace WeatherRegistry
       LevelWeathers.Clear();
       Weathers.Clear();
       ModdedWeatherEnumExtension.Clear();
+      WeatherEffectOverrides.Clear();
       currentWeathers.Clear();
 
       Settings.ScreenMapColors.Clear();
