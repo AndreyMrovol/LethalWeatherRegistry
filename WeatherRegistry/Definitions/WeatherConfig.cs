@@ -31,8 +31,6 @@ namespace WeatherRegistry
 
     internal void Init(Weather weather)
     {
-      string configCategory = $"Weather: {weather.name}{(weather.Origin != WeatherOrigin.Vanilla ? $" ({weather.Origin})" : "")}";
-
       DefaultWeight = new(
         weather._defaultWeight,
         weather,
@@ -55,7 +53,7 @@ namespace WeatherRegistry
       );
 
       this._filteringOptionConfig = ConfigManager.configFile.Bind(
-        configCategory,
+        weather.ConfigCategory,
         $"Filtering option",
         weather.LevelFilteringOption == FilteringOption.Include,
         new ConfigDescription("Whether to make the filter a whitelist (false is blacklist, true is whitelist)", null)

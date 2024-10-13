@@ -69,12 +69,7 @@ namespace WeatherRegistry
       _configDescription = configDescription;
 
       DefaultValue = defaultValue;
-      ConfigEntry = ConfigManager.configFile.Bind(
-        $"Weather: {weather.name}{(weather.Origin != WeatherOrigin.Vanilla ? $" ({weather.Origin})" : "")}",
-        configTitle,
-        DefaultValue,
-        configDescription
-      );
+      ConfigEntry = ConfigManager.configFile.Bind(weather.ConfigCategory, configTitle, DefaultValue, configDescription);
     }
   }
 
