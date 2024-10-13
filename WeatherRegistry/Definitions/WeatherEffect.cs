@@ -12,8 +12,6 @@ namespace WeatherRegistry
     [JsonIgnore]
     public GameObject WorldObject;
 
-    // public LevelWeatherType VanillaWeatherType;
-
     private bool _effectEnabled;
 
     [field: SerializeField]

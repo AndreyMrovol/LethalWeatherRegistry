@@ -154,7 +154,8 @@ namespace WeatherRegistry
         Effect.name = name;
       }
 
-      // {(this.Origin != WeatherOrigin.Vanilla ? $"({this.Origin})" : "")}
+      GameObject.DontDestroyOnLoad(this);
+      GameObject.Instantiate(this);
     }
 
     #endregion
@@ -169,9 +170,6 @@ namespace WeatherRegistry
       this.LevelFilteringOption = Config._filteringOptionConfig.Value ? FilteringOption.Include : FilteringOption.Exclude;
 
       this.hideFlags = HideFlags.HideAndDontSave;
-
-      GameObject.DontDestroyOnLoad(this);
-      GameObject.Instantiate(this);
     }
 
     void Reset()
