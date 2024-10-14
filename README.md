@@ -8,8 +8,6 @@ A Lethal Company mod for controlling game's weather system.
 - Weight-based weather selection system
 - Level-based weather filtering system
 
-_i don't want to work on readme, i'll list it later_
-
 ## Weight-based weather selection system
 
 Contrary to the vanilla algorithm, this mod uses a weight-based system for selecting weathers. You can set the weights based on 3 criteria:
@@ -20,13 +18,6 @@ Contrary to the vanilla algorithm, this mod uses a weight-based system for selec
 
 During the weather selection process, the algorithm will try to apply the weights in the order listed above.
 
-## to do
-
-- [ ] Add matching via LLL tags
-- [ ] Add an option for weather creators to add their configs to the Registry
-- [ ] Save generated weather data to save file
-- [ ] fix the bugs
-
 ## License
 
 This project is licensed under [GNU Lesser General Public License v3.0](https://github.com/AndreyMrovol/LethalWeatherRegistry/blob/main/LICENSE.md).
@@ -35,7 +26,7 @@ This project is licensed under [GNU Lesser General Public License v3.0](https://
 
 This project uses [LethalCompanyTemplate](https://github.com/LethalCompany/LethalCompanyTemplate), licensed under [MIT License](https://github.com/LethalCompany/LethalCompanyTemplate/blob/main/LICENSE).
 
-This project uses code from [WeatherTweaks](https://github.com/AndreyMrovol/LethalWeatherTweaks/tree/main), licensed under [CC BY-NC-ND 4.0](https://github.com/AndreyMrovol/LethalWeatherTweaks/blob/main/LICENSE.md)
+This project uses code from [WeatherTweaks](https://github.com/AndreyMrovol/LethalWeatherTweaks/tree/main), licensed under [CC BY-NC-ND 4.0](https://github.com/AndreyMrovol/LethalWeatherTweaks/blob/main/LICENSE.md).
 
 This project uses code from [LethalLib](https://thunderstore.io/c/lethal-company/p/Evaisa/LethalLib/), licensed under [MIT License](https://github.com/EvaisaDev/LethalLib/blob/main/LICENSE).
 

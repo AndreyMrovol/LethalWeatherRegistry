@@ -1,3 +1,22 @@
+# 0.2.0
+
+## Please re-generate your configs!
+
+- merged [#7: refactor: modify many LogWarnings -> LogDebugs](https://github.com/AndreyMrovol/LethalWeatherRegistry/pull/7) (thanks, `mamallama`!)
+- fixed `WeatherController` not syncing weather changes correctly (thanks, `giosuel`!)
+- fixed an issue with [LobbyControl](https://thunderstore.io/c/lethal-company/p/mattymatty/LobbyControl/)'s `lobby clear` command spawning weather **`6`**
+- changed how weather->weather weights are defined to be more intuitive:
+  - previously setting `None@200` in Rainy meant that if None was the previous weather, Rainy is set to 200 weight
+  - now setting `None@200` in Rainy means that if Rainy was the previous weather, None is set to 200 weight
+  - updated the config entry description to reflect the change
+- added a toggle for using Registry's scrap multipliers
+- added a toggle between Registry's _weighted_ weather selection and a vanilla algorithm
+- added `WeatherSelectionAlgorithm` class for allowing custom weather selection algorithms in the future
+- added `CurrentWeathers` class for easier management of selected weathers **(this is a breaking change for `WeatherManager.CurrentWeathers`!)**
+- added methods allowing to modify randomWeathers to `WeatherController`: `SetRandomWeathers`, `AddRandomWeather`, `RemoveRandomWeather`
+- added `Enabled` property to `ConfigHandler`: weather developers can now opt-out of the Registry config entries from being used (thanks, `xuxiaolan`!)
+- added `WeatherEffectOverride` class for defining weather effect overrides
+
 # 0.1.25
 
 - reverted 0.1.24 changes
@@ -58,7 +77,7 @@
 
 # 0.1.12
 
-- fixed an issue with Nuget propagating wrong LC dependency version further (thanks, giosuel)
+- fixed an issue with Nuget propagating wrong LC dependency version further (thanks, `giosuel`)
 
 # 0.1.11
 
@@ -67,7 +86,7 @@
 
 # 0.1.10
 
-- fixed an issue with randomWeathers having multiple entries of the same modded weather (thanks, xuxiaolan)
+- fixed an issue with randomWeathers having multiple entries of the same modded weather (thanks, `xuxiaolan`)
 
 # 0.1.9
 
@@ -75,7 +94,7 @@
 
 # 0.1.8
 
-- optimized the weight-picking algorithm (thanks, whitespike)
+- optimized the weight-picking algorithm (thanks, `whitespike`)
 - changed some logs
 
 # 0.1.7
@@ -89,7 +108,7 @@
 
 # 0.1.6
 
-- fixed an error with config strings not being resolved correctly (thanks, xuxiaolan)
+- fixed an error with config strings not being resolved correctly (thanks, `xuxiaolan`)
 - changed some logs
 
 # 0.1.5
@@ -100,15 +119,15 @@
 
 - added ScrapAmountMultiplier, ScrapValueMultiplier config options
 - added LevelWeights and WeatherWeights config options (they don't do anything **yet**)
-- fixed an error with WeatherRegistry not disabling registered weathers' effects when leaving lobby (thanks: endoxicom, xuxiaolan, lunxara)
+- fixed an error with WeatherRegistry not disabling registered weathers' effects when leaving lobby (thanks: `endoxicom`, `xuxiaolan`, `lunxara`)
 
 # 0.1.3
 
-- (hopefully) fixed an error with WeatherRegistry not disabling registered weathers' effects when leaving lobby (thanks, endoxicom)
+- (hopefully) fixed an error with WeatherRegistry not disabling registered weathers' effects when leaving lobby (thanks, `endoxicom`)
 
 # 0.1.2
 
-- fixed an error with WeatherRegistry crashing when there were more than 1 weather to register (thanks, xuxiaolan)
+- fixed an error with WeatherRegistry crashing when there were more than 1 weather to register (thanks, `xuxiaolan`)
 
 # 0.1.1
 
@@ -126,7 +145,7 @@
 
 ### Please re-generate your configs!
 
-- added a check to SunAnimator to verify if custom weather has an animator bool defined (thanks, PureFPSZac)
+- added a check to SunAnimator to verify if custom weather has an animator bool defined (thanks, `PureFPSZac`)
 - added a check to SunAnimator to honor the blacklist setting (although the result should be virtually the same)
 - possibleWeathers table displayed during startup is now sorted correctly
 - fixed the default filtering options not having a semicolon at the end
@@ -134,7 +153,7 @@
 
 # 0.0.5
 
-- added an check to SunAnimator to check if there are any sun animator clips (thanks, finembelli)
+- added an check to SunAnimator to check if there are any sun animator clips (thanks, `finembelli`)
 
 # 0.0.4
 
