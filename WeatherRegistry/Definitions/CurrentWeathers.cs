@@ -16,13 +16,14 @@ namespace WeatherRegistry.Definitions
 
     public void Initialize()
     {
-      _currentWeathers = new();
+      _currentWeathers = [];
     }
 
     public void Refresh()
     {
       Plugin.debugLogger.LogDebug("Refreshing current weathers");
       List<SelectableLevel> levels = GetLevels();
+      Clear();
 
       foreach (SelectableLevel level in levels)
       {
