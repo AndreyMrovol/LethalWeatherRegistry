@@ -16,7 +16,18 @@ namespace WeatherRegistry.Patches
       List<WeatherEffect> effectList = effects.ToList();
 
       // Remove all weather effects past the vanilla indexes
-      int lowestModdedIndex = WeatherManager.ModdedWeatherEnumExtension.Keys.Min();
+      int lowestModdedIndex;
+
+      try
+      {
+        lowestModdedIndex = WeatherManager.ModdedWeatherEnumExtension.Keys.Min();
+      }
+      catch
+      {
+        Plugin.logger.LogWarning("No modded weather effects found");
+        return;
+      }
+
       Plugin.debugLogger.LogInfo($"Lowest modded index: {lowestModdedIndex}");
       for (int i = lowestModdedIndex; i < effects.Length; i++)
       {
