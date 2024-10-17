@@ -205,7 +205,7 @@ namespace WeatherRegistry.Patches
       }
       catch (Exception e)
       {
-        logger.LogError($"Detected a null clip: {e.Message}");
+        logger.LogWarning($"Detected a null clip: {e.Message}");
         return;
       }
 
