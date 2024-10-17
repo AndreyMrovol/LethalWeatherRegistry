@@ -1,3 +1,8 @@
+# 0.2.1
+
+- fixed weather desyncs on first day (thanks: `lunxara`, `moroxide`!)
+- (hopefully) fixed an issue with game reset soft-locking the game (thanks: `jennysbrood`!)
+
 # 0.2.0
 
 ## Please re-generate your configs!
