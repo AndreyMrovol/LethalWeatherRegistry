@@ -32,5 +32,7 @@ namespace WeatherRegistry
       };
 
     internal static Color LethalLibColor = new(r: 0f, g: 0.44f, b: 0.76f, a: 1f);
+
+    internal static readonly string WeatherSaveKey = "WeatherRegistryCurrentWeathers";
   }
 }

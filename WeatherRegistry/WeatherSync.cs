@@ -58,7 +58,7 @@ namespace WeatherRegistry
       }
 
       Plugin.logger.LogInfo($"Setting new weathers: {weathers}");
-      Plugin.logger.LogInfo($"Current weathers: {Weather} (is null? {Weather == null}) (is empty? {Weather == ""}");
+      Plugin.logger.LogInfo($"Current weathers: {Weather} (is null? {Weather == null}) (is empty? {Weather == ""})");
       Weather = weathers;
     }
 

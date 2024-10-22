@@ -138,5 +138,22 @@ namespace WeatherRegistry.Definitions
     {
       SetWeathers(JsonConvert.DeserializeObject<Dictionary<SelectableLevel, LevelWeatherType>>(serializedWeathers));
     }
+
+    public void SetWeathersFromStringDictionary(string serializedWeathers)
+    {
+      Dictionary<string, LevelWeatherType> planetNameDictionary = JsonConvert.DeserializeObject<Dictionary<string, LevelWeatherType>>(
+        serializedWeathers
+      );
+      Dictionary<SelectableLevel, LevelWeatherType> weathers = [];
+      List<SelectableLevel> levels = GetLevels();
+
+      foreach (KeyValuePair<string, LevelWeatherType> pair in planetNameDictionary)
+      {
+        SelectableLevel level = levels.Find(l => l.PlanetName == pair.Key);
+        weathers[level] = pair.Value;
+      }
+
+      SetWeathers(weathers);
+    }
   }
 }
