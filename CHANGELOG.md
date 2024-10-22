@@ -1,3 +1,7 @@
+# 0.2.2
+
+- picked weathers are now saved to the savefile and will be restored on lobby reload
+
 # 0.2.1
 
 - fixed weather desyncs on first day (thanks: `lunxara`, `moroxide`!)
