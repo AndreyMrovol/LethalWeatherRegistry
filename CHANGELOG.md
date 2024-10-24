@@ -1,3 +1,7 @@
+# 0.2.3
+
+- fixed an issue with Registry trying to set weather on a non-existing level (thanks: `glacialstage`, `darmuh`!)
+
 # 0.2.2
 
 - picked weathers are now saved to the savefile and will be restored on lobby reload

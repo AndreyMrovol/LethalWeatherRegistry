@@ -150,6 +150,13 @@ namespace WeatherRegistry.Definitions
       foreach (KeyValuePair<string, LevelWeatherType> pair in planetNameDictionary)
       {
         SelectableLevel level = levels.Find(l => l.PlanetName == pair.Key);
+
+        if (level == null)
+        {
+          Plugin.debugLogger.LogWarning($"Level with planet name {pair.Key} not found, skipping.");
+          continue;
+        }
+
         weathers[level] = pair.Value;
       }
 
