@@ -29,20 +29,20 @@ namespace WeatherRegistry.Patches
 
     public static bool SetBoolPatch(Animator __instance, object nameOrId, bool value)
     {
-      string name = nameOrId as string;
+      // string name = nameOrId as string;
 
-      if (TimeOfDay.Instance == null)
-      {
-        return true;
-      }
+      // if (TimeOfDay.Instance == null)
+      // {
+      //   return true;
+      // }
 
-      if (name == "overcast" || name == "eclipse")
-      {
-        if (ConfigManager.SunAnimatorBlacklistLevels.Contains(StartOfRound.Instance.currentLevel))
-        {
-          return true;
-        }
-      }
+      // if (name == "overcast" || name == "eclipse")
+      // {
+      //   if (ConfigManager.SunAnimatorBlacklistLevels.Contains(StartOfRound.Instance.currentLevel))
+      //   {
+      //     return true;
+      //   }
+      // }
 
       return true;
     }
@@ -98,7 +98,7 @@ namespace WeatherRegistry.Patches
       if (ConfigManager.SunAnimatorBlacklistLevels.Contains(StartOfRound.Instance.currentLevel))
       {
         logger.LogDebug($"Current level {StartOfRound.Instance.currentLevel} is blacklisted");
-        return;
+        // return;
       }
 
       if (TimeOfDay.Instance.sunAnimator == null)

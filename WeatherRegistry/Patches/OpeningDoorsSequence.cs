@@ -78,7 +78,15 @@ namespace WeatherRegistry
       )}"
       );
 
-      SunAnimator.OverrideSunAnimator(currentWeather.VanillaWeatherType);
+      try
+      {
+        SunAnimator.OverrideSunAnimator(currentWeather.VanillaWeatherType);
+      }
+      catch (Exception e)
+      {
+        Plugin.logger.LogError($"SunAnimator exception: {e.Message}");
+        Plugin.logger.LogWarning("PLEASE report this issue to the mod developer with your modpack code and this log!");
+      }
 
       EventManager.ShipLanding.Invoke((currentLevel, currentWeather));
     }
