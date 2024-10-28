@@ -22,7 +22,8 @@ namespace WeatherRegistry
     Vanilla,
     WeatherRegistry,
     LethalLib,
-    LethalLevelLoader
+    LethalLevelLoader,
+    WeatherTweaks,
   }
 
   public enum FilteringOption
