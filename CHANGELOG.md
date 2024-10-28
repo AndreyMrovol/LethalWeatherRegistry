@@ -1,3 +1,8 @@
+# 0.2.4
+
+- fixed wrong name of the `TimeOfDay` logger
+- added try-catch to `SunAnimator` to (hopefully) prevent soft-locking the game during landing (thanks: `call.me.doc`, `autumnis`)
+
 # 0.2.3
 
 - fixed an issue with Registry trying to set weather on a non-existing level (thanks: `glacialstage`, `darmuh`!)
