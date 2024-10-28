@@ -1,12 +1,9 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using HarmonyLib;
-using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
-using WeatherRegistry;
 
 namespace WeatherRegistry.Patches
 {
@@ -16,7 +13,11 @@ namespace WeatherRegistry.Patches
     [HarmonyPatch("SetMapScreenInfoToCurrentLevel")]
     [HarmonyPostfix]
     [HarmonyPriority(Priority.Last)]
-    internal static void GameMethodPatch(ref TextMeshProUGUI ___screenLevelDescription, ref SelectableLevel ___currentLevel)
+    internal static void GameMethodPatch(
+      ref TextMeshProUGUI ___screenLevelDescription,
+      ref SelectableLevel ___currentLevel,
+      StartOfRound __instance
+    )
     {
       if (!WeatherManager.IsSetupFinished)
       {
