@@ -21,7 +21,7 @@ namespace WeatherRegistry.Definitions
 
     public virtual Dictionary<SelectableLevel, LevelWeatherType> SelectWeathers(int connectedPlayersOnServer, StartOfRound startOfRound)
     {
-      return new();
+      return [];
     }
   }
 }
