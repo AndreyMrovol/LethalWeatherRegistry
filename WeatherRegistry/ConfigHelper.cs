@@ -32,6 +32,12 @@ namespace WeatherRegistry
     public Weather Weather { get; set; }
   }
 
+  public class ConfigEntryAbstraction<T>(T value, bool enabled = true)
+  {
+    public T Value { get; set; } = value;
+    public bool Enabled { get; set; } = enabled;
+  }
+
   internal abstract class ConfigHandler<T, CT> : MrovLib.ConfigHandler<T, CT>
   {
     private ConfigDescription _configDescription;
