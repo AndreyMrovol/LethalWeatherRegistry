@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using BepInEx.Logging;
 using HarmonyLib;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry.Patches
 {
@@ -23,7 +24,7 @@ namespace WeatherRegistry.Patches
 
       logger.LogDebug("DecativateObjects is true");
 
-      foreach (ImprovedWeatherEffect effect in WeatherManager.Weathers.Select(weather => weather.Effect))
+      foreach (RegistryWeatherEffect effect in WeatherManager.Weathers.Select(weather => weather.Effect))
       {
         effect.DisableEffect(deactivateObjects);
       }

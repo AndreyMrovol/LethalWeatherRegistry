@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry.Patches
 {
@@ -40,14 +41,14 @@ namespace WeatherRegistry.Patches
       );
     }
 
-    private static string GetDisplayWeatherString(SelectableLevel level, Weather weather)
+    private static string GetDisplayWeatherString(SelectableLevel level, RegistryWeather weather)
     {
       return weather.Name;
     }
 
     private static string GetColoredString(SelectableLevel level)
     {
-      Weather currentWeather = WeatherManager.GetCurrentWeather(level);
+      RegistryWeather currentWeather = WeatherManager.GetCurrentWeather(level);
       string currentWeatherString = GetDisplayWeatherString(level, currentWeather);
 
       if (!ConfigManager.ColoredWeathers.Value)

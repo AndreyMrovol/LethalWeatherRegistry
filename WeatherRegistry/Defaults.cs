@@ -6,9 +6,9 @@ namespace WeatherRegistry
 {
   internal class Defaults
   {
-    internal static List<LevelWeatherType> VanillaWeathers = MrovLib.Defaults.VanillaWeathers;
+    internal static readonly List<LevelWeatherType> VanillaWeathers = MrovLib.Defaults.VanillaWeathers;
 
-    internal static Dictionary<LevelWeatherType, Color> VanillaWeatherColors =
+    internal static readonly Dictionary<LevelWeatherType, Color> VanillaWeatherColors =
       new()
       {
         { LevelWeatherType.None, new Color(0.41f, 1f, 0.42f, 1f) },
@@ -20,7 +20,7 @@ namespace WeatherRegistry
         { LevelWeatherType.Eclipsed, new Color(1f, 0f, 0f, 1f) }
       };
 
-    internal static Dictionary<LevelWeatherType, string> VanillaWeatherToWeatherWeights =
+    internal static readonly Dictionary<LevelWeatherType, string> VanillaWeatherToWeatherWeights =
       new()
       {
         { LevelWeatherType.None, "None@160; Rainy@100; Stormy@70; Flooded@20; Foggy@40; Eclipsed@10" },
@@ -31,7 +31,14 @@ namespace WeatherRegistry
         { LevelWeatherType.Eclipsed, "None@300; Rainy@40; Stormy@16; Flooded@20; Foggy@60; Eclipsed@10" }
       };
 
-    internal static Color LethalLibColor = new(r: 0f, g: 0.44f, b: 0.76f, a: 1f);
+    internal static readonly Color LethalLibColor = new(r: 0f, g: 0.44f, b: 0.76f, a: 1f);
+
+    public static readonly string DefaultLevelFilters = "Gordion";
+    public static readonly string DefaultLevelWeights = "MoonName@50";
+    public static readonly string DefaultWeatherToWeatherWeights = "WeatherName@50";
+    public static readonly int DefaultWeight = 100;
+    public static readonly float ScrapAmountMultiplier = 1;
+    public static readonly float ScrapValueMultiplier = 1;
 
     internal static readonly string WeatherSaveKey = "WeatherRegistryCurrentWeathers";
   }

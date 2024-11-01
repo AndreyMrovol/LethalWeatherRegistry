@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using UnityEngine;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry
 {
@@ -11,26 +12,26 @@ namespace WeatherRegistry
   {
     internal static bool IsSetupFinished = false;
 
-    public static List<Weather> RegisteredWeathers { get; internal set; } = [];
+    public static List<RegistryWeather> RegisteredWeathers { get; internal set; } = [];
     public static List<LevelWeather> LevelWeathers { get; internal set; } = [];
 
     public static List<WeatherEffectOverride> WeatherEffectOverrides { get; internal set; } = [];
 
     // i would love to have weathers as an array with indexes corresponding to the enum values
     // but none is -1 so i have to do this
-    public static List<Weather> Weathers { get; internal set; } = [];
-    public static Weather NoneWeather { get; internal set; }
+    public static List<RegistryWeather> Weathers { get; internal set; } = [];
+    public static RegistryWeather NoneWeather { get; internal set; }
 
-    public static Dictionary<int, Weather> ModdedWeatherEnumExtension = [];
+    public static Dictionary<int, RegistryWeather> ModdedWeatherEnumExtension = [];
 
     public static CurrentWeathers currentWeathers = new();
 
-    public static void RegisterWeather(Weather weather)
+    public static void RegisterWeather(RegistryWeather weather)
     {
       RegisteredWeathers.Add(weather);
     }
 
-    public static Weather GetWeather(LevelWeatherType levelWeatherType)
+    public static RegistryWeather GetWeather(LevelWeatherType levelWeatherType)
     {
       return Weathers.Find(weather => weather.VanillaWeatherType == levelWeatherType);
 
@@ -101,9 +102,9 @@ namespace WeatherRegistry
       return possibleWeathers;
     }
 
-    public static MrovLib.WeightHandler<Weather> GetPlanetWeightedList(SelectableLevel level)
+    public static MrovLib.WeightHandler<RegistryWeather> GetPlanetWeightedList(SelectableLevel level)
     {
-      MrovLib.WeightHandler<Weather> weightedList = new();
+      MrovLib.WeightHandler<RegistryWeather> weightedList = new();
       MrovLib.Logger logger = WeatherCalculation.Logger;
 
       List<LevelWeatherType> weatherTypes = GetPlanetPossibleWeathers(level);
@@ -117,7 +118,7 @@ namespace WeatherRegistry
       foreach (var weather in weatherTypes)
       {
         // clone the object
-        Weather typeOfWeather = GetWeather(weather);
+        RegistryWeather typeOfWeather = GetWeather(weather);
 
         var weatherWeight = typeOfWeather.GetWeight(level);
 
@@ -127,7 +128,7 @@ namespace WeatherRegistry
       return weightedList;
     }
 
-    public static Weather GetCurrentWeather(SelectableLevel level)
+    public static RegistryWeather GetCurrentWeather(SelectableLevel level)
     {
       if (currentWeathers.Contains(level))
       {
@@ -149,7 +150,7 @@ namespace WeatherRegistry
       return GetWeather(weatherType).AnimationClip;
     }
 
-    public static WeatherEffectOverride GetCurrentWeatherOverride(SelectableLevel level, Weather weather)
+    public static WeatherEffectOverride GetCurrentWeatherOverride(SelectableLevel level, RegistryWeather weather)
     {
       weather.WeatherEffectOverrides.TryGetValue(level, out WeatherEffectOverride weatherEffectOverride);
 

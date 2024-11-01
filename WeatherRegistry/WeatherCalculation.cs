@@ -4,6 +4,7 @@ using HarmonyLib;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry
 {
@@ -56,7 +57,7 @@ namespace WeatherRegistry
           if (level.overrideWeather)
           {
             Logger.LogMessage($"Override weather present, changing weather to {level.overrideWeatherType}");
-            Weather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
+            RegistryWeather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
 
             NewWeather[level] = overrideWeather.VanillaWeatherType;
             // WeatherManager.CurrentWeathers[level] = overrideWeather;
@@ -67,8 +68,8 @@ namespace WeatherRegistry
 
           NewWeather[level] = LevelWeatherType.None;
 
-          MrovLib.WeightHandler<Weather> possibleWeathers = WeatherManager.GetPlanetWeightedList(level);
-          Weather selectedWeather = possibleWeathers.Random();
+          MrovLib.WeightHandler<RegistryWeather> possibleWeathers = WeatherManager.GetPlanetWeightedList(level);
+          RegistryWeather selectedWeather = possibleWeathers.Random();
 
           NewWeather[level] = selectedWeather.VanillaWeatherType;
           // WeatherManager.CurrentWeathers[level] = selectedWeather;

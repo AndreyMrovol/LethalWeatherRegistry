@@ -6,6 +6,7 @@ using BepInEx.Configuration;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Modules;
 using WeatherRegistry.Patches;
 
 namespace WeatherRegistry.Definitions
@@ -13,23 +14,22 @@ namespace WeatherRegistry.Definitions
   public interface IWeatherDefinition
   {
     string Name { get; }
-    ImprovedWeatherEffect Effect { get; }
+    WeatherEffectDefinition Effect { get; }
     AnimationClip AnimationClip { get; }
     Color Color { get; }
-    IWeatherConfigDefinition Configuration { get; }
+    RegistryWeatherConfig Configuration { get; }
   }
 
   public class WeatherDefinition : IWeatherDefinition
   {
-    public string Name { get; set; }
-    public ImprovedWeatherEffect Effect { get; set; }
-    public AnimationClip AnimationClip { get; set; }
+    public string Name { get; set; } = "";
+    public WeatherEffectDefinition Effect { get; set; } = new(null, null);
+    public AnimationClip AnimationClip { get; set; } = null;
     public Color Color { get; set; }
-    public IWeatherConfigDefinition Configuration { get; set; }
+    public RegistryWeatherConfig Configuration { get; set; } = new();
 
-    public WeatherDefinition()
-    {
-      Configuration = new WeatherConfigDefinition();
-    }
+    // public Weather GetWeatherFromDefinition(){
+    //   return new Weather(this);
+    // }
   }
 }

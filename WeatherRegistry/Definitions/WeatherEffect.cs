@@ -1,9 +1,11 @@
+using System;
 using Newtonsoft.Json;
 using UnityEngine;
 
 namespace WeatherRegistry
 {
-  [CreateAssetMenu(fileName = "WeatherEffect", menuName = "WeatherRegistry/WeatherEffect", order = 10)]
+  // [CreateAssetMenu(fileName = "WeatherEffect", menuName = "WeatherRegistry/WeatherEffect", order = 10)]
+  [Obsolete("Use RegistryWeatherEffect instead")]
   public class ImprovedWeatherEffect : ScriptableObject
   {
     [JsonIgnore]

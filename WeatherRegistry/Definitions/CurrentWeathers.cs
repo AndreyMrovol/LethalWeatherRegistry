@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry.Definitions
 {
@@ -49,7 +50,7 @@ namespace WeatherRegistry.Definitions
       return _currentWeathers.ContainsValue(weatherType);
     }
 
-    public bool Contains(Weather weather)
+    public bool Contains(RegistryWeather weather)
     {
       return Contains(weather.VanillaWeatherType);
     }
@@ -86,7 +87,7 @@ namespace WeatherRegistry.Definitions
       return _currentWeathers[level];
     }
 
-    public Weather GetLevelWeather(SelectableLevel level)
+    public RegistryWeather GetLevelWeather(SelectableLevel level)
     {
       return WeatherManager.GetWeather(_currentWeathers[level]);
     }
@@ -98,7 +99,7 @@ namespace WeatherRegistry.Definitions
       CallSync();
     }
 
-    public void SetWeather(SelectableLevel level, Weather weather)
+    public void SetWeather(SelectableLevel level, RegistryWeather weather)
     {
       SetWeather(level, weather.VanillaWeatherType);
     }

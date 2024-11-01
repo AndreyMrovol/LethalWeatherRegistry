@@ -1,13 +1,15 @@
+using WeatherRegistry.Modules;
+
 namespace WeatherRegistry.Definitions
 {
   public class WeatherEffectOverride
   {
-    public Weather Weather { get; }
+    public RegistryWeather Weather { get; }
     public SelectableLevel Level { get; }
 
-    public ImprovedWeatherEffect OverrideEffect { get; }
+    public RegistryWeatherEffect OverrideEffect { get; }
 
-    public WeatherEffectOverride(Weather weather, SelectableLevel level, ImprovedWeatherEffect effect)
+    public WeatherEffectOverride(RegistryWeather weather, SelectableLevel level, RegistryWeatherEffect effect)
     {
       Weather = weather;
       Level = level;

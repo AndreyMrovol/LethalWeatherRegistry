@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BepInEx.Logging;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry
 {
@@ -9,7 +10,7 @@ namespace WeatherRegistry
     private static ManualLogSource Logger = new("WeatherController");
 
     #region Change weather
-    public static void ChangeCurrentWeather(Weather weather)
+    public static void ChangeCurrentWeather(RegistryWeather weather)
     {
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
 
@@ -25,13 +26,13 @@ namespace WeatherRegistry
 
     public static void ChangeWeather(SelectableLevel level, LevelWeatherType weatherType)
     {
-      Weather weather = WeatherManager.GetWeather(weatherType);
+      RegistryWeather weather = WeatherManager.GetWeather(weatherType);
 
       ChangeWeather(level, weather);
     }
 
     // this is the one that every overload should resolve to
-    public static void ChangeWeather(SelectableLevel level, Weather weather)
+    public static void ChangeWeather(SelectableLevel level, RegistryWeather weather)
     {
       if (!Settings.SelectWeathers)
       {

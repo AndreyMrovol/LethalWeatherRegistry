@@ -9,6 +9,7 @@ using HarmonyLib;
 using MonoMod.Cil;
 using UnityEngine;
 using UnityEngine.ProBuilder;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry.Patches
 {
@@ -142,7 +143,7 @@ namespace WeatherRegistry.Patches
 
       Dictionary<LevelWeatherType, AnimationClip> clips = [];
 
-      Weather currentWeather = WeatherManager.GetWeather(weatherType);
+      RegistryWeather currentWeather = WeatherManager.GetWeather(weatherType);
 
       try
       {

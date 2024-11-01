@@ -1,4 +1,5 @@
 using HarmonyLib;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry.Patches
 {
@@ -9,7 +10,7 @@ namespace WeatherRegistry.Patches
     [HarmonyPrefix]
     public static void DisableWeathersPatch()
     {
-      foreach (Weather weather in WeatherManager.Weathers)
+      foreach (RegistryWeather weather in WeatherManager.Weathers)
       {
         weather.Effect.DisableEffect(true);
       }

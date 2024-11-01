@@ -5,6 +5,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Newtonsoft.Json;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Modules;
 using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
@@ -61,7 +62,7 @@ namespace WeatherRegistry
     internal static void SetWeatherEffects()
     {
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
-      Weather currentWeather = WeatherManager.GetCurrentWeather(currentLevel);
+      RegistryWeather currentWeather = WeatherManager.GetCurrentWeather(currentLevel);
 
       WeatherEffectOverride weatherEffectOverride = currentWeather.GetEffectOverride(currentLevel);
       if (weatherEffectOverride != null)

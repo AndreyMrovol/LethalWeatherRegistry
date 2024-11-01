@@ -6,6 +6,8 @@ using HarmonyLib;
 using Newtonsoft.Json;
 using Unity.Netcode;
 using UnityEngine;
+using WeatherRegistry.Definitions;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry.Patches
 {
@@ -96,16 +98,16 @@ namespace WeatherRegistry.Patches
 
       Logger.LogInfo("Creating NoneWeather type");
       // Register clear weather as a weather
-      Weather noneWeather =
-        new(effect: new ImprovedWeatherEffect(null, null))
+      RegistryWeather noneWeather =
+        new(new() { Name = "None", Color = Defaults.VanillaWeatherColors[LevelWeatherType.None], })
         {
           Type = WeatherType.Clear,
-          Color = Defaults.VanillaWeatherColors[LevelWeatherType.None],
+          // Color = Defaults.VanillaWeatherColors[LevelWeatherType.None],
           VanillaWeatherType = LevelWeatherType.None,
           Origin = WeatherOrigin.Vanilla,
         };
 
-      WeatherManager.Weathers.Add(noneWeather);
+      // WeatherManager.Weathers.Add(noneWeather);
       WeatherManager.NoneWeather = noneWeather;
 
       #endregion
@@ -123,19 +125,25 @@ namespace WeatherRegistry.Patches
         WeatherType weatherTypeType = isVanilla ? WeatherType.Vanilla : WeatherType.Modded;
         Color weatherColor = isVanilla ? Defaults.VanillaWeatherColors[weatherType] : Color.blue;
 
-        ImprovedWeatherEffect weatherEffect =
-          new(effect.effectObject, effect.effectPermanentObject) { SunAnimatorBool = effect.sunAnimatorBool, };
+        Plugin.logger.LogWarning($"COLOR: {weatherColor}");
 
-        Weather weather =
-          new(weatherType.ToString(), weatherEffect)
+        RegistryWeather weather =
+          new(
+            new()
+            {
+              Name = weatherType.ToString(),
+              Effect = new(effect.effectObject, effect.effectPermanentObject) { SunAnimatorBool = effect.sunAnimatorBool, },
+              Color = weatherColor,
+              Configuration = new RegistryWeatherConfig()
+            }
+          )
           {
             Type = weatherTypeType,
-            Color = weatherColor,
             VanillaWeatherType = weatherType,
             Origin = WeatherOrigin.Vanilla,
           };
 
-        WeatherManager.Weathers.Add(weather);
+        // WeatherManager.Weathers.Add(weather);
       }
 
       #endregion
@@ -147,9 +155,9 @@ namespace WeatherRegistry.Patches
       {
         Logger.LogDebug("Getting LethalLib Weathers");
 
-        List<Weather> lethalLibWeathers = LethalLibPatch.ConvertLLWeathers();
+        List<RegistryWeather> lethalLibWeathers = LethalLibPatch.ConvertLLWeathers();
 
-        foreach (Weather weather in lethalLibWeathers)
+        foreach (RegistryWeather weather in lethalLibWeathers)
         {
           Logger.LogDebug($"LethalLib Weather: {weather.Name}");
 
@@ -193,7 +201,7 @@ namespace WeatherRegistry.Patches
 
       // This is LethalLib's patch for extending the enum
       int highestIndex = 0;
-      foreach (KeyValuePair<int, Weather> entry in WeatherManager.ModdedWeatherEnumExtension)
+      foreach (KeyValuePair<int, RegistryWeather> entry in WeatherManager.ModdedWeatherEnumExtension)
       {
         if (entry.Key > highestIndex)
         {
@@ -208,7 +216,7 @@ namespace WeatherRegistry.Patches
       }
 
       // then we set the custom weathers at their index
-      foreach (KeyValuePair<int, Weather> entry in WeatherManager.ModdedWeatherEnumExtension)
+      foreach (KeyValuePair<int, RegistryWeather> entry in WeatherManager.ModdedWeatherEnumExtension)
       {
         weatherList[entry.Key] = new WeatherEffect()
         {
@@ -228,22 +236,22 @@ namespace WeatherRegistry.Patches
 
       #endregion
 
-      List<Weather> RegisteredWeathers = WeatherManager.RegisteredWeathers.Distinct().ToList();
+      List<RegistryWeather> RegisteredWeathers = WeatherManager.RegisteredWeathers.Distinct().ToList();
       RegisteredWeathers.Sort((a, b) => a.VanillaWeatherType.CompareTo(b.VanillaWeatherType));
 
       for (int i = 0; i < RegisteredWeathers.Count; i++)
       {
         Logger.LogInfo($"Registered Weather: {RegisteredWeathers[i].Name}");
 
-        Weather weather = RegisteredWeathers[i];
-        WeatherManager.Weathers.Add(weather);
+        RegistryWeather weather = RegisteredWeathers[i];
+        // WeatherManager.Weathers.Add(weather);
       }
 
       Logger.LogDebug($"Weathers: {WeatherManager.Weathers.Count}");
 
       List<SelectableLevel> levels = StartOfRound.Instance.levels.ToList();
 
-      foreach (Weather weather in WeatherManager.Weathers)
+      foreach (RegistryWeather weather in WeatherManager.Weathers)
       {
         Settings.ScreenMapColors.Add(weather.Name, weather.Color);
         weather.Init();
@@ -330,7 +338,7 @@ namespace WeatherRegistry.Patches
       EventManager.SetupFinished.Invoke();
     }
 
-    static void AddWeatherToLevels(Weather weather, List<SelectableLevel> levels, List<SelectableLevel> LevelsToApply)
+    static void AddWeatherToLevels(RegistryWeather weather, List<SelectableLevel> levels, List<SelectableLevel> LevelsToApply)
     {
       List<LevelWeatherVariables> levelWeatherVariables = [];
       weather.WeatherVariables.Clear();
@@ -371,7 +379,7 @@ namespace WeatherRegistry.Patches
 
       static bool InitializeRandomWeather(
         ref RandomWeatherWithVariables randomWeather,
-        Weather weather,
+        RegistryWeather weather,
         SelectableLevel level,
         ref List<RandomWeatherWithVariables> randomWeathers,
         List<SelectableLevel> LevelsToApply

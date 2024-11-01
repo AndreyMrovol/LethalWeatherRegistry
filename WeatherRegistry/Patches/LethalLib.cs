@@ -8,6 +8,8 @@ using LethalLib;
 using LethalLib.Extras;
 using MonoMod.RuntimeDetour;
 using UnityEngine;
+using WeatherRegistry.Definitions;
+using WeatherRegistry.Modules;
 using static LethalLib.Modules.Weathers;
 
 namespace WeatherRegistry.Patches
@@ -20,34 +22,37 @@ namespace WeatherRegistry.Patches
       return LethalLib.Modules.Weathers.customWeathers;
     }
 
-    public static List<Weather> ConvertLLWeathers()
+    public static List<RegistryWeather> ConvertLLWeathers()
     {
       Dictionary<int, CustomWeather> llWeathers = GetLethalLibWeathers();
-      List<Weather> weathers = [];
+      List<RegistryWeather> weathers = [];
 
       // list through all entries
       foreach (KeyValuePair<int, CustomWeather> LethalLibWeatherEntry in llWeathers)
       {
         CustomWeather llWeather = LethalLibWeatherEntry.Value;
 
-        ImprovedWeatherEffect effect =
-          new(llWeather.weatherEffect.effectObject, llWeather.weatherEffect.effectPermanentObject)
+        WeatherEffectDefinition effect =
+          new(llWeather.weatherEffect) { DefaultVariable1 = llWeather.weatherVariable1, DefaultVariable2 = llWeather.weatherVariable2, };
+
+        WeatherDefinition weatherDefinition =
+          new()
           {
-            name = llWeather.name,
-            SunAnimatorBool = llWeather.weatherEffect.sunAnimatorBool,
-            DefaultVariable1 = llWeather.weatherVariable1,
-            DefaultVariable2 = llWeather.weatherVariable2,
+            Name = llWeather.name,
+            Effect = effect,
+            Color = Defaults.LethalLibColor,
+            Configuration = { DefaultWeight = new(50), }
           };
 
-        Weather weather =
-          new(llWeather.name, effect)
+        RegistryWeather weather =
+          new(weatherDefinition)
           {
             VanillaWeatherType = (LevelWeatherType)LethalLibWeatherEntry.Key,
             Origin = WeatherOrigin.LethalLib,
-            Color = Defaults.LethalLibColor,
-            DefaultWeight = 50,
+            // Color = Defaults.LethalLibColor,
           };
-        weathers.Add(weather);
+
+        // weathers.Add(weather);
 
         WeatherManager.ModdedWeatherEnumExtension.Add(LethalLibWeatherEntry.Key, weather);
         // Get key
@@ -79,14 +84,14 @@ namespace WeatherRegistry.Patches
 
     internal static bool StartOfRoundAwakePrefix(On.StartOfRound.orig_Awake orig, StartOfRound self)
     {
-      Plugin.logger.LogDebug("Skipping LethalLib StartOfRound method");
+      Plugin.debugLogger.LogDebug("Skipping LethalLib StartOfRound method");
       orig(self);
       return false;
     }
 
     internal static bool TimeOfDayAwakePrefix(On.TimeOfDay.orig_Awake orig, TimeOfDay self)
     {
-      Plugin.logger.LogDebug("Skipping LethalLib TimeOfDay method");
+      Plugin.debugLogger.LogDebug("Skipping LethalLib TimeOfDay method");
       orig(self);
       return false;
     }
