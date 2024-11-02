@@ -37,6 +37,8 @@ namespace WeatherRegistry
       }
     }
 
+    public bool EffectActive => EffectObject?.activeSelf ?? false;
+
     public void DisableEffect(bool permament = false)
     {
       if (permament)
