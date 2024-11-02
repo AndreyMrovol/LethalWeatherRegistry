@@ -31,6 +31,13 @@ namespace WeatherRegistry
         { LevelWeatherType.Eclipsed, "None@300; Rainy@40; Stormy@16; Flooded@20; Foggy@60; Eclipsed@10" }
       };
 
+    public static readonly string DefaultLevelFilters = "Gordion";
+    public static readonly string DefaultLevelWeights = "MoonName@50";
+    public static readonly string DefaultWeatherToWeatherWeights = "WeatherName@50";
+    public static readonly int DefaultWeight = 100;
+    public static readonly float ScrapAmountMultiplier = 1;
+    public static readonly float ScrapValueMultiplier = 1;
+
     internal static Color LethalLibColor = new(r: 0f, g: 0.44f, b: 0.76f, a: 1f);
 
     internal static readonly string WeatherSaveKey = "WeatherRegistryCurrentWeathers";

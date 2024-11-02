@@ -32,118 +32,100 @@ namespace WeatherRegistry
     public Weather Weather { get; set; }
   }
 
-  internal abstract class ConfigHandler<T, CT> : MrovLib.ConfigHandler<T, CT>
+  internal abstract class ConfigHandler<T, CT> : Definitions.ConfigHandler<T, CT>
   {
-    private ConfigDescription _configDescription;
-    private bool _enabled = true;
-
-    public bool Enabled
+    public ConfigHandler(CT value, bool enabled = true)
     {
-      get { return _enabled; }
-      set
-      {
-        _enabled = value;
-
-        if (!Enabled)
-        {
-          _configDescription = new ConfigDescription(
-            $"{(Enabled ? "" : "**This setting has been disabled by the mod developer and won't take any effect.**\n")}{_configDescription.Description}",
-            _configDescription.AcceptableValues
-          );
-        }
-        var NewConfigEntry = ConfigEntry;
-
-        ConfigManager.configFile.Remove(ConfigEntry.Definition);
-        ConfigEntry = ConfigManager.configFile.Bind(
-          NewConfigEntry.Definition.Section,
-          NewConfigEntry.Definition.Key,
-          DefaultValue,
-          _configDescription
-        );
-      }
+      DefaultValue = value;
+      Enabled = enabled;
     }
 
-    public ConfigHandler(CT defaultValue, Weather weather, string configTitle, ConfigDescription configDescription = null)
+    public void SetConfigEntry(Weather weather, string configTitle, ConfigDescription configDescription = null)
     {
-      // Any additional initialization for the derived class can be done here
-      _configDescription = configDescription;
-
-      DefaultValue = defaultValue;
       ConfigEntry = ConfigManager.configFile.Bind(weather.ConfigCategory, configTitle, DefaultValue, configDescription);
     }
   }
 
   internal class LevelListConfigHandler : ConfigHandler<SelectableLevel[], string>
   {
-    public LevelListConfigHandler(string defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
-      : base(defaultValue, weather, configTitle, configDescription) { }
+    public LevelListConfigHandler(string value, bool enabled = true)
+      : base(value, enabled) { }
+
+    public LevelListConfigHandler(string[] value, bool enabled = true)
+      : base(String.Join(";", value), enabled) { }
 
     public override SelectableLevel[] Value
     {
-      get { return ConfigHelper.ConvertStringToLevels(this.Enabled ? ConfigEntry.Value : this.DefaultValue); }
+      get { return ConfigHelper.ConvertStringToLevels(this.ConfigEntryActive ? ConfigEntry.Value : this.DefaultValue); }
     }
   }
 
   internal class LevelWeightsConfigHandler : ConfigHandler<LevelRarity[], string>
   {
-    public LevelWeightsConfigHandler(string defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
-      : base(defaultValue, weather, configTitle, configDescription) { }
+    public LevelWeightsConfigHandler(string value, bool enabled = true)
+      : base(value, enabled) { }
+
+    public LevelWeightsConfigHandler(string[] value, bool enabled = true)
+      : base(String.Join(";", value), enabled) { }
 
     public override LevelRarity[] Value
     {
       get
       {
 
-        return ConfigHelper.ConvertStringToLevelRarities(this.Enabled ? ConfigEntry.Value : this.DefaultValue);
+        return ConfigHelper.ConvertStringToLevelRarities(this.ConfigEntryActive ? ConfigEntry.Value : this.DefaultValue);
       }
     }
   }
 
   internal class WeatherWeightsConfigHandler : ConfigHandler<WeatherRarity[], string>
   {
-    public WeatherWeightsConfigHandler(string defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
-      : base(defaultValue, weather, configTitle, configDescription) { }
+    public WeatherWeightsConfigHandler(string value, bool enabled = true)
+      : base(value, enabled) { }
+
+    public WeatherWeightsConfigHandler(string[] value, bool enabled = true)
+      : base(String.Join(";", value), enabled) { }
 
     public override WeatherRarity[] Value
     {
       get
       {
 
-        return ConfigHelper.ConvertStringToWeatherWeights(this.Enabled ? ConfigEntry.Value : this.DefaultValue);
+        return ConfigHelper.ConvertStringToWeatherWeights(this.ConfigEntryActive ? ConfigEntry.Value : this.DefaultValue);
       }
     }
   }
 
   internal class IntegerConfigHandler : ConfigHandler<int, int>
   {
-    public IntegerConfigHandler(int defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
-      : base(defaultValue, weather, configTitle, configDescription) { }
+    public IntegerConfigHandler(int value, bool enabled = true)
+      : base(value, enabled) { }
 
     public override int Value
     {
-      get { return this.Enabled ? ConfigEntry.Value : this.DefaultValue; }
+      get { return this.ConfigEntryActive ? ConfigEntry.Value : this.DefaultValue; }
     }
   }
 
   internal class FloatConfigHandler : ConfigHandler<float, float>
   {
-    public FloatConfigHandler(float defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
-      : base(defaultValue, weather, configTitle, configDescription) { }
+    public FloatConfigHandler(float value, bool enabled = true)
+      : base(value, enabled) { }
 
     public override float Value
     {
-      get { return this.Enabled ? ConfigEntry.Value : this.DefaultValue; }
+      get { return this.ConfigEntryActive ? ConfigEntry.Value : this.DefaultValue; }
     }
   }
 
   internal class StringConfigHandler : ConfigHandler<string, string>
   {
-    public StringConfigHandler(string defaultValue, Weather weather, string configTitle, ConfigDescription configDescription)
-      : base(defaultValue, weather, configTitle, configDescription) { }
+    public StringConfigHandler(string value, bool enabled = true)
+      : base(value, enabled) { }
 
     public override string Value
     {
-      get { return this.Enabled ? ConfigEntry.Value : this.DefaultValue; }
+      get { return this.ConfigEntryActive ? ConfigEntry.Value : this.DefaultValue; }
     }
   }
 

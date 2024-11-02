@@ -6,6 +6,7 @@ using BepInEx.Configuration;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Modules;
 using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
@@ -63,7 +64,7 @@ namespace WeatherRegistry
     public Color Color { get; set; } = Color.cyan;
 
     [JsonIgnore]
-    internal WeatherConfig Config = new();
+    internal RegistryWeatherConfig Config = new();
 
     [JsonIgnore]
     internal Dictionary<SelectableLevel, WeatherEffectOverride> WeatherEffectOverrides = [];
