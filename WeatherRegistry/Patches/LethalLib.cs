@@ -45,7 +45,7 @@ namespace WeatherRegistry.Patches
             VanillaWeatherType = (LevelWeatherType)LethalLibWeatherEntry.Key,
             Origin = WeatherOrigin.LethalLib,
             Color = Defaults.LethalLibColor,
-            DefaultWeight = 50,
+            Config = { DefaultWeight = new(50), },
           };
         weathers.Add(weather);
 

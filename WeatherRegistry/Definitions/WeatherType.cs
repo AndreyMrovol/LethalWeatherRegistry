@@ -73,6 +73,7 @@ namespace WeatherRegistry
 
     #region backing fields
 
+
     internal int _defaultWeight = 100;
     internal float _scrapAmountMultiplier = 1;
     internal float _scrapValueMultiplier = 1;
@@ -85,28 +86,30 @@ namespace WeatherRegistry
     public int DefaultWeight
     {
       get { return Config.DefaultWeight.Value; }
+      [Obsolete("Use Weather.Config.DefaultWeight instead")]
       set { _defaultWeight = value; }
     }
 
-    [field: SerializeField]
-    [JsonIgnore]
+    [Obsolete("Use Weather.Config.LevelFilters instead")]
     public string[] DefaultLevelFilters { get; set; } = ["Gordion"];
 
+    [Obsolete("Use Weather.Config.LevelWeights instead")]
     public string[] DefaultLevelWeights { get; set; } = ["MoonName@50"];
 
+    [Obsolete("Use Weather.Config.WeatherToWeatherWeights instead")]
     public string[] DefaultWeatherToWeatherWeights { get; set; } = ["WeatherName@50"];
 
-    [property: SerializeField]
     public float ScrapAmountMultiplier
     {
       get { return Config.ScrapAmountMultiplier.Value; }
+      [Obsolete("Use Weather.Config.ScrapAmountMultiplier instead")]
       set { _scrapAmountMultiplier = value; }
     }
 
-    [property: SerializeField]
     public float ScrapValueMultiplier
     {
       get { return Config.ScrapValueMultiplier.Value; }
+      [Obsolete("Use Weather.Config.ScrapValueMultiplier instead")]
       set { _scrapValueMultiplier = value; }
     }
 
@@ -174,13 +177,13 @@ namespace WeatherRegistry
       this.hideFlags = HideFlags.HideAndDontSave;
     }
 
-    void Reset()
-    {
-      Type = WeatherType.Modded;
-      ScrapAmountMultiplier = 1;
-      ScrapValueMultiplier = 1;
-      DefaultWeight = 50;
-    }
+    // void Reset()
+    // {
+    //   Type = WeatherType.Modded;
+    //   ScrapAmountMultiplier = 1;
+    //   ScrapValueMultiplier = 1;
+    //   DefaultWeight = 50;
+    // }
 
     public void RemoveFromMoon(string moonNames)
     {
