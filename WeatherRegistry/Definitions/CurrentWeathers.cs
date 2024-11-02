@@ -141,23 +141,36 @@ namespace WeatherRegistry.Definitions
 
     public void SetWeathersFromStringDictionary(string serializedWeathers)
     {
+      Plugin.logger.LogDebug($"Setting weathers from string dictionary: {serializedWeathers}");
+
       Dictionary<string, LevelWeatherType> planetNameDictionary = JsonConvert.DeserializeObject<Dictionary<string, LevelWeatherType>>(
         serializedWeathers
       );
       Dictionary<SelectableLevel, LevelWeatherType> weathers = [];
       List<SelectableLevel> levels = GetLevels();
 
+      // check if any levels are missing from the level list (moon was removed between launches)
       foreach (KeyValuePair<string, LevelWeatherType> pair in planetNameDictionary)
       {
         SelectableLevel level = levels.Find(l => l.PlanetName == pair.Key);
 
         if (level == null)
         {
-          Plugin.debugLogger.LogWarning($"Level with planet name {pair.Key} not found, skipping.");
+          Plugin.logger.LogWarning($"Level with planet name {pair.Key} is not present, skipping.");
           continue;
         }
 
         weathers[level] = pair.Value;
+      }
+
+      // check if any levels are missing from the dictionary (moon was added between launches)
+      foreach (SelectableLevel level in levels)
+      {
+        if (!weathers.ContainsKey(level))
+        {
+          Plugin.logger.LogWarning($"Level with planet name {level.PlanetName} was not found - setting to None.");
+          weathers[level] = LevelWeatherType.None;
+        }
       }
 
       SetWeathers(weathers);
