@@ -1,3 +1,9 @@
+# 0.2.5
+
+- changed how configs are handled internally - old properties are marked as obsolete to give you time to migrate
+- fixed an issue with loading saved weathers after changing the moon list (thanks: `ericthetoon`, `darmuh`)
+- added `EffectActive` property to `ImprovedWeatherEffect` (thanks, `zaggy1024`)
+
 # 0.2.4
 
 - fixed wrong name of the `TimeOfDay` logger
