@@ -103,6 +103,14 @@ namespace WeatherRegistry.Patches
           Color = Defaults.VanillaWeatherColors[LevelWeatherType.None],
           VanillaWeatherType = LevelWeatherType.None,
           Origin = WeatherOrigin.Vanilla,
+          Config =
+          {
+            WeatherToWeatherWeights = new(
+              Defaults.VanillaWeatherToWeatherWeights.TryGetValue(LevelWeatherType.None, out string noneWeights)
+                ? $"{String.Join(';', noneWeights)};"
+                : Defaults.DefaultWeatherToWeatherWeights
+            ),
+          }
         };
 
       WeatherManager.Weathers.Add(noneWeather);
@@ -133,6 +141,14 @@ namespace WeatherRegistry.Patches
             Color = weatherColor,
             VanillaWeatherType = weatherType,
             Origin = WeatherOrigin.Vanilla,
+            Config =
+            {
+              WeatherToWeatherWeights = new(
+                Defaults.VanillaWeatherToWeatherWeights.TryGetValue(weatherType, out string vanillaWeatherWeights)
+                  ? $"{String.Join(';', vanillaWeatherWeights)};"
+                  : Defaults.DefaultWeatherToWeatherWeights
+              ),
+            }
           };
 
         WeatherManager.Weathers.Add(weather);

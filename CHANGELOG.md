@@ -1,3 +1,7 @@
+# 0.2.7
+
+- fixed missing config defaults from previous version (thanks, `lunxara`!)
+
 # 0.2.6
 
 - added `CurrentEffectTypes` property to `WeatherManager` (thanks, `zaggy1024`!)

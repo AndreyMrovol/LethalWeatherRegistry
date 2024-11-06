@@ -24,13 +24,13 @@ namespace WeatherRegistry.Modules
     internal ConfigEntry<bool> _filteringOptionConfig;
 
     [JsonIgnore]
-    internal LevelListConfigHandler LevelFilters = new(Defaults.DefaultLevelFilters);
+    internal LevelListConfigHandler LevelFilters = new($"{String.Join(';', Defaults.DefaultLevelFilters)};");
 
     [JsonIgnore]
-    internal LevelWeightsConfigHandler LevelWeights = new(Defaults.DefaultLevelWeights);
+    internal LevelWeightsConfigHandler LevelWeights = new($"{String.Join(';', Defaults.DefaultLevelWeights)};");
 
     [JsonIgnore]
-    internal WeatherWeightsConfigHandler WeatherToWeatherWeights = new(Defaults.DefaultWeatherToWeatherWeights);
+    internal WeatherWeightsConfigHandler WeatherToWeatherWeights = new($"{String.Join(';', Defaults.DefaultWeatherToWeatherWeights)};");
 
     public void Init(Weather weather)
     {
@@ -56,7 +56,7 @@ namespace WeatherRegistry.Modules
         weather.ConfigCategory,
         $"Filtering option",
         weather.LevelFilteringOption == FilteringOption.Include,
-        "Whether to include or exclude the levels in the list below"
+        "Whether to make the filter a whitelist (false is blacklist, true is whitelist)"
       );
 
       LevelFilters.SetConfigEntry(weather, "Level filter", new ConfigDescription("Semicolon-separated list of level names to filter", null));
