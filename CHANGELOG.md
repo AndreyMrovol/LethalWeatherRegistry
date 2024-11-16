@@ -1,3 +1,7 @@
+# 0.2.8
+
+- added logs for loading weathers from save
+
 # 0.2.7
 
 - fixed missing config defaults from previous version (thanks, `lunxara`!)

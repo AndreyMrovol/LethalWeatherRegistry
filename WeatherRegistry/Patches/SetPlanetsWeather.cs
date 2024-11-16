@@ -13,7 +13,7 @@ namespace WeatherRegistry.Patches
     [HarmonyPrefix]
     public static bool GameMethodPatch(int connectedPlayersOnServer, StartOfRound __instance)
     {
-      Plugin.logger.LogInfo("SetPlanetsWeather called.");
+      Plugin.logger.LogDebug("SetPlanetsWeather called.");
 
       if (!WeatherManager.IsSetupFinished)
       {
@@ -33,10 +33,16 @@ namespace WeatherRegistry.Patches
         return true;
       }
 
+      Plugin.logger.LogInfo(
+        $"Picking weathers on day {StartOfRound.Instance.gameStats.daysSpent}, file {GameNetworkManager.Instance.currentSaveFileName}"
+      );
+
       if (__instance.IsHost)
       {
         string SaveKey = $"{Defaults.WeatherSaveKey}-{StartOfRound.Instance.gameStats.daysSpent}";
         bool weathersAlreadySelected = ES3.KeyExists(SaveKey, GameNetworkManager.Instance.currentSaveFileName);
+
+        Plugin.logger.LogInfo($"Save file has weather data: {weathersAlreadySelected}");
 
         if (weathersAlreadySelected)
         {
