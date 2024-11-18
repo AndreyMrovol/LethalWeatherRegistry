@@ -14,6 +14,7 @@ namespace WeatherRegistry.Patches
   {
     internal static WeatherEffect[] vanillaEffectsArray { get; private set; } = null;
     internal static MrovLib.Logger Logger = new("WeatherRegistry", ConfigManager.LogStartup);
+    internal static MrovLib.Logger WeightsLogger = new("WeatherRegistry", ConfigManager.LogStartupWeights);
 
     [HarmonyPatch(typeof(StartOfRound), "Awake")]
     [HarmonyPrefix]
@@ -282,7 +283,7 @@ namespace WeatherRegistry.Patches
       }
 
       #region Print possible weathers
-      // print all possible weathers (defined s)
+      // print all possible weathers (defined in the config)
 
       var possibleWeathersTable = new ConsoleTable("Planet", "Random weathers");
 
@@ -300,37 +301,73 @@ namespace WeatherRegistry.Patches
       #endregion
 
       #region Print weights
-      // print all defined weather-weather weights
-
-      var weatherNames = WeatherManager.Weathers.Select(weather => weather.Name).ToArray();
-      string[] columnNames = ["From / To"];
-      columnNames = columnNames.Concat(weatherNames).ToArray();
-
-      var weatherWeightsTable = new ConsoleTable(columnNames);
-
-      WeatherManager.Weathers.ForEach(weather =>
+      if (ConfigManager.LogStartupWeights.Value)
       {
-        var row = new List<string> { weather.Name };
+        var weatherNames = WeatherManager.Weathers.Select(weather => weather.Name).ToArray();
 
-        WeatherManager.Weathers.ForEach(weather2 =>
+        // default weights
+
+        var defaultWeightsTable = new ConsoleTable(["Weather", "Default weight"]);
+        WeatherManager.Weathers.ForEach(weather =>
         {
-          var (isWTW, weight) = weather2.GetWeatherToWeatherWeight(weather);
-
-          if (isWTW)
-          {
-            row.Add(weight.ToString());
-          }
-          else
-          {
-            row.Add("X");
-          }
+          defaultWeightsTable.AddRow(weather.Name, weather.Config.DefaultWeight.Value);
         });
+        WeightsLogger.LogInfo("Default weights:\n" + defaultWeightsTable.ToMinimalString());
 
-        weatherWeightsTable.AddRow(row.ToArray());
-      });
+        // weather-weather weights
+        string[] columnNames = ["From \\ To"];
+        columnNames = columnNames.Concat(weatherNames).ToArray();
 
-      Logger.LogInfo("Weather-weather weights:\n" + weatherWeightsTable.ToMinimalString());
+        var weatherToWeatherWeightsTable = new ConsoleTable(columnNames);
 
+        WeatherManager.Weathers.ForEach(weather =>
+        {
+          var row = new List<string> { weather.Name };
+
+          WeatherManager.Weathers.ForEach(weather2 =>
+          {
+            var (isWTW, weight) = weather2.GetWeatherToWeatherWeight(weather);
+
+            if (isWTW)
+            {
+              row.Add(weight.ToString());
+            }
+            else
+            {
+              row.Add("X");
+            }
+          });
+
+          weatherToWeatherWeightsTable.AddRow(row.ToArray());
+        });
+        WeightsLogger.LogInfo("Weather-weather weights:\n" + weatherToWeatherWeightsTable.ToMinimalString());
+
+        // level weights
+        string[] levelWeightsColumnNames = ["Level"];
+        levelWeightsColumnNames = levelWeightsColumnNames.Concat(weatherNames).ToArray();
+
+        var levelWeightsTable = new ConsoleTable(levelWeightsColumnNames);
+
+        levels.ForEach(level =>
+        {
+          var row = new List<string> { ConfigHelper.GetNumberlessName(level) };
+
+          WeatherManager.Weathers.ForEach(weather =>
+          {
+            if (weather.LevelWeights.TryGetValue(level, out int weight))
+            {
+              row.Add(weight.ToString());
+            }
+            else
+            {
+              row.Add("X");
+            }
+          });
+
+          levelWeightsTable.AddRow(row.ToArray());
+        });
+        WeightsLogger.LogInfo("Level weights:\n" + levelWeightsTable.ToMinimalString());
+      }
       #endregion
 
       WeatherManager.IsSetupFinished = true;
