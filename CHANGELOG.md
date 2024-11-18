@@ -1,3 +1,7 @@
+# 0.2.9
+
+- added default weight and level weight logs to startup
+
 # 0.2.8
 
 - added logs for loading weathers from save
