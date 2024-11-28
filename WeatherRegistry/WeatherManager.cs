@@ -146,6 +146,11 @@ namespace WeatherRegistry
       }
     }
 
+    public static Weather GetCurrentLevelWeather()
+    {
+      return GetCurrentWeather(StartOfRound.Instance.currentLevel);
+    }
+
     public static string GetCurrentWeatherName(SelectableLevel level)
     {
       return GetCurrentWeather(level).Name;
