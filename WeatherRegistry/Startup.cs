@@ -72,7 +72,7 @@ namespace WeatherRegistry.Patches
       }
 
       #region Remove incorrect weathers from RandomWeathers
-      foreach (SelectableLevel level in StartOfRound.Instance.levels)
+      foreach (SelectableLevel level in MrovLib.LevelHelper.Levels)
       {
         List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.ToList();
 
@@ -258,7 +258,7 @@ namespace WeatherRegistry.Patches
 
       Logger.LogDebug($"Weathers: {WeatherManager.Weathers.Count}");
 
-      List<SelectableLevel> levels = StartOfRound.Instance.levels.ToList();
+      List<SelectableLevel> levels = MrovLib.LevelHelper.SortedLevels;
 
       foreach (Weather weather in WeatherManager.Weathers)
       {
@@ -273,7 +273,7 @@ namespace WeatherRegistry.Patches
         }
         else if (weather.LevelFilteringOption == FilteringOption.Exclude)
         {
-          LevelsToApply = StartOfRound.Instance.levels.ToList();
+          LevelsToApply = levels.ToList();
           LevelsToApply.RemoveAll(level => weather.LevelFilters.Contains(level));
         }
 
@@ -287,7 +287,6 @@ namespace WeatherRegistry.Patches
 
       var possibleWeathersTable = new ConsoleTable("Planet", "Random weathers");
 
-      levels.Sort((a, b) => ConfigHelper.GetNumberlessName(a).CompareTo(ConfigHelper.GetNumberlessName(b)));
       levels.ForEach(level =>
       {
         List<LevelWeatherType> randomWeathers = level.randomWeathers.Select(x => x.weatherType).ToList();
