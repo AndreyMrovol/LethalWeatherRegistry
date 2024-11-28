@@ -160,7 +160,7 @@ namespace WeatherRegistry
       }
 
       GameObject.DontDestroyOnLoad(this);
-      GameObject.Instantiate(this);
+      // GameObject.Instantiate(this);
     }
 
     #endregion
