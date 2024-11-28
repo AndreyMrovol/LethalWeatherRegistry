@@ -21,6 +21,8 @@ namespace WeatherRegistry
     public static List<Weather> Weathers { get; internal set; } = [];
     public static Weather NoneWeather { get; internal set; }
 
+    public static List<LevelWeatherType> LevelWeatherTypes => Weathers.Select(weather => weather.VanillaWeatherType).ToList();
+
     public static Dictionary<int, Weather> ModdedWeatherEnumExtension = [];
 
     public static CurrentWeathers currentWeathers = new();
