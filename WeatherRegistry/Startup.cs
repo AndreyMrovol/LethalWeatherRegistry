@@ -189,7 +189,7 @@ namespace WeatherRegistry.Patches
       Logger.LogDebug("Biggest key in modded weathers dictionary: " + biggestKeyInModdedWeathersDictionary);
 
       WeatherManager
-        .RegisteredWeathers.Where(weather => weather.Origin == WeatherOrigin.WeatherRegistry)
+        .RegisteredWeathers.Where(weather => weather.Origin == WeatherOrigin.WeatherRegistry || weather.Origin == WeatherOrigin.WeatherTweaks)
         .ToList()
         .ForEach(weather =>
         {

@@ -68,7 +68,7 @@ namespace WeatherRegistry
 
       ConfigHelper.StringToWeather = null;
 
-      RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherRegistry);
+      RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherRegistry && weather.Origin != WeatherOrigin.WeatherTweaks);
     }
 
     public static string LevelWeatherTypeEnumHook(Func<Enum, string> orig, Enum self)
