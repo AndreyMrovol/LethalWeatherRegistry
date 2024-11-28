@@ -227,6 +227,13 @@ namespace WeatherRegistry.Patches
       // then we set the custom weathers at their index
       foreach (KeyValuePair<int, Weather> entry in WeatherManager.ModdedWeatherEnumExtension)
       {
+        // if there's no defined ImprovedWeatherEffect for the weather, we create an empty one
+
+        if (entry.Value.Effect == null)
+        {
+          entry.Value.Effect = new ImprovedWeatherEffect(null, null) { name = entry.Value.Name };
+        }
+
         weatherList[entry.Key] = new WeatherEffect()
         {
           name = entry.Value.Name,
