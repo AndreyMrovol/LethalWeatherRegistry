@@ -160,6 +160,14 @@ namespace WeatherRegistry.Definitions
           continue;
         }
 
+        // check if any weathers were removed between launches
+        if (WeatherManager.GetWeather(pair.Value) == null)
+        {
+          Plugin.logger.LogWarning($"Weather with type {pair.Value} was not found - setting to None.");
+          weathers[level] = LevelWeatherType.None;
+          continue;
+        }
+
         weathers[level] = pair.Value;
       }
 
