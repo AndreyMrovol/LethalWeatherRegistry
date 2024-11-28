@@ -202,6 +202,11 @@ namespace WeatherRegistry
 
       var previousWeather = WeatherManager.GetWeather(level.currentWeather);
 
+      if (previousWeather == null)
+      {
+        logger.LogError($"Previous weather is null for {level.name}");
+      }
+
       // we have 3 weights possible:
       // 1. level weight
       // 2. weather-weather weights
