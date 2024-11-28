@@ -104,6 +104,17 @@ namespace WeatherRegistry
     }
   }
 
+  internal class BooleanConfigHandler : ConfigHandler<bool, bool>
+  {
+    public BooleanConfigHandler(bool value, bool enabled = true)
+      : base(value, enabled) { }
+
+    public override bool Value
+    {
+      get { return this.ConfigEntryActive ? ConfigEntry.Value : this.DefaultValue; }
+    }
+  }
+
   internal class IntegerConfigHandler : ConfigHandler<int, int>
   {
     public IntegerConfigHandler(int value, bool enabled = true)
