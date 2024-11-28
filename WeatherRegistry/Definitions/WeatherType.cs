@@ -172,7 +172,7 @@ namespace WeatherRegistry
     {
       this.Config.Init(this);
 
-      this.LevelFilteringOption = Config._filteringOptionConfig.Value ? FilteringOption.Include : FilteringOption.Exclude;
+      this.LevelFilteringOption = Config.FilteringOption.Value ? FilteringOption.Include : FilteringOption.Exclude;
 
       this.hideFlags = HideFlags.HideAndDontSave;
     }

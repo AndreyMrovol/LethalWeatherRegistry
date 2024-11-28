@@ -21,7 +21,7 @@ namespace WeatherRegistry.Modules
     internal FloatConfigHandler ScrapValueMultiplier = new(Defaults.ScrapValueMultiplier);
 
     [JsonIgnore]
-    internal ConfigEntry<bool> _filteringOptionConfig;
+    internal BooleanConfigHandler FilteringOption = new(Defaults.FilteringOption == WeatherRegistry.FilteringOption.Include);
 
     [JsonIgnore]
     internal LevelListConfigHandler LevelFilters = new($"{String.Join(';', Defaults.DefaultLevelFilters)};");
@@ -52,11 +52,10 @@ namespace WeatherRegistry.Modules
         new ConfigDescription("Multiplier for the value of scrap spawned", new AcceptableValueRange<float>(0, 100))
       );
 
-      this._filteringOptionConfig = ConfigManager.configFile.Bind(
-        weather.ConfigCategory,
-        $"Filtering option",
-        weather.LevelFilteringOption == FilteringOption.Include,
-        "Whether to make the filter a whitelist (false is blacklist, true is whitelist)"
+      FilteringOption.SetConfigEntry(
+        weather,
+        "Filtering option",
+        new ConfigDescription("Whether to make the filter a whitelist (false is blacklist, true is whitelist)")
       );
 
       LevelFilters.SetConfigEntry(weather, "Level filter", new ConfigDescription("Semicolon-separated list of level names to filter", null));
