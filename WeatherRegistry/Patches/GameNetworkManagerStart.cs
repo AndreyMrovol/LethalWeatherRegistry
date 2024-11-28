@@ -17,7 +17,7 @@ namespace WeatherRegistry.Patches
     {
       WeatherSync.networkManager = __instance.GetComponent<NetworkManager>();
 
-      var prefab = new GameObject("WeatherRegistrySyncInit");
+      var prefab = new GameObject("WeatherRegistrySyncInnit");
       prefab.hideFlags = HideFlags.HideAndDontSave;
 
       prefab.AddComponent<NetworkObject>();
