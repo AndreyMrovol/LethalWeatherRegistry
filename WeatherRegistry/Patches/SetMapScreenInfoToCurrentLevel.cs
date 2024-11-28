@@ -28,18 +28,19 @@ namespace WeatherRegistry.Patches
       Regex multiNewLine = new(@"\n{2,}");
 
       StringBuilder stringBuilder = new();
-      stringBuilder.Append("ORBITING: " + ___currentLevel.PlanetName + "\n");
+      stringBuilder.Append($"ORBITING: {___currentLevel.PlanetName}\n");
       stringBuilder.Append($"WEATHER: {GetColoredString(___currentLevel)}\n");
       stringBuilder.Append(multiNewLine.Replace(___currentLevel.LevelDescription, "\n") ?? "");
 
       ___screenLevelDescription.fontWeight = FontWeight.Bold;
-      ___screenLevelDescription.text = stringBuilder.ToString();
+      ___screenLevelDescription.SetText(stringBuilder.ToString());
 
       EventManager.MapScreenUpdated.Invoke(
         (level: ___currentLevel, weather: WeatherManager.GetCurrentWeather(___currentLevel), screenText: stringBuilder.ToString())
       );
     }
 
+    // it's like that because of weathertweaks
     private static string GetDisplayWeatherString(SelectableLevel level, Weather weather)
     {
       return weather.Name;
