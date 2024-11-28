@@ -42,7 +42,15 @@ namespace WeatherRegistry
 
     public void SetConfigEntry(Weather weather, string configTitle, ConfigDescription configDescription = null)
     {
-      ConfigEntry = ConfigManager.configFile.Bind(weather.ConfigCategory, configTitle, DefaultValue, configDescription);
+      if (Enabled)
+      {
+        ConfigEntry = ConfigManager.configFile.Bind(weather.ConfigCategory, configTitle, DefaultValue, configDescription);
+      }
+      else
+      {
+        ConfigEntry = null;
+        Plugin.debugLogger.LogDebug($"Config entry for {weather.Name}: {configTitle} is disabled");
+      }
     }
   }
 
