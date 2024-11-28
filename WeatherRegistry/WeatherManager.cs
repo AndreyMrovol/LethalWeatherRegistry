@@ -29,7 +29,14 @@ namespace WeatherRegistry
 
     public static List<LevelWeatherType> CurrentEffectTypes
     {
-      get { return Weathers.Where(weather => weather.Effect.EffectEnabled).Select(weather => weather.VanillaWeatherType).ToList(); }
+      get
+      {
+        return Weathers
+          .Where(weather => weather.Effect != null)
+          .Where(weather => weather.Effect.EffectEnabled)
+          .Select(weather => weather.VanillaWeatherType)
+          .ToList();
+      }
     }
 
     public static void RegisterWeather(Weather weather)
