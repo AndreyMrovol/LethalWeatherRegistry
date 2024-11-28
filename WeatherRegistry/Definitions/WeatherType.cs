@@ -73,9 +73,13 @@ namespace WeatherRegistry
 
     #region backing fields
 
-
+    [Obsolete]
     internal int _defaultWeight = 100;
+
+    [Obsolete]
     internal float _scrapAmountMultiplier = 1;
+
+    [Obsolete]
     internal float _scrapValueMultiplier = 1;
 
     #endregion
@@ -91,26 +95,38 @@ namespace WeatherRegistry
     }
 
     [Obsolete("Use Weather.Config.LevelFilters instead")]
-    public string[] DefaultLevelFilters { get; set; } = ["Gordion"];
+    public string[] DefaultLevelFilters
+    {
+      get { return this.Config.LevelFilters.DefaultValue.Split(";"); }
+      set { this.Config.LevelFilters = new(value); }
+    }
 
     [Obsolete("Use Weather.Config.LevelWeights instead")]
-    public string[] DefaultLevelWeights { get; set; } = ["MoonName@50"];
+    public string[] DefaultLevelWeights
+    {
+      get { return this.Config.LevelWeights.DefaultValue.Split(";"); }
+      set { this.Config.LevelWeights = new(value); }
+    }
 
     [Obsolete("Use Weather.Config.WeatherToWeatherWeights instead")]
-    public string[] DefaultWeatherToWeatherWeights { get; set; } = ["WeatherName@50"];
+    public string[] DefaultWeatherToWeatherWeights
+    {
+      get { return this.Config.WeatherToWeatherWeights.DefaultValue.Split(";"); }
+      set { this.Config.WeatherToWeatherWeights = new(value); }
+    }
 
     public float ScrapAmountMultiplier
     {
       get { return Config.ScrapAmountMultiplier.Value; }
       [Obsolete("Use Weather.Config.ScrapAmountMultiplier instead")]
-      set { _scrapAmountMultiplier = value; }
+      set { Config.ScrapAmountMultiplier = new(value); }
     }
 
     public float ScrapValueMultiplier
     {
       get { return Config.ScrapValueMultiplier.Value; }
       [Obsolete("Use Weather.Config.ScrapValueMultiplier instead")]
-      set { _scrapValueMultiplier = value; }
+      set { Config.ScrapValueMultiplier = new(value); }
     }
 
     #endregion
