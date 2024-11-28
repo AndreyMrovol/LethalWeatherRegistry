@@ -37,6 +37,7 @@ namespace WeatherRegistry
     public static readonly int DefaultWeight = 100;
     public static readonly float ScrapAmountMultiplier = 1;
     public static readonly float ScrapValueMultiplier = 1;
+    public static readonly FilteringOption FilteringOption = FilteringOption.Exclude;
 
     internal static Color LethalLibColor = new(r: 0f, g: 0.44f, b: 0.76f, a: 1f);
 
