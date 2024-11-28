@@ -13,8 +13,6 @@ namespace WeatherRegistry.Patches
     {
       CodeMatcher matcher = new(instructions);
 
-      Plugin.logger.LogDebugInstructionsFrom(matcher);
-
       // IL_191: call static TimeOfDay TimeOfDay::get_Instance()
       // IL_192: ldfld WeatherEffect[] TimeOfDay::effects
       // IL_193: call static TimeOfDay TimeOfDay::get_Instance()
@@ -33,9 +31,6 @@ namespace WeatherRegistry.Patches
         new CodeMatch(OpCodes.Ldc_I4_1),
         new CodeMatch(OpCodes.Stfld, AccessTools.Field(typeof(WeatherEffect), "effectEnabled"))
       );
-
-      Plugin.logger.LogDebugInstructionsFrom(matcher2);
-      Plugin.logger.LogWarning(matcher2.IsValid);
 
       matcher2.RemoveInstructions(7);
 

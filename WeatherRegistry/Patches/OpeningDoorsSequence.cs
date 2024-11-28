@@ -24,11 +24,6 @@ namespace WeatherRegistry
     {
       CodeMatcher matcher = new(instructions);
 
-      // // Find and move after shipDoorsEnabled field assignment
-      // matcher.MatchForward(false, new CodeMatch(OpCodes.Stfld, AccessTools.Field(typeof(StartOfRound), "shipDoorsEnabled")));
-
-      Plugin.logger.LogDebugInstructionsFrom(matcher);
-
       // IL_105: call static TimeOfDay TimeOfDay::get_Instance()
       // IL_106: ldfld WeatherEffect[] TimeOfDay::effects
       // IL_107: ldloc.1 NULL
@@ -72,9 +67,6 @@ namespace WeatherRegistry
         new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(UnityEngine.GameObject), "SetActive"))
       );
 
-      Plugin.logger.LogDebugInstructionsFrom(matcher2);
-      Plugin.logger.LogWarning(matcher2.IsValid);
-
       matcher2.RemoveInstructions(19);
 
       // IL_155: call static TimeOfDay TimeOfDay::get_Instance()
@@ -95,9 +87,6 @@ namespace WeatherRegistry
         new CodeMatch(OpCodes.Ldc_I4_1),
         new CodeMatch(OpCodes.Stfld, AccessTools.Field(typeof(WeatherEffect), "effectEnabled"))
       );
-
-      Plugin.logger.LogDebugInstructionsFrom(matcher3);
-      Plugin.logger.LogWarning(matcher3.IsValid);
 
       matcher3.RemoveInstructions(7);
 
