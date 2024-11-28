@@ -58,7 +58,9 @@ namespace WeatherRegistry.Patches
         }
         else
         {
-          Dictionary<SelectableLevel, LevelWeatherType> newWeathers = WeatherCalculation.weatherSelectionAlgorithm.SelectWeathers(
+          Plugin.debugLogger.LogDebug("Weather selection algorithm: " + WeatherCalculation.WeatherSelectionAlgorithm.GetType().Name);
+
+          Dictionary<SelectableLevel, LevelWeatherType> newWeathers = WeatherCalculation.WeatherSelectionAlgorithm.SelectWeathers(
             connectedPlayersOnServer,
             __instance
           );

@@ -16,7 +16,7 @@ namespace WeatherRegistry
     private static WeatherSelectionAlgorithm RegistryAlgorithm = new WeatherRegistryWeatherSelection();
     private static WeatherSelectionAlgorithm VanillaAlgorithm = new VanillaWeatherSelection();
 
-    public static WeatherSelectionAlgorithm weatherSelectionAlgorithm =>
+    public static WeatherSelectionAlgorithm WeatherSelectionAlgorithm { get; set; } =
       ConfigManager.UseWeatherWeights.Value ? RegistryAlgorithm : VanillaAlgorithm;
 
     internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
