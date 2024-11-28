@@ -23,7 +23,7 @@ namespace WeatherRegistry
     [field: SerializeField]
     public int DefaultVariable2 { get; set; } = 0;
 
-    public bool EffectEnabled
+    public virtual bool EffectEnabled
     {
       get { return _effectEnabled; }
       set
@@ -39,7 +39,7 @@ namespace WeatherRegistry
 
     public bool EffectActive => EffectObject?.activeSelf ?? false;
 
-    public void DisableEffect(bool permament = false)
+    public virtual void DisableEffect(bool permament = false)
     {
       if (permament)
       {

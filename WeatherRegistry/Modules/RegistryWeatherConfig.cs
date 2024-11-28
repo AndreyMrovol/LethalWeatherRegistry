@@ -32,7 +32,7 @@ namespace WeatherRegistry.Modules
     [JsonIgnore]
     internal WeatherWeightsConfigHandler WeatherToWeatherWeights = new($"{String.Join(';', Defaults.DefaultWeatherToWeatherWeights)};");
 
-    public void Init(Weather weather)
+    public virtual void Init(Weather weather)
     {
       DefaultWeight.SetConfigEntry(
         weather,
