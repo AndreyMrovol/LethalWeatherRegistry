@@ -59,16 +59,12 @@ namespace WeatherRegistry.Definitions
       return _currentWeathers.ContainsKey(level);
     }
 
-    public string SerializedEntries
+    public Dictionary<string, LevelWeatherType> GetWeathers => _currentWeathers.ToDictionary(pair => pair.Key.PlanetName, pair => pair.Value);
+    public string SerializedEntries => JsonConvert.SerializeObject(GetWeathers);
+
+    public WeatherSyncData[] SyncData
     {
-      get
-      {
-        Dictionary<string, LevelWeatherType> planetNameDictionary = _currentWeathers.ToDictionary(
-          pair => pair.Key.PlanetName,
-          pair => pair.Value
-        );
-        return JsonConvert.SerializeObject(planetNameDictionary);
-      }
+      get { return _currentWeathers.Select(pair => new WeatherSyncData() { LevelName = pair.Key.PlanetName, Weather = pair.Value }).ToArray(); }
     }
 
     public void CallSync()
@@ -78,7 +74,7 @@ namespace WeatherRegistry.Definitions
         return;
       }
 
-      WeatherSync.Instance.SetNewOnHost(SerializedEntries);
+      WeatherSync.Instance.SetNewOnHost(GetWeathers);
     }
 
     public LevelWeatherType GetWeatherType(SelectableLevel level)
