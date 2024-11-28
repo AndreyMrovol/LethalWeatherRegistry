@@ -377,7 +377,7 @@ namespace WeatherRegistry.Patches
 
       if (!StartOfRound.Instance.IsHost)
       {
-        WeatherSync.Instance.ApplyReceivedWeathers(WeatherSync.Instance.Weather);
+        Networking.WeatherLevelData.ApplyReceivedWeathers(WeatherSync.Instance.Weather);
       }
 
       EventManager.SetupFinished.Invoke();
