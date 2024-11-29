@@ -50,6 +50,7 @@ namespace WeatherRegistry
       base.OnNetworkSpawn();
       InitializeInstance();
       WeathersSynced.OnValueChanged += Networking.WeatherLevelData.WeathersReceived;
+      EffectsSynced.OnValueChanged += Networking.WeatherEffectData.EffectsReceived;
     }
 
     public void SetNewOnHost(Dictionary<string, LevelWeatherType> weathers)

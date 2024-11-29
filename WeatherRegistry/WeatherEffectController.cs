@@ -9,7 +9,10 @@ namespace WeatherRegistry
 {
   public static class WeatherEffectController
   {
-    // // this is the overload that everything should resolve to
+    // TODO: this can be called while in orbit lol
+    // TODO: allow for calling this from WeatherController
+
+    // this is the overload that everything should resolve to
     public static void SetWeatherEffects(Weather weather)
     {
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
@@ -35,6 +38,7 @@ namespace WeatherRegistry
       if (weatherEffectOverride == null)
       {
         weather.Effect.EffectEnabled = true;
+        TimeOfDay.Instance.effects[(int)weather.VanillaWeatherType].effectEnabled = true;
       }
       else
       {

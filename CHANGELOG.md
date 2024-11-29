@@ -1,3 +1,7 @@
+# 0.3.1
+
+- fixed weather effects not enabling properly ([#10](https://github.com/AndreyMrovol/LethalWeatherRegistry/issues/10)) (thanks: `zigzagawaka`, `kidnapperproot`!)
+
 # 0.3.0
 
 - Apparatice will now use WeatherRegistry's scrap value multiplier
