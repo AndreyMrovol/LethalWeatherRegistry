@@ -62,5 +62,15 @@ namespace WeatherRegistry
       Weather weather = WeatherManager.GetWeather(weatherType);
       SetWeatherEffects(weather);
     }
+
+    public static void EnableCurrentWeatherEffects()
+    {
+      foreach (LevelWeatherType weatherType in WeatherManager.CurrentEffectTypes)
+      {
+        Weather weather = WeatherManager.GetWeather(weatherType);
+        weather.Effect.EffectEnabled = true;
+        TimeOfDay.Instance.effects[(int)weather.VanillaWeatherType].effectEnabled = true;
+      }
+    }
   }
 }
