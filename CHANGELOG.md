@@ -1,3 +1,8 @@
+# 0.3.2
+
+- weather effects are now correctly synced between clients
+- weather effects are now correctly re-enabled when leaving dungeon
+
 # 0.3.1
 
 - fixed weather effects not enabling properly ([#10](https://github.com/AndreyMrovol/LethalWeatherRegistry/issues/10)) (thanks: `zigzagawaka`, `kidnapperproot`!)
