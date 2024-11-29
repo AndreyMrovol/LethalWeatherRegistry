@@ -99,5 +99,19 @@ namespace WeatherRegistry
     }
 
     #endregion
+
+    #region Weather effects
+
+    public static void SetWeatherEffects(LevelWeatherType weatherType)
+    {
+      WeatherSync.Instance.SetWeatherEffectOnHost(weatherType);
+    }
+
+    public static void SetWeatherEffects(Weather weather)
+    {
+      SetWeatherEffects(weather.VanillaWeatherType);
+    }
+
+    #endregion
   }
 }
