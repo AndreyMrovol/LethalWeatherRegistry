@@ -23,6 +23,8 @@ namespace WeatherRegistry
     [field: SerializeField]
     public int DefaultVariable2 { get; set; } = 0;
 
+    public LevelWeatherType LevelWeatherType { get; set; } = LevelWeatherType.None;
+
     public virtual bool EffectEnabled
     {
       get { return _effectEnabled; }
@@ -32,6 +34,11 @@ namespace WeatherRegistry
 
         EffectObject?.SetActive(value);
         WorldObject?.SetActive(value);
+
+        if (LevelWeatherType != LevelWeatherType.None)
+        {
+          TimeOfDay.Instance.effects[(int)LevelWeatherType].effectEnabled = false;
+        }
 
         _effectEnabled = value;
       }
