@@ -73,13 +73,13 @@ namespace WeatherRegistry
 
     #region backing fields
 
-    [Obsolete]
+    [Obsolete("Use Weather.Config.DefaultWeight instead")]
     internal int _defaultWeight = 100;
 
-    [Obsolete]
+    [Obsolete("Use Weather.Config.ScrapAmountMultiplier instead")]
     internal float _scrapAmountMultiplier = 1;
 
-    [Obsolete]
+    [Obsolete("Use Weather.Config.ScrapValueMultiplier instead")]
     internal float _scrapValueMultiplier = 1;
 
     #endregion
@@ -133,9 +133,14 @@ namespace WeatherRegistry
 
     #region stuff from config
 
-    [field: SerializeField]
+    [property: SerializeField]
     [JsonIgnore]
-    public FilteringOption LevelFilteringOption { get; set; } = FilteringOption.Exclude;
+    public FilteringOption LevelFilteringOption
+    {
+      get { return Config.FilteringOption.Value ? FilteringOption.Include : FilteringOption.Exclude; }
+      [Obsolete("Use Weather.Config.FilteringOption instead")]
+      set { Config.FilteringOption = new(value == FilteringOption.Include); }
+    }
 
     [JsonIgnore]
     public List<SelectableLevel> LevelFilters
@@ -188,7 +193,10 @@ namespace WeatherRegistry
     {
       this.Config.Init(this);
 
-      this.LevelFilteringOption = Config.FilteringOption.Value ? FilteringOption.Include : FilteringOption.Exclude;
+      if (this.Effect != null)
+      {
+        this.Effect.LevelWeatherType = this.VanillaWeatherType;
+      }
 
       this.hideFlags = HideFlags.HideAndDontSave;
     }
