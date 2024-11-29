@@ -138,7 +138,12 @@ namespace WeatherRegistry
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
       Weather currentWeather = WeatherManager.GetCurrentWeather(currentLevel);
 
-      WeatherEffectController.SetWeatherEffects(currentWeather);
+      if (StartOfRound.Instance.IsHost)
+      {
+        WeatherSync.Instance.SetWeatherEffectOnHost(currentWeather.VanillaWeatherType);
+      }
+
+      // WeatherEffectController.SetWeatherEffects(currentWeather);
 
       Plugin.logger.LogDebug(
         $"Landing at {ConfigHelper.GetNumberlessName(currentLevel)} with weather {JsonConvert.SerializeObject(
