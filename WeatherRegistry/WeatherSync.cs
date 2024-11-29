@@ -68,7 +68,7 @@ namespace WeatherRegistry
       Weather = weatherData;
     }
 
-    public void SetWeatherEffectsOnHost(LevelWeatherType weatherType)
+    public void SetWeatherEffectOnHost(LevelWeatherType weatherType)
     {
       if (!StartOfRound.Instance.IsHost)
       {

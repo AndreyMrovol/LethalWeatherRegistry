@@ -33,7 +33,7 @@ namespace WeatherRegistry.Patches
       EventManager.DisableAllWeathers.Invoke();
       WeatherRegistry.Patches.SunAnimator.Clear();
 
-      WeatherSync.Instance.SetWeatherEffectsOnHost(LevelWeatherType.None);
+      WeatherSync.Instance.SetWeatherEffectOnHost(LevelWeatherType.None);
     }
   }
 }
