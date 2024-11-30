@@ -12,6 +12,19 @@ namespace WeatherRegistry
     // TODO: this can be called while in orbit lol
     // TODO: allow for calling this from WeatherController
 
+    internal static void SetTimeOfDayEffect(LevelWeatherType weatherType, bool enabled)
+    {
+      if (weatherType == LevelWeatherType.None)
+      {
+        return;
+      }
+
+      if (TimeOfDay.Instance.effects[(int)weatherType] != null)
+      {
+        TimeOfDay.Instance.effects[(int)weatherType].effectEnabled = enabled;
+      }
+    }
+
     // this is the overload that everything should resolve to
     public static void SetWeatherEffects(Weather weather)
     {
@@ -38,7 +51,7 @@ namespace WeatherRegistry
       if (weatherEffectOverride == null)
       {
         weather.Effect.EffectEnabled = true;
-        TimeOfDay.Instance.effects[(int)weather.VanillaWeatherType].effectEnabled = true;
+        SetTimeOfDayEffect(weather.VanillaWeatherType, true);
       }
       else
       {
@@ -69,7 +82,7 @@ namespace WeatherRegistry
       {
         Weather weather = WeatherManager.GetWeather(weatherType);
         weather.Effect.EffectEnabled = true;
-        TimeOfDay.Instance.effects[(int)weather.VanillaWeatherType].effectEnabled = true;
+        SetTimeOfDayEffect(weather.VanillaWeatherType, true);
       }
     }
   }

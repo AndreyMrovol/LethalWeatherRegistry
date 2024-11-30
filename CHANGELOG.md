@@ -1,3 +1,7 @@
+# 0.3.3
+
+- (hopefully) fixed all issues with `IndexOutOfRangeException` when accessing `TimeOfDay.effects` array [#11](https://github.com/AndreyMrovol/LethalWeatherRegistry/issues/11) (thanks: `pineappleguy03`, `explodingturtles456`, `CoolLKKPS` !)
+
 # 0.3.2
 
 - weather effects are now correctly synced between clients

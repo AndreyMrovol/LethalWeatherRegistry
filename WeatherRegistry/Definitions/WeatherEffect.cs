@@ -35,10 +35,7 @@ namespace WeatherRegistry
         EffectObject?.SetActive(value);
         WorldObject?.SetActive(value);
 
-        if (LevelWeatherType != LevelWeatherType.None)
-        {
-          TimeOfDay.Instance.effects[(int)LevelWeatherType].effectEnabled = false;
-        }
+        WeatherEffectController.SetTimeOfDayEffect(LevelWeatherType, true);
 
         _effectEnabled = value;
       }
