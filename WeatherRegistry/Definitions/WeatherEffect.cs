@@ -35,7 +35,7 @@ namespace WeatherRegistry
         EffectObject?.SetActive(value);
         WorldObject?.SetActive(value);
 
-        WeatherEffectController.SetTimeOfDayEffect(LevelWeatherType, true);
+        WeatherEffectController.SetTimeOfDayEffect(LevelWeatherType, value);
 
         _effectEnabled = value;
       }
