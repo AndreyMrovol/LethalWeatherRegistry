@@ -1,13 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 using HarmonyLib;
-using LethalLib;
-using LethalLib.Extras;
 using MonoMod.RuntimeDetour;
-using UnityEngine;
 using static LethalLib.Modules.Weathers;
 
 namespace WeatherRegistry.Patches

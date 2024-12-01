@@ -1,6 +1,6 @@
 using System;
 
-namespace WeatherRegistry
+namespace WeatherRegistry.Patches
 {
   internal class LobbyCompatibilityCompatibility
   {

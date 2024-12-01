@@ -1,8 +1,5 @@
 using System.Collections.Generic;
 using HarmonyLib;
-using LethalLib.Modules;
-using Newtonsoft.Json;
-using Unity.Netcode;
 
 namespace WeatherRegistry.Patches
 {

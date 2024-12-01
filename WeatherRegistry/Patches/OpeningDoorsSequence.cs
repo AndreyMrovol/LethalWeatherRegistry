@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using HarmonyLib;
-// using Mono.Cecil.Cil;
-// using MonoMod.Cil;
 using Newtonsoft.Json;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Patches;

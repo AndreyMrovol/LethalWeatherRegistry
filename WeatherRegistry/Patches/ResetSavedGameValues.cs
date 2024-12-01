@@ -1,10 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
+using HarmonyLib;
+using UnityEngine;
+
 namespace WeatherRegistry.Patches
 {
-  using System.Collections.Generic;
-  using System.Linq;
-  using HarmonyLib;
-  using UnityEngine;
-
   [HarmonyPatch(typeof(GameNetworkManager))]
   class ResetLobbyPatch
   {
