@@ -59,12 +59,18 @@ namespace WeatherRegistry
     {
       EffectObject = effectObject;
       WorldObject = worldObject;
+
+      EffectObject?.SetActive(false);
+      WorldObject?.SetActive(false);
     }
 
     public ImprovedWeatherEffect(WeatherEffect weatherEffect)
     {
       EffectObject = weatherEffect.effectObject;
       WorldObject = weatherEffect.effectPermanentObject;
+
+      EffectObject?.SetActive(false);
+      WorldObject?.SetActive(false);
     }
   }
 }
