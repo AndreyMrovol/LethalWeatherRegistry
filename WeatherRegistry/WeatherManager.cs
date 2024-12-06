@@ -57,7 +57,7 @@ namespace WeatherRegistry
 
       Weathers.ForEach(weather =>
       {
-        if (weather.Origin != WeatherOrigin.WeatherRegistry)
+        if (weather.Origin != WeatherOrigin.WeatherRegistry && weather.Origin != WeatherOrigin.WeatherTweaks)
         {
           GameObject.Destroy(weather.Effect);
           GameObject.Destroy(weather);
