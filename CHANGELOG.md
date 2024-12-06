@@ -1,3 +1,14 @@
+# 0.3.5
+
+- added compatibility for JLL's `WeatherOverride` (thanks, `jacobg5`!)
+- WeatherRegistry will now disable weather effects during weather registration (thanks, `hasoeni`!)
+- fixed Registry destroying WeatherTweaks special weathers during lobby reload
+- changed some file names
+
+# 0.3.4
+
+- fixed my terrible mistake of enabling every weather object despite the currently set weather
+
 # 0.3.3
 
 - (hopefully) fixed all issues with `IndexOutOfRangeException` when accessing `TimeOfDay.effects` array [#11](https://github.com/AndreyMrovol/LethalWeatherRegistry/issues/11) (thanks: `pineappleguy03`, `explodingturtles456`, `CoolLKKPS` !)
