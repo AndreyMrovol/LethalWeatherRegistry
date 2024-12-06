@@ -7,6 +7,7 @@ using BepInEx.Bootstrap;
 using BepInEx.Logging;
 using HarmonyLib;
 using MonoMod.RuntimeDetour;
+using WeatherRegistry.Compatibility;
 using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
@@ -24,6 +25,7 @@ namespace WeatherRegistry
     internal static Harmony harmony = new(Plugin.GUID);
 
     internal static bool IsLethalLibLoaded = false;
+    internal static JLLCompat JLLCompat;
 
     internal static Hook WeatherTypeEnumHook;
 
@@ -54,6 +56,8 @@ namespace WeatherRegistry
       {
         LobbyCompatibilityCompatibility.Init();
       }
+
+      JLLCompat = new JLLCompat("JacobG5.JLL");
 
       // Plugin startup logic
       Logger.LogInfo($"Plugin {Plugin.GUID} is loaded!");

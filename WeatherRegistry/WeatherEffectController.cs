@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JLL.Components;
+using WeatherRegistry.Compatibility;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Modules;
 using WeatherRegistry.Patches;
@@ -21,6 +23,7 @@ namespace WeatherRegistry
 
       if (TimeOfDay.Instance.effects[(int)weatherType] != null)
       {
+        Plugin.debugLogger.LogDebug($"Setting time of day effect {weatherType} to {enabled}");
         TimeOfDay.Instance.effects[(int)weatherType].effectEnabled = enabled;
       }
     }
@@ -44,6 +47,16 @@ namespace WeatherRegistry
       if (weather == null || weather.VanillaWeatherType == LevelWeatherType.None)
       {
         return;
+      }
+
+      // check if JLL does weather override
+      if (Plugin.JLLCompat.IsModPresent)
+      {
+        if (Plugin.JLLCompat.IsJLLDoingWeatherOverride())
+        {
+          Plugin.logger.LogInfo("Detected JLL WeatherOverride");
+          return;
+        }
       }
 
       // enable current weather effect

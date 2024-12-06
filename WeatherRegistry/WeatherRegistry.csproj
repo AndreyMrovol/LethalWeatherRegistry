@@ -67,6 +67,10 @@
         <Reference Include="MMHOOK_Assembly-CSharp">
             <HintPath>$(LibraryDirectory)/MMHOOK_Assembly-CSharp.dll</HintPath>
         </Reference>
+
+        <Reference Include="JLL">
+            <HintPath>$(LibraryDirectory)/JLL.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
