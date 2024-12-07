@@ -1,16 +1,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
-using UnityEngine;
 
-namespace WeatherRegistry.Patches
+namespace WeatherRegistry.Compatibility
 {
-  [HarmonyPatch(typeof(GameNetworkManager))]
-  class ResetLobbyPatch
+  internal class LobbyControlCompat(string guid, string version = null) : MrovLib.Compatibility.CompatibilityBase(guid, version)
   {
-    [HarmonyPatch("ResetSavedGameValues")]
-    [HarmonyPrefix]
-    public static void ResetSavedGameValuesPatch()
+    public void Init()
+    {
+      if (!this.IsModPresent)
+      {
+        return;
+      }
+
+      // manually patch namespace LobbyControl.TerminalCommands private static bool ClearCommand
+
+      Plugin.harmony.Patch(
+        AccessTools.Method("LobbyControl.TerminalCommands.LobbyCommand:ClearCommand"),
+        postfix: new HarmonyMethod(typeof(LobbyControlCompat), nameof(LobbyControlClearCommand))
+      );
+
+      Plugin.debugLogger.LogInfo("Patched LobbyControl.TerminalCommands.LobbyCommand:ClearCommand");
+    }
+
+    private static void LobbyControlClearCommand()
     {
       WeatherEffect[] effects = TimeOfDay.Instance.effects;
       List<WeatherEffect> effectList = effects.ToList();

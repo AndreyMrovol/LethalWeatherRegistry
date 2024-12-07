@@ -16,6 +16,7 @@ namespace WeatherRegistry
   [BepInDependency("MrovLib", BepInDependency.DependencyFlags.HardDependency)]
   [BepInDependency("evaisa.lethallib", BepInDependency.DependencyFlags.SoftDependency)]
   [BepInDependency("BMX.LobbyCompatibility", BepInDependency.DependencyFlags.SoftDependency)]
+  [BepInDependency("mattymatty.LobbyControl", BepInDependency.DependencyFlags.SoftDependency)]
   public class Plugin : BaseUnityPlugin
   {
     public const string GUID = "mrov.WeatherRegistry";
@@ -26,6 +27,7 @@ namespace WeatherRegistry
 
     internal static bool IsLethalLibLoaded = false;
     internal static JLLCompat JLLCompat;
+    internal static LobbyControlCompat LobbyControlCompat;
 
     internal static Hook WeatherTypeEnumHook;
 
@@ -58,6 +60,8 @@ namespace WeatherRegistry
       }
 
       JLLCompat = new JLLCompat("JacobG5.JLL");
+      LobbyControlCompat = new LobbyControlCompat("mattymatty.LobbyControl");
+      LobbyControlCompat.Init();
 
       // Plugin startup logic
       Logger.LogInfo($"Plugin {Plugin.GUID} is loaded!");
