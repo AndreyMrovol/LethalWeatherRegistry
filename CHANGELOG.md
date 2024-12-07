@@ -1,3 +1,11 @@
+# 0.3.6
+
+- redone patch for LobbyControl's `lobby clear` command (fixes [#11](https://github.com/AndreyMrovol/LethalWeatherRegistry/issues/11))
+- renamed `WeatherManager.currentWeathers` to `WeatherManager.CurrentWeathers` (again) in a backwards-compatible way
+- added a check to `WeatherController.ChangeWeather` to prevent setting weather effects while in orbit
+- fixed an issue with `SunAnimator` not changing animator clip for clear weather (thanks, `zigzagawaka`!)
+- fixed an issue with setting new weather effects while inside a dungeon (thanks, `zigzagawaka`!)
+
 # 0.3.5
 
 - added compatibility for JLL's `WeatherOverride` (thanks, `jacobg5`!)
