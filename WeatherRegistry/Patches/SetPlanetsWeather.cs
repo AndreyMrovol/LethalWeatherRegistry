@@ -49,7 +49,7 @@ namespace WeatherRegistry.Patches
 
           Plugin.logger.LogDebug($"Weathers: {ES3.Load<string>(SaveKey, GameNetworkManager.Instance.currentSaveFileName)}");
 
-          WeatherManager.currentWeathers.SetWeathersFromStringDictionary(
+          WeatherManager.CurrentWeathers.SetWeathersFromStringDictionary(
             ES3.Load<string>(SaveKey, GameNetworkManager.Instance.currentSaveFileName)
           );
         }
@@ -62,10 +62,10 @@ namespace WeatherRegistry.Patches
             __instance
           );
 
-          WeatherManager.currentWeathers.SetWeathers(newWeathers);
+          WeatherManager.CurrentWeathers.SetWeathers(newWeathers);
         }
 
-        ES3.Save<string>(SaveKey, WeatherManager.currentWeathers.SerializedEntries, GameNetworkManager.Instance.currentSaveFileName);
+        ES3.Save<string>(SaveKey, WeatherManager.CurrentWeathers.SerializedEntries, GameNetworkManager.Instance.currentSaveFileName);
         Plugin.logger.LogDebug(
           $"Saved picked weathers: day {StartOfRound.Instance.gameStats.daysSpent}, file {GameNetworkManager.Instance.currentSaveFileName}"
         );

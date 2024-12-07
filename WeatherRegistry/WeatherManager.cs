@@ -25,7 +25,9 @@ namespace WeatherRegistry
 
     public static Dictionary<int, Weather> ModdedWeatherEnumExtension = [];
 
-    public static CurrentWeathers currentWeathers = new();
+    [Obsolete("Use WeatherManager.CurrentWeathers instead")]
+    public static CurrentWeathers currentWeathers => CurrentWeathers;
+    public static CurrentWeathers CurrentWeathers = new();
 
     public static List<LevelWeatherType> CurrentEffectTypes
     {
@@ -69,7 +71,7 @@ namespace WeatherRegistry
       Weathers.Clear();
       ModdedWeatherEnumExtension.Clear();
       WeatherEffectOverrides.Clear();
-      currentWeathers.Clear();
+      CurrentWeathers.Clear();
 
       Settings.ScreenMapColors.Clear();
 
@@ -143,9 +145,9 @@ namespace WeatherRegistry
 
     public static Weather GetCurrentWeather(SelectableLevel level)
     {
-      if (currentWeathers.Contains(level))
+      if (CurrentWeathers.Contains(level))
       {
-        return currentWeathers.GetLevelWeather(level);
+        return CurrentWeathers.GetLevelWeather(level);
       }
       else
       {
