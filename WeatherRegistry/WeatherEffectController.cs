@@ -22,6 +22,12 @@ namespace WeatherRegistry
         return;
       }
 
+      if (EntranceTeleportPatch.isPlayerInside)
+      {
+        Plugin.logger.LogWarning("Player is inside, not setting time of day effect");
+        return;
+      }
+
       if (TimeOfDay.Instance.effects[(int)weatherType] != null)
       {
         Plugin.debugLogger.LogDebug($"Setting time of day effect {weatherType} to {enabled}");
