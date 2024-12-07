@@ -182,6 +182,11 @@ namespace WeatherRegistry.Patches
               logger.LogInfo($"clip: {clip.name}");
             });
         }
+        else if (currentWeather.Type == WeatherType.Clear)
+        {
+          logger.LogDebug($"Weather is {currentWeather.Name}, setting clip to None");
+          clips[weatherType] = clipNone;
+        }
         else if (currentWeather.Type != WeatherType.Vanilla)
         {
           logger.LogDebug($"No custom animation clip found for weather type {weatherType}");
