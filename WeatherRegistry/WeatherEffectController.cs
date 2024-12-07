@@ -61,8 +61,23 @@ namespace WeatherRegistry
         player.hinderedMultiplier = 1f;
       }
 
-      if (weather == null || weather.VanillaWeatherType == LevelWeatherType.None)
+      if (weather == null)
       {
+        return;
+      }
+
+      if (weather.VanillaWeatherType == LevelWeatherType.None)
+      {
+        try
+        {
+          SunAnimator.OverrideSunAnimator(weather.VanillaWeatherType);
+        }
+        catch (Exception e)
+        {
+          Plugin.logger.LogError($"SunAnimator exception: {e.Message}");
+          Plugin.logger.LogWarning("PLEASE report this issue to the mod developer with your modpack code and this log!");
+        }
+
         return;
       }
 
