@@ -26,7 +26,7 @@ namespace WeatherRegistry.Networking
       UpdateLevelWeathers(weathers);
       LatestWeathersReceived = weathers;
 
-      WeatherManager.currentWeathers.Refresh();
+      WeatherManager.CurrentWeathers.Refresh();
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
     }
 
