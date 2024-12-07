@@ -42,6 +42,17 @@ namespace WeatherRegistry
       level.currentWeather = weather.VanillaWeatherType;
       Logger.LogDebug($"Changed weather for {ConfigHelper.GetNumberlessName(level)} to {weather.VanillaWeatherType}");
 
+      // if ship has already landed, don't change the weathers
+      // only change the current effects
+      if (!StartOfRound.Instance.inShipPhase)
+      {
+        Logger.LogDebug("Ship has already landed, only changing weather effects");
+        SetWeatherEffects(weather);
+        return;
+      }
+
+      WeatherManager.CurrentWeathers.SetWeather(level, weather);
+
       EventManager.WeatherChanged.Invoke((level, weather));
       StartOfRound.Instance.SetMapScreenInfoToCurrentLevel();
     }
