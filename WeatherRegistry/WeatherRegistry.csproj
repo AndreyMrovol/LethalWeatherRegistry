@@ -64,11 +64,11 @@
 
         <PackageReference Include="MinVer" Version="4.*" PrivateAssets="all" Private="false"/>
 
-        <Reference Include="MMHOOK_Assembly-CSharp">
+        <Reference Include="MMHOOK_Assembly-CSharp" PrivateAssets="all">
             <HintPath>$(LibraryDirectory)/MMHOOK_Assembly-CSharp.dll</HintPath>
         </Reference>
 
-        <Reference Include="JLL">
+        <Reference Include="JLL" PrivateAssets="all">
             <HintPath>$(LibraryDirectory)/JLL.dll</HintPath>
         </Reference>
     </ItemGroup>
