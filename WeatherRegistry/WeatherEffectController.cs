@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JLL.Components;
+using UnityEngine;
 using WeatherRegistry.Compatibility;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Modules;
@@ -42,6 +43,16 @@ namespace WeatherRegistry
       foreach (ImprovedWeatherEffect effect in WeatherManager.Weathers.Select(weather => weather.Effect))
       {
         effect.DisableEffect(true);
+      }
+
+      // if weather is not flooded, stop player from sinking
+      if (weather.VanillaWeatherType != LevelWeatherType.Flooded)
+      {
+        var player = GameNetworkManager.Instance.localPlayerController;
+        player.isUnderwater = false;
+        player.sourcesCausingSinking = Mathf.Clamp(player.sourcesCausingSinking - 1, 0, 100);
+        player.isMovementHindered = Mathf.Clamp(player.isMovementHindered - 1, 0, 100);
+        player.hinderedMultiplier = 1f;
       }
 
       if (weather == null || weather.VanillaWeatherType == LevelWeatherType.None)
