@@ -31,11 +31,15 @@ namespace WeatherRegistry
       set
       {
         Plugin.logger.LogDebug($"Setting effect {this.name} to {value}");
+        Plugin.logger.LogDebug($"Is player inside? {Patches.EntranceTeleportPatch.isPlayerInside}");
 
-        EffectObject?.SetActive(value);
+        if (!Patches.EntranceTeleportPatch.isPlayerInside)
+        {
+          EffectObject?.SetActive(value);
+          WeatherEffectController.SetTimeOfDayEffect(LevelWeatherType, value);
+        }
+
         WorldObject?.SetActive(value);
-
-        WeatherEffectController.SetTimeOfDayEffect(LevelWeatherType, value);
 
         _effectEnabled = value;
       }
