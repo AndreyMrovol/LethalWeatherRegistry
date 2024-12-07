@@ -33,14 +33,13 @@ namespace WeatherRegistry
     // this is the one that every overload should resolve to
     public static void ChangeWeather(SelectableLevel level, Weather weather)
     {
+      // if something else is controlling the weather sync, don't change it
       if (!Settings.SelectWeathers)
       {
         return;
       }
 
-      WeatherManager.currentWeathers.SetWeather(level, weather);
       level.currentWeather = weather.VanillaWeatherType;
-
       Logger.LogDebug($"Changed weather for {ConfigHelper.GetNumberlessName(level)} to {weather.VanillaWeatherType}");
 
       EventManager.WeatherChanged.Invoke((level, weather));
