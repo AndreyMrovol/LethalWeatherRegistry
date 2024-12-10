@@ -1,3 +1,7 @@
+# 0.3.7
+
+- fixed WeatherRegistry using saved weathers after getting fired (thanks, `lunxara`!)
+
 # 0.3.6
 
 - redone patch for LobbyControl's `lobby clear` command (fixes [#11](https://github.com/AndreyMrovol/LethalWeatherRegistry/issues/11))
