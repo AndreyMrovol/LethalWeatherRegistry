@@ -32,7 +32,7 @@ namespace WeatherRegistry
     public Weather Weather { get; set; }
   }
 
-  internal abstract class ConfigHandler<T, CT> : Definitions.ConfigHandler<T, CT>
+  public abstract class ConfigHandler<T, CT> : Definitions.ConfigHandler<T, CT>
   {
     public ConfigFile ConfigFile { get; set; } = ConfigManager.configFile;
 
@@ -69,7 +69,7 @@ namespace WeatherRegistry
     }
   }
 
-  internal class LevelListConfigHandler : ConfigHandler<SelectableLevel[], string>
+  public class LevelListConfigHandler : ConfigHandler<SelectableLevel[], string>
   {
     public LevelListConfigHandler(string value, bool enabled = true)
       : base(value, enabled) { }
@@ -83,7 +83,7 @@ namespace WeatherRegistry
     }
   }
 
-  internal class LevelWeightsConfigHandler : ConfigHandler<LevelRarity[], string>
+  public class LevelWeightsConfigHandler : ConfigHandler<LevelRarity[], string>
   {
     public LevelWeightsConfigHandler(string value, bool enabled = true)
       : base(value, enabled) { }
@@ -101,7 +101,7 @@ namespace WeatherRegistry
     }
   }
 
-  internal class WeatherWeightsConfigHandler : ConfigHandler<WeatherRarity[], string>
+  public class WeatherWeightsConfigHandler : ConfigHandler<WeatherRarity[], string>
   {
     public WeatherWeightsConfigHandler(string value, bool enabled = true)
       : base(value, enabled) { }
@@ -119,7 +119,7 @@ namespace WeatherRegistry
     }
   }
 
-  internal class BooleanConfigHandler : ConfigHandler<bool, bool>
+  public class BooleanConfigHandler : ConfigHandler<bool, bool>
   {
     public BooleanConfigHandler(bool value, bool enabled = true)
       : base(value, enabled) { }
@@ -130,7 +130,7 @@ namespace WeatherRegistry
     }
   }
 
-  internal class IntegerConfigHandler : ConfigHandler<int, int>
+  public class IntegerConfigHandler : ConfigHandler<int, int>
   {
     public IntegerConfigHandler(int value, bool enabled = true)
       : base(value, enabled) { }
@@ -141,7 +141,7 @@ namespace WeatherRegistry
     }
   }
 
-  internal class FloatConfigHandler : ConfigHandler<float, float>
+  public class FloatConfigHandler : ConfigHandler<float, float>
   {
     public FloatConfigHandler(float value, bool enabled = true)
       : base(value, enabled) { }
@@ -152,7 +152,7 @@ namespace WeatherRegistry
     }
   }
 
-  internal class StringConfigHandler : ConfigHandler<string, string>
+  public class StringConfigHandler : ConfigHandler<string, string>
   {
     public StringConfigHandler(string value, bool enabled = true)
       : base(value, enabled) { }
