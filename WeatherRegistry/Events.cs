@@ -7,6 +7,7 @@ namespace WeatherRegistry
   {
     public static WeatherRegistryEvent DisableAllWeathers = new();
 
+    public static WeatherRegistryEvent BeforeSetupStart = new();
     public static WeatherRegistryEvent SetupFinished = new();
     public static WeatherRegistryEvent<int> DayChanged = new();
 

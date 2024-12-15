@@ -59,6 +59,8 @@ namespace WeatherRegistry.Patches
 
       WeatherManager.Reset();
 
+      EventManager.BeforeSetupStart.Invoke();
+
       WeatherEffect[] effects = TimeOfDay.Instance.effects;
       List<WeatherEffect> weatherList = effects.ToList();
 
