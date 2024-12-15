@@ -34,6 +34,8 @@ namespace WeatherRegistry
 
   internal abstract class ConfigHandler<T, CT> : Definitions.ConfigHandler<T, CT>
   {
+    public ConfigFile ConfigFile { get; set; } = ConfigManager.configFile;
+
     public ConfigHandler(CT value, bool enabled = true)
     {
       DefaultValue = value;
@@ -44,7 +46,7 @@ namespace WeatherRegistry
     {
       if (Enabled)
       {
-        ConfigEntry = ConfigManager.configFile.Bind(weather.ConfigCategory, configTitle, DefaultValue, configDescription);
+        ConfigEntry = ConfigFile.Bind(weather.ConfigCategory, configTitle, DefaultValue, configDescription);
       }
       else
       {
