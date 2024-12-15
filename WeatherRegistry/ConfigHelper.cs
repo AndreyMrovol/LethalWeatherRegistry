@@ -54,6 +54,19 @@ namespace WeatherRegistry
         Plugin.debugLogger.LogDebug($"Config entry for {weather.Name}: {configTitle} is disabled");
       }
     }
+
+    public void SetConfigEntry(string configCategory, string configTitle, ConfigDescription configDescription = null)
+    {
+      if (Enabled)
+      {
+        ConfigEntry = ConfigFile.Bind(configCategory, configTitle, DefaultValue, configDescription);
+      }
+      else
+      {
+        ConfigEntry = null;
+        Plugin.debugLogger.LogDebug($"Config entry {configTitle} is disabled");
+      }
+    }
   }
 
   internal class LevelListConfigHandler : ConfigHandler<SelectableLevel[], string>
