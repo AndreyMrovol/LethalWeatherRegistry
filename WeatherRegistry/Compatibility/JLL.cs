@@ -20,5 +20,22 @@ namespace WeatherRegistry.Compatibility
 
       return false;
     }
+
+    public (bool isDoingOverride, WeatherEffect effect) GetJLLData()
+    {
+      if (JWeatherOverride.Instance != null)
+      {
+        Weather currentWeather = WeatherManager.GetCurrentLevelWeather();
+        string effectName = TimeOfDay.Instance.effects[(int)currentWeather.VanillaWeatherType].name;
+
+        WeatherEffect effect = JWeatherOverride.Instance.getOverrideEffect(effectName);
+        if (effect != null)
+        {
+          return (true, effect);
+        }
+      }
+
+      return (false, null);
+    }
   }
 }
