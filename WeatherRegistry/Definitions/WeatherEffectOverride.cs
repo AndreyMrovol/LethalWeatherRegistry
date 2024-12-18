@@ -16,5 +16,10 @@ namespace WeatherRegistry.Definitions
       WeatherManager.WeatherEffectOverrides.Add(this);
       weather.WeatherEffectOverrides[level] = this;
     }
+
+    public override string ToString()
+    {
+      return $"{ConfigHelper.GetAlphanumericName(Level)} - {Weather.VanillaWeatherType}";
+    }
   }
 }
