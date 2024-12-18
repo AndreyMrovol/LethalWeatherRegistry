@@ -1,3 +1,10 @@
+# 0.3.8
+
+- added `BeforeSetupStart` event
+- `ConfigHandler` now uses `ConfigFile` field instead of Registry's `ConfigManager`
+- added alternative `ConfigHandler` constructor
+- publicized `ConfigHandlers` in WeatherRegistry
+
 # 0.3.7
 
 - fixed WeatherRegistry using saved weathers after getting fired (thanks, `lunxara`!)
