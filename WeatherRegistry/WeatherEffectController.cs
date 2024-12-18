@@ -48,66 +48,64 @@ namespace WeatherRegistry
     }
 
     // this is the overload that everything should resolve to
-    public static void SetWeatherEffects(Weather[] weathers)
+    public static void SetWeatherEffects(Weather weather)
     {
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
 
       DisableWeatherEffects();
 
-      if (weathers == null || weathers.Length == 0)
+      if (weather == null)
       {
         return;
       }
 
-      foreach (Weather weather in weathers)
+      // if weather is not flooded, stop player from sinking
+      if (weather.VanillaWeatherType != LevelWeatherType.Flooded)
       {
-        if (weather == null)
+        var player = GameNetworkManager.Instance.localPlayerController;
+        player.isUnderwater = false;
+        player.sourcesCausingSinking = Mathf.Clamp(player.sourcesCausingSinking - 1, 0, 100);
+        player.isMovementHindered = Mathf.Clamp(player.isMovementHindered - 1, 0, 100);
+        player.hinderedMultiplier = 1f;
+      }
+
+      if (weather.VanillaWeatherType == LevelWeatherType.None)
+      {
+        SunAnimator.OverrideSunAnimator(weather.VanillaWeatherType);
+        return;
+      }
+
+      // check if JLL does weather override
+      if (Plugin.JLLCompat.IsModPresent)
+      {
+        (bool isDoingOverride, WeatherEffect JLLEffect) = Plugin.JLLCompat.GetJLLData();
+
+        if (isDoingOverride)
         {
+          Plugin.logger.LogInfo("Disabling JLL WeatherEffect");
+          JLLEffect.effectEnabled = false;
+          JLLEffect.effectObject?.SetActive(false);
+
           return;
         }
+      }
 
-        // if weather is not flooded, stop player from sinking
-        if (weather.VanillaWeatherType != LevelWeatherType.Flooded)
-        {
-          var player = GameNetworkManager.Instance.localPlayerController;
-          player.isUnderwater = false;
-          player.sourcesCausingSinking = Mathf.Clamp(player.sourcesCausingSinking - 1, 0, 100);
-          player.isMovementHindered = Mathf.Clamp(player.isMovementHindered - 1, 0, 100);
-          player.hinderedMultiplier = 1f;
-        }
-
-        if (weather.VanillaWeatherType == LevelWeatherType.None)
-        {
-          SunAnimator.OverrideSunAnimator(weather.VanillaWeatherType);
-          return;
-        }
-
-        // check if JLL does weather override
-        if (Plugin.JLLCompat.IsModPresent)
-        {
-          HandleJLLOverride(weather.VanillaWeatherType, true);
-          return;
-        }
-
-        // enable current weather effect
-        WeatherEffectOverride weatherEffectOverride = weather.GetEffectOverride(currentLevel);
-        if (weatherEffectOverride == null)
-        {
-          weather.Effect.EffectEnabled = true;
-          SetTimeOfDayEffect(weather.VanillaWeatherType, true);
-        }
-        else
-        {
-          weather.Effect.EffectEnabled = false;
-          weatherEffectOverride.OverrideEffect.EffectEnabled = true;
-        }
+      // enable current weather effect
+      WeatherEffectOverride weatherEffectOverride = weather.GetEffectOverride(currentLevel);
+      if (weatherEffectOverride == null)
+      {
+        weather.Effect.EffectEnabled = true;
+        SetTimeOfDayEffect(weather.VanillaWeatherType, true);
+      }
+      else
+      {
+        weather.Effect.EffectEnabled = false;
+        weatherEffectOverride.OverrideEffect.EffectEnabled = true;
       }
 
       try
       {
-        LevelWeatherType maxIndex = weathers.Max(weather => weather.VanillaWeatherType);
-
-        SunAnimator.OverrideSunAnimator(maxIndex);
+        SunAnimator.OverrideSunAnimator(weather.VanillaWeatherType);
       }
       catch (Exception e)
       {
@@ -116,15 +114,10 @@ namespace WeatherRegistry
       }
     }
 
-    public static void SetWeatherEffects(Weather weather)
-    {
-      SetWeatherEffects([weather]);
-    }
-
     public static void SetWeatherEffects(LevelWeatherType weatherType)
     {
       Weather weather = WeatherManager.GetWeather(weatherType);
-      SetWeatherEffects([weather]);
+      SetWeatherEffects(weather);
     }
 
     public static void DisableWeatherEffects()
