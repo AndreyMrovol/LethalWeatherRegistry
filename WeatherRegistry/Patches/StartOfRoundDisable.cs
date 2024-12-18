@@ -14,6 +14,9 @@ namespace WeatherRegistry.Patches
         weather.Effect.DisableEffect(true);
       }
 
+      HUDManager.Instance.increaseHelmetCondensation = false;
+      HUDManager.Instance.HelmetCondensationDrops();
+
       EventManager.DisableAllWeathers.Invoke();
     }
   }
