@@ -4,12 +4,12 @@ using BepInEx.Configuration;
 
 namespace WeatherRegistry
 {
-  public class ConfigManager
+  internal class ConfigManager
   {
-    public static ConfigManager Instance { get; private set; }
+    internal static ConfigManager Instance { get; private set; }
     internal static ConfigFile configFile;
 
-    public static void Init(ConfigFile config)
+    internal static void Init(ConfigFile config)
     {
       Instance = new ConfigManager(config);
     }
@@ -17,22 +17,22 @@ namespace WeatherRegistry
     // general settings
 
     // logs settings
-    public static ConfigEntry<bool> LogWeatherChanges { get; private set; }
-    public static ConfigEntry<bool> LogStartup { get; private set; }
-    public static ConfigEntry<bool> LogStartupWeights { get; private set; }
-    public static ConfigEntry<bool> LogWeightResolving { get; private set; }
+    internal static ConfigEntry<bool> LogWeatherChanges { get; private set; }
+    internal static ConfigEntry<bool> LogStartup { get; private set; }
+    internal static ConfigEntry<bool> LogStartupWeights { get; private set; }
+    internal static ConfigEntry<bool> LogWeightResolving { get; private set; }
 
     // map screen settings
-    public static ConfigEntry<bool> ColoredWeathers { get; private set; }
-    public static ConfigEntry<bool> PlanetVideos { get; private set; }
+    internal static ConfigEntry<bool> ColoredWeathers { get; private set; }
+    internal static ConfigEntry<bool> PlanetVideos { get; private set; }
 
     // module toggles
-    public static ConfigEntry<bool> UseWeatherWeights { get; private set; }
-    public static ConfigEntry<bool> UseScrapMultipliers { get; private set; }
+    internal static ConfigEntry<bool> UseWeatherWeights { get; private set; }
+    internal static ConfigEntry<bool> UseScrapMultipliers { get; private set; }
 
     // sun animator settings
-    private static ConfigEntry<string> SunAnimatorBlacklist { get; set; }
-    public static SelectableLevel[] SunAnimatorBlacklistLevels { get; internal set; }
+    internal static ConfigEntry<string> SunAnimatorBlacklist { get; set; }
+    internal static SelectableLevel[] SunAnimatorBlacklistLevels { get; set; }
 
     private ConfigManager(ConfigFile config)
     {

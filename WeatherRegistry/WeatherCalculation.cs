@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -13,11 +14,11 @@ namespace WeatherRegistry
 
     public static MrovLib.Logger Logger = new("WeatherRegistry", ConfigManager.LogWeatherChanges);
 
-    private static WeatherSelectionAlgorithm RegistryAlgorithm = new WeatherRegistryWeatherSelection();
-    private static WeatherSelectionAlgorithm VanillaAlgorithm = new VanillaWeatherSelection();
+    internal static WeatherSelectionAlgorithm RegistryAlgorithm = new WeatherRegistryWeatherSelection();
+    internal static WeatherSelectionAlgorithm VanillaAlgorithm = new VanillaWeatherSelection();
 
-    public static WeatherSelectionAlgorithm WeatherSelectionAlgorithm { get; set; } =
-      ConfigManager.UseWeatherWeights.Value ? RegistryAlgorithm : VanillaAlgorithm;
+    [Obsolete("Use Settings.WeatherSelectionAlgorithm instead")]
+    public static WeatherSelectionAlgorithm WeatherSelectionAlgorithm => Settings.WeatherSelectionAlgorithm;
 
     internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
     {
