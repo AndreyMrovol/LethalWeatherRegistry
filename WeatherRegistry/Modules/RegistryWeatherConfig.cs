@@ -21,7 +21,7 @@ namespace WeatherRegistry.Modules
     internal FloatConfigHandler ScrapValueMultiplier = new(Defaults.ScrapValueMultiplier);
 
     [JsonIgnore]
-    internal BooleanConfigHandler FilteringOption = new(Defaults.FilteringOption == WeatherRegistry.FilteringOption.Include);
+    internal BooleanConfigHandler FilteringOption = new(Defaults.FilteringOption);
 
     [JsonIgnore]
     internal LevelListConfigHandler LevelFilters = new($"{String.Join(';', Defaults.DefaultLevelFilters)};");

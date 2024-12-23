@@ -124,6 +124,10 @@ namespace WeatherRegistry
     public BooleanConfigHandler(bool value, bool enabled = true)
       : base(value, enabled) { }
 
+    // this is done for the filtering option enum cause it's a bool config
+    public BooleanConfigHandler(FilteringOption filteringOption, bool enabled = true)
+      : base(filteringOption == FilteringOption.Include, enabled) { }
+
     public override bool Value
     {
       get { return this.ConfigEntryActive ? ConfigEntry.Value : this.DefaultValue; }
