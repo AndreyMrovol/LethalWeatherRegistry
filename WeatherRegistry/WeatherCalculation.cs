@@ -18,7 +18,11 @@ namespace WeatherRegistry
     internal static WeatherSelectionAlgorithm VanillaAlgorithm = new VanillaWeatherSelection();
 
     [Obsolete("Use Settings.WeatherSelectionAlgorithm instead")]
-    public static WeatherSelectionAlgorithm WeatherSelectionAlgorithm => Settings.WeatherSelectionAlgorithm;
+    public static WeatherSelectionAlgorithm WeatherSelectionAlgorithm
+    {
+      get { return Settings.WeatherSelectionAlgorithm; }
+      set { Settings.WeatherSelectionAlgorithm = value; }
+    }
 
     internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
     {
