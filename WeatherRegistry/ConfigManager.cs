@@ -24,6 +24,7 @@ namespace WeatherRegistry
 
     // map screen settings
     public static ConfigEntry<bool> ColoredWeathers { get; private set; }
+    public static ConfigEntry<bool> PlanetVideos { get; private set; }
 
     // module toggles
     public static ConfigEntry<bool> UseWeatherWeights { get; private set; }
@@ -44,7 +45,8 @@ namespace WeatherRegistry
       LogStartupWeights = configFile.Bind("|Debugging", "Log Startup Weights", true, "Log all defined weights during startup");
       LogWeightResolving = configFile.Bind("|Debugging", "Log Weight Resolving", true, "Log weight resolving to console");
 
-      ColoredWeathers = configFile.Bind("|General", "Colored Weathers", true, "Enable colored weathers in map screen");
+      ColoredWeathers = configFile.Bind("|General", "Colored Weathers", true, "Enable colored weathers on map screen");
+      PlanetVideos = configFile.Bind("|General", "Planet Videos", false, "Display planet videos on map screen");
 
       UseWeatherWeights = configFile.Bind(
         "|General",
