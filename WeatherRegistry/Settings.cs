@@ -15,5 +15,9 @@ namespace WeatherRegistry
       ConfigManager.UseWeatherWeights.Value ? WeatherCalculation.RegistryAlgorithm : WeatherCalculation.VanillaAlgorithm;
 
     public static bool ScrapMultipliers { get; set; } = ConfigManager.UseScrapMultipliers.Value;
+
+    public static bool ColoredWeathers { get; set; } = ConfigManager.ColoredWeathers.Value;
+    public static bool PlanetVideos { get; set; } = ConfigManager.PlanetVideos.Value;
+    public static bool MapScreenOverride { get; set; } = true;
   }
 }
