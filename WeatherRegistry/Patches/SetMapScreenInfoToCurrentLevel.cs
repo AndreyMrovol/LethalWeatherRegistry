@@ -25,6 +25,11 @@ namespace WeatherRegistry.Patches
         return;
       }
 
+      if (!Settings.MapScreenOverride)
+      {
+        return;
+      }
+
       Regex multiNewLine = new(@"\n{2,}");
 
       StringBuilder stringBuilder = new();
@@ -41,7 +46,7 @@ namespace WeatherRegistry.Patches
       // "I LOVE mod makers opting me into completely unnecessary things!!"
       // "I'm sorry, this is genuinely a horrible decision, especially when this is a base mod, not something that adds content to the game"
 
-      if (!ConfigManager.PlanetVideos.Value)
+      if (!Settings.PlanetVideos)
       {
         __instance.screenLevelVideoReel.enabled = false;
       }
@@ -62,7 +67,7 @@ namespace WeatherRegistry.Patches
       Weather currentWeather = WeatherManager.GetCurrentWeather(level);
       string currentWeatherString = GetDisplayWeatherString(level, currentWeather);
 
-      if (!ConfigManager.ColoredWeathers.Value)
+      if (!Settings.ColoredWeathers)
       {
         return currentWeatherString;
       }
