@@ -1,3 +1,10 @@
+# 0.3.10
+
+- readded "_small things that add content to the game_" since it was missing for a long time
+- changed config description of `LevelFilters` to be more understandable (thanks, `autumnis`)
+- added `FilteringOption` constructor to `BooleanConfigHandler`
+- publicized `Weather.Config` (thanks, `voxx`!)
+
 # 0.3.9
 
 - fixed `WeatherEffectController` introduced in v0.3.8
