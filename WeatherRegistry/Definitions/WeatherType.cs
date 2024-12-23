@@ -64,7 +64,7 @@ namespace WeatherRegistry
     public Color Color { get; set; } = Color.cyan;
 
     [JsonIgnore]
-    internal RegistryWeatherConfig Config = new();
+    public RegistryWeatherConfig Config = new();
 
     [JsonIgnore]
     internal Dictionary<SelectableLevel, WeatherEffectOverride> WeatherEffectOverrides = [];
