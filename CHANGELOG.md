@@ -1,3 +1,8 @@
+# 0.3.11
+
+- made proper use of `Settings` class (fix proposal to [#13](https://github.com/AndreyMrovol/LethalWeatherRegistry/issues/13))
+- bumped MrovLib
+
 # 0.3.10
 
 - readded "_small things that add content to the game_" since it was missing for a long time
