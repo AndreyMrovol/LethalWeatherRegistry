@@ -11,7 +11,7 @@ namespace WeatherRegistry.Patches
     [HarmonyPrefix]
     private static void ChangeMultipliers(RoundManager __instance)
     {
-      if (!ConfigManager.UseScrapMultipliers.Value)
+      if (!Settings.ScrapMultipliers)
       {
         Plugin.logger.LogDebug("Skipped using WeatherRegistry's scrap multipliers.");
         return;
