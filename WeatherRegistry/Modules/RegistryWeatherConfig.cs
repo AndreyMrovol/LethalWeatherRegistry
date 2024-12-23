@@ -58,7 +58,11 @@ namespace WeatherRegistry.Modules
         new ConfigDescription("Whether to make the filter a whitelist (false is blacklist, true is whitelist)")
       );
 
-      LevelFilters.SetConfigEntry(weather, "Level filter", new ConfigDescription("Semicolon-separated list of level names to filter", null));
+      LevelFilters.SetConfigEntry(
+        weather,
+        "Level filter",
+        new ConfigDescription("Semicolon-separated list of level names to filter (use `Filtering Option` config to select filter type)", null)
+      );
 
       LevelWeights.SetConfigEntry(weather, "Level weights", new ConfigDescription("Semicolon-separated list of level weights", null));
 
