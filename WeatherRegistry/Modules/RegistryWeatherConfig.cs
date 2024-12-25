@@ -12,25 +12,25 @@ namespace WeatherRegistry.Modules
   public class RegistryWeatherConfig
   {
     [JsonIgnore]
-    internal IntegerConfigHandler DefaultWeight = new(Defaults.DefaultWeight);
+    public IntegerConfigHandler DefaultWeight = new(Defaults.DefaultWeight);
 
     [JsonIgnore]
-    internal FloatConfigHandler ScrapAmountMultiplier = new(Defaults.ScrapAmountMultiplier);
+    public FloatConfigHandler ScrapAmountMultiplier = new(Defaults.ScrapAmountMultiplier);
 
     [JsonIgnore]
-    internal FloatConfigHandler ScrapValueMultiplier = new(Defaults.ScrapValueMultiplier);
+    public FloatConfigHandler ScrapValueMultiplier = new(Defaults.ScrapValueMultiplier);
 
     [JsonIgnore]
-    internal BooleanConfigHandler FilteringOption = new(Defaults.FilteringOption);
+    public BooleanConfigHandler FilteringOption = new(Defaults.FilteringOption);
 
     [JsonIgnore]
-    internal LevelListConfigHandler LevelFilters = new($"{String.Join(';', Defaults.DefaultLevelFilters)};");
+    public LevelListConfigHandler LevelFilters = new($"{String.Join(';', Defaults.DefaultLevelFilters)};");
 
     [JsonIgnore]
-    internal LevelWeightsConfigHandler LevelWeights = new($"{String.Join(';', Defaults.DefaultLevelWeights)};");
+    public LevelWeightsConfigHandler LevelWeights = new($"{String.Join(';', Defaults.DefaultLevelWeights)};");
 
     [JsonIgnore]
-    internal WeatherWeightsConfigHandler WeatherToWeatherWeights = new($"{String.Join(';', Defaults.DefaultWeatherToWeatherWeights)};");
+    public WeatherWeightsConfigHandler WeatherToWeatherWeights = new($"{String.Join(';', Defaults.DefaultWeatherToWeatherWeights)};");
 
     public virtual void Init(Weather weather)
     {
