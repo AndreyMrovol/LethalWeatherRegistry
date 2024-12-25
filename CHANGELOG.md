@@ -1,3 +1,9 @@
+# 0.3.12
+
+- bumped MrovLib to fix string resolving issues
+- publicized config entries in `RegistryWeatherConfig`
+- added an example class [`WeatherModExtendedConfig`](https://github.com/AndreyMrovol/LethalWeatherRegistry/blob/main/WeatherRegistry/Modules/WeatherModExtendedConfig.cs) to showcase extending `RegistryWeatherConfig` for mod developers
+
 # 0.3.11
 
 - made proper use of `Settings` class (fix proposal to [#13](https://github.com/AndreyMrovol/LethalWeatherRegistry/issues/13))
