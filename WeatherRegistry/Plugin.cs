@@ -28,6 +28,7 @@ namespace WeatherRegistry
     internal static bool IsLethalLibLoaded = false;
     internal static JLLCompat JLLCompat;
     internal static LobbyControlCompat LobbyControlCompat;
+    internal static FacilityMeltdownCompat FacilityMeltdownCompat;
 
     internal static Hook WeatherTypeEnumHook;
 
@@ -62,6 +63,7 @@ namespace WeatherRegistry
       JLLCompat = new JLLCompat("JacobG5.JLL");
       LobbyControlCompat = new LobbyControlCompat("mattymatty.LobbyControl");
       LobbyControlCompat.Init();
+      FacilityMeltdownCompat = new FacilityMeltdownCompat("me.loaforc.facilitymeltdown");
 
       // Plugin startup logic
       Logger.LogInfo($"Plugin {Plugin.GUID} is loaded!");
