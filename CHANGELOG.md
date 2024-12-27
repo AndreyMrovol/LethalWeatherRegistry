@@ -1,3 +1,8 @@
+# 0.3.13
+
+- fixed a compatibility issue with `FacilityMeltdown` where the scrap multiplier would be applied twice
+- added a `WeatherManager.WeatherDisplayOverride` method to override displayed weather condition
+
 # 0.3.12
 
 - bumped MrovLib to fix string resolving issues
