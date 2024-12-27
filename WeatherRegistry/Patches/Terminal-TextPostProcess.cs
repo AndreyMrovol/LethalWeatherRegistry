@@ -61,10 +61,22 @@ namespace WeatherRegistry
 
     private static string GetPlanetWeatherDisplayString(SelectableLevel level)
     {
-      Plugin.logger.LogWarning($"GetPlanetWeatherDisplayString called for {level.PlanetName}");
+      Plugin.logger.LogDebug($"GetPlanetWeatherDisplayString called for {level.PlanetName}");
       string overrideString = WeatherManager.WeatherDisplayOverride(level);
 
       return overrideString == string.Empty ? WeatherManager.GetWeather(level.currentWeather).Name : overrideString;
+    }
+
+    [HarmonyPatch(typeof(Terminal), "TextPostProcess")]
+    [HarmonyPrefix]
+    internal static void Prefix(ref TerminalNode node, ref string modifiedDisplayText)
+    {
+      if (node.displayPlanetInfo != -1)
+      {
+        Regex regex = new(@"\ It is (\n)");
+        node.displayText = regex.Replace(node.displayText, " It is ");
+        modifiedDisplayText = regex.Replace(modifiedDisplayText, " It is ");
+      }
     }
   }
 }
