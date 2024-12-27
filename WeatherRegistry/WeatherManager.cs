@@ -80,6 +80,11 @@ namespace WeatherRegistry
       RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherRegistry && weather.Origin != WeatherOrigin.WeatherTweaks);
     }
 
+    public static string WeatherDisplayOverride(SelectableLevel level)
+    {
+      return string.Empty;
+    }
+
     public static string LevelWeatherTypeEnumHook(Func<Enum, string> orig, Enum self)
     {
       if (self.GetType() == typeof(LevelWeatherType))
