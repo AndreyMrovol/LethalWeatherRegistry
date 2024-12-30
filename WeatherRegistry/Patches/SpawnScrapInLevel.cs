@@ -13,7 +13,7 @@ namespace WeatherRegistry.Patches
     {
       if (!Settings.ScrapMultipliers)
       {
-        Plugin.logger.LogDebug("Skipped using WeatherRegistry's scrap multipliers.");
+        Plugin.logger.LogInfo("Skipped using WeatherRegistry's scrap multipliers.");
         return;
       }
 
