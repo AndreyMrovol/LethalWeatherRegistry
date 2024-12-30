@@ -31,7 +31,6 @@ namespace WeatherRegistry.Patches
       }
 
       EventManager.DisableAllWeathers.Invoke();
-      WeatherRegistry.Patches.SunAnimator.Clear();
       Patches.EntranceTeleportPatch.isPlayerInside = false;
 
       WeatherSync.Instance.SetWeatherEffectOnHost(LevelWeatherType.None);

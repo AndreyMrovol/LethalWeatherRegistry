@@ -89,8 +89,6 @@ namespace WeatherRegistry.Patches
       }
     }
 
-    internal static AnimatorOverrideController animatorOverrideController;
-
     public static void OverrideSunAnimator(LevelWeatherType weatherType)
     {
       Plugin.logger.LogDebug("OverrideSunAnimator called");
@@ -126,13 +124,8 @@ namespace WeatherRegistry.Patches
         return;
       }
 
-      if (animatorOverrideController == null)
-      {
-        animatorOverrideController = new AnimatorOverrideController(TimeOfDay.Instance.sunAnimator.runtimeAnimatorController)
-        {
-          name = $"{animatorControllerName}override"
-        };
-      }
+      AnimatorOverrideController animatorOverrideController =
+        new(TimeOfDay.Instance.sunAnimator.runtimeAnimatorController) { name = $"{animatorControllerName}override" };
 
       AnimationClipOverrides clipOverrides = new(animatorOverrideController.overridesCount);
       logger.LogDebug($"Overrides: {animatorOverrideController.overridesCount}");
@@ -277,12 +270,6 @@ namespace WeatherRegistry.Patches
         {
           logger.LogInfo($"overrideclip {(clip.Key ? clip.Key.name : "null")} : {(clip.Value ? clip.Value.name : "null")}");
         });
-    }
-
-    internal static void Clear()
-    {
-      // animator = null;
-      animatorOverrideController = null;
     }
   }
 }
