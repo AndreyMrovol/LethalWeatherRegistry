@@ -58,6 +58,7 @@ namespace WeatherRegistry.Patches
       Logger.LogInfo("Terminal Start Patch");
 
       WeatherManager.Reset();
+      EntranceTeleportPatch.isPlayerInside = false;
 
       EventManager.BeforeSetupStart.Invoke();
 
