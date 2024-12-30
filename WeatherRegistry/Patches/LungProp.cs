@@ -17,6 +17,12 @@ namespace WeatherRegistry.Patches
         return true;
       }
 
+      if (!Settings.ScrapMultipliers)
+      {
+        Plugin.logger.LogInfo("Skipped using WeatherRegistry's scrap multipliers.");
+        return true;
+      }
+
       try
       {
         Plugin.debugLogger.LogInfo($"ApparatusSpawnBefore: {__instance.scrapValue}");
