@@ -1,26 +1,39 @@
+using System;
 using HarmonyLib;
+using UnityEngine;
 
 namespace WeatherRegistry.Patches
 {
   [HarmonyPatch(typeof(LungProp))]
   static class LungPropPatch
   {
-    [HarmonyPostfix]
-    [HarmonyPatch("DisconnectFromMachinery")]
-    public static void DisconnectFromMachineryPatch(LungProp __instance)
+    [HarmonyPrefix]
+    [HarmonyPatch("Start")]
+    public static bool StartPatch(LungProp __instance)
     {
       if (Plugin.FacilityMeltdownCompat.IsModPresent)
       {
         Plugin.logger.LogInfo("FacilityMeltdown is present - WeatherRegistry will not run its apparatus patch.");
-        return;
+        return true;
       }
 
-      if (__instance.IsHost)
+      try
       {
-        Weather weather = WeatherManager.GetCurrentLevelWeather();
+        Plugin.debugLogger.LogInfo($"ApparatusSpawnBefore: {__instance.scrapValue}");
 
+        Weather weather = WeatherManager.GetCurrentLevelWeather();
+        Plugin.debugLogger.LogInfo($"Scrap multiplier: {weather.ScrapValueMultiplier}");
         __instance.SetScrapValue((int)(__instance.scrapValue * weather.ScrapValueMultiplier));
+
+        Plugin.debugLogger.LogInfo($"ApparatusSpawnAfter: {__instance.scrapValue}");
       }
+      catch (Exception exception)
+      {
+        Plugin.logger.LogError(exception.Message);
+        return true;
+      }
+
+      return true;
     }
   }
 }
