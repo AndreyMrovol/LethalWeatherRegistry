@@ -1,3 +1,8 @@
+# 0.3.14
+
+- redone apparatus patch
+- fixed SunAnimator not resetting correctly between moons (thanks, `voxx`!)
+
 # 0.3.13
 
 - fixed a compatibility issue with `FacilityMeltdown` where the scrap multiplier would be applied twice
