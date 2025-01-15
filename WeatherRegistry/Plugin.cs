@@ -29,6 +29,7 @@ namespace WeatherRegistry
     internal static JLLCompat JLLCompat;
     internal static LobbyControlCompat LobbyControlCompat;
     internal static FacilityMeltdownCompat FacilityMeltdownCompat;
+    internal static OrbitsCompat OrbitsCompat;
 
     internal static Hook WeatherTypeEnumHook;
 
@@ -64,6 +65,7 @@ namespace WeatherRegistry
       LobbyControlCompat = new LobbyControlCompat("mattymatty.LobbyControl");
       LobbyControlCompat.Init();
       FacilityMeltdownCompat = new FacilityMeltdownCompat("me.loaforc.facilitymeltdown");
+      OrbitsCompat = new OrbitsCompat("com.fiufki.orbits");
 
       // Plugin startup logic
       Logger.LogInfo($"Plugin {Plugin.GUID} is loaded!");
