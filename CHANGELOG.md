@@ -1,3 +1,7 @@
+# 0.3.16
+
+- added `WeatherResolvable` classes
+
 # 0.3.15
 
 - added a check to `LungProp` patch to check if scrap multipliers are active
