@@ -40,16 +40,7 @@ namespace WeatherRegistry.Patches
       ___screenLevelDescription.fontWeight = FontWeight.Bold;
       ___screenLevelDescription.SetText(stringBuilder.ToString());
 
-      // the config option is here because people lost their shit
-      // "why would you not make a setting for that???"
-      // "it's such a small thing but it adds interest like theres no reason to remove it"
-      // "I LOVE mod makers opting me into completely unnecessary things!!"
-      // "I'm sorry, this is genuinely a horrible decision, especially when this is a base mod, not something that adds content to the game"
-
-      if (!Settings.PlanetVideos)
-      {
-        __instance.screenLevelVideoReel.enabled = false;
-      }
+      __instance.screenLevelVideoReel.enabled = Settings.PlanetVideos;
 
       EventManager.MapScreenUpdated.Invoke(
         (level: ___currentLevel, weather: WeatherManager.GetCurrentWeather(___currentLevel), screenText: stringBuilder.ToString())
