@@ -66,6 +66,7 @@ namespace WeatherRegistry
       LobbyControlCompat.Init();
       FacilityMeltdownCompat = new FacilityMeltdownCompat("me.loaforc.facilitymeltdown");
       OrbitsCompat = new OrbitsCompat("com.fiufki.orbits");
+      OrbitsCompat.Init();
 
       // Plugin startup logic
       Logger.LogInfo($"Plugin {Plugin.GUID} is loaded!");
