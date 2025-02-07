@@ -82,9 +82,9 @@ namespace WeatherRegistry
 
         if (isDoingOverride)
         {
-          Plugin.logger.LogInfo("Disabling JLL WeatherEffect");
-          JLLEffect.effectEnabled = false;
-          JLLEffect.effectObject?.SetActive(false);
+          Plugin.logger.LogInfo("Enabling JLL WeatherEffect");
+          JLLEffect.effectEnabled = true;
+          JLLEffect.effectObject?.SetActive(true);
 
           return;
         }
