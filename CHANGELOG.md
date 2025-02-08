@@ -1,3 +1,10 @@
+# 0.4.0
+
+- added `WeatherMatcher` and `LevelMatcher` (not fully implemented yet!)
+- changed `WeatherSync` to allow syncing multiple weather effects (thanks, `xuxiaolan`!)
+- fixed an issue with WeatherRegistry disabling JWeatherOverrides (thanks, `nikkidarkmatter`!)
+- fixed an issue with Orbits compatibility patch (thanks, `fiufki`!)
+
 # 0.3.16
 
 - added `WeatherResolvable` classes
