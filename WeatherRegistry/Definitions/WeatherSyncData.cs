@@ -58,4 +58,15 @@ namespace WeatherRegistry.Definitions
       serializer.SerializeValue(ref WeatherType);
     }
   }
+
+  public struct WeatherEffectDataWrapper : INetworkSerializable
+  {
+    public LevelWeatherType[] Effects;
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer)
+      where T : IReaderWriter
+    {
+      serializer.SerializeValue(ref Effects);
+    }
+  }
 }

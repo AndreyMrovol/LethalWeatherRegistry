@@ -17,11 +17,11 @@ namespace WeatherRegistry
       set => WeathersSynced.Value = new WeatherSyncDataWrapper { Weathers = value };
     }
 
-    public NetworkVariable<WeatherEffectSyncData> EffectsSynced = new(new WeatherEffectSyncData { WeatherType = LevelWeatherType.None });
-    public WeatherEffectSyncData Effects
+    public NetworkVariable<WeatherEffectDataWrapper> EffectsSynced = new(new WeatherEffectDataWrapper { Effects = [LevelWeatherType.None] });
+    public WeatherEffectDataWrapper Effects
     {
       get => EffectsSynced.Value;
-      set => EffectsSynced.Value = new WeatherEffectSyncData { WeatherType = value.WeatherType };
+      set => EffectsSynced.Value = new WeatherEffectDataWrapper { Effects = value.Effects };
     }
 
     public static GameObject WeatherSyncPrefab;
@@ -70,13 +70,20 @@ namespace WeatherRegistry
 
     public void SetWeatherEffectOnHost(LevelWeatherType weatherType)
     {
+      SetWeatherEffectsOnHost([weatherType]);
+    }
+
+    public void SetWeatherEffectsOnHost(LevelWeatherType[] weatherTypes)
+    {
       if (!StartOfRound.Instance.IsHost)
       {
         Plugin.logger.LogDebug("Cannot set effects, not a host!");
         return;
       }
 
-      Effects = new WeatherEffectSyncData { WeatherType = weatherType };
+      Plugin.logger.LogDebug($"Settings effects: [{string.Join("; ", weatherTypes)}]");
+
+      Effects = new WeatherEffectDataWrapper { Effects = weatherTypes };
     }
 
     #region Prefab registration

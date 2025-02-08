@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using BepInEx.Logging;
+using UnityEngine.ProBuilder;
+using WeatherRegistry.Definitions;
 
 namespace WeatherRegistry
 {
@@ -120,6 +122,21 @@ namespace WeatherRegistry
     public static void SetWeatherEffects(Weather weather)
     {
       SetWeatherEffects(weather.VanillaWeatherType);
+    }
+
+    public static void AddWeatherEffect(LevelWeatherType weatherType)
+    {
+      Plugin.logger.LogDebug($"Adding weather effect {weatherType}");
+
+      List<LevelWeatherType> effects = WeatherSync.Instance.Effects.Effects.ToList();
+      effects.Add(weatherType);
+
+      WeatherSync.Instance.SetWeatherEffectsOnHost(effects.ToArray());
+    }
+
+    public static void AddWeatherEffect(Weather weather)
+    {
+      AddWeatherEffect(weather.VanillaWeatherType);
     }
 
     #endregion
