@@ -6,19 +6,7 @@ namespace WeatherRegistry.Compatibility
   {
     public bool IsJLLDoingWeatherOverride()
     {
-      if (JWeatherOverride.Instance != null)
-      {
-        Weather currentWeather = WeatherManager.GetCurrentLevelWeather();
-        string effectName = TimeOfDay.Instance.effects[(int)currentWeather.VanillaWeatherType].name;
-
-        WeatherEffect effect = JWeatherOverride.Instance.getOverrideEffect(effectName);
-        if (effect != null)
-        {
-          return true;
-        }
-      }
-
-      return false;
+      return GetJLLData().isDoingOverride;
     }
 
     public (bool isDoingOverride, WeatherEffect effect) GetJLLData()
@@ -26,6 +14,12 @@ namespace WeatherRegistry.Compatibility
       if (JWeatherOverride.Instance != null)
       {
         Weather currentWeather = WeatherManager.GetCurrentLevelWeather();
+
+        if (currentWeather == WeatherManager.NoneWeather)
+        {
+          return (false, null);
+        }
+
         string effectName = TimeOfDay.Instance.effects[(int)currentWeather.VanillaWeatherType].name;
 
         WeatherEffect effect = JWeatherOverride.Instance.getOverrideEffect(effectName);

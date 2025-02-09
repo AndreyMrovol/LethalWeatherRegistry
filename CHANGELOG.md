@@ -1,3 +1,7 @@
+# 0.4.1
+
+- fixed an issue with negative index being called in an array (thanks, `iam_sympathy`!)
+
 # 0.4.0
 
 - added `WeatherMatcher` and `LevelMatcher` (not fully implemented yet!)
