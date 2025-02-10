@@ -17,7 +17,7 @@ namespace WeatherRegistry
     public static List<WeatherEffectOverride> WeatherEffectOverrides { get; internal set; } = [];
 
     public static List<WeatherMatcher> WeatherMatchers { get; internal set; } = [];
-    public static List<LevelMatcher> LevelMatchers { get; internal set; } = [];
+
 
     // i would love to have weathers as an array with indexes corresponding to the enum values
     // but none is -1 so i have to do this
