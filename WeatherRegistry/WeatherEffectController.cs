@@ -58,7 +58,7 @@ namespace WeatherRegistry
     {
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
 
-      DisableWeatherEffects();
+      DisableWeatherEffects(weathers);
 
       foreach (Weather weather in weathers)
       {
@@ -129,17 +129,27 @@ namespace WeatherRegistry
       SetWeatherEffects(weathers);
     }
 
-    public static void DisableWeatherEffects()
+    public static void DisableWeatherEffects(Weather[] newWeathers)
     {
       // disable all weather effects
       foreach (WeatherEffectOverride effectOverride in WeatherManager.WeatherEffectOverrides)
       {
+        if (newWeathers.Contains(effectOverride.Weather))
+        {
+          continue;
+        }
+
         effectOverride.OverrideEffect.DisableEffect(true);
       }
 
-      foreach (ImprovedWeatherEffect effect in WeatherManager.Weathers.Select(weather => weather.Effect))
+      foreach (Weather weather in WeatherManager.Weathers)
       {
-        effect.DisableEffect(true);
+        if (newWeathers.Contains(weather))
+        {
+          continue;
+        }
+
+        weather.Effect.DisableEffect(true);
       }
 
       if (Plugin.JLLCompat.IsModPresent)
