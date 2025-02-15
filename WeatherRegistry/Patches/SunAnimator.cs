@@ -151,7 +151,7 @@ namespace WeatherRegistry.Patches
           { LevelWeatherType.Stormy, clipStormy },
           { LevelWeatherType.Flooded, clipStormy },
           { LevelWeatherType.Foggy, clipStormy },
-          { LevelWeatherType.Rainy, clipStormy },
+          { LevelWeatherType.Rainy, clipNone },
           { LevelWeatherType.None, clipNone },
         };
 
