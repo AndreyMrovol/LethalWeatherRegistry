@@ -79,9 +79,8 @@ namespace WeatherRegistry
           // WeatherManager.CurrentWeathers[level] = selectedWeather;
           EventManager.WeatherChanged.Invoke((level, selectedWeather));
 
-          Logger.LogMessage($"Selected weather: {selectedWeather.Name}");
           Logger.LogMessage(
-            $"Chance for that was {possibleWeathers.Get(selectedWeather)} / {possibleWeathers.Sum} ({(float)possibleWeathers.Get(selectedWeather) / possibleWeathers.Sum * 100}%)"
+            $"Selected weather: {selectedWeather.Name} with chance {possibleWeathers.Get(selectedWeather)} / {possibleWeathers.Sum} ({(float)possibleWeathers.Get(selectedWeather) / possibleWeathers.Sum * 100}%)"
           );
         }
 
