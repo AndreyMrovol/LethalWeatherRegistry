@@ -238,37 +238,7 @@ namespace WeatherRegistry
     public static NameRarity[] ConvertStringToRarities(string str)
     {
       string[] rarities = ConvertStringToArray(str);
-      List<NameRarity> output = [];
-
-      foreach (string rarity in rarities)
-      {
-        string[] rarityData = rarity.Split(':');
-
-        if (rarityData.Length != 2)
-        {
-          // Plugin.logger.LogWarning($"Invalid rarity data: {rarity}");
-          continue;
-        }
-
-        if (!int.TryParse(rarityData[1], out int weight))
-        {
-          // Plugin.logger.LogWarning($"Invalid rarity weight: {rarityData[1]} - not a number!");
-          continue;
-        }
-
-        output.Add(new NameRarity { Name = rarityData[0], Weight = weight });
-      }
-
-      return output.ToArray();
-    }
-
-    public static LevelRarity[] ConvertStringToLevelRarities(string str)
-    {
-      // i want to use the following format:
-      // LevelName@Weight;LevelName@Weight;LevelName@Weight
-
-      string[] rarities = ConvertStringToArray(str);
-      List<LevelRarity> output = [];
+      Dictionary<string, int> output = [];
 
       foreach (string rarity in rarities)
       {
@@ -286,7 +256,31 @@ namespace WeatherRegistry
           continue;
         }
 
-        SelectableLevel[] levels = MrovLib.StringResolver.ResolveStringToLevels(rarityData[0]);
+        string name = rarityData[0].Trim();
+
+        if (output.ContainsKey(name))
+        {
+          // logger.LogWarning($"Duplicate key: {name}");
+          continue;
+        }
+
+        output.Add(name, weight);
+      }
+
+      return output.Select(rarity => new NameRarity { Name = rarity.Key, Weight = rarity.Value }).ToArray();
+    }
+
+    public static LevelRarity[] ConvertStringToLevelRarities(string str)
+    {
+      // i want to use the following format:
+      // LevelName@Weight;LevelName@Weight;LevelName@Weight
+
+      Dictionary<SelectableLevel, int> output = [];
+      NameRarity[] nameRarities = ConvertStringToRarities(str);
+
+      foreach (NameRarity nameRarity in nameRarities)
+      {
+        SelectableLevel[] levels = MrovLib.StringResolver.ResolveStringToLevels(nameRarity.Name);
 
         foreach (SelectableLevel level in levels)
         {
@@ -296,11 +290,11 @@ namespace WeatherRegistry
             continue;
           }
 
-          output.Add(new LevelRarity { Level = level, Weight = weight });
+          output.Add(level, nameRarity.Weight);
         }
       }
 
-      return output.ToArray();
+      return output.Select(rarity => new LevelRarity { Level = rarity.Key, Weight = rarity.Value }).ToArray();
     }
 
     public static WeatherRarity[] ConvertStringToWeatherWeights(string str)
@@ -308,37 +302,23 @@ namespace WeatherRegistry
       // i want to use the following format:
       // Weather@Weight;Weather@Weight;Weather@Weight
 
-      string[] rarities = ConvertStringToArray(str);
-      List<WeatherRarity> output = [];
+      Dictionary<Weather, int> output = [];
+      NameRarity[] nameRarities = ConvertStringToRarities(str);
 
-      foreach (string rarity in rarities)
+      foreach (NameRarity nameRarity in nameRarities)
       {
-        string[] rarityData = rarity.Split('@');
-
-        if (rarityData.Length != 2)
-        {
-          // Plugin.logger.LogWarning($"Invalid rarity data: {rarity}");
-          continue;
-        }
-
-        if (!int.TryParse(rarityData[1], out int weight))
-        {
-          // Plugin.logger.LogWarning($"Invalid rarity weight: {rarityData[1]} - not a number!");
-          continue;
-        }
-
-        Weather weather = ResolveStringToWeather(rarityData[0]);
+        Weather weather = ResolveStringToWeather(nameRarity.Name);
 
         if (weather == null)
         {
-          // Plugin.logger.LogWarning($"Invalid weather name: {rarityData[0]}");
+          // logger.LogWarning($"Invalid weather name: {nameRarity.Name}");
           continue;
         }
 
-        output.Add(new WeatherRarity { Weather = weather, Weight = weight });
+        output.Add(weather, nameRarity.Weight);
       }
 
-      return output.ToArray();
+      return output.Select(rarity => new WeatherRarity { Weather = rarity.Key, Weight = rarity.Value }).ToArray();
     }
   }
 }
