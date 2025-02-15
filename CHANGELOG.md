@@ -1,3 +1,9 @@
+# 0.4.2
+
+- (hopefully) fixed weather effects not enabling correctly on progressing weathers (thanks, `glacialstage`!)
+- fixed weather effects re-enabling themselves in an infinite loop (thanks, `xuxiaolan`!)
+- fixed config resolvers not ignoring duplicate entries (thanks, `llkiur`!)
+
 # 0.4.1
 
 - fixed an issue with negative index being called in an array (thanks, `iam_sympathy`!)
