@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
 
@@ -183,6 +184,22 @@ namespace WeatherRegistry
       weather.WeatherEffectOverrides.TryGetValue(level, out WeatherEffectOverride weatherEffectOverride);
 
       return weatherEffectOverride;
+    }
+
+    public static string GetWeatherList()
+    {
+      List<WeatherListData> weathers = [];
+
+      foreach (var weather in Weathers)
+      {
+        weathers.Add(new WeatherListData { WeatherID = ((int)weather.VanillaWeatherType).ToString(), WeatherName = weather.name });
+      }
+
+      return JsonConvert.SerializeObject(
+        weathers,
+        Formatting.None,
+        new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }
+      );
     }
   }
 }

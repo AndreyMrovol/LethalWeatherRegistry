@@ -390,6 +390,27 @@ namespace WeatherRegistry.Patches
       {
         Networking.WeatherLevelData.ApplyReceivedWeathers(WeatherSync.Instance.Weather);
       }
+
+      #region Compare the weather list between clients
+
+      if (StartOfRound.Instance.IsHost)
+      {
+        WeatherSync.Instance.WeatherList = WeatherManager.GetWeatherList();
+      }
+      else
+      {
+        string hostWeatherList = WeatherSync.Instance.WeatherList.ToString();
+        string localWeatherList = WeatherManager.GetWeatherList();
+
+        if (hostWeatherList != localWeatherList)
+        {
+          Logger.LogWarning("Weathers are different between clients!");
+          Logger.LogDebug($"Host: {hostWeatherList}");
+          Logger.LogDebug($"Local: {localWeatherList}");
+        }
+      }
+
+      #endregion
     }
 
     static void AddWeatherToLevels(Weather weather, List<SelectableLevel> levels, List<SelectableLevel> LevelsToApply)

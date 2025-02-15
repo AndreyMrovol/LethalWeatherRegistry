@@ -3,6 +3,19 @@ using Unity.Netcode;
 
 namespace WeatherRegistry.Definitions
 {
+  public struct WeatherListData : INetworkSerializable
+  {
+    public FixedString64Bytes WeatherName;
+    public FixedString64Bytes WeatherID;
+
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer)
+      where T : IReaderWriter
+    {
+      serializer.SerializeValue(ref WeatherName);
+      serializer.SerializeValue(ref WeatherID);
+    }
+  }
+
   public struct WeatherSyncData : INetworkSerializable
   {
     public LevelWeatherType Weather;

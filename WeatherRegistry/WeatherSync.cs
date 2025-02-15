@@ -24,6 +24,13 @@ namespace WeatherRegistry
       set => EffectsSynced.Value = new WeatherEffectDataWrapper { Effects = value.Effects };
     }
 
+    public NetworkVariable<FixedString4096Bytes> WeatherData = new(new FixedString4096Bytes());
+    public FixedString4096Bytes WeatherList
+    {
+      get => WeatherData.Value;
+      set => WeatherData.Value = value;
+    }
+
     public static GameObject WeatherSyncPrefab;
     public static NetworkManager networkManager;
     public static bool networkHasStarted = false;
