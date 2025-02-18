@@ -114,7 +114,15 @@ namespace WeatherRegistry
 
       try
       {
-        SunAnimator.OverrideSunAnimator(weathers.Max(weather => weather.VanillaWeatherType));
+        // use biggest value from the vanilla weathers list in Defaults
+
+        bool doesWeatherListContainVanillaOnes = weathers.Any(weather => Defaults.VanillaWeathers.Contains(weather.VanillaWeatherType));
+
+        SunAnimator.OverrideSunAnimator(
+          doesWeatherListContainVanillaOnes
+            ? weathers.Where(weather => Defaults.VanillaWeathers.Contains(weather.VanillaWeatherType)).Max(weather => weather.VanillaWeatherType)
+            : weathers.Max(weather => weather.VanillaWeatherType)
+        );
       }
       catch (Exception e)
       {
