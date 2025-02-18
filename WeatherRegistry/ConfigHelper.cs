@@ -290,7 +290,7 @@ namespace WeatherRegistry
             continue;
           }
 
-          output.Add(level, nameRarity.Weight);
+          output.TryAdd(level, nameRarity.Weight);
         }
       }
 
@@ -315,7 +315,7 @@ namespace WeatherRegistry
           continue;
         }
 
-        output.Add(weather, nameRarity.Weight);
+        output.TryAdd(weather, nameRarity.Weight);
       }
 
       return output.Select(rarity => new WeatherRarity { Weather = rarity.Key, Weight = rarity.Value }).ToArray();
