@@ -1,3 +1,8 @@
+# 0.4.3
+
+- changed default level filter to include all company levels
+- fixed duplicates breaking the game when resolving levels/weathers (thanks, `_v0xx_`!)
+
 # 0.4.2
 
 - (hopefully) fixed weather effects not enabling correctly on progressing weathers (thanks, `glacialstage`!)
