@@ -64,16 +64,16 @@ namespace WeatherRegistry.Patches
           );
 
           WeatherManager.CurrentWeathers.SetWeathers(newWeathers);
-        }
 
-        ES3.Save<string>(
-          SaveKey,
-          JsonConvert.SerializeObject(WeatherManager.CurrentWeathers.GetWeatherNames),
-          GameNetworkManager.Instance.currentSaveFileName
-        );
-        Plugin.logger.LogDebug(
-          $"Saved picked weathers: day {StartOfRound.Instance.gameStats.daysSpent}, file {GameNetworkManager.Instance.currentSaveFileName}"
-        );
+          ES3.Save<string>(
+            SaveKey,
+            JsonConvert.SerializeObject(WeatherManager.CurrentWeathers.GetWeatherNames),
+            GameNetworkManager.Instance.currentSaveFileName
+          );
+          Plugin.logger.LogDebug(
+            $"Saved picked weathers: day {StartOfRound.Instance.gameStats.daysSpent}, file {GameNetworkManager.Instance.currentSaveFileName}"
+          );
+        }
       }
 
       EventManager.DayChanged.Invoke(__instance.gameStats.daysSpent);
