@@ -77,6 +77,7 @@ namespace WeatherRegistry
       // RegisteredWeathers.Clear();
       LevelWeathers.Clear();
       Weathers.Clear();
+      WeathersDictionary.Clear();
       ModdedWeatherEnumExtension.Clear();
       WeatherEffectOverrides.Clear();
       CurrentWeathers.Clear();

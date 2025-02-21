@@ -1,3 +1,7 @@
+# 0.5.1
+
+- fixed a small oopsie
+
 # 0.5.0
 
 - changed the saved data type
