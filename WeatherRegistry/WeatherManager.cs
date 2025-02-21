@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
@@ -22,7 +21,9 @@ namespace WeatherRegistry
 
     // i would love to have weathers as an array with indexes corresponding to the enum values
     // but none is -1 so i have to do this
-    public static List<Weather> Weathers { get; internal set; } = [];
+    public static List<Weather> Weathers => WeathersDictionary.Values.ToList();
+    public static Dictionary<LevelWeatherType, Weather> WeathersDictionary { get; internal set; } = [];
+
     public static Weather NoneWeather { get; internal set; }
 
     public static List<LevelWeatherType> LevelWeatherTypes => Weathers.Select(weather => weather.VanillaWeatherType).ToList();
@@ -52,9 +53,12 @@ namespace WeatherRegistry
 
     public static Weather GetWeather(LevelWeatherType levelWeatherType)
     {
-      return Weathers.Find(weather => weather.VanillaWeatherType == levelWeatherType);
+      return WeathersDictionary[levelWeatherType];
+    }
 
-      // return Weathers[(int)levelWeatherType];
+    public static List<Weather> GetWeathers()
+    {
+      return Weathers;
     }
 
     internal static void Reset()
@@ -156,14 +160,7 @@ namespace WeatherRegistry
 
     public static Weather GetCurrentWeather(SelectableLevel level)
     {
-      if (CurrentWeathers.Contains(level))
-      {
-        return CurrentWeathers.GetLevelWeather(level);
-      }
-      else
-      {
-        return GetWeather(level.currentWeather);
-      }
+      return CurrentWeathers.GetLevelWeather(level);
     }
 
     public static Weather GetCurrentLevelWeather()

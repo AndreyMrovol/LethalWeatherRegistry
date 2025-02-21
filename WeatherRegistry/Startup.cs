@@ -117,7 +117,7 @@ namespace WeatherRegistry.Patches
           }
         };
 
-      WeatherManager.Weathers.Add(noneWeather);
+      WeatherManager.WeathersDictionary.Add(LevelWeatherType.None, noneWeather);
       WeatherManager.NoneWeather = noneWeather;
 
       #endregion
@@ -155,7 +155,7 @@ namespace WeatherRegistry.Patches
             }
           };
 
-        WeatherManager.Weathers.Add(weather);
+        WeatherManager.WeathersDictionary.Add(weather.VanillaWeatherType, weather);
       }
 
       #endregion
@@ -263,7 +263,7 @@ namespace WeatherRegistry.Patches
         Logger.LogInfo($"Registered Weather: {RegisteredWeathers[i].Name}");
 
         Weather weather = RegisteredWeathers[i];
-        WeatherManager.Weathers.Add(weather);
+        WeatherManager.WeathersDictionary.Add(weather.VanillaWeatherType, weather);
       }
 
       Logger.LogDebug($"Weathers: {WeatherManager.Weathers.Count}");
