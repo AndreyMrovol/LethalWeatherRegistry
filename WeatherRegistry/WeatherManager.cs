@@ -83,7 +83,7 @@ namespace WeatherRegistry
 
       RegisteredWeathers.RemoveAll(weather => weather.Origin != WeatherOrigin.WeatherRegistry && weather.Origin != WeatherOrigin.WeatherTweaks);
 
-      Networking.WeatherLevelData.LatestWeathersReceived.Clear();
+      Networking.WeatherLevelData.LatestWeathersReceived = [];
     }
 
     public static string WeatherDisplayOverride(SelectableLevel level)
