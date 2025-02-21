@@ -7,6 +7,8 @@ namespace WeatherRegistry
 {
   public class Settings
   {
+    public static bool SetupFinished => WeatherManager.IsSetupFinished;
+
     public static Dictionary<string, Color> ScreenMapColors = [];
 
     public static bool SelectWeathers { get; set; } = true;
