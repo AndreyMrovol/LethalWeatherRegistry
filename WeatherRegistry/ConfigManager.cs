@@ -46,7 +46,7 @@ namespace WeatherRegistry
       LogWeightResolving = configFile.Bind("|Debugging", "Log Weight Resolving", true, "Log weight resolving to console");
 
       ColoredWeathers = configFile.Bind("|General", "Colored Weathers", true, "Enable colored weathers on map screen");
-      PlanetVideos = configFile.Bind("|General", "Planet Videos", false, "Display planet videos on map screen");
+      PlanetVideos = configFile.Bind("|General", "Planet Videos", true, "Display planet videos on map screen");
 
       UseWeatherWeights = configFile.Bind(
         "|General",
