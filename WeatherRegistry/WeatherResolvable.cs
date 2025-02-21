@@ -21,7 +21,9 @@ namespace WeatherRegistry
       {
         if (WeatherRegistry.WeatherManager.IsSetupFinished)
         {
-          return WeatherRegistry.ConfigHelper.ResolveStringToWeather(weatherName).VanillaWeatherType;
+          Weather resolvedWeather = WeatherRegistry.ConfigHelper.ResolveStringToWeather(weatherName);
+
+          return resolvedWeather == null ? LevelWeatherType.None : resolvedWeather.VanillaWeatherType;
         }
         else
         {

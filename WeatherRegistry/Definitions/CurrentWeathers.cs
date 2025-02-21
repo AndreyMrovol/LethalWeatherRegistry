@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using Unity.Collections;
 
 namespace WeatherRegistry.Definitions
 {
@@ -61,6 +62,9 @@ namespace WeatherRegistry.Definitions
 
     public Dictionary<string, LevelWeatherType> GetWeathers => _currentWeathers.ToDictionary(pair => pair.Key.PlanetName, pair => pair.Value);
     public string SerializedEntries => JsonConvert.SerializeObject(GetWeathers);
+
+    public Dictionary<string, string> GetWeatherNames =>
+      _currentWeathers.ToDictionary(pair => pair.Key.PlanetName, pair => pair.Value.ToString());
 
     public WeatherSyncData[] SyncData
     {
@@ -139,14 +143,12 @@ namespace WeatherRegistry.Definitions
     {
       Plugin.logger.LogDebug($"Setting weathers from string dictionary: {serializedWeathers}");
 
-      Dictionary<string, LevelWeatherType> planetNameDictionary = JsonConvert.DeserializeObject<Dictionary<string, LevelWeatherType>>(
-        serializedWeathers
-      );
+      Dictionary<string, string> planetNameDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(serializedWeathers);
       Dictionary<SelectableLevel, LevelWeatherType> weathers = [];
       List<SelectableLevel> levels = GetLevels();
 
       // check if any levels are missing from the level list (moon was removed between launches)
-      foreach (KeyValuePair<string, LevelWeatherType> pair in planetNameDictionary)
+      foreach (KeyValuePair<string, string> pair in planetNameDictionary)
       {
         SelectableLevel level = levels.Find(l => l.PlanetName == pair.Key);
 
@@ -157,14 +159,14 @@ namespace WeatherRegistry.Definitions
         }
 
         // check if any weathers were removed between launches
-        if (WeatherManager.GetWeather(pair.Value) == null)
+        if (WeatherManager.GetWeather(new WeatherNameResolvable(pair.Value).WeatherType) == null)
         {
           Plugin.logger.LogWarning($"Weather with type {pair.Value} was not found - setting to None.");
           weathers[level] = LevelWeatherType.None;
           continue;
         }
 
-        weathers[level] = pair.Value;
+        weathers[level] = new WeatherNameResolvable(pair.Value).WeatherType;
       }
 
       // check if any levels are missing from the dictionary (moon was added between launches)
