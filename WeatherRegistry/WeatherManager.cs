@@ -53,7 +53,16 @@ namespace WeatherRegistry
 
     public static Weather GetWeather(LevelWeatherType levelWeatherType)
     {
-      return WeathersDictionary[levelWeatherType];
+      if (WeathersDictionary.ContainsKey(levelWeatherType))
+      {
+        return WeathersDictionary[levelWeatherType];
+      }
+      else
+      {
+        // if this is called at any point, we're fucking COOKED
+        Plugin.logger.LogWarning($"Weather {levelWeatherType} not found in dictionary");
+        return null;
+      }
     }
 
     public static List<Weather> GetWeathers()
@@ -161,6 +170,12 @@ namespace WeatherRegistry
 
     public static Weather GetCurrentWeather(SelectableLevel level)
     {
+      if (!Settings.SetupFinished)
+      {
+        Plugin.logger.LogWarning("Something is trying to get the current weather before setup is finished!");
+        return null;
+      }
+
       return CurrentWeathers.GetLevelWeather(level);
     }
 
