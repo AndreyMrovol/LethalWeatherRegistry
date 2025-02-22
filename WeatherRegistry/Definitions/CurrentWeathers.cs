@@ -83,12 +83,12 @@ namespace WeatherRegistry.Definitions
 
     public LevelWeatherType GetWeatherType(SelectableLevel level)
     {
-      return _currentWeathers[level];
+      return _currentWeathers.TryGetValue(level, out LevelWeatherType weatherType) ? weatherType : LevelWeatherType.None;
     }
 
     public Weather GetLevelWeather(SelectableLevel level)
     {
-      return WeatherManager.GetWeather(_currentWeathers[level]);
+      return WeatherManager.GetWeather(GetWeatherType(level));
     }
 
     // this is the one that every overload should resolve to
