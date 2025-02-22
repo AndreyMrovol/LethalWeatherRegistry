@@ -1,3 +1,7 @@
+# 0.5.2
+
+- fixed a MASSIVE OOPSIE [#23](https://github.com/AndreyMrovol/LethalWeatherRegistry/issues/23) - thank you to everyone who reported this issue!
+
 # 0.5.1
 
 - fixed a small oopsie
