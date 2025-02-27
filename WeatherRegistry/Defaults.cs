@@ -12,7 +12,7 @@ namespace WeatherRegistry
       new()
       {
         { LevelWeatherType.None, new Color(0.41f, 1f, 0.42f, 1f) },
-        { LevelWeatherType.DustClouds, new Color(0.41f, 1f, 0.42f, 1f) },
+        { LevelWeatherType.DustClouds, new Color(0.28f, 0.19f, 0.1f, 1f) },
         { LevelWeatherType.Foggy, new Color(1f, 0.86f, 0f, 1f) },
         { LevelWeatherType.Rainy, new Color(1f, 0.86f, 0f, 1f) },
         { LevelWeatherType.Stormy, new Color(1f, 0.57f, 0f, 1f) },
