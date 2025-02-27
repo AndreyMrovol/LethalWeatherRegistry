@@ -479,9 +479,9 @@ namespace WeatherRegistry.Patches
         }
 
         // remove all weathers from company moon, because that's the point
-        if (level.PlanetName == "71 Gordion" && !LevelsToApply.Contains(level))
+        if (MrovLib.LevelHelper.CompanyMoons.Contains(level) && !LevelsToApply.Contains(level))
         {
-          Logger.LogDebug($"Removing weather {weather.Name} from the company moon");
+          Logger.LogDebug($"Removing weather {weather.Name} from the company moons");
 
           randomWeathers.RemoveAll(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
           level.randomWeathers = randomWeathers.ToArray();
