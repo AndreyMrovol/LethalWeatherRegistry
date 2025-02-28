@@ -90,8 +90,17 @@ namespace WeatherRegistry
     public static void AddRandomWeather(SelectableLevel level, RandomWeatherWithVariables randomWeather)
     {
       List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.ToList();
+
+      if (randomWeather.weatherType == LevelWeatherType.None)
+      {
+        Logger.LogInfo("Cannot add None weather to random weathers, skipping");
+        return;
+      }
+
       randomWeathers.Add(randomWeather);
-      level.randomWeathers = randomWeathers.ToArray();
+      level.randomWeathers = randomWeathers.Distinct().ToArray();
+
+      Plugin.logger.LogInfo($"Adding random weather {randomWeather.weatherType} to {ConfigHelper.GetAlphanumericName(level)}");
 
       WeatherManager.GetWeather(randomWeather.weatherType).WeatherVariables[level] = new()
       {
