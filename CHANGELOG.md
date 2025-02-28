@@ -1,3 +1,8 @@
+# 0.5.3
+
+- changed the default `DustClouds` color to brown
+- fixed an issue with `AddRandomWeathers`
+
 # 0.5.2
 
 - fixed a MASSIVE OOPSIE [#23](https://github.com/AndreyMrovol/LethalWeatherRegistry/issues/23) - thank you to everyone who reported this issue!
