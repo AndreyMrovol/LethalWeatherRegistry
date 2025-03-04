@@ -39,11 +39,7 @@ namespace WeatherRegistry
         Dictionary<SelectableLevel, LevelWeatherType> NewWeather = [];
 
         System.Random random = GetRandom(startOfRound);
-
         List<SelectableLevel> levels = startOfRound.levels.ToList();
-        // int day = startOfRound.gameStats.daysSpent;
-        // int quota = TimeOfDay.Instance.timesFulfilledQuota;
-        // int dayInQuota = day % 3;
 
         Logger.LogDebug($"Levels: {string.Join(';', levels.Select(level => level.PlanetName))}");
 
