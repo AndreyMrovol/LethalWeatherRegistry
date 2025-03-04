@@ -18,7 +18,6 @@ namespace WeatherRegistry
 
     public static List<WeatherMatcher> WeatherMatchers { get; internal set; } = [];
 
-
     // i would love to have weathers as an array with indexes corresponding to the enum values
     // but none is -1 so i have to do this
     public static List<Weather> Weathers => WeathersDictionary.Values.ToList();
@@ -119,7 +118,6 @@ namespace WeatherRegistry
       return orig(self);
     }
 
-    // weathertweaks copy-paste:
     internal static List<LevelWeatherType> GetPlanetPossibleWeathers(SelectableLevel level)
     {
       List<LevelWeatherType> possibleWeathers = level
@@ -184,8 +182,14 @@ namespace WeatherRegistry
       return GetCurrentWeather(StartOfRound.Instance.currentLevel);
     }
 
-    public static string GetCurrentWeatherName(SelectableLevel level)
+    public static string GetCurrentWeatherName(SelectableLevel level, bool ignoreOverride = false)
     {
+      string weatherNameOverride = WeatherDisplayOverride(level);
+      if (weatherNameOverride != string.Empty && !ignoreOverride)
+      {
+        return weatherNameOverride;
+      }
+
       return GetCurrentWeather(level).Name;
     }
 
