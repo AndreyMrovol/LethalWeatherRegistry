@@ -1,3 +1,9 @@
+# 0.5.4
+
+- changed the default `DustClouds` color to _more visible_ brown (thanks, `sciencebird`!)
+- changed the `DustClouds` weather name to `Dust Clouds`
+- fixed an issue with `WeatherController` working incorrectly when `None` weather was passed (thanks, `xuxiaolan`!)
+
 # 0.5.3
 
 - changed the default `DustClouds` color to brown
