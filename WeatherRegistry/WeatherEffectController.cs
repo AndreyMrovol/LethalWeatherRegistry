@@ -64,7 +64,7 @@ namespace WeatherRegistry
       {
         if (weather == null)
         {
-          return;
+          continue;
         }
 
         // if weather is not flooded, stop player from sinking
@@ -80,7 +80,7 @@ namespace WeatherRegistry
         if (weather.VanillaWeatherType == LevelWeatherType.None)
         {
           SunAnimator.OverrideSunAnimator(weather.VanillaWeatherType);
-          return;
+          continue;
         }
 
         // check if JLL does weather override
@@ -94,7 +94,7 @@ namespace WeatherRegistry
             JLLEffect.effectEnabled = true;
             JLLEffect.effectObject?.SetActive(true);
 
-            return;
+            continue;
           }
         }
 
