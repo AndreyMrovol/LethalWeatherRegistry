@@ -132,6 +132,12 @@ namespace WeatherRegistry.Patches
         LevelWeatherType weatherType = (LevelWeatherType)i;
         bool isVanilla = Defaults.VanillaWeathers.Contains(weatherType);
 
+        string weatherName = weatherType.ToString();
+        if (weatherName == "DustClouds")
+        {
+          weatherName = "Dust Clouds";
+        }
+
         WeatherType weatherTypeType = isVanilla ? WeatherType.Vanilla : WeatherType.Modded;
         Color weatherColor = isVanilla ? Defaults.VanillaWeatherColors[weatherType] : Color.blue;
 
@@ -139,7 +145,7 @@ namespace WeatherRegistry.Patches
           new(effect.effectObject, effect.effectPermanentObject) { SunAnimatorBool = effect.sunAnimatorBool, };
 
         Weather weather =
-          new(weatherType.ToString(), weatherEffect)
+          new(weatherName, weatherEffect)
           {
             Type = weatherTypeType,
             Color = weatherColor,
