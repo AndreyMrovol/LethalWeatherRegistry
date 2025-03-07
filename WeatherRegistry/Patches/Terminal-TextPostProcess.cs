@@ -1,70 +1,102 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Reflection.Emit;
 using System.Text.RegularExpressions;
 using HarmonyLib;
-using Newtonsoft.Json;
-using WeatherRegistry.Definitions;
-using WeatherRegistry.Patches;
 
-namespace WeatherRegistry
+namespace WeatherRegistry.Patches
 {
   [HarmonyPatch(typeof(Terminal))]
   internal class TerminalPostprocessPatch
   {
     [HarmonyTranspiler]
     [HarmonyPatch(typeof(Terminal), "TextPostProcess", MethodType.Normal)]
-    internal static IEnumerable<CodeInstruction> Terminal_textPostProcess(IEnumerable<CodeInstruction> instructions)
+    static IEnumerable<CodeInstruction> MoonCatalogueListTranspiler(IEnumerable<CodeInstruction> instructions)
     {
+      MethodInfo getWeatherStringMethod = AccessTools.Method(typeof(TerminalPostprocessPatch), "GetPlanetWeatherDisplayString");
+
       CodeMatcher matcher = new(instructions);
 
-      // 64	00B5	ldflda	valuetype LevelWeatherType SelectableLevel::currentWeather
-      // 65	00BA	constrained.	LevelWeatherType
-      // 66	00C0	callvirt	instance string [netstandard]System.Object::ToString()
+      // 70	00D0	ldloc.2
+      // 71	00D1	ldarg.1
+      // 72	00D2	ldloc.1
+      // 73	00D3	ldc.i4.1
+      // 74	00D4	callvirt	instance string [netstandard]System.Text.RegularExpressions.Regex::Replace(string, string, int32)
 
-      CodeMatcher matcher2 = matcher.MatchForward(
-        false,
-        new CodeMatch(OpCodes.Ldflda, AccessTools.Field(typeof(SelectableLevel), "currentWeather")),
-        new CodeMatch(OpCodes.Constrained, AccessTools.TypeByName("LevelWeatherType")),
-        new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(object), "ToString"))
-      );
-
-      // replace the callvirt with a call to our custom method
-      matcher2.RemoveInstructions(3);
-      matcher2.InsertAndAdvance(
-        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(TerminalPostprocessPatch), "GetPlanetWeatherDisplayString"))
-      );
-
-      // 104	0122	ldflda	valuetype LevelWeatherType SelectableLevel::currentWeather
-      // 105	0127	constrained.	LevelWeatherType
-      // 106	012D	callvirt	instance string [netstandard]System.Object::ToString()
-      // 107	0132	callvirt	instance string [netstandard]System.String::ToLower()
-
-      CodeMatcher matcher3 = matcher2.MatchForward(
-        false,
-        new CodeMatch(OpCodes.Ldflda, AccessTools.Field(typeof(SelectableLevel), "currentWeather")),
-        new CodeMatch(OpCodes.Constrained, AccessTools.TypeByName("LevelWeatherType")),
-        new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(object), "ToString")),
-        new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(string), "ToLower"))
-      );
-
-      // replace the callvirt with a call to our custom method
-      matcher3.RemoveInstructions(4);
-      matcher3.InsertAndAdvance(
-        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(TerminalPostprocessPatch), "GetPlanetWeatherDisplayString")),
-        new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(string), "ToLower"))
-      );
+      matcher
+        .MatchForward(
+          false,
+          new CodeMatch(OpCodes.Ldloc_2),
+          new CodeMatch(OpCodes.Ldarg_1),
+          new CodeMatch(OpCodes.Ldloc_1),
+          new CodeMatch(OpCodes.Ldc_I4_1),
+          new CodeMatch(OpCodes.Callvirt)
+        )
+        .Advance(2) // Move to the Ldloc_1 instruction
+        .RemoveInstruction()
+        .Insert(
+          new CodeInstruction(OpCodes.Ldarg_0), // this
+          new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Terminal), "moonsCatalogueList")),
+          new CodeInstruction(OpCodes.Ldloc_3), // num2
+          new CodeInstruction(OpCodes.Ldelem_Ref), // Get the SelectableLevel
+          new CodeInstruction(OpCodes.Ldc_I4_1), // true for parentheses parameter
+          new CodeInstruction(OpCodes.Call, getWeatherStringMethod)
+        );
 
       return matcher.InstructionEnumeration();
     }
 
-    private static string GetPlanetWeatherDisplayString(SelectableLevel level)
+    [HarmonyTranspiler]
+    [HarmonyPatch(typeof(Terminal), "TextPostProcess", MethodType.Normal)]
+    static IEnumerable<CodeInstruction> CurrentPlanetTimeTranspiler(IEnumerable<CodeInstruction> instructions)
     {
-      Plugin.logger.LogDebug($"GetPlanetWeatherDisplayString called for {level.PlanetName}");
+      MethodInfo getCurrentPlanetTimeMethod = AccessTools.Method(typeof(TerminalPostprocessPatch), "GetCurrentPlanetTimeText");
+      CodeMatcher matcher = new(instructions);
+
+      // 113	0141	ldarg.1
+      // 114	0142	ldstr	"[currentPlanetTime]"
+      // 115	0147	ldloc.1
+      // 116	0148	callvirt	instance string [netstandard]System.String::Replace(string, string)
+
+      matcher
+        // Find the String.Replace call
+        .MatchForward(
+          false,
+          new CodeMatch(OpCodes.Ldarg_1),
+          new CodeMatch(OpCodes.Ldstr, "[currentPlanetTime]"),
+          new CodeMatch(OpCodes.Ldloc_1), // text (this is what we want to replace)
+          new CodeMatch(OpCodes.Callvirt) // String.Replace call
+        )
+        // Move to where 'text' is loaded
+        .Advance(2)
+        // Replace the loading of 'text' with our custom method call
+        .RemoveInstruction()
+        .Insert(
+          // Load the node.displayPlanetInfo value
+          new CodeInstruction(OpCodes.Ldarg_2), // Node is in argument 2
+          new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(TerminalNode), "displayPlanetInfo")),
+          new CodeInstruction(OpCodes.Call, getCurrentPlanetTimeMethod)
+        );
+
+      return matcher.InstructionEnumeration();
+    }
+
+    private static string GetPlanetWeatherDisplayString(SelectableLevel level, bool parentheses = false)
+    {
+      Plugin.debugLogger.LogDebug($"GetPlanetWeatherDisplayString called for {level.PlanetName}");
       string overrideString = WeatherManager.WeatherDisplayOverride(level);
 
-      return overrideString == string.Empty ? WeatherManager.GetWeather(level.currentWeather).Name : overrideString;
+      return overrideString == string.Empty
+        ? $"{(parentheses ? "(" : "")}{WeatherManager.GetWeather(level.currentWeather).Name}{(parentheses ? ")" : "")}"
+        : $"{(parentheses ? "(" : "")}{overrideString}{(parentheses ? ")" : "")}";
+    }
+
+    private static string GetCurrentPlanetTimeText(int displayPlanetInfo)
+    {
+      SelectableLevel level = StartOfRound.Instance.levels[displayPlanetInfo];
+      Plugin.debugLogger.LogDebug($"GetCurrentPlanetTimeText called for {level.PlanetName}");
+
+      return GetPlanetWeatherDisplayString(level, false).ToLower();
     }
 
     [HarmonyPatch(typeof(Terminal), "TextPostProcess")]
