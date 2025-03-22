@@ -1,3 +1,8 @@
+# 0.5.5
+
+- re-done TextPostProcess transpilers to display override names correctly
+- adding a check to replace spaces in config names
+
 # 0.5.4
 
 - changed the default `DustClouds` color to _more visible_ brown (thanks, `sciencebird`!)
