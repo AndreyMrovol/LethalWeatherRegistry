@@ -268,6 +268,11 @@ namespace WeatherRegistry
       return weatherWeight;
     }
 
+    public string GetAlphanumericName()
+    {
+      return ConfigHelper.GetAlphanumericName(this);
+    }
+
     public (bool isWTW, int weight) GetWeatherToWeatherWeight(Weather previousWeather)
     {
       if (previousWeather.WeatherWeights.TryGetValue(this.VanillaWeatherType, out int weatherWeightFromWeather))
