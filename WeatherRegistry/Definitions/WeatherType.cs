@@ -187,7 +187,7 @@ namespace WeatherRegistry
     #endregion
 
     internal virtual string ConfigCategory =>
-      $"{(this.Type == WeatherType.Vanilla || this.Type == WeatherType.Clear ? "Vanilla" : "Modded")} Weather: {this.name}{(this.Origin != WeatherOrigin.WeatherRegistry && this.Origin != WeatherOrigin.Vanilla ? $" ({this.Origin})" : "")}";
+      $"{(this.Type == WeatherType.Vanilla || this.Type == WeatherType.Clear ? "Vanilla" : "Modded")} Weather: {this.name.Replace(" ", "")}{(this.Origin != WeatherOrigin.WeatherRegistry && this.Origin != WeatherOrigin.Vanilla ? $" ({this.Origin})" : "")}";
 
     internal virtual void Init()
     {
