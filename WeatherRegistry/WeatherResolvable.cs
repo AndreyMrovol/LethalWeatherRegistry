@@ -27,6 +27,7 @@ namespace WeatherRegistry
         }
         else
         {
+          Plugin.debugLogger.LogDebug($"Tried to resolve weather name {weatherName} before setup finished");
           return LevelWeatherType.None;
         }
       }
