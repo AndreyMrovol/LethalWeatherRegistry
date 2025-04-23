@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BepInEx.Configuration;
+using MrovLib;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
@@ -68,6 +69,10 @@ namespace WeatherRegistry
 
     [JsonIgnore]
     internal Dictionary<SelectableLevel, WeatherEffectOverride> WeatherEffectOverrides = [];
+
+    public TerminalNode ForecastNode { get; private set; }
+    public TerminalKeyword ForecastKeyword { get; private set; }
+    public CompatibleNoun ForecastNoun { get; private set; }
 
     #endregion
 
@@ -199,6 +204,26 @@ namespace WeatherRegistry
       }
 
       this.hideFlags = HideFlags.HideAndDontSave;
+
+      ForecastKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
+      ForecastKeyword.word = $"{this.GetAlphanumericName().ToLowerInvariant()}";
+      ForecastKeyword.name = $"Forecast {this.GetAlphanumericName().ToLowerInvariant()}";
+      ForecastKeyword.defaultVerb = Plugin.ForecastVerb;
+
+      ForecastNode = ScriptableObject.CreateInstance<TerminalNode>();
+      ForecastNode.name = $"Forecast {this.GetAlphanumericName().ToLowerInvariant()}";
+      ForecastNode.clearPreviousText = true;
+      ForecastNode.acceptAnything = true;
+      ForecastNode.terminalOptions = [];
+      ForecastNode.itemCost = 0;
+      ForecastNode.buyItemIndex = -1;
+      ForecastNode.shipUnlockableID = -1;
+      ForecastNode.buyVehicleIndex = -1;
+      ForecastNode.creatureFileID = -1;
+      ForecastNode.storyLogFileID = -1;
+      ForecastNode.displayText = $"Forecasting {this.name} weather";
+
+      ForecastNoun = new CompatibleNoun() { noun = ForecastKeyword, result = ForecastNode, };
     }
 
     // void Reset()

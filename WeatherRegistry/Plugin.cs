@@ -7,6 +7,7 @@ using BepInEx.Bootstrap;
 using BepInEx.Logging;
 using HarmonyLib;
 using MonoMod.RuntimeDetour;
+using MrovLib;
 using WeatherRegistry.Compatibility;
 using WeatherRegistry.Patches;
 
@@ -33,6 +34,8 @@ namespace WeatherRegistry
 
     internal static Hook WeatherTypeEnumHook;
 
+    internal static TerminalKeyword ForecastVerb;
+
     private void Awake()
     {
       logger = Logger;
@@ -40,6 +43,31 @@ namespace WeatherRegistry
 
       ConfigManager.Init(Config);
       SunAnimator.Init();
+
+      ForecastVerb = ScriptableObject.CreateInstance<TerminalKeyword>();
+      ForecastVerb.name = "Forecast";
+      ForecastVerb.word = "forecast";
+      ForecastVerb.isVerb = true;
+
+      EventManager.SetupFinished.AddListener(() =>
+      {
+        ContentManager.AddTerminalKeywords([ForecastVerb]);
+
+        List<CompatibleNoun> compatibleNouns = [];
+        List<TerminalNode> forecastNodes = [];
+        List<TerminalKeyword> forecastKeywords = [];
+
+        foreach (Weather weather in WeatherManager.GetWeathers())
+        {
+          compatibleNouns.Add(weather.ForecastNoun);
+          forecastNodes.Add(weather.ForecastNode);
+          forecastKeywords.Add(weather.ForecastKeyword);
+        }
+
+        ForecastVerb.compatibleNouns = compatibleNouns.ToArray();
+        ContentManager.AddTerminalNodes(forecastNodes);
+        ContentManager.AddTerminalKeywords(forecastKeywords);
+      });
 
       if (Chainloader.PluginInfos.ContainsKey("evaisa.lethallib"))
       {

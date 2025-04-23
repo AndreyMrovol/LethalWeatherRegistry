@@ -45,6 +45,9 @@ namespace WeatherRegistry
       }
     }
 
+    public static Dictionary<TerminalNode, Weather> ForecastTerminalNodes =>
+      Weathers.Where(weather => weather.ForecastNode != null).ToDictionary(weather => weather.ForecastNode, weather => weather);
+
     public static void RegisterWeather(Weather weather)
     {
       RegisteredWeathers.Add(weather);
