@@ -553,3 +553,4 @@ lib/*
 *.zip
 Thunderstore/*.dll
 */dist/*
+package-lock.json
