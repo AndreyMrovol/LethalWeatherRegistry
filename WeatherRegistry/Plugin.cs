@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using BepInEx;
 using BepInEx.Bootstrap;
 using BepInEx.Logging;
@@ -30,6 +28,7 @@ namespace WeatherRegistry
     internal static LobbyControlCompat LobbyControlCompat;
     internal static FacilityMeltdownCompat FacilityMeltdownCompat;
     internal static OrbitsCompat OrbitsCompat;
+    internal static ImperiumCompat ImperiumCompat;
 
     internal static Hook WeatherTypeEnumHook;
 
@@ -40,6 +39,8 @@ namespace WeatherRegistry
 
       ConfigManager.Init(Config);
       SunAnimator.Init();
+
+      MrovLib.EventManager.MainMenuLoaded.AddListener(MainMenuInit);
 
       if (Chainloader.PluginInfos.ContainsKey("evaisa.lethallib"))
       {
@@ -67,9 +68,15 @@ namespace WeatherRegistry
       FacilityMeltdownCompat = new FacilityMeltdownCompat("me.loaforc.facilitymeltdown");
       OrbitsCompat = new OrbitsCompat("com.fiufki.orbits");
       OrbitsCompat.Init();
+      ImperiumCompat = new ImperiumCompat("giosuel.Imperium");
 
       // Plugin startup logic
       Logger.LogInfo($"Plugin {Plugin.GUID} is loaded!");
+    }
+
+    private void MainMenuInit()
+    {
+      ImperiumCompat.Init();
     }
   }
 }

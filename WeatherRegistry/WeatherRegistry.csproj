@@ -71,6 +71,10 @@
         <Reference Include="JLL" PrivateAssets="all">
             <HintPath>$(LibraryDirectory)/JLL.dll</HintPath>
         </Reference>
+
+        <Reference Include="Imperium" PrivateAssets="all">
+            <HintPath>$(LibraryDirectory)/giosuel.Imperium.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
