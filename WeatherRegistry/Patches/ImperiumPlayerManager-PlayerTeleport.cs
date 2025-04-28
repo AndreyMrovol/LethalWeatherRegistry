@@ -6,7 +6,7 @@ using Imperium.API.Types.Networking;
 
 namespace WeatherRegistry.Patches
 {
-  public static class ImperiumPatches
+  public static partial class ImperiumPatches
   {
     public static class ImperiumPlayerManagerPatch
     {

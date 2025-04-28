@@ -14,6 +14,14 @@ namespace WeatherRegistry.Compatibility
       Plugin.debugLogger.LogInfo(ModGUID + " detected! Patching Imperium.");
 
       Plugin.harmony.Patch(
+        AccessTools.Method("Imperium.Core.Lifecycle.MoonManager:RefreshWeatherEffects"),
+        prefix: new HarmonyMethod(
+          typeof(Patches.ImperiumPatches.ImperiumMoonManagerPatches),
+          nameof(Patches.ImperiumPatches.ImperiumMoonManagerPatches.RefreshWeatherEffectsPrefixPatch)
+        )
+      );
+
+      Plugin.harmony.Patch(
         AccessTools.Method("Imperium.Core.Lifecycle.PlayerManager:OnTeleportPlayerClient"),
         prefix: new HarmonyMethod(
           typeof(Patches.ImperiumPatches.ImperiumPlayerManagerPatch),
@@ -29,8 +37,6 @@ namespace WeatherRegistry.Compatibility
         )
       );
 
-      Plugin.debugLogger.LogInfo("Registering PlayerManager.OnTeleportPlayerClient postfix.");
-
       Plugin.harmony.Patch(
         AccessTools.Method("Imperium.Core.Lifecycle.PlayerManager:OnTeleportPlayerClient"),
         transpiler: new HarmonyMethod(
@@ -38,8 +44,6 @@ namespace WeatherRegistry.Compatibility
           nameof(Patches.ImperiumPatches.ImperiumPlayerManagerPatch.TeleportPlayerTranspilerPatch)
         )
       );
-
-      Plugin.debugLogger.LogInfo("Registering PlayerManager.OnTeleportPlayerClient transpiler.");
     }
   }
 }
