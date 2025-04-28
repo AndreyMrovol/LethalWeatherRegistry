@@ -88,7 +88,7 @@ namespace WeatherRegistry
         return;
       }
 
-      Plugin.logger.LogDebug($"Settings effects: [{string.Join("; ", weatherTypes)}]");
+      Plugin.logger.LogDebug($"Setting effects: [{string.Join("; ", weatherTypes)}]");
 
       Effects = new WeatherEffectDataWrapper { Effects = weatherTypes };
     }
