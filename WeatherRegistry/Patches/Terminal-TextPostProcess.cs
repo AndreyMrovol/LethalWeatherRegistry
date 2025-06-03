@@ -101,7 +101,16 @@ namespace WeatherRegistry.Patches
       SelectableLevel level = StartOfRound.Instance.levels[displayPlanetInfo];
       Plugin.debugLogger.LogDebug($"GetCurrentPlanetTimeText called for {level.PlanetName}");
 
-      return GetPlanetWeatherDisplayString(level, false).ToLower();
+      string currentPlanetTime = GetPlanetWeatherDisplayString(level, false).ToLower();
+
+      if (currentPlanetTime == "none")
+      {
+        return "mild weather";
+      }
+      else
+      {
+        return currentPlanetTime;
+      }
     }
 
     [HarmonyPatch(typeof(Terminal), "TextPostProcess")]
