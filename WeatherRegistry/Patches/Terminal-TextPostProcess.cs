@@ -83,12 +83,17 @@ namespace WeatherRegistry.Patches
 
     private static string GetPlanetWeatherDisplayString(SelectableLevel level, bool parentheses = false)
     {
-      Plugin.debugLogger.LogDebug($"GetPlanetWeatherDisplayString called for {level.PlanetName}");
+      Plugin.debugLogger.LogDebug($"GetPlanetWeatherDisplayString called for {level.PlanetName} with parentheses={parentheses}");
       string overrideString = WeatherManager.WeatherDisplayOverride(level);
 
-      return overrideString == string.Empty
-        ? $"{(parentheses ? "(" : "")}{WeatherManager.GetWeather(level.currentWeather).Name}{(parentheses ? ")" : "")}"
-        : $"{(parentheses ? "(" : "")}{overrideString}{(parentheses ? ")" : "")}";
+      if (overrideString == string.Empty)
+      {
+        return $"{(parentheses ? "(" : "")}{WeatherManager.GetWeather(level.currentWeather).Name}{(parentheses ? ")" : "")}";
+      }
+      else
+      {
+        return $"{(parentheses ? "(" : "")}{overrideString}{(parentheses ? ")" : "")}";
+      }
     }
 
     private static string GetCurrentPlanetTimeText(int displayPlanetInfo)
