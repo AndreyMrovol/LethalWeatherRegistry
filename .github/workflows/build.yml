@@ -35,6 +35,10 @@ jobs:
         run: |
           npm install
 
+      - name: Download dependencies from Thunderstore
+        run: |
+          node downloader.js
+
       - name: Install Evaisa's netcode-patcher
         run: |
           dotnet tool install -g Evaisa.NetcodePatcher.Cli
