@@ -20,6 +20,8 @@
         <PackageProjectUrl>https://github.com/AndreyMrovol/LethalWeatherRegistry/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/AndreyMrovol/LethalWeatherRegistry/</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
+
+        <BepInExPluginGuid>$(PackageId)</BepInExPluginGuid>
     </PropertyGroup>
 
     <ItemGroup>

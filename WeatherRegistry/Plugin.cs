@@ -10,18 +10,21 @@ using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
 {
-  [BepInPlugin(GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+  [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
   [BepInDependency("MrovLib", BepInDependency.DependencyFlags.HardDependency)]
   [BepInDependency("evaisa.lethallib", BepInDependency.DependencyFlags.SoftDependency)]
   [BepInDependency("BMX.LobbyCompatibility", BepInDependency.DependencyFlags.SoftDependency)]
   [BepInDependency("mattymatty.LobbyControl", BepInDependency.DependencyFlags.SoftDependency)]
   public class Plugin : BaseUnityPlugin
   {
-    public const string GUID = "mrov.WeatherRegistry";
+    [Obsolete("Use PluginInfo.PLUGIN_GUID instead")]
+    public const string GUID = PluginInfo.PLUGIN_GUID;
+
+    public const bool DEBUGGING = true;
 
     internal static ManualLogSource logger;
-    internal static MrovLib.Logger debugLogger = new(GUID);
-    internal static Harmony harmony = new(Plugin.GUID);
+    internal static MrovLib.Logger debugLogger = new(PluginInfo.PLUGIN_GUID);
+    internal static Harmony harmony = new(PluginInfo.PLUGIN_GUID);
 
     internal static bool IsLethalLibLoaded = false;
     internal static JLLCompat JLLCompat;
@@ -71,7 +74,7 @@ namespace WeatherRegistry
       ImperiumCompat = new ImperiumCompat("giosuel.Imperium");
 
       // Plugin startup logic
-      Logger.LogInfo($"Plugin {Plugin.GUID} is loaded!");
+      Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
 
     private void MainMenuInit()
