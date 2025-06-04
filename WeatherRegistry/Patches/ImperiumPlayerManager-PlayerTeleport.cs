@@ -42,9 +42,9 @@ namespace WeatherRegistry.Patches
           $"Postfix: Is player script inside? {StartOfRound.Instance.allPlayerScripts[request.PlayerId].isInsideFactory}"
         );
 
-        EntranceTeleportPatch.isPlayerInside = StartOfRound.Instance.allPlayerScripts[request.PlayerId].isInsideFactory;
+        Settings.IsPlayerInside = StartOfRound.Instance.allPlayerScripts[request.PlayerId].isInsideFactory;
 
-        if (EntranceTeleportPatch.isPlayerInside)
+        if (Settings.IsPlayerInside)
         {
           Plugin.debugLogger.LogDebug("Player is inside, disabling all weather effects.");
           TimeOfDay.Instance.DisableAllWeather(false);
