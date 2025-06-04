@@ -42,6 +42,12 @@ namespace WeatherRegistry
       }
 
       level.currentWeather = weather.VanillaWeatherType;
+
+      if (StartOfRound.Instance.currentLevel == level)
+      {
+        TimeOfDay.Instance.currentLevelWeather = weather.VanillaWeatherType;
+      }
+
       Logger.LogDebug($"Changed weather for {ConfigHelper.GetNumberlessName(level)} to {weather.VanillaWeatherType}");
 
       // if ship has already landed, don't change the weathers
