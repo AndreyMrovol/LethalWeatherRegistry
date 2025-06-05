@@ -72,13 +72,25 @@ namespace WeatherRegistry.Patches
         .ForEach(word =>
         {
           string newWord = word.Trim();
-          string pickedColor;
+          string pickedColorValue;
 
           // resolve weather name string into color using Settings.ScreenMapColors dictionary
           // so other mods (like weathertweaks) can add their own colors and symbols
-          pickedColor = ColorUtility.ToHtmlStringRGB(Settings.ScreenMapColors.TryGetValue(newWord, out Color value) ? value : Color.black);
 
-          outputString += pickedColor != "000000" ? $"<color=#{pickedColor}>{word}</color>" : $"{newWord}";
+          UnityEngine.Color pickedColor = Settings.ScreenMapColors.TryGetValue(newWord, out Color value) ? value : Color.black;
+          if (pickedColor != Color.black)
+          {
+            // add 10% of green value to make the editor color correctly display in-game (v70 screen color change)
+            pickedColor = new Color(pickedColor.r, pickedColor.g * 1.1f, pickedColor.b, pickedColor.a);
+            pickedColorValue = ColorUtility.ToHtmlStringRGB(pickedColor);
+          }
+          else
+          {
+            // if the color is not found, use black
+            pickedColorValue = "000000";
+          }
+
+          outputString += pickedColorValue != "000000" ? $"<color=#{pickedColorValue}>{word}</color>" : $"{newWord}";
         });
 
       return outputString;
