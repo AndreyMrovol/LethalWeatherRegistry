@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace WeatherRegistry.Definitions
 {
   public class WeatherEffectOverride
@@ -11,7 +13,9 @@ namespace WeatherRegistry.Definitions
     {
       Weather = weather;
       Level = level;
-      OverrideEffect = effect;
+      OverrideEffect = GameObject.Instantiate(effect);
+
+      OverrideEffect.name = $"{ConfigHelper.GetAlphanumericName(Level)}{Weather.VanillaWeatherType}Override";
 
       WeatherManager.WeatherEffectOverrides.Add(this);
       weather.WeatherEffectOverrides[level] = this;
