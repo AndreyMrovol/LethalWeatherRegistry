@@ -37,7 +37,7 @@ jobs:
 
       - name: Download dependencies from Thunderstore
         run: |
-          node downloader.js
+          node ./downloader.js ./assets/libs.toml ./lib/
 
       - name: Install Evaisa's netcode-patcher
         run: |
