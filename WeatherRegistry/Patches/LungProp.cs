@@ -23,6 +23,12 @@ namespace WeatherRegistry.Patches
         return true;
       }
 
+      if (!Settings.IsGameStarted)
+      {
+        Plugin.logger.LogInfo("Game has not been started yet, skipping WeatherRegistry's apparatus patch.");
+        return true;
+      }
+
       try
       {
         Plugin.debugLogger.LogInfo($"ApparatusSpawnBefore: {__instance.scrapValue}");

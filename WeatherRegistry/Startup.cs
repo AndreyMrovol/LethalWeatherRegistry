@@ -59,6 +59,7 @@ namespace WeatherRegistry.Patches
 
       WeatherManager.Reset();
       Settings.IsPlayerInside = false;
+      Settings.IsGameStarted = false;
 
       EventManager.BeforeSetupStart.Invoke();
 

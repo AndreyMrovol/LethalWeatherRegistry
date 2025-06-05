@@ -9,6 +9,8 @@ namespace WeatherRegistry
   {
     public static bool SetupFinished => WeatherManager.IsSetupFinished;
 
+    public static bool IsGameStarted { get; internal set; } = false;
+
     public static bool IsPlayerInside { get; set; } = false;
 
     public static Dictionary<string, Color> ScreenMapColors = [];

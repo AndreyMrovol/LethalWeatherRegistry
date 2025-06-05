@@ -17,6 +17,8 @@ namespace WeatherRegistry.Patches
         return;
       }
 
+      Settings.IsGameStarted = true;
+
       Weather currentWeather = WeatherManager.GetCurrentWeather(__instance.currentLevel);
 
       // why would the default vanilla value be 0.4? no fucking clue
