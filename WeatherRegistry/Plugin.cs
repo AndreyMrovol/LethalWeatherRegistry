@@ -8,6 +8,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 using MonoMod.RuntimeDetour;
 using MrovLib;
+using UnityEngine;
 using WeatherRegistry.Compatibility;
 using WeatherRegistry.Patches;
 
@@ -53,16 +54,7 @@ namespace WeatherRegistry
       {
         ContentManager.AddTerminalKeywords([ForecastVerb]);
 
-        List<CompatibleNoun> compatibleNouns = [];
-        List<TerminalNode> forecastNodes = [];
-        List<TerminalKeyword> forecastKeywords = [];
-
-        foreach (Weather weather in WeatherManager.GetWeathers())
-        {
-          compatibleNouns.Add(weather.ForecastNoun);
-          forecastNodes.Add(weather.ForecastNode);
-          forecastKeywords.Add(weather.ForecastKeyword);
-        }
+        var (compatibleNouns, forecastNodes, forecastKeywords) = Forecasts.InitializeForecastNodes();
 
         ForecastVerb.compatibleNouns = compatibleNouns.ToArray();
         ContentManager.AddTerminalNodes(forecastNodes);
