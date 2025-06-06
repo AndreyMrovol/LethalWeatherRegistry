@@ -5,6 +5,8 @@ using BepInEx.Bootstrap;
 using BepInEx.Logging;
 using HarmonyLib;
 using MonoMod.RuntimeDetour;
+using MrovLib;
+using UnityEngine;
 using WeatherRegistry.Compatibility;
 using WeatherRegistry.Patches;
 
@@ -35,6 +37,8 @@ namespace WeatherRegistry
 
     internal static Hook WeatherTypeEnumHook;
 
+    internal static TerminalKeyword ForecastVerb;
+
     private void Awake()
     {
       logger = Logger;
@@ -42,6 +46,22 @@ namespace WeatherRegistry
 
       ConfigManager.Init(Config);
       SunAnimator.Init();
+
+      ForecastVerb = ScriptableObject.CreateInstance<TerminalKeyword>();
+      ForecastVerb.name = "Forecast";
+      ForecastVerb.word = "forecast";
+      ForecastVerb.isVerb = true;
+
+      EventManager.SetupFinished.AddListener(() =>
+      {
+        ContentManager.AddTerminalKeywords([ForecastVerb]);
+
+        var (compatibleNouns, forecastNodes, forecastKeywords) = Forecasts.InitializeForecastNodes();
+
+        ForecastVerb.compatibleNouns = compatibleNouns.ToArray();
+        ContentManager.AddTerminalNodes(forecastNodes);
+        ContentManager.AddTerminalKeywords(forecastKeywords);
+      });
 
       MrovLib.EventManager.MainMenuLoaded.AddListener(MainMenuInit);
 

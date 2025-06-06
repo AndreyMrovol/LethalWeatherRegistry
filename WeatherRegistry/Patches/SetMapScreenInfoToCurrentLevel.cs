@@ -53,7 +53,7 @@ namespace WeatherRegistry.Patches
       return weather.Name;
     }
 
-    private static string GetColoredString(SelectableLevel level)
+    internal static string GetColoredString(SelectableLevel level)
     {
       Weather currentWeather = WeatherManager.GetCurrentWeather(level);
       string currentWeatherString = GetDisplayWeatherString(level, currentWeather);
