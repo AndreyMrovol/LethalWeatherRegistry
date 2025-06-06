@@ -1,3 +1,15 @@
+# 0.6.0
+
+- added `Forecast` command (thanks: `yoshiwoof22`, `xuxiaolan`!)
+- added `IsGameStarted` check for apparatus patches ([fixes this issue](https://github.com/AndreyMrovol/LethalWeatherTweaks/issues/46)) (thanks, `ajsglist`!)
+- moved `EntranceTeleportPatch.isPlayerInside` field to `Settings.IsPlayerInside` **(this is a breaking change)**
+- changed `Plugin.GUID` to `PluginInfo.PLUGIN_GUID` **(this is a breaking change)**
+- fixed not switching weather effects correctly when using Imperium teleportation (thanks, `zigzagawaka`!)
+- fixed issues with vanilla weathers not enabling correctly in certain situations (thanks, `zigzagawaka`!)
+- fixed Registry not displaying `mild weather` info in the terminal (thanks, `sciencebird`!)
+- fixed effect overrides not having correct names
+- adjusted weather colors to be displayed properly in v70
+
 # 0.5.7
 
 - reverted changes made for April Fools' Day
