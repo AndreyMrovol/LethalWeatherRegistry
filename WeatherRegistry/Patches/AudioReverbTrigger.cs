@@ -7,6 +7,8 @@ namespace WeatherRegistry.Patches
   [HarmonyPatch(typeof(AudioReverbTrigger))]
   public class AudioReverbTriggerPatches
   {
+    private static readonly MrovLib.Logger logger = new("WR AudioReverbTrigger");
+
     [HarmonyTranspiler]
     [HarmonyPatch("ChangeAudioReverbForPlayer")]
     internal static IEnumerable<CodeInstruction> ChangeAudioReverbForPlayerPatch(IEnumerable<CodeInstruction> instructions)
@@ -34,7 +36,35 @@ namespace WeatherRegistry.Patches
 
       matcher2.RemoveInstructions(7);
 
+      // call our method in place of removed code for extended logging
+      matcher2.Insert(
+        new CodeInstruction(OpCodes.Ldarg_0),
+        new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(AudioReverbTriggerPatches), nameof(ChangeReverbRegistryCheck)))
+      );
+
       return matcher.InstructionEnumeration();
+    }
+
+    public static void ChangeReverbRegistryCheck(AudioReverbTrigger audioReverbTrigger)
+    {
+      logger.LogWarning($"---CheckIfShouldEnable Ran!---");
+
+      if (audioReverbTrigger == null)
+      {
+        return;
+      }
+
+      if (audioReverbTrigger.enableCurrentLevelWeather && TimeOfDay.Instance.currentLevelWeather != LevelWeatherType.None)
+      {
+        logger.LogDebug($"AudioReverbTrigger: {audioReverbTrigger}");
+        logger.LogDebug($"EnableCurrentLevelWeather: {audioReverbTrigger.enableCurrentLevelWeather}");
+        logger.LogDebug($"CurrentLevelWeather: {TimeOfDay.Instance.currentLevelWeather}");
+
+        logger.LogWarning($"Currently enabled effects: {string.Join(", ", WeatherManager.CurrentEffectTypes)}");
+
+        // Enable the current level weather effects
+        WeatherEffectController.EnableCurrentWeatherEffects();
+      }
     }
   }
 }

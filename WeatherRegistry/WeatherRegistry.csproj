@@ -20,6 +20,8 @@
         <PackageProjectUrl>https://github.com/AndreyMrovol/LethalWeatherRegistry/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/AndreyMrovol/LethalWeatherRegistry/</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
+
+        <BepInExPluginGuid>$(PackageId)</BepInExPluginGuid>
     </PropertyGroup>
 
     <ItemGroup>
@@ -70,6 +72,10 @@
 
         <Reference Include="JLL" PrivateAssets="all">
             <HintPath>$(LibraryDirectory)/JLL.dll</HintPath>
+        </Reference>
+
+        <Reference Include="Imperium" PrivateAssets="all">
+            <HintPath>$(LibraryDirectory)/giosuel.Imperium.dll</HintPath>
         </Reference>
     </ItemGroup>
 

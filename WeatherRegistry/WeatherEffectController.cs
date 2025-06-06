@@ -34,7 +34,7 @@ namespace WeatherRegistry
         return;
       }
 
-      if (EntranceTeleportPatch.isPlayerInside)
+      if (Settings.IsPlayerInside)
       {
         Plugin.logger.LogWarning("Player is inside, not setting time of day effect");
         return;

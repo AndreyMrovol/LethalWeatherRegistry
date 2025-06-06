@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BepInEx.Logging;
@@ -12,7 +13,9 @@ namespace WeatherRegistry.Patches
   internal class EntranceTeleportPatch
   {
     internal static MrovLib.Logger logger = new("EntranceTeleport");
-    internal static bool isPlayerInside = false;
+
+    [Obsolete("Use Settings.IsPlayerInside instead")]
+    internal static bool isPlayerInside => Settings.IsPlayerInside;
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(EntranceTeleport), "TeleportPlayer")]
@@ -20,9 +23,9 @@ namespace WeatherRegistry.Patches
     {
       logger.LogDebug($"TeleportPlayerPatch called with {__instance.name}");
 
-      isPlayerInside = __instance.isEntranceToBuilding;
+      Settings.IsPlayerInside = __instance.isEntranceToBuilding;
 
-      if (isPlayerInside)
+      if (Settings.IsPlayerInside)
       {
         logger.LogDebug("Player is inside");
       }

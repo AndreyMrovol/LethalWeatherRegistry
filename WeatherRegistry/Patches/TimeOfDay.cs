@@ -31,7 +31,7 @@ namespace WeatherRegistry.Patches
       }
 
       EventManager.DisableAllWeathers.Invoke();
-      Patches.EntranceTeleportPatch.isPlayerInside = false;
+      Settings.IsPlayerInside = false;
 
       WeatherSync.Instance.SetWeatherEffectOnHost(LevelWeatherType.None);
     }

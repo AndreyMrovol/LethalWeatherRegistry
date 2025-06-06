@@ -1,0 +1,5 @@
+[libraries]
+
+[[library]]
+name = "Imperium"
+url = "https://github.com/giosuel/imperium/releases/download/v0.2.8/imperium_v0.2.8.zip"
