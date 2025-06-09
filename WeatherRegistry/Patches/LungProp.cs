@@ -23,6 +23,8 @@ namespace WeatherRegistry.Patches
         return true;
       }
 
+      UpdateScanNode(__instance);
+
       if (!Settings.IsGameStarted)
       {
         Plugin.logger.LogInfo("Game has not been started yet, skipping WeatherRegistry's apparatus patch.");
@@ -37,6 +39,9 @@ namespace WeatherRegistry.Patches
         Plugin.debugLogger.LogInfo($"Scrap multiplier: {weather.ScrapValueMultiplier}");
         __instance.SetScrapValue((int)(__instance.scrapValue * weather.ScrapValueMultiplier));
 
+        // change the tooltip value of apparatus to ???
+        UpdateScanNode(__instance);
+
         Plugin.debugLogger.LogInfo($"ApparatusSpawnAfter: {__instance.scrapValue}");
       }
       catch (Exception exception)
@@ -46,6 +51,15 @@ namespace WeatherRegistry.Patches
       }
 
       return true;
+    }
+
+    private static void UpdateScanNode(LungProp lungProp)
+    {
+      var scanNode = lungProp.gameObject.GetComponentInChildren<ScanNodeProperties>();
+      if (scanNode != null)
+      {
+        scanNode.subText = "Value: $???";
+      }
     }
   }
 }
