@@ -1,3 +1,7 @@
+# 0.6.1
+
+- fixed an issue with apparatus showing up its correct value
+
 # 0.6.0
 
 - added `Forecast` command (thanks: `yoshiwoof22`, `xuxiaolan`!)
