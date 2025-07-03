@@ -35,6 +35,10 @@
         <DebugLibraryDirectory>V:\LC-ModLibraries</DebugLibraryDirectory>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <DefineConstants>DEVMODE</DefineConstants>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1">
             <PrivateAssets>all</PrivateAssets>
