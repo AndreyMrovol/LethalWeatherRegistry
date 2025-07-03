@@ -35,7 +35,7 @@ namespace WeatherRegistry
   }
 
   [JsonObject(MemberSerialization.OptIn)]
-  [CreateAssetMenu(fileName = "Weather", menuName = "WeatherRegistry/WeatherDefinition", order = 5)]
+  // [CreateAssetMenu(fileName = "Weather", menuName = "WeatherRegistry/OlderWeatherDefinition", order = 5)]
   public class Weather : ScriptableObject
   {
     #region Base properties
