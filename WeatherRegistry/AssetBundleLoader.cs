@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using BepInEx;
-using BepInEx.Logging;
 using UnityEngine;
 using WeatherRegistry.Editor;
 
@@ -31,6 +29,10 @@ namespace WeatherRegistry
 
       // Or load all bundles in the folder
       LoadAllBundlesInFolder(bundlesPath);
+
+      Plugin.logger.LogInfo(
+        $"Loaded {LoadedWeather.Count} weather definitions from asset bundles: {string.Join(", ", LoadedWeather.Select(w => (w.name, (int)w.VanillaWeatherType)))}"
+      );
     }
 
     private static void LoadAllBundlesInFolder(string bundlesPath)
@@ -79,45 +81,48 @@ namespace WeatherRegistry
 
       foreach (WeatherDefinition WeatherDefinition in WeatherDefinitionAssets)
       {
-        Weather weather = ScriptableObject.CreateInstance<Weather>();
-        weather.name = WeatherDefinition.Name;
-        weather.Color = WeatherDefinition.Color;
-        weather.Effect = GameObject.Instantiate(WeatherDefinition.Effect);
-        weather.Origin = WeatherOrigin.WeatherRegistry;
-        weather.Type = WeatherType.Modded;
-        weather.Config = WeatherDefinition.Config.CreateFullConfig();
+        GameObject effectObject = null;
+        if (WeatherDefinition.Effect.EffectObject != null)
+        {
+          effectObject = GameObject.Instantiate(WeatherDefinition.Effect.EffectObject);
+          if (effectObject != null)
+          {
+            effectObject.hideFlags = HideFlags.HideAndDontSave;
+            GameObject.DontDestroyOnLoad(effectObject);
+          }
+        }
 
-        weather.hideFlags = HideFlags.HideAndDontSave;
+        GameObject effectPermanentObject = null;
+        if (WeatherDefinition.Effect.WorldObject != null)
+        {
+          effectPermanentObject = GameObject.Instantiate(WeatherDefinition.Effect.WorldObject);
+          if (effectPermanentObject != null)
+          {
+            effectPermanentObject.hideFlags = HideFlags.HideAndDontSave;
+            GameObject.DontDestroyOnLoad(effectPermanentObject);
+          }
+        }
 
-        weather.Effect.EffectObject = GameObject.Instantiate(weather.Effect.EffectObject);
-        weather.Effect.WorldObject = GameObject.Instantiate(weather.Effect.WorldObject);
+        ImprovedWeatherEffect newImprovedWeatherEffect =
+          new(effectObject, effectPermanentObject)
+          {
+            SunAnimatorBool = WeatherDefinition.Effect.SunAnimatorBool,
+            DefaultVariable1 = WeatherDefinition.Effect.DefaultVariable1,
+            DefaultVariable2 = WeatherDefinition.Effect.DefaultVariable2
+          };
 
-        LoadedWeather.Add(weather);
-      }
+        Weather weather =
+          new(WeatherDefinition.Name, newImprovedWeatherEffect)
+          {
+            Color = WeatherDefinition.Color,
+            Origin = WeatherOrigin.WeatherRegistry,
+            Type = WeatherType.Modded,
+            Config = WeatherDefinition.Config.CreateFullConfig(),
+            hideFlags = HideFlags.HideAndDontSave
+          };
 
-      // TODO: remove this when out of dev phase
-
-      // Load all Weather assets
-      Weather[] WeatherAssets = bundle.LoadAllAssets<Weather>();
-
-      foreach (Weather Weather in WeatherAssets)
-      {
-        Plugin.debugLogger.LogError($"Weather {Weather.name} is using OldWeatherDefinition!");
-        Plugin.debugLogger.LogWarning("Please update it to use WeatherDefinition.");
-
-        Weather.hideFlags = HideFlags.HideAndDontSave;
-        Weather.Origin = WeatherOrigin.WeatherRegistry;
-        Weather.Config = new() { };
-        Weather.WeatherVariables = [];
-        Weather.WeatherEffectOverrides = [];
-
-        GameObject.Instantiate(Weather);
-        GameObject.Instantiate(Weather.Effect);
-
-        // Weather.Effect.EffectObject = GameObject.Instantiate(Weather.Effect.EffectObject);
-        // Weather.Effect.WorldObject = GameObject.Instantiate(Weather.Effect.WorldObject);
-
-        LoadedWeather.Add(Weather);
+        GameObject.DontDestroyOnLoad(weather);
+        WeatherManager.RegisterWeather(weather);
       }
     }
   }
