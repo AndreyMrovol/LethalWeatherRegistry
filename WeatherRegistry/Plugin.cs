@@ -52,6 +52,8 @@ namespace WeatherRegistry
       ConfigManager.Init(Config);
       SunAnimator.Init();
 
+      AssetBundleLoader.LoadAssetBundles();
+
       ForecastVerb = ScriptableObject.CreateInstance<TerminalKeyword>();
       ForecastVerb.name = "Forecast";
       ForecastVerb.word = "forecast";
@@ -69,6 +71,14 @@ namespace WeatherRegistry
       });
 
       MrovLib.EventManager.MainMenuLoaded.AddListener(MainMenuInit);
+
+      EventManager.BeforeSetupStart.AddListener(() =>
+      {
+        AssetBundleLoader.LoadedWeather.ForEach(weather =>
+        {
+          WeatherManager.RegisterWeather(weather);
+        });
+      });
 
       if (Chainloader.PluginInfos.ContainsKey("evaisa.lethallib"))
       {
