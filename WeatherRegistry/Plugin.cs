@@ -44,6 +44,11 @@ namespace WeatherRegistry
       logger = Logger;
       harmony.PatchAll();
 
+#if DEVMODE
+      Plugin.logger.LogWarning("Dev build detected, enabling debug logging.");
+      debugLogger.ConfigEntry.Value = true;
+#endif
+
       ConfigManager.Init(Config);
       SunAnimator.Init();
 
