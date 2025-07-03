@@ -59,6 +59,7 @@ namespace WeatherRegistry
     public Dictionary<SelectableLevel, LevelWeatherVariables> WeatherVariables = [];
 
     [JsonIgnore]
+    [Obsolete]
     public AnimationClip AnimationClip;
 
     [field: SerializeField]
