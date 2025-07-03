@@ -7,14 +7,21 @@ namespace WeatherRegistry
   public class ImprovedWeatherEffect : ScriptableObject
   {
     [JsonIgnore]
+    [Tooltip("The GameObject that is visible only for the player, i.e. rain particles, sound effects etc.")]
+    [SerializeField]
     public GameObject EffectObject;
 
     [JsonIgnore]
+    [Tooltip("The GameObject that is placed in the world, i.e. floodwater, lightning bolts etc.")]
+    [SerializeField]
     public GameObject WorldObject;
 
     private bool _effectEnabled;
 
     [field: SerializeField]
+    [Tooltip(
+      "The name of sun animator's bool that gets toggled when the weather effect is enabled. Vanilla uses '' for clear weather, 'overcast' for stormy/flooded, 'eclipse' for eclipsed."
+    )]
     public string SunAnimatorBool { get; set; }
 
     [field: SerializeField]
