@@ -72,14 +72,6 @@ namespace WeatherRegistry
 
       MrovLib.EventManager.MainMenuLoaded.AddListener(MainMenuInit);
 
-      EventManager.BeforeSetupStart.AddListener(() =>
-      {
-        AssetBundleLoader.LoadedWeather.ForEach(weather =>
-        {
-          WeatherManager.RegisterWeather(weather);
-        });
-      });
-
       if (Chainloader.PluginInfos.ContainsKey("evaisa.lethallib"))
       {
         IsLethalLibLoaded = true;
