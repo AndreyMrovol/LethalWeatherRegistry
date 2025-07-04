@@ -69,7 +69,7 @@ namespace WeatherRegistry
     public RegistryWeatherConfig Config = new();
 
     [JsonIgnore]
-    internal Dictionary<SelectableLevel, WeatherEffectOverride> WeatherEffectOverrides = [];
+    internal Dictionary<SelectableLevel, Definitions.WeatherEffectOverride> WeatherEffectOverrides = [];
 
     #endregion
 
@@ -285,7 +285,7 @@ namespace WeatherRegistry
       return (false, DefaultWeight);
     }
 
-    public WeatherEffectOverride GetEffectOverride(SelectableLevel level)
+    public Definitions.WeatherEffectOverride GetEffectOverride(SelectableLevel level)
     {
       if (WeatherEffectOverrides.ContainsKey(level))
       {

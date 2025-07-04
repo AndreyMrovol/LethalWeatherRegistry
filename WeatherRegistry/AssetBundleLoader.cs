@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using WeatherRegistry.Definitions;
 using WeatherRegistry.Editor;
 
 namespace WeatherRegistry
@@ -78,6 +79,7 @@ namespace WeatherRegistry
 
       // Load all WeatherDefinition assets
       WeatherDefinition[] WeatherDefinitionAssets = bundle.LoadAllAssets<WeatherDefinition>();
+      EffectOverride[] effectOverrides = bundle.LoadAllAssets<EffectOverride>();
 
       foreach (WeatherDefinition WeatherDefinition in WeatherDefinitionAssets)
       {
@@ -123,6 +125,30 @@ namespace WeatherRegistry
 
         GameObject.DontDestroyOnLoad(weather);
         WeatherManager.RegisterWeather(weather);
+      }
+
+      // Load all EffectOverride assets
+      foreach (EffectOverride effectOverride in effectOverrides)
+      {
+        if (effectOverride == null || string.IsNullOrEmpty(effectOverride.weatherName))
+        {
+          Plugin.debugLogger.LogWarning("EffectOverride is null or has no weatherName, skipping.");
+          continue;
+        }
+
+        Weather weather = ConfigHelper.ResolveStringToWeather(effectOverride.weatherName);
+        if (weather == null)
+        {
+          Plugin.debugLogger.LogWarning($"Weather {effectOverride.weatherName} not found, skipping EffectOverride.");
+          continue;
+        }
+
+        SelectableLevel level = ConfigHelper.ConvertStringToLevels(effectOverride.levelName).FirstOrDefault();
+
+        ImprovedWeatherEffect overrideEffect = effectOverride.OverrideEffect;
+
+        WeatherEffectOverride newOverride =
+          new(weather, level, overrideEffect, effectOverride.weatherDisplayName, effectOverride.weatherDisplayColor);
       }
     }
   }

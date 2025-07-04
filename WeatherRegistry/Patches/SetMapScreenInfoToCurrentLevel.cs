@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using HarmonyLib;
 using TMPro;
 using UnityEngine;
+using WeatherRegistry.Definitions;
 
 namespace WeatherRegistry.Patches
 {
@@ -50,6 +51,15 @@ namespace WeatherRegistry.Patches
     // it's like that because of weathertweaks
     private static string GetDisplayWeatherString(SelectableLevel level, Weather weather)
     {
+      if (Settings.WeatherOverrideNames)
+      {
+        WeatherEffectOverride currentOverride = WeatherManager.GetCurrentWeatherOverride(level, weather);
+        if (currentOverride != null && !string.IsNullOrEmpty(currentOverride.DisplayName))
+        {
+          return currentOverride.DisplayName;
+        }
+      }
+
       return weather.Name;
     }
 
