@@ -193,6 +193,7 @@ namespace WeatherRegistry
       return GetCurrentWeather(level).Name;
     }
 
+    [Obsolete]
     internal static AnimationClip GetWeatherAnimationClip(LevelWeatherType weatherType)
     {
       return GetWeather(weatherType).AnimationClip;
