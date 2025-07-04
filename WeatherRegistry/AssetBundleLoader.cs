@@ -143,12 +143,15 @@ namespace WeatherRegistry
           continue;
         }
 
-        SelectableLevel level = ConfigHelper.ConvertStringToLevels(effectOverride.levelName).FirstOrDefault();
+        SelectableLevel[] levels = ConfigHelper.ConvertStringToLevels(effectOverride.levelName);
 
         ImprovedWeatherEffect overrideEffect = effectOverride.OverrideEffect;
 
-        WeatherEffectOverride newOverride =
-          new(weather, level, overrideEffect, effectOverride.weatherDisplayName, effectOverride.weatherDisplayColor);
+        foreach (SelectableLevel level in levels)
+        {
+          WeatherEffectOverride newOverride =
+            new(weather, level, overrideEffect, effectOverride.weatherDisplayName, effectOverride.weatherDisplayColor);
+        }
       }
     }
   }
