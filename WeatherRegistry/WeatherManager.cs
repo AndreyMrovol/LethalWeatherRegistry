@@ -14,7 +14,8 @@ namespace WeatherRegistry
     public static List<Weather> RegisteredWeathers { get; internal set; } = [];
     public static List<LevelWeather> LevelWeathers { get; internal set; } = [];
 
-    public static List<WeatherEffectOverride> WeatherEffectOverrides { get; internal set; } = [];
+    [Obsolete("Use WeatherOverrideManager.WeatherEffectOverrides instead")]
+    public static List<WeatherEffectOverride> WeatherEffectOverrides => WeatherOverrideManager.WeatherEffectOverrides;
 
     public static List<WeatherMatcher> WeatherMatchers { get; internal set; } = [];
 
@@ -87,8 +88,9 @@ namespace WeatherRegistry
       Weathers.Clear();
       WeathersDictionary.Clear();
       ModdedWeatherEnumExtension.Clear();
-      WeatherEffectOverrides.Clear();
       CurrentWeathers.Clear();
+
+      WeatherOverrideManager.WeatherEffectOverrides.Clear();
 
       Settings.ScreenMapColors.Clear();
 
@@ -199,11 +201,10 @@ namespace WeatherRegistry
       return GetWeather(weatherType).AnimationClip;
     }
 
+    [Obsolete("Use WeatherOverrideManager.GetCurrentWeatherOverride instead")]
     public static WeatherEffectOverride GetCurrentWeatherOverride(SelectableLevel level, Weather weather)
     {
-      weather.WeatherEffectOverrides.TryGetValue(level, out WeatherEffectOverride weatherEffectOverride);
-
-      return weatherEffectOverride;
+      return WeatherOverrideManager.GetCurrentWeatherOverride(level, weather);
     }
 
     public static string GetWeatherList()
