@@ -115,6 +115,16 @@ namespace WeatherRegistry
         list.ForEach(level =>
         {
           vanillaSelectedWeather[level] = LevelWeatherType.None;
+
+          if (level.overrideWeather)
+          {
+            Logger.LogDebug($"Override weather present for {level.PlanetName}, changing weather to {level.overrideWeatherType}");
+            Weather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
+
+            vanillaSelectedWeather[level] = overrideWeather.VanillaWeatherType;
+            // WeatherManager.CurrentWeathers[level] = overrideWeather;
+            EventManager.WeatherChanged.Invoke((level, overrideWeather));
+          }
         });
 
         Logger.LogMessage("Selected vanilla algorithm - weights are not being used!");
