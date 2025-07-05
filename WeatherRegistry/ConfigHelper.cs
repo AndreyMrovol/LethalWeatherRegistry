@@ -46,7 +46,12 @@ namespace WeatherRegistry
     {
       if (Enabled)
       {
-        ConfigEntry = ConfigFile.Bind(weather.ConfigCategory, configTitle, DefaultValue, configDescription);
+        ConfigEntry = ConfigFile.Bind(
+          ConfigHelper.CleanStringForConfig(weather.ConfigCategory),
+          ConfigHelper.CleanStringForConfig(configTitle),
+          DefaultValue,
+          configDescription
+        );
       }
       else
       {
@@ -59,7 +64,12 @@ namespace WeatherRegistry
     {
       if (Enabled)
       {
-        ConfigEntry = ConfigFile.Bind(configCategory, configTitle, DefaultValue, configDescription);
+        ConfigEntry = ConfigFile.Bind(
+          ConfigHelper.CleanStringForConfig(configCategory),
+          ConfigHelper.CleanStringForConfig(configTitle),
+          DefaultValue,
+          configDescription
+        );
       }
       else
       {
@@ -170,6 +180,14 @@ namespace WeatherRegistry
   internal class ConfigHelper
   {
     private static MrovLib.Logger logger = new("WeatherRegistry", ConfigManager.LogWeightResolving);
+
+    private static readonly Regex ConfigCleanerRegex = new(@"[\n\t""`\[\]']");
+
+    internal static string CleanStringForConfig(string input)
+    {
+      // The regex pattern matches: newline, tab, double quote, backtick, apostrophe, [ or ].
+      return ConfigCleanerRegex.Replace(input, string.Empty).Trim();
+    }
 
     private static Dictionary<string, Weather> _weathersDictionary = null;
     public static Dictionary<string, Weather> StringToWeather
