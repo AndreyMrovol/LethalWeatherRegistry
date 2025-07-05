@@ -11,8 +11,11 @@ namespace WeatherRegistry
   public class AssetBundleLoader
   {
     internal static DirectoryInfo pluginsFolder = new DirectoryInfo(Assembly.GetExecutingAssembly().Location).Parent.Parent;
-    public static List<Weather> LoadedWeather { get; private set; } = [];
     private static Dictionary<string, AssetBundle> LoadedBundles = [];
+
+    public static List<Weather> LoadedWeather { get; private set; } = [];
+    private static List<EffectOverride> LoadedEffectOverrides = [];
+    private static List<PlanetNameOverride> LoadedPlanetNameOverrides = [];
 
     internal static void LoadAssetBundles()
     {
@@ -79,7 +82,8 @@ namespace WeatherRegistry
 
       // Load all WeatherDefinition assets
       WeatherDefinition[] WeatherDefinitionAssets = bundle.LoadAllAssets<WeatherDefinition>();
-      EffectOverride[] effectOverrides = bundle.LoadAllAssets<EffectOverride>();
+      LoadedEffectOverrides = bundle.LoadAllAssets<EffectOverride>().ToList();
+      LoadedPlanetNameOverrides = bundle.LoadAllAssets<PlanetNameOverride>().ToList();
 
       foreach (WeatherDefinition WeatherDefinition in WeatherDefinitionAssets)
       {
@@ -126,9 +130,12 @@ namespace WeatherRegistry
         GameObject.DontDestroyOnLoad(weather);
         WeatherManager.RegisterWeather(weather);
       }
+    }
 
+    public static void LoadWeatherOverrides()
+    {
       // Load all EffectOverride assets
-      foreach (EffectOverride effectOverride in effectOverrides)
+      foreach (EffectOverride effectOverride in LoadedEffectOverrides)
       {
         if (effectOverride == null || string.IsNullOrEmpty(effectOverride.weatherName))
         {
@@ -146,11 +153,17 @@ namespace WeatherRegistry
         SelectableLevel[] levels = ConfigHelper.ConvertStringToLevels(effectOverride.levelName);
 
         ImprovedWeatherEffect overrideEffect = effectOverride.OverrideEffect;
+        PlanetNameOverride planetNameOverride = LoadedPlanetNameOverrides.Where(o => o.effectOverride == overrideEffect).First();
 
         foreach (SelectableLevel level in levels)
         {
           WeatherEffectOverride newOverride =
             new(weather, level, overrideEffect, effectOverride.weatherDisplayName, effectOverride.weatherDisplayColor);
+
+          if (planetNameOverride != null && !string.IsNullOrEmpty(planetNameOverride.newPlanetName))
+          {
+            WeatherOverrideManager.PlanetOverrideNames.Add(newOverride, planetNameOverride.newPlanetName);
+          }
         }
       }
     }

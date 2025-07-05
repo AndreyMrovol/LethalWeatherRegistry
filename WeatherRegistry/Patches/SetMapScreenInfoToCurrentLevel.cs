@@ -32,9 +32,18 @@ namespace WeatherRegistry.Patches
       }
 
       Regex multiNewLine = new(@"\n{2,}");
+      string planetName = ___currentLevel.PlanetName;
+
+      Weather currentWeather = WeatherManager.GetCurrentWeather(___currentLevel);
+      if (WeatherOverrideManager.GetCurrentWeatherOverride(___currentLevel, currentWeather) is WeatherEffectOverride currentOverride)
+      {
+        string newName = WeatherOverrideManager.GetPlanetOverrideName(currentOverride);
+
+        planetName = !string.IsNullOrEmpty(newName) ? $"{planetName} ({newName})" : ___currentLevel.PlanetName;
+      }
 
       StringBuilder stringBuilder = new();
-      stringBuilder.Append($"ORBITING: {___currentLevel.PlanetName}\n");
+      stringBuilder.Append($"ORBITING: {planetName}\n");
       stringBuilder.Append($"WEATHER: {GetColoredString(___currentLevel)}\n");
       stringBuilder.Append(multiNewLine.Replace(___currentLevel.LevelDescription, "\n") ?? "");
 
