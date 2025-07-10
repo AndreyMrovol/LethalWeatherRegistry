@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace WeatherRegistry
 {
-  [CreateAssetMenu(fileName = "WeatherEffect", menuName = "WeatherRegistry/WeatherEffect", order = 10)]
+  [CreateAssetMenu(fileName = "WeatherEffect", menuName = "WeatherRegistry/ImprovedWeatherEffect", order = 90)]
   public class ImprovedWeatherEffect : ScriptableObject
   {
     [JsonIgnore]

@@ -13,7 +13,7 @@ using WeatherRegistry.Patches;
 namespace WeatherRegistry.Editor
 {
   [JsonObject(MemberSerialization.OptIn)]
-  [CreateAssetMenu(fileName = "Weather Definition", menuName = "WeatherRegistry/WeatherDefinition", order = 5)]
+  [CreateAssetMenu(fileName = "Weather Definition", menuName = "WeatherRegistry/WeatherDefinition", order = 100)]
   public class WeatherDefinition : ScriptableObject
   {
     [Header("Basic properties")]
