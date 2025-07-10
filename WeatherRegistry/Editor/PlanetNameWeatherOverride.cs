@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace WeatherRegistry.Editor
 {
-  [CreateAssetMenu(fileName = "PlanetNameOverride", menuName = "WeatherRegistry/PlanetName Override", order = 1)]
+  [CreateAssetMenu(fileName = "PlanetNameOverride", menuName = "WeatherRegistry/Overrides/PlanetNameOverride", order = 5)]
   public class PlanetNameOverride : ScriptableObject
   {
     [Header("Matching properties")]

@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace WeatherRegistry.Editor
 {
-  [CreateAssetMenu(fileName = "WeatherEffectOverride", menuName = "WeatherRegistry/WeatherEffectOverride", order = 6)]
+  [CreateAssetMenu(fileName = "WeatherEffectOverride", menuName = "WeatherRegistry/Overrides/WeatherEffectOverride", order = 3)]
   public class EffectOverride : ScriptableObject
   {
     [Header("Matching properties")]
