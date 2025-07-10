@@ -62,7 +62,7 @@ namespace WeatherRegistry.Patches
     {
       if (Settings.WeatherOverrideNames)
       {
-        WeatherEffectOverride currentOverride = WeatherManager.GetCurrentWeatherOverride(level, weather);
+        WeatherEffectOverride currentOverride = WeatherOverrideManager.GetCurrentWeatherOverride(level, weather);
         if (currentOverride != null && !string.IsNullOrEmpty(currentOverride.DisplayName))
         {
           return currentOverride.DisplayName;

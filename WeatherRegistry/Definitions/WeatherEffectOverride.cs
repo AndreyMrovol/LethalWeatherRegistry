@@ -35,7 +35,7 @@ namespace WeatherRegistry.Definitions
       }
 
       // Add to collections after everything is initialized
-      WeatherManager.WeatherEffectOverrides.Add(this);
+      WeatherOverrideManager.WeatherEffectOverrides.Add(this);
       weather.WeatherEffectOverrides[level] = this;
 
       Plugin.logger.LogWarning($"this.DisplayName: {DisplayName}");
