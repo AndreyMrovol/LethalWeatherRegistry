@@ -411,7 +411,7 @@ namespace WeatherRegistry.Patches
 
         if (hostWeatherList != localWeatherList)
         {
-          Logger.LogWarning("Weathers are different between clients!");
+          Logger.LogError("Weathers are different between clients!");
           Logger.LogDebug($"Host: {hostWeatherList}");
           Logger.LogDebug($"Local: {localWeatherList}");
         }
