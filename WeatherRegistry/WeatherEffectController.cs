@@ -140,7 +140,7 @@ namespace WeatherRegistry
     public static void DisableWeatherEffects(Weather[] newWeathers)
     {
       // disable all weather effects
-      foreach (WeatherEffectOverride effectOverride in WeatherManager.WeatherEffectOverrides)
+      foreach (WeatherEffectOverride effectOverride in WeatherOverrideManager.WeatherEffectOverrides)
       {
         if (newWeathers.Contains(effectOverride.Weather))
         {
