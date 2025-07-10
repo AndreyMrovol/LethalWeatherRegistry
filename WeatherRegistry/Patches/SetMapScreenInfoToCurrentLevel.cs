@@ -43,7 +43,27 @@ namespace WeatherRegistry.Patches
       }
 
       StringBuilder stringBuilder = new();
+
+      if (planetName.Length > 20)
+      {
+        // good lord, help me with the maths homework
+
+        // 30 is the max characters that can fit with font=100%
+        // we need to scale it down accordingly and represent it as a percentage
+
+        int fontScaling = Mathf.Clamp((int)(100f * (20f / planetName.Length)), 65, 100);
+        Plugin.debugLogger.LogDebug($"New font scale is {fontScaling}%");
+
+        stringBuilder.Append($"<size={fontScaling}%><cspace=-0.8px>");
+      }
+
       stringBuilder.Append($"ORBITING: {planetName}\n");
+
+      if (planetName.Length > 20)
+      {
+        stringBuilder.Append($"</size></cspace>");
+      }
+
       stringBuilder.Append($"WEATHER: {GetColoredString(___currentLevel)}\n");
       stringBuilder.Append(multiNewLine.Replace(___currentLevel.LevelDescription, "\n") ?? "");
 
