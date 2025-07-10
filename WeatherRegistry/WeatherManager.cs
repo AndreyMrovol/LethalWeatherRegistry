@@ -213,7 +213,7 @@ namespace WeatherRegistry
 
       foreach (var weather in Weathers)
       {
-        weathers.Add(new WeatherListData { WeatherID = ((int)weather.VanillaWeatherType).ToString(), WeatherName = weather.name });
+        weathers.Add(new WeatherListData { WeatherID = ((int)weather.VanillaWeatherType).ToString(), WeatherName = weather.Name });
       }
 
       return JsonConvert.SerializeObject(

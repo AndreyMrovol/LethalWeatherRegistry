@@ -294,7 +294,7 @@ namespace WeatherRegistry.Patches
           LevelsToApply.RemoveAll(level => weather.LevelFilters.Contains(level));
         }
 
-        Logger.LogInfo($"Weather {weather.name} has {weather.LevelFilteringOption.ToString()} filtering option set up");
+        Logger.LogInfo($"Weather {weather.Name} has {weather.LevelFilteringOption.ToString()} filtering option set up");
 
         AddWeatherToLevels(weather, levels, LevelsToApply);
       }
