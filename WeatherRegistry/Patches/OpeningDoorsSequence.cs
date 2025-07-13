@@ -122,7 +122,6 @@ namespace WeatherRegistry
         instance.currentLevel.currentWeather != LevelWeatherType.None ? WeatherManager.GetCurrentWeatherName(instance.currentLevel) : "Clear";
       var weatherLine = $"WEATHER: {weatherName}";
 
-      Plugin.logger.LogDebug(weatherLine);
       return $"{weatherLine}\n{description}";
     }
 
