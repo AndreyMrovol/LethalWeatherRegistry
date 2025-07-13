@@ -280,6 +280,8 @@ namespace WeatherRegistry.Patches
         Settings.ScreenMapColors.Add(weather.Name, weather.Color);
         weather.Init();
 
+        Logger.LogInfo($"Weather {weather.Name} has {weather.LevelFilteringOption} filtering option set up");
+
         List<SelectableLevel> LevelsToApply = [];
 
         if (weather.LevelFilteringOption == FilteringOption.Include)
@@ -291,8 +293,6 @@ namespace WeatherRegistry.Patches
           LevelsToApply = MrovLib.LevelHelper.SortedLevels.ToList();
           LevelsToApply.RemoveAll(level => weather.LevelFilters.Contains(level));
         }
-
-        Logger.LogInfo($"Weather {weather.Name} has {weather.LevelFilteringOption} filtering option set up");
 
         AddWeatherToLevels(weather, LevelsToApply);
       }
