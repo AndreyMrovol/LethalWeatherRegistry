@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using ConsoleTables;
 using HarmonyLib;
 using Newtonsoft.Json;
@@ -128,7 +130,6 @@ namespace WeatherRegistry.Patches
       for (int i = 0; i < effects.Count(); i++)
       {
         WeatherEffect effect = effects[i];
-        Logger.LogInfo($"Effect: {effect.name}");
 
         LevelWeatherType weatherType = (LevelWeatherType)i;
         bool isVanilla = Defaults.VanillaWeathers.Contains(weatherType);
@@ -188,14 +189,13 @@ namespace WeatherRegistry.Patches
 
       #region Enum value assignment (hack)
 
-      // at this point we need to assing enum value for every registered modded weather that's not from lethallib
+      // assign enum value for every registered modded weather that's not from lethallib
       int biggestKeyInModdedWeathersDictionary = Enum.GetValues(typeof(LevelWeatherType)).Length - 1;
       if (WeatherManager.ModdedWeatherEnumExtension.Count > 0)
       {
         biggestKeyInModdedWeathersDictionary = WeatherManager.ModdedWeatherEnumExtension.Keys.Max() + 1;
       }
 
-      Logger.LogDebug(WeatherManager.ModdedWeatherEnumExtension.Count > 0);
       Logger.LogDebug("Biggest key in modded weathers dictionary: " + biggestKeyInModdedWeathersDictionary);
 
       WeatherManager
@@ -275,8 +275,6 @@ namespace WeatherRegistry.Patches
 
       Logger.LogDebug($"Weathers: {WeatherManager.Weathers.Count}");
 
-      List<SelectableLevel> levels = MrovLib.LevelHelper.SortedLevels;
-
       foreach (Weather weather in WeatherManager.Weathers)
       {
         Settings.ScreenMapColors.Add(weather.Name, weather.Color);
@@ -290,13 +288,13 @@ namespace WeatherRegistry.Patches
         }
         else if (weather.LevelFilteringOption == FilteringOption.Exclude)
         {
-          LevelsToApply = levels.ToList();
+          LevelsToApply = MrovLib.LevelHelper.SortedLevels.ToList();
           LevelsToApply.RemoveAll(level => weather.LevelFilters.Contains(level));
         }
 
-        Logger.LogInfo($"Weather {weather.Name} has {weather.LevelFilteringOption.ToString()} filtering option set up");
+        Logger.LogInfo($"Weather {weather.Name} has {weather.LevelFilteringOption} filtering option set up");
 
-        AddWeatherToLevels(weather, levels, LevelsToApply);
+        AddWeatherToLevels(weather, LevelsToApply);
       }
 
       #region Print possible weathers
@@ -304,7 +302,7 @@ namespace WeatherRegistry.Patches
 
       var possibleWeathersTable = new ConsoleTable("Planet", "Random weathers");
 
-      levels.ForEach(level =>
+      MrovLib.LevelHelper.SortedLevels.ForEach(level =>
       {
         List<LevelWeatherType> randomWeathers = level.randomWeathers.Select(x => x.weatherType).ToList();
         randomWeathers.Sort();
@@ -364,7 +362,7 @@ namespace WeatherRegistry.Patches
 
         var levelWeightsTable = new ConsoleTable(levelWeightsColumnNames);
 
-        levels.ForEach(level =>
+        MrovLib.LevelHelper.SortedLevels.ForEach(level =>
         {
           var row = new List<string> { ConfigHelper.GetNumberlessName(level) };
 
@@ -420,149 +418,99 @@ namespace WeatherRegistry.Patches
       #endregion
     }
 
-    static void AddWeatherToLevels(Weather weather, List<SelectableLevel> levels, List<SelectableLevel> LevelsToApply)
+    static void AddWeatherToLevels(Weather weather, List<SelectableLevel> LevelsToApply)
     {
-      List<LevelWeatherVariables> levelWeatherVariables = [];
       weather.WeatherVariables.Clear();
+      StringBuilder weatherLog = new();
+      weatherLog.Append($"Weather: {weather.Name}");
 
-      foreach (SelectableLevel level in levels)
+      foreach (SelectableLevel level in MrovLib.LevelHelper.SortedLevels)
       {
-        Logger.LogDebug($"Level: {ConfigHelper.GetNumberlessName(level)}, weather: {weather.Name}");
+        weatherLog.AppendLine();
 
+        weatherLog.Append($"{ConfigHelper.GetNumberlessName(level)}: ");
+
+        // Get level data
         List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.ToList();
+        RandomWeatherWithVariables randomWeather = level.randomWeathers.FirstOrDefault(rw => rw.weatherType == weather.VanillaWeatherType);
+        bool isLevelToApply = LevelsToApply.Contains(level);
 
-        LevelWeather levelWeather =
-          new()
-          {
-            Weather = weather,
-            Level = level,
-            Variables = new()
-          };
-
-        RandomWeatherWithVariables randomWeather = null;
-
-        // do that, but [continue] the loop when the result is null
-        randomWeather = level.randomWeathers.FirstOrDefault(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
-
-        if (!InitializeRandomWeather(ref randomWeather, weather, level, ref randomWeathers, LevelsToApply))
+        // CASE 1: Skip vanilla weather that wasn't defined by a moon creator
+        if (randomWeather == null && weather.Type == WeatherType.Vanilla)
         {
-          Logger.LogDebug("randomWeather is null, skipping");
+          weatherLog.Append("Vanilla weather not defined by moon creator");
           continue;
         }
 
-        levelWeather.Variables.Level = level;
-        levelWeather.Variables.WeatherVariable1 = randomWeather?.weatherVariable ?? 1;
-        levelWeather.Variables.WeatherVariable2 = randomWeather?.weatherVariable2 ?? 1;
-
-        WeatherManager.LevelWeathers.Add(levelWeather);
-        levelWeatherVariables.Add(levelWeather.Variables);
-        weather.WeatherVariables.Add(level, levelWeather.Variables);
-      }
-
-      static bool InitializeRandomWeather(
-        ref RandomWeatherWithVariables randomWeather,
-        Weather weather,
-        SelectableLevel level,
-        ref List<RandomWeatherWithVariables> randomWeathers,
-        List<SelectableLevel> LevelsToApply
-      )
-      {
-        // TODO: rework this bit
-        // because the shit condition above skips executing the blacklisting when the weather is possible
-        // which (as you can imagine) is the exact fucking point
-        // debugging this took me almost 2 hours
-
-        // this has to execute only when the vanilla weather wasn't defined by a moon creator (cause they can)
-        if (randomWeather == null && weather.Type == WeatherType.Vanilla)
+        // CASE 2: Handle Clear weather type
+        if (weather.Type == WeatherType.Clear)
         {
-          return false;
-        }
-        // why would you make me do that
-        else if (weather.Type == WeatherType.Clear)
-        {
-          randomWeathers.RemoveAll(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
+          randomWeathers.RemoveAll(rw => rw.weatherType == weather.VanillaWeatherType);
           level.randomWeathers = randomWeathers.ToArray();
-          return false;
+          weatherLog.Append("Clear weather type removed");
+          continue;
         }
 
-        // remove all weathers from company moon, because that's the point
-        if (MrovLib.LevelHelper.CompanyMoons.Contains(level) && !LevelsToApply.Contains(level))
+        // CASE 3: Remove weather from company moons if not explicitly included
+        if (MrovLib.LevelHelper.CompanyMoons.Contains(level) && !isLevelToApply)
         {
-          Logger.LogDebug($"Removing weather {weather.Name} from the company moons");
-
-          randomWeathers.RemoveAll(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
+          // Logger.LogDebug($"Removing weather {weather.Name} from the company moon {level.name}");
+          randomWeathers.RemoveAll(rw => rw.weatherType == weather.VanillaWeatherType);
           level.randomWeathers = randomWeathers.ToArray();
-          return false;
+          weatherLog.Append("Removed from company moon");
+          continue;
         }
 
-        // Logger.LogDebug(
-        //   $"Weather {weather.Name} has type {weather.Type.ToString()}, is level {level.name} in the list? : {LevelsToApply.Contains(level)}"
-        // );
-
-        switch (weather.Type)
+        // CASE 4: Level not in list of levels to apply this weather to
+        if (!isLevelToApply)
         {
-          case WeatherType.Vanilla:
+          if (randomWeather != null)
           {
-            // this will possibly break some things when it's not set up correctly
-            // when that happens i'll send someone a link with this part of code
-            // and blame them instead
-
-            // vanilla weathers will not have an option of being added by configs
-            // they have to be explicitly defined by moon makers
-            // because that's how the variables work
-            // but there will be an option to blacklist them on my end
-
-            if (!LevelsToApply.Contains(level))
-            {
-              Logger.LogDebug($"Level {level.name} is not in the list of levels to apply weather to");
-
-              if (randomWeather != null)
-              {
-                Logger.LogDebug($"Removing weather {weather.Name} from level {level.name}");
-                randomWeathers.RemoveAll(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
-                level.randomWeathers = randomWeathers.ToArray();
-              }
-
-              return false;
-            }
-
-            return true;
-          }
-          case WeatherType.Modded:
-          {
-            if (randomWeather != null)
-            {
-              Logger.LogDebug($"Removing weather {weather.Name} from level {level.name} (added before lobby reload)");
-              randomWeathers.RemoveAll(randomWeather => randomWeather.weatherType == weather.VanillaWeatherType);
-            }
-
-            Logger.LogDebug($"Adding modded weather {weather.Name}");
-
-            if (!LevelsToApply.Contains(level))
-            {
-              Logger.LogDebug($"Level {level.name} is not in the list of levels to apply weather to");
-              return false;
-            }
-
-            Logger.LogDebug(
-              $"Injecting modded weather {weather.Name} for level {level.name} (variables {weather.Effect.DefaultVariable1}/{weather.Effect.DefaultVariable2})"
-            );
-            RandomWeatherWithVariables newWeather =
-              new()
-              {
-                weatherType = weather.VanillaWeatherType,
-                weatherVariable = weather.Effect.DefaultVariable1,
-                weatherVariable2 = weather.Effect.DefaultVariable2
-              };
-
-            randomWeather = newWeather;
-            randomWeathers.Add(newWeather);
+            // Logger.LogDebug($"Removing weather {weather.Name} from level {level.name}");
+            randomWeathers.RemoveAll(rw => rw.weatherType == weather.VanillaWeatherType);
             level.randomWeathers = randomWeathers.ToArray();
-            break;
           }
+          weatherLog.Append("Level not in list to apply weather to");
+          continue;
         }
-        return true;
+
+        // CASE 5: Handle different weather types
+        if (weather.Type == WeatherType.Vanilla)
+        {
+          // For vanilla weather, we don't need to do anything else
+          // It's already in the level's randomWeathers
+          weatherLog.Append(
+            "Weather is already there"
+              + (randomWeather != null ? $" (variables {randomWeather.weatherVariable}/{randomWeather.weatherVariable2})" : "")
+          );
+          continue;
+        }
+        else if (weather.Type == WeatherType.Modded)
+        {
+          // For modded weather, add it to the level
+          // this should never happen, but just in case
+          if (randomWeather != null)
+          {
+            weatherLog.Append($"Removing existing weather (added before lobby reload)");
+            randomWeathers.RemoveAll(rw => rw.weatherType == weather.VanillaWeatherType);
+          }
+
+          weatherLog.Append($"Injecting modded weather (variables {weather.Effect.DefaultVariable1}/{weather.Effect.DefaultVariable2})");
+
+          RandomWeatherWithVariables newWeather =
+            new()
+            {
+              weatherType = weather.VanillaWeatherType,
+              weatherVariable = weather.Effect.DefaultVariable1,
+              weatherVariable2 = weather.Effect.DefaultVariable2
+            };
+
+          randomWeathers.Add(newWeather);
+          level.randomWeathers = randomWeathers.ToArray();
+        }
       }
+
+      Plugin.logger.LogDebug(weatherLog.ToString());
     }
   }
 }
