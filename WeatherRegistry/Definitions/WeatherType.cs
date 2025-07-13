@@ -35,7 +35,6 @@ namespace WeatherRegistry
   }
 
   [JsonObject(MemberSerialization.OptIn)]
-  // [CreateAssetMenu(fileName = "Weather", menuName = "WeatherRegistry/OlderWeatherDefinition", order = 5)]
   public class Weather : ScriptableObject
   {
     #region Base properties
@@ -168,7 +167,7 @@ namespace WeatherRegistry
 
     public Weather(string name = "None", ImprovedWeatherEffect effect = default)
     {
-      Plugin.logger.LogDebug($"Called Weather constructor for weather {name}");
+      // Plugin.logger.LogDebug($"Called Weather constructor for weather {name}");
 
       // a small hack for Whimsical weather so it doesn't use <color> tags in their name
       Regex textTagsRegex = new(@"<.*?>");
@@ -183,7 +182,6 @@ namespace WeatherRegistry
       }
 
       GameObject.DontDestroyOnLoad(this);
-      // GameObject.Instantiate(this);
     }
 
     #endregion
@@ -202,14 +200,6 @@ namespace WeatherRegistry
 
       this.hideFlags = HideFlags.HideAndDontSave;
     }
-
-    // void Reset()
-    // {
-    //   Type = WeatherType.Modded;
-    //   ScrapAmountMultiplier = 1;
-    //   ScrapValueMultiplier = 1;
-    //   DefaultWeight = 50;
-    // }
 
     public void RemoveFromMoon(string moonNames)
     {
@@ -304,6 +294,7 @@ namespace WeatherRegistry
     public int WeatherVariable2;
   }
 
+  [Obsolete]
   public class LevelWeather : LevelWeatherVariables
   {
     public Weather Weather;
