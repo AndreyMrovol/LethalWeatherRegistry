@@ -1,61 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using ConsoleTables;
-using HarmonyLib;
 using Newtonsoft.Json;
-using Unity.Netcode;
 using UnityEngine;
+using WeatherRegistry.Patches;
 
-namespace WeatherRegistry.Patches
+namespace WeatherRegistry
 {
-  [HarmonyPatch(typeof(Terminal))]
-  public static class TerminalStartPatch
+  public static class Startup
   {
     internal static WeatherEffect[] vanillaEffectsArray { get; private set; } = null;
     internal static MrovLib.Logger Logger = new("WeatherRegistry", ConfigManager.LogStartup);
     internal static MrovLib.Logger WeightsLogger = new("WeatherRegistry", ConfigManager.LogStartupWeights);
 
-    [HarmonyPatch(typeof(StartOfRound), "Awake")]
-    [HarmonyPrefix]
-    [HarmonyPriority(Priority.First)]
-    internal static void StartOfRoundAwakePrefix(RoundManager __instance)
-    {
-      Logger.LogInfo("StartOfRoundAwakePrefix Patch");
-
-      // Logger.LogDebug(GameNetworkManager.Instance);
-      // Logger.LogDebug(GameNetworkManager.Instance.GetComponent<NetworkManager>());
-      // Logger.LogDebug(WeatherSync.WeatherSyncPrefab);
-      // Logger.LogDebug(WeatherSync.WeatherSyncPrefab.GetComponent<WeatherSync>());
-      // Logger.LogDebug(WeatherSync.WeatherSyncPrefab.GetComponent<NetworkObject>());
-
-      if (GameNetworkManager.Instance.GetComponent<NetworkManager>().IsHost)
-      {
-        Logger.LogDebug("Host detected, spawning WeatherSync");
-        WeatherSync WeatherSyncPrefab = GameObject.Instantiate(WeatherSync.WeatherSyncPrefab).GetComponent<WeatherSync>();
-        WeatherSyncPrefab.GetComponent<NetworkObject>().Spawn(destroyWithScene: false);
-      }
-    }
-
-    [HarmonyPrefix]
-    [HarmonyPatch("Awake")]
-    [HarmonyPriority(Priority.First)]
-    public static bool TerminalPrefix(Terminal __instance)
-    {
-      if (WeatherManager.IsSetupFinished)
-      {
-        WeatherManager.IsSetupFinished = false;
-      }
-
-      return true;
-    }
-
-    [HarmonyPostfix]
-    [HarmonyPatch("Start")]
-    [HarmonyPriority(Priority.First)]
-    public static void Postfix(Terminal __instance)
+    public static void Init(Terminal __instance)
     {
       Logger.LogInfo("Terminal Start Patch");
 
