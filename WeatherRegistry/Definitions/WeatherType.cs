@@ -201,6 +201,11 @@ namespace WeatherRegistry
       this.hideFlags = HideFlags.HideAndDontSave;
     }
 
+    public override string ToString()
+    {
+      return Name;
+    }
+
     public void RemoveFromMoon(string moonNames)
     {
       ConfigHelper.ConvertStringToLevels(moonNames).ToList().ForEach(level => LevelFilters.Remove(level));
