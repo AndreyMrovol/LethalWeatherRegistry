@@ -32,8 +32,6 @@ namespace WeatherRegistry
 
     public static Dictionary<int, Weather> ModdedWeatherEnumExtension = [];
 
-    [Obsolete("Use WeatherManager.CurrentWeathers instead")]
-    public static CurrentWeathers currentWeathers => CurrentWeathers;
     public static CurrentWeathers CurrentWeathers = new();
 
     public static List<LevelWeatherType> CurrentEffectTypes
