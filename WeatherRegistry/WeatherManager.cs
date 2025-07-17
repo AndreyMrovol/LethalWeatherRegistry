@@ -12,6 +12,8 @@ namespace WeatherRegistry
     internal static bool IsSetupFinished = false;
 
     public static List<Weather> RegisteredWeathers { get; internal set; } = [];
+
+    [Obsolete]
     public static List<LevelWeather> LevelWeathers { get; internal set; } = [];
 
     [Obsolete("Use WeatherOverrideManager.WeatherEffectOverrides instead")]
