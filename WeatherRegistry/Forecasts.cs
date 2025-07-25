@@ -86,9 +86,9 @@ namespace WeatherRegistry
 
       foreach (var weather in tomorrowWeights)
       {
-        Plugin.debugLogger.LogDebug(
-          $"Weather: {weather.Key}, Weight: {weather.Value}, Probability: {(float)(weather.Value / (double)totalWeight) * 100}%"
-        );
+        // Plugin.debugLogger.LogDebug(
+        //   $"Weather: {weather.Key}, Weight: {weather.Value}, Probability: {(float)(weather.Value / (double)totalWeight) * 100}%"
+        // );
 
         outputTable.AddRow(
           // TODO: color
