@@ -100,13 +100,13 @@ namespace WeatherRegistry
 
         if (connectedPlayersOnServer + 1 > 1 && startOfRound.daysPlayersSurvivedInARow > 2 && startOfRound.daysPlayersSurvivedInARow % 3 == 0)
         {
-          num1 = (float)random.Next(15, 25) / 10f;
+          num1 = random.Next(15, 25) / 10f;
         }
 
         int num2 = Mathf.Clamp(
           (int)(
             (double)Mathf.Clamp(startOfRound.planetsWeatherRandomCurve.Evaluate((float)random.NextDouble()) * num1, 0.0f, 1f)
-            * (double)startOfRound.levels.Length
+            * startOfRound.levels.Length
           ),
           0,
           startOfRound.levels.Length
