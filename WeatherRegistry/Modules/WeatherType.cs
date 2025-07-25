@@ -216,10 +216,11 @@ namespace WeatherRegistry
       LevelFilters.Remove(moon);
     }
 
-    public int GetWeight(SelectableLevel level)
+    public (int weight, WeatherWeightType type) GetWeightWithOrigin(SelectableLevel level)
     {
       MrovLib.Logger logger = WeatherCalculation.Logger;
       var weatherWeight = this.DefaultWeight;
+      WeatherWeightType weatherWeightType = WeatherWeightType.Default;
 
       var previousWeather = WeatherManager.GetWeather(level.currentWeather);
 
@@ -237,11 +238,12 @@ namespace WeatherRegistry
       if (this.LevelWeights.TryGetValue(level, out int levelWeight))
       {
         // (1) => level weight
-        logger.LogDebug($"{this.Name} has level weight {levelWeight}");
+        // logger.LogDebug($"{this.Name} has level weight {levelWeight}");
+        weatherWeightType = WeatherWeightType.Level;
         weatherWeight = levelWeight;
       }
       // try to get previous day weather (so - at this point - the current one)
-      // but not on first day because that's completely random
+      // but not on first day because that's unreliable and random (from my testing)
       else if (
         previousWeather.WeatherWeights.TryGetValue(this.VanillaWeatherType, out int weatherWeightFromWeather)
         && StartOfRound.Instance.gameStats.daysSpent != 0
@@ -249,20 +251,22 @@ namespace WeatherRegistry
       {
         // (2) => weather-weather weights
 
-        // this shit is in dire need of a rework
-        // currently the system works in reverse:
-        // `None@200` defined in Rainy means that if None was the previous weather, Rainy is set to 200 weight
-        // what a dumb motherfucking system
-
-        logger.LogDebug($"{this.Name} has weather>weather weight {weatherWeightFromWeather}");
+        // logger.LogDebug($"{this.Name} has weather>weather weight {weatherWeightFromWeather}");
+        weatherWeightType = WeatherWeightType.WeatherToWeather;
         weatherWeight = weatherWeightFromWeather;
       }
       else
       {
-        logger.LogDebug($"{this.Name} has default weight {weatherWeight}");
+        weatherWeightType = WeatherWeightType.Default;
+        // logger.LogDebug($"{this.Name} has default weight {weatherWeight}");
       }
 
-      return weatherWeight;
+      return (weatherWeight, weatherWeightType);
+    }
+
+    public int GetWeight(SelectableLevel level)
+    {
+      return GetWeightWithOrigin(level).weight;
     }
 
     public string GetAlphanumericName()
@@ -304,5 +308,12 @@ namespace WeatherRegistry
   {
     public Weather Weather;
     public LevelWeatherVariables Variables;
+  }
+
+  public enum WeatherWeightType
+  {
+    Default,
+    WeatherToWeather,
+    Level,
   }
 }
