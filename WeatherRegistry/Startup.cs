@@ -470,6 +470,7 @@ namespace WeatherRegistry
         }
       }
 
+      weatherLog.AppendLine();
       Plugin.logger.LogDebug(weatherLog.ToString());
     }
   }
