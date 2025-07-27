@@ -25,6 +25,7 @@ namespace WeatherRegistry
     // map screen settings
     internal static ConfigEntry<bool> ColoredWeathers { get; private set; }
     internal static ConfigEntry<bool> PlanetVideos { get; private set; }
+    internal static ConfigEntry<bool> ShowWeatherMultipliers { get; private set; }
 
     // module toggles
     internal static ConfigEntry<bool> UseWeatherWeights { get; private set; }
@@ -47,6 +48,7 @@ namespace WeatherRegistry
 
       ColoredWeathers = configFile.Bind("|General", "Colored Weathers", true, "Enable colored weathers on map screen");
       PlanetVideos = configFile.Bind("|General", "Planet Videos", true, "Display planet videos on map screen");
+      ShowWeatherMultipliers = configFile.Bind("|General", "Show Weather Multipliers", false, "Show weather multipliers on map screen");
 
       UseWeatherWeights = configFile.Bind(
         "|General",
