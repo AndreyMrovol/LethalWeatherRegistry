@@ -44,27 +44,14 @@ namespace WeatherRegistry.Patches
 
       StringBuilder stringBuilder = new();
 
-      if (planetName.Length > 20)
+      stringBuilder.Append($"ORBITING: {ScaleDownName(planetName)}\n");
+      stringBuilder.Append($"WEATHER: {ScaleDownName(GetColoredString(___currentLevel))}\n");
+
+      if (ConfigManager.ShowWeatherMultipliers.Value)
       {
-        // good lord, help me with the maths homework
-
-        // 30 is the max characters that can fit with font=100%
-        // we need to scale it down accordingly and represent it as a percentage
-
-        int fontScaling = Mathf.Clamp((int)(100f * (20f / planetName.Length)), 65, 100);
-        Plugin.debugLogger.LogDebug($"New font scale is {fontScaling}%");
-
-        stringBuilder.Append($"<size={fontScaling}%><cspace=-0.8px>");
+        stringBuilder.Append($"MULTIPLIERS: ＄x{currentWeather.ScrapValueMultiplier}  ▼x{currentWeather.ScrapAmountMultiplier}\n");
       }
 
-      stringBuilder.Append($"ORBITING: {planetName}\n");
-
-      if (planetName.Length > 20)
-      {
-        stringBuilder.Append($"</size></cspace>");
-      }
-
-      stringBuilder.Append($"WEATHER: {GetColoredString(___currentLevel)}\n");
       stringBuilder.Append(multiNewLine.Replace(___currentLevel.LevelDescription, "\n") ?? "");
 
       ___screenLevelDescription.fontWeight = FontWeight.Bold;
@@ -75,6 +62,30 @@ namespace WeatherRegistry.Patches
       EventManager.MapScreenUpdated.Invoke(
         (level: ___currentLevel, weather: WeatherManager.GetCurrentWeather(___currentLevel), screenText: stringBuilder.ToString())
       );
+    }
+
+    private static string ScaleDownName(string input)
+    {
+      // good lord, help me with the maths homework
+
+      // 30 is the max characters that can fit with font=100%
+      // we need to scale it down accordingly and represent it as a percentage
+
+      // remove all rich text tags from the string to get the actual length
+      string name = Regex.Replace(input, @"<[^>]+>", string.Empty);
+
+      // WEATHER:
+      if (name.Length > 20)
+      {
+        int fontScaling = Mathf.Clamp((int)(100f * (20f / name.Length)), 65, 100);
+        Plugin.debugLogger.LogDebug($"New font scale for string {name} is {fontScaling}%");
+
+        return $"<size={fontScaling}%><cspace=-0.8px>{input}</size></cspace>";
+      }
+      else
+      {
+        return input;
+      }
     }
 
     // it's like that because of weathertweaks
