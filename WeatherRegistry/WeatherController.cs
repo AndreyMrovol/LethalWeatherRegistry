@@ -8,7 +8,7 @@ namespace WeatherRegistry
 {
   public static class WeatherController
   {
-    private static ManualLogSource Logger = new("WeatherController");
+    private static Logger Logger = new("WeatherController", LoggingType.Basic);
 
     #region Change weather
     public static void ChangeCurrentWeather(Weather weather)

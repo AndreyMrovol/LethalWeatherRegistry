@@ -10,6 +10,8 @@ namespace WeatherRegistry
 {
   internal class WeatherSync : NetworkBehaviour
   {
+    private static Logger Logger = new("WeatherSync", LoggingType.Debug);
+
     public NetworkVariable<WeatherSyncDataWrapper> WeathersSynced = new(new WeatherSyncDataWrapper { Weathers = [] });
     public WeatherSyncData[] Weather
     {
@@ -45,7 +47,7 @@ namespace WeatherRegistry
         {
           _instance = UnityEngine.Object.FindObjectOfType<WeatherSync>();
           if (_instance == null)
-            Plugin.logger.LogError("WeatherSync instance is null");
+            Logger.LogError("WeatherSync instance is null");
         }
         return _instance;
       }
@@ -64,7 +66,7 @@ namespace WeatherRegistry
     {
       if (!StartOfRound.Instance.IsHost)
       {
-        Plugin.logger.LogDebug("Cannot set weathers, not a host!");
+        Logger.LogDebug("Cannot set weathers, not a host!");
         return;
       }
 
@@ -84,11 +86,11 @@ namespace WeatherRegistry
     {
       if (!StartOfRound.Instance.IsHost)
       {
-        Plugin.logger.LogDebug("Cannot set effects, not a host!");
+        Logger.LogDebug("Cannot set effects, not a host!");
         return;
       }
 
-      Plugin.logger.LogDebug($"Setting effects: [{string.Join("; ", weatherTypes)}]");
+      Logger.LogDebug($"Setting effects: [{string.Join("; ", weatherTypes)}]");
 
       Effects = new WeatherEffectDataWrapper { Effects = weatherTypes };
     }
@@ -99,18 +101,18 @@ namespace WeatherRegistry
     {
       if (!networkHasStarted)
       {
-        Plugin.logger.LogDebug("Registering NetworkPrefab: " + prefab);
+        Logger.LogDebug("Registering NetworkPrefab: " + prefab);
         queuedNetworkPrefabs.Add(prefab);
       }
       else
       {
-        Plugin.logger.LogWarning("Attempted To Register NetworkPrefab: " + prefab + " After GameNetworkManager Has Started!");
+        Logger.LogWarning("Attempted To Register NetworkPrefab: " + prefab + " After GameNetworkManager Has Started!");
       }
     }
 
     internal static void RegisterPrefabs(NetworkManager networkManager)
     {
-      Plugin.logger.LogDebug("Registering NetworkPrefabs in NetworkManager");
+      Logger.LogDebug("Registering NetworkPrefabs in NetworkManager");
       var addedNetworkPrefabs = GetExistingPrefabs(networkManager);
       RegisterQueuedPrefabs(networkManager, addedNetworkPrefabs);
       networkHasStarted = true;
@@ -121,7 +123,7 @@ namespace WeatherRegistry
       gameObject.name = "WeatherSync";
       Instance = this;
       DontDestroyOnLoad(gameObject);
-      Plugin.logger.LogDebug($"WeathersSynced: {WeathersSynced.Value}");
+      Logger.LogDebug($"WeathersSynced: {WeathersSynced.Value}");
     }
 
     private static List<GameObject> GetExistingPrefabs(NetworkManager networkManager)
@@ -139,7 +141,7 @@ namespace WeatherRegistry
       int debugCounter = 0;
       foreach (GameObject queuedNetworkPrefab in queuedNetworkPrefabs)
       {
-        Plugin.logger.LogDebug("Trying To Register Prefab: " + queuedNetworkPrefab);
+        Logger.LogDebug("Trying To Register Prefab: " + queuedNetworkPrefab);
         if (!addedNetworkPrefabs.Contains(queuedNetworkPrefab))
         {
           networkManager.AddNetworkPrefab(queuedNetworkPrefab);
@@ -148,7 +150,7 @@ namespace WeatherRegistry
         else
           debugCounter++;
       }
-      Plugin.logger.LogDebug("Skipped Registering " + debugCounter + " NetworkObjects As They Were Already Registered.");
+      Logger.LogDebug("Skipped Registering " + debugCounter + " NetworkObjects As They Were Already Registered.");
     }
 
     #endregion

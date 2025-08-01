@@ -52,7 +52,7 @@ namespace WeatherRegistry.Patches
       return SetBoolPatch(__instance, name, value);
     }
 
-    internal static ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource("WeatherRegistry SunAnimator");
+    internal static Logger logger = new("SunAnimator", LoggingType.Debug);
 
     internal static Dictionary<string, LevelWeatherType> vanillaBools =
       new()
@@ -258,7 +258,11 @@ namespace WeatherRegistry.Patches
         TimeOfDay.Instance.sunAnimator.runtimeAnimatorController = animatorOverrideController.runtimeAnimatorController;
       }
 
-      logger.LogInfo($"Current clip: {TimeOfDay.Instance.sunAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name}");
+      logger.LogCustom(
+        $"Current clip: {TimeOfDay.Instance.sunAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name}",
+        BepInEx.Logging.LogLevel.Debug,
+        LoggingType.Basic
+      );
     }
 
     internal static void LogOverrides(AnimationClipOverrides clipOverrides)

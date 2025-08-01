@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using BepInEx.Logging;
 using UnityEngine;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Editor;
@@ -17,6 +18,8 @@ namespace WeatherRegistry
     private static List<EffectOverride> LoadedEffectOverrides = [];
     private static List<PlanetNameOverride> LoadedPlanetNameOverrides = [];
 
+    private static readonly Logger Logger = new("AssetBundleLoader", LoggingType.Debug);
+
     internal static void LoadAssetBundles()
     {
       // Path where you'll place your asset bundles (next to the plugin DLL)
@@ -24,7 +27,7 @@ namespace WeatherRegistry
 
       if (!Directory.Exists(bundlesPath))
       {
-        Plugin.debugLogger.LogWarning($"AssetBundles folder not found: {bundlesPath}");
+        Logger.LogWarning($"AssetBundles folder not found: {bundlesPath}");
         return;
       }
 
@@ -34,8 +37,10 @@ namespace WeatherRegistry
       // Or load all bundles in the folder
       LoadAllBundlesInFolder(bundlesPath);
 
-      Plugin.logger.LogInfo(
-        $"Loaded {LoadedWeather.Count} weather definitions from asset bundles: {string.Join(", ", LoadedWeather.Select(w => (w.name, (int)w.VanillaWeatherType)))}"
+      Logger.LogCustom(
+        $"Loaded {LoadedWeather.Count} weather definitions from asset bundles: {string.Join(", ", LoadedWeather.Select(w => (w.name, (int)w.VanillaWeatherType)))}",
+        LogLevel.Info,
+        LoggingType.Basic
       );
     }
 
@@ -58,19 +63,19 @@ namespace WeatherRegistry
 
         if (bundle == null)
         {
-          Plugin.debugLogger.LogError($"Failed to load asset bundle: {bundleName}");
+          Logger.LogError($"Failed to load asset bundle: {bundleName}");
           return;
         }
 
         LoadedBundles[bundleName] = bundle;
-        Plugin.debugLogger.LogInfo($"Loaded asset bundle: {bundleName}");
+        Logger.LogInfo($"Loaded asset bundle: {bundleName}");
 
         // Load all Weather from this bundle
         LoadWeatherFromBundle(bundle, bundleName);
       }
       catch (System.Exception e)
       {
-        Plugin.debugLogger.LogError($"Error loading bundle {bundleName}: {e.Message}");
+        Logger.LogError($"Error loading bundle {bundleName}: {e.Message}");
       }
     }
 
@@ -78,7 +83,7 @@ namespace WeatherRegistry
     {
       // Get all asset names in the bundle (optional - for debugging)
       string[] assetNames = bundle.GetAllAssetNames();
-      Plugin.debugLogger.LogInfo($"Bundle {bundleName} contains {assetNames.Length} assets");
+      Logger.LogInfo($"Bundle {bundleName} contains {assetNames.Length} assets");
 
       // Load all WeatherDefinition assets
       WeatherDefinition[] WeatherDefinitionAssets = bundle.LoadAllAssets<WeatherDefinition>();
@@ -139,14 +144,14 @@ namespace WeatherRegistry
       {
         if (effectOverride == null || string.IsNullOrEmpty(effectOverride.weatherName))
         {
-          Plugin.debugLogger.LogWarning("EffectOverride is null or has no weatherName, skipping.");
+          Logger.LogWarning("EffectOverride is null or has no weatherName, skipping.");
           continue;
         }
 
         Weather weather = ConfigHelper.ResolveStringToWeather(effectOverride.weatherName);
         if (weather == null)
         {
-          Plugin.debugLogger.LogWarning($"Weather {effectOverride.weatherName} not found, skipping EffectOverride.");
+          Logger.LogWarning($"Weather {effectOverride.weatherName} not found, skipping EffectOverride.");
           continue;
         }
 

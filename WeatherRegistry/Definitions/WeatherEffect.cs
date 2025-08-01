@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using UnityEngine;
+using WeatherRegistry.Managers;
 
 namespace WeatherRegistry
 {
@@ -37,8 +38,7 @@ namespace WeatherRegistry
       get { return _effectEnabled; }
       set
       {
-        Plugin.logger.LogDebug($"Setting effect {this.name} to {value}");
-        Plugin.logger.LogDebug($"Is player inside? {Settings.IsPlayerInside}");
+        WeatherEffectManager.Logger.LogDebug($"Setting effect {this.name} to {value} - is player inside? {Settings.IsPlayerInside}");
 
         if (!Settings.IsPlayerInside)
         {

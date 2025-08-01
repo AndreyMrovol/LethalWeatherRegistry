@@ -143,11 +143,7 @@ namespace WeatherRegistry
       // WeatherEffectController.SetWeatherEffects(currentWeather);
 
       Plugin.logger.LogDebug(
-        $"Landing at {ConfigHelper.GetNumberlessName(currentLevel)} with weather {JsonConvert.SerializeObject(
-        currentWeather,
-        Formatting.None,
-        new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }
-      )}"
+        $"Landing at {ConfigHelper.GetNumberlessName(currentLevel)} with weather {currentWeather.Name} ({currentWeather.VanillaWeatherType})"
       );
 
       EventManager.ShipLanding.Invoke((currentLevel, currentWeather));

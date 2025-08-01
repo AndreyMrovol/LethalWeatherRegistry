@@ -7,7 +7,7 @@ namespace WeatherRegistry.Patches
   [HarmonyPatch(typeof(AudioReverbTrigger))]
   public class AudioReverbTriggerPatches
   {
-    private static readonly MrovLib.Logger logger = new("WR AudioReverbTrigger");
+    private static Logger logger = new("AudioReverbTrigger", LoggingType.Developer);
 
     [HarmonyTranspiler]
     [HarmonyPatch("ChangeAudioReverbForPlayer")]

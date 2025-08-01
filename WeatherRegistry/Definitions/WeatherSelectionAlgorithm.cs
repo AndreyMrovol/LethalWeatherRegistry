@@ -9,7 +9,7 @@ namespace WeatherRegistry.Definitions
 {
   public class WeatherSelectionAlgorithm
   {
-    public virtual MrovLib.Logger Logger
+    public virtual Logger Logger
     {
       get => WeatherCalculation.Logger;
     }
