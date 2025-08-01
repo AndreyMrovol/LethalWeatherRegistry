@@ -218,7 +218,7 @@ namespace WeatherRegistry
 
     public (int weight, WeatherWeightType type) GetWeightWithOrigin(SelectableLevel level)
     {
-      MrovLib.Logger logger = WeatherCalculation.Logger;
+      Logger logger = WeatherCalculation.Logger;
       var weatherWeight = this.DefaultWeight;
       WeatherWeightType weatherWeightType = WeatherWeightType.Default;
 

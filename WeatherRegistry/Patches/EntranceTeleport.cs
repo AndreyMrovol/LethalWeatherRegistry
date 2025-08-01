@@ -12,7 +12,7 @@ namespace WeatherRegistry.Patches
   [HarmonyPatch(typeof(EntranceTeleport))]
   internal class EntranceTeleportPatch
   {
-    internal static MrovLib.Logger logger = new("EntranceTeleport");
+    private static Logger logger = new("EntranceTeleport", LoggingType.Developer);
 
     [Obsolete("Use Settings.IsPlayerInside instead")]
     internal static bool isPlayerInside => Settings.IsPlayerInside;

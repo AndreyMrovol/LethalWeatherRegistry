@@ -9,7 +9,7 @@ namespace WeatherRegistry
 {
   public class ConfigHelper
   {
-    private static MrovLib.Logger logger = new("WeatherRegistry", ConfigManager.LogWeightResolving);
+    private static Logger logger = new("ConfigHelper", LoggingType.Debug);
 
     private static readonly Regex ConfigCleanerRegex = new(@"[\n\t""`\[\]']");
 

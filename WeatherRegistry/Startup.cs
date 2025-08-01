@@ -12,8 +12,8 @@ namespace WeatherRegistry
   public static class Startup
   {
     internal static WeatherEffect[] vanillaEffectsArray { get; private set; } = null;
-    internal static MrovLib.Logger Logger = new("WeatherRegistry", ConfigManager.LogStartup);
-    internal static MrovLib.Logger WeightsLogger = new("WeatherRegistry", ConfigManager.LogStartupWeights);
+
+    internal static Logger Logger = new("Startup", LoggingType.Developer);
 
     public static void Init(Terminal __instance)
     {
@@ -286,7 +286,7 @@ namespace WeatherRegistry
         {
           defaultWeightsTable.AddRow(weather.Name, weather.Config.DefaultWeight.Value);
         });
-        WeightsLogger.LogInfo("Default weights:\n" + defaultWeightsTable.ToMinimalString());
+        Logger.LogCustom("Default weights:\n" + defaultWeightsTable.ToMinimalString(), BepInEx.Logging.LogLevel.Info, LoggingType.Basic);
 
         // weather-weather weights
         string[] columnNames = ["From \\ To"];
@@ -314,7 +314,11 @@ namespace WeatherRegistry
 
           weatherToWeatherWeightsTable.AddRow(row.ToArray());
         });
-        WeightsLogger.LogInfo("Weather-weather weights:\n" + weatherToWeatherWeightsTable.ToMinimalString());
+        Logger.LogCustom(
+          "Weather-weather weights:\n" + weatherToWeatherWeightsTable.ToMinimalString(),
+          BepInEx.Logging.LogLevel.Info,
+          LoggingType.Basic
+        );
 
         // level weights
         string[] levelWeightsColumnNames = ["Level"];
@@ -340,7 +344,7 @@ namespace WeatherRegistry
 
           levelWeightsTable.AddRow(row.ToArray());
         });
-        WeightsLogger.LogInfo("Level weights:\n" + levelWeightsTable.ToMinimalString());
+        Logger.LogCustom("Level weights:\n" + levelWeightsTable.ToMinimalString(), BepInEx.Logging.LogLevel.Info, LoggingType.Basic);
       }
       #endregion
 
@@ -471,7 +475,7 @@ namespace WeatherRegistry
       }
 
       weatherLog.AppendLine();
-      Plugin.logger.LogDebug(weatherLog.ToString());
+      Logger.LogDebug(weatherLog.ToString());
     }
   }
 }

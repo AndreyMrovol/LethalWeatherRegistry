@@ -31,7 +31,7 @@ namespace WeatherRegistry.Patches
         return true;
       }
 
-      Plugin.logger.LogInfo(
+      WeatherCalculation.Logger.LogInfo(
         $"Picking weathers on day {StartOfRound.Instance.gameStats.daysSpent}, file {GameNetworkManager.Instance.currentSaveFileName}"
       );
 

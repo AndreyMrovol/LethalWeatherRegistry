@@ -131,8 +131,6 @@ namespace WeatherRegistry
       // add None as a possible weather in front of the list
       possibleWeathers.Insert(0, LevelWeatherType.None);
 
-      Plugin.logger.LogDebug($"Possible weathers: {string.Join("; ", possibleWeathers.Select(x => x.ToString()))}");
-
       if (possibleWeathers == null || possibleWeathers.Count() == 0)
       {
         Plugin.logger.LogError("Level's random weathers are null");
@@ -145,7 +143,7 @@ namespace WeatherRegistry
     public static MrovLib.WeightHandler<Weather> GetPlanetWeightedList(SelectableLevel level)
     {
       MrovLib.WeightHandler<Weather> weightedList = new();
-      MrovLib.Logger logger = WeatherCalculation.Logger;
+      Logger logger = WeatherCalculation.Logger;
 
       List<LevelWeatherType> weatherTypes = GetPlanetPossibleWeathers(level);
 

@@ -8,7 +8,7 @@ namespace WeatherRegistry.Patches
   [HarmonyPatch(typeof(TimeOfDay))]
   public static partial class TimeOfDayPatch
   {
-    internal static ManualLogSource logger = BepInEx.Logging.Logger.CreateLogSource("WeatherRegistry TimeOfDay");
+    internal static Logger logger = new("TimeOfDay", LoggingType.Developer);
 
     [HarmonyPostfix]
     [HarmonyPatch(typeof(TimeOfDay), "DisableAllWeather")]
