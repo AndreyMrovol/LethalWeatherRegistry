@@ -80,7 +80,7 @@ namespace WeatherRegistry
       }
       else
       {
-        logger.LogInfo("LethalLib not detected!");
+        logger.LogDebug("LethalLib not detected!");
       }
 
       WeatherTypeEnumHook = new Hook(
@@ -94,11 +94,15 @@ namespace WeatherRegistry
       }
 
       JLLCompat = new JLLCompat("JacobG5.JLL");
+
       LobbyControlCompat = new LobbyControlCompat("mattymatty.LobbyControl");
       LobbyControlCompat.Init();
+
       FacilityMeltdownCompat = new FacilityMeltdownCompat("me.loaforc.facilitymeltdown");
+
       OrbitsCompat = new OrbitsCompat("com.fiufki.orbits");
       OrbitsCompat.Init();
+
       ImperiumCompat = new ImperiumCompat("giosuel.Imperium");
 
       // Plugin startup logic
