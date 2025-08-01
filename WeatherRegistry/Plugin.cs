@@ -22,8 +22,6 @@ namespace WeatherRegistry
     [Obsolete("Use PluginInfo.PLUGIN_GUID instead")]
     public const string GUID = PluginInfo.PLUGIN_GUID;
 
-    public const bool DEBUGGING = true;
-
     internal static ManualLogSource logger;
     internal static MrovLib.Logger debugLogger = new(PluginInfo.PLUGIN_GUID);
     internal static Harmony harmony = new(PluginInfo.PLUGIN_GUID);
@@ -44,12 +42,13 @@ namespace WeatherRegistry
       logger = Logger;
       harmony.PatchAll();
 
-#if DEVMODE
-      Plugin.logger.LogWarning("Dev build detected, enabling debug logging.");
-      debugLogger.ConfigEntry.Value = true;
-#endif
-
       ConfigManager.Init(Config);
+
+      // #if DEVMODE
+      //       Plugin.logger.LogWarning("Dev build detected, enabling debug logging.");
+      //       ConfigManager.DebugLogsToShow.Value = LoggingType.Basic | LoggingType.Debug | LoggingType.Developer;
+      // #endif
+
       SunAnimator.Init();
 
       AssetBundleLoader.LoadAssetBundles();
