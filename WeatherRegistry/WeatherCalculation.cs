@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using HarmonyLib;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace WeatherRegistry
   {
     internal static Dictionary<string, LevelWeatherType> previousDayWeather = [];
 
-    public static MrovLib.Logger Logger = new("WeatherRegistry", ConfigManager.LogWeatherChanges);
+    internal static Logger Logger = new("WeatherCalculation", LoggingType.Basic);
 
     internal static WeatherSelectionAlgorithm RegistryAlgorithm = new WeatherRegistryWeatherSelection();
     internal static WeatherSelectionAlgorithm VanillaAlgorithm = new VanillaWeatherSelection();
@@ -30,7 +31,7 @@ namespace WeatherRegistry
       {
         if (!startOfRound.IsHost)
         {
-          Logger.LogInfo("Not a host, cannot generate weathers!");
+          Plugin.debugLogger.LogInfo("Not a host, cannot generate weathers!");
           return null;
         }
 
@@ -39,24 +40,26 @@ namespace WeatherRegistry
         Dictionary<SelectableLevel, LevelWeatherType> NewWeather = [];
 
         System.Random random = GetRandom(startOfRound);
-        List<SelectableLevel> levels = startOfRound.levels.ToList();
+        List<SelectableLevel> levels = MrovLib.LevelHelper.SortedLevels;
 
-        Logger.LogDebug($"Levels: {string.Join(';', levels.Select(level => level.PlanetName))}");
+        Logger.LogDebug($"Levels: {string.Join(';', levels.Select(level => ConfigHelper.GetAlphanumericName(level)))}");
+
+        StringBuilder weatherLog = new();
 
         foreach (SelectableLevel level in levels)
         {
+          weatherLog.AppendLine();
+
           WeatherCalculation.previousDayWeather[level.PlanetName] = level.currentWeather;
 
           // possible weathers taken from level.randomWeathers (modified by me)
           // use random for seeded randomness
 
-          Logger.LogMessage("-------------");
-          Logger.LogMessage($"{level.PlanetName}");
-          Logger.LogDebug($"previousDayWeather: {WeatherCalculation.previousDayWeather[level.PlanetName]}");
+          weatherLog.AppendLine($"Picking weather for {ConfigHelper.GetAlphanumericName(level)} ");
 
           if (level.overrideWeather)
           {
-            Logger.LogMessage($"Override weather present, changing weather to {level.overrideWeatherType}");
+            weatherLog.AppendLine($"Override weather present, changing weather to {level.overrideWeatherType}");
             Weather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
 
             NewWeather[level] = overrideWeather.VanillaWeatherType;
@@ -66,21 +69,24 @@ namespace WeatherRegistry
             continue;
           }
 
+          weatherLog.AppendLine($"PreviousDayWeather: {WeatherCalculation.previousDayWeather[level.PlanetName]}");
+          weatherLog.AppendLine($"Possible weathers: {string.Join(", ", level.randomWeathers.Select(rw => rw.weatherType))}");
+
           NewWeather[level] = LevelWeatherType.None;
 
           MrovLib.WeightHandler<Weather> possibleWeathers = WeatherManager.GetPlanetWeightedList(level);
           Weather selectedWeather = possibleWeathers.Random();
 
           NewWeather[level] = selectedWeather.VanillaWeatherType;
-          // WeatherManager.CurrentWeathers[level] = selectedWeather;
           EventManager.WeatherChanged.Invoke((level, selectedWeather));
 
-          Logger.LogMessage(
-            $"Selected weather: {selectedWeather.Name} with chance {possibleWeathers.Get(selectedWeather)} / {possibleWeathers.Sum} ({(float)possibleWeathers.Get(selectedWeather) / possibleWeathers.Sum * 100}%)"
+          weatherLog.AppendLine(
+            $"Selected weather {selectedWeather.Name} with chance {possibleWeathers.Get(selectedWeather)} / {possibleWeathers.Sum} ({(float)possibleWeathers.Get(selectedWeather) / possibleWeathers.Sum * 100:F2}%)"
           );
         }
 
-        Logger.LogMessage("-------------");
+        Logger.LogMessage(weatherLog.ToString());
+        // Logger.LogMessage("-------------");
 
         return NewWeather;
       }
