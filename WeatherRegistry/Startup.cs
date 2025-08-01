@@ -275,77 +275,75 @@ namespace WeatherRegistry
       #endregion
 
       #region Print weights
-      if (ConfigManager.LogStartupWeights.Value)
+      var weatherNames = WeatherManager.Weathers.Select(weather => weather.Name).ToArray();
+
+      // default weights
+
+      var defaultWeightsTable = new ConsoleTable(["Weather", "Default weight"]);
+      WeatherManager.Weathers.ForEach(weather =>
       {
-        var weatherNames = WeatherManager.Weathers.Select(weather => weather.Name).ToArray();
+        defaultWeightsTable.AddRow(weather.Name, weather.Config.DefaultWeight.Value);
+      });
+      Logger.LogCustom("Default weights:\n" + defaultWeightsTable.ToMinimalString(), BepInEx.Logging.LogLevel.Info, LoggingType.Basic);
 
-        // default weights
+      // weather-weather weights
+      string[] columnNames = ["From \\ To"];
+      columnNames = columnNames.Concat(weatherNames).ToArray();
 
-        var defaultWeightsTable = new ConsoleTable(["Weather", "Default weight"]);
+      var weatherToWeatherWeightsTable = new ConsoleTable(columnNames);
+
+      WeatherManager.Weathers.ForEach(weather =>
+      {
+        var row = new List<string> { weather.Name };
+
+        WeatherManager.Weathers.ForEach(weather2 =>
+        {
+          var (isWTW, weight) = weather2.GetWeatherToWeatherWeight(weather);
+
+          if (isWTW)
+          {
+            row.Add(weight.ToString());
+          }
+          else
+          {
+            row.Add("X");
+          }
+        });
+
+        weatherToWeatherWeightsTable.AddRow(row.ToArray());
+      });
+      Logger.LogCustom(
+        "Weather-weather weights:\n" + weatherToWeatherWeightsTable.ToMinimalString(),
+        BepInEx.Logging.LogLevel.Info,
+        LoggingType.Basic
+      );
+
+      // level weights
+      string[] levelWeightsColumnNames = ["Level"];
+      levelWeightsColumnNames = levelWeightsColumnNames.Concat(weatherNames).ToArray();
+
+      var levelWeightsTable = new ConsoleTable(levelWeightsColumnNames);
+
+      MrovLib.LevelHelper.SortedLevels.ForEach(level =>
+      {
+        var row = new List<string> { ConfigHelper.GetNumberlessName(level) };
+
         WeatherManager.Weathers.ForEach(weather =>
         {
-          defaultWeightsTable.AddRow(weather.Name, weather.Config.DefaultWeight.Value);
-        });
-        Logger.LogCustom("Default weights:\n" + defaultWeightsTable.ToMinimalString(), BepInEx.Logging.LogLevel.Info, LoggingType.Basic);
-
-        // weather-weather weights
-        string[] columnNames = ["From \\ To"];
-        columnNames = columnNames.Concat(weatherNames).ToArray();
-
-        var weatherToWeatherWeightsTable = new ConsoleTable(columnNames);
-
-        WeatherManager.Weathers.ForEach(weather =>
-        {
-          var row = new List<string> { weather.Name };
-
-          WeatherManager.Weathers.ForEach(weather2 =>
+          if (weather.LevelWeights.TryGetValue(level, out int weight))
           {
-            var (isWTW, weight) = weather2.GetWeatherToWeatherWeight(weather);
-
-            if (isWTW)
-            {
-              row.Add(weight.ToString());
-            }
-            else
-            {
-              row.Add("X");
-            }
-          });
-
-          weatherToWeatherWeightsTable.AddRow(row.ToArray());
-        });
-        Logger.LogCustom(
-          "Weather-weather weights:\n" + weatherToWeatherWeightsTable.ToMinimalString(),
-          BepInEx.Logging.LogLevel.Info,
-          LoggingType.Basic
-        );
-
-        // level weights
-        string[] levelWeightsColumnNames = ["Level"];
-        levelWeightsColumnNames = levelWeightsColumnNames.Concat(weatherNames).ToArray();
-
-        var levelWeightsTable = new ConsoleTable(levelWeightsColumnNames);
-
-        MrovLib.LevelHelper.SortedLevels.ForEach(level =>
-        {
-          var row = new List<string> { ConfigHelper.GetNumberlessName(level) };
-
-          WeatherManager.Weathers.ForEach(weather =>
+            row.Add(weight.ToString());
+          }
+          else
           {
-            if (weather.LevelWeights.TryGetValue(level, out int weight))
-            {
-              row.Add(weight.ToString());
-            }
-            else
-            {
-              row.Add("X");
-            }
-          });
-
-          levelWeightsTable.AddRow(row.ToArray());
+            row.Add("X");
+          }
         });
-        Logger.LogCustom("Level weights:\n" + levelWeightsTable.ToMinimalString(), BepInEx.Logging.LogLevel.Info, LoggingType.Basic);
-      }
+
+        levelWeightsTable.AddRow(row.ToArray());
+      });
+      Logger.LogCustom("Level weights:\n" + levelWeightsTable.ToMinimalString(), BepInEx.Logging.LogLevel.Info, LoggingType.Basic);
+
       #endregion
 
       WeatherManager.IsSetupFinished = true;
