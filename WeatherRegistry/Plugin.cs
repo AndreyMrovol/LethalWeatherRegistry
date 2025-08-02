@@ -23,7 +23,7 @@ namespace WeatherRegistry
     public const string GUID = PluginInfo.PLUGIN_GUID;
 
     internal static ManualLogSource logger;
-    internal static MrovLib.Logger debugLogger = new(PluginInfo.PLUGIN_GUID);
+    internal static Logger debugLogger = new("Debug", LoggingType.Debug);
     internal static Harmony harmony = new(PluginInfo.PLUGIN_GUID);
 
     internal static bool IsLethalLibLoaded = false;
