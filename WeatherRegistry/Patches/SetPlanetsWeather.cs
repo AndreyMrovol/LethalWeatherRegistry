@@ -31,7 +31,7 @@ namespace WeatherRegistry.Patches
         return true;
       }
 
-      WeatherCalculation.Logger.LogInfo(
+      Plugin.debugLogger.LogInfo(
         $"Picking weathers on day {StartOfRound.Instance.gameStats.daysSpent}, file {GameNetworkManager.Instance.currentSaveFileName}"
       );
 
@@ -40,7 +40,7 @@ namespace WeatherRegistry.Patches
         string SaveKey = $"{Defaults.WeatherSaveKey}-{StartOfRound.Instance.gameStats.daysSpent}";
         bool weathersAlreadySelected = ES3.KeyExists(SaveKey, GameNetworkManager.Instance.currentSaveFileName);
 
-        Plugin.logger.LogInfo($"Save file has weather data: {weathersAlreadySelected}");
+        Plugin.debugLogger.LogInfo($"Save file has weather data: {weathersAlreadySelected}");
 
         if (weathersAlreadySelected)
         {
