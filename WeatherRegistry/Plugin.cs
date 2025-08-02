@@ -46,7 +46,7 @@ namespace WeatherRegistry
 
       // #if DEVMODE
       //       Plugin.logger.LogWarning("Dev build detected, enabling debug logging.");
-      //       ConfigManager.DebugLogsToShow.Value = LoggingType.Basic | LoggingType.Debug | LoggingType.Developer;
+      //       ConfigManager.LoggingLevels.Value = LoggingType.Basic | LoggingType.Debug | LoggingType.Developer;
       // #endif
 
       SunAnimator.Init();

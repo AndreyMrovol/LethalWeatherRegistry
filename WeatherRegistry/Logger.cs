@@ -28,7 +28,7 @@ namespace WeatherRegistry
 
     public void LogCustom(string data, LogLevel level, LoggingType type)
     {
-      if (ConfigManager.DebugLogsToShow.Value.HasFlag(type))
+      if (ConfigManager.LoggingLevels.Value.HasFlag(type))
       {
         _logSource.Log(level, $"[{_name}] {data}");
       }
@@ -36,7 +36,7 @@ namespace WeatherRegistry
 
     public void Log(LogLevel level, string data)
     {
-      if (ConfigManager.DebugLogsToShow.Value.HasFlag(_defaultLoggingType))
+      if (ConfigManager.LoggingLevels.Value.HasFlag(_defaultLoggingType))
       {
         _logSource.Log(level, $"[{_name}] {data}");
       }

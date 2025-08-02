@@ -17,7 +17,7 @@ namespace WeatherRegistry
     // general settings
 
     // logs settings
-    internal static ConfigEntry<LoggingType> DebugLogsToShow { get; private set; }
+    internal static ConfigEntry<LoggingType> LoggingLevels { get; private set; }
 
     // map screen settings
     internal static ConfigEntry<bool> ColoredWeathers { get; private set; }
@@ -38,7 +38,7 @@ namespace WeatherRegistry
 
       EventManager.SetupFinished.AddListener(StartupActions);
 
-      DebugLogsToShow = configFile.Bind("|Logging", "Display Log Levels", LoggingType.Basic, "Select which logs to show.");
+      LoggingLevels = configFile.Bind("|Logging", "Display Log Levels", LoggingType.Basic, "Select which logs to show.");
 
       ColoredWeathers = configFile.Bind("|General", "Colored Weathers", true, "Enable colored weathers on map screen");
       PlanetVideos = configFile.Bind("|General", "Planet Videos", true, "Display planet videos on map screen");
