@@ -33,7 +33,7 @@ namespace WeatherRegistry.Patches
 
       WeatherSync.RegisterPrefabs(__instance.GetComponent<NetworkManager>());
 
-      Plugin.logger.LogDebug("WeatherSync initialized in GameNetworkManager.Start");
+      Plugin.debugLogger.LogDebug("WeatherSync initialized in GameNetworkManager.Start");
     }
   }
 }
