@@ -140,9 +140,9 @@ namespace WeatherRegistry
       return possibleWeathers;
     }
 
-    public static MrovLib.WeightHandler<Weather> GetPlanetWeightedList(SelectableLevel level)
+    public static WeightHandler<Weather, WeatherWeightType> GetPlanetWeightedList(SelectableLevel level)
     {
-      MrovLib.WeightHandler<Weather> weightedList = new();
+      WeightHandler<Weather, WeatherWeightType> weightedList = new();
       Logger logger = WeatherCalculation.Logger;
 
       List<LevelWeatherType> weatherTypes = GetPlanetPossibleWeathers(level);
@@ -158,8 +158,7 @@ namespace WeatherRegistry
         // clone the object
         Weather typeOfWeather = GetWeather(weather);
 
-        var weatherWeight = typeOfWeather.GetWeight(level);
-
+        (int weatherWeight, WeatherWeightType type) = typeOfWeather.GetWeightWithOrigin(level);
         weightedList.Add(typeOfWeather, weatherWeight);
       }
 
