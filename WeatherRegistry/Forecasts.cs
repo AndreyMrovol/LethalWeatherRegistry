@@ -9,7 +9,8 @@ namespace WeatherRegistry
 {
   public static class Forecasts
   {
-    public static Dictionary<TerminalNode, SelectableLevel> ForecastTerminalNodes = [];
+    internal static Dictionary<TerminalNode, SelectableLevel> ForecastTerminalNodes = [];
+    private static readonly Logger Logger = new("Forecast", LoggingType.Debug);
 
     public static (
       List<CompatibleNoun> compatibleNouns,
@@ -80,13 +81,12 @@ namespace WeatherRegistry
       WeatherManager.GetWeathers().ForEach(weather => tomorrowWeights.Add(weather.Name, weather.GetWeight(level)));
       int totalWeight = tomorrowWeights.Values.Sum();
       tomorrowWeights = tomorrowWeights.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
-      ;
 
-      Plugin.debugLogger.LogDebug($"Total weight for {LevelName}: {totalWeight}");
+      Logger.LogDebug($"Total weight for {LevelName}: {totalWeight}");
 
       foreach (var weather in tomorrowWeights)
       {
-        // Plugin.debugLogger.LogDebug(
+        // Logger.LogDebug(
         //   $"Weather: {weather.Key}, Weight: {weather.Value}, Probability: {(float)(weather.Value / (double)totalWeight) * 100}%"
         // );
 
