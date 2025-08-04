@@ -3,7 +3,6 @@ using BepInEx.Logging;
 
 namespace WeatherRegistry
 {
-  [Flags]
   public enum LoggingType
   {
     Basic,
@@ -26,9 +25,14 @@ namespace WeatherRegistry
 
     public string CustomName { get; set; } = string.Empty;
 
+    private bool ShouldLog(LoggingType type)
+    {
+      return ConfigManager.LoggingLevels.Value >= type;
+    }
+
     public void LogCustom(string data, LogLevel level, LoggingType type)
     {
-      if (ConfigManager.LoggingLevels.Value.HasFlag(type))
+      if (ShouldLog(type))
       {
         _logSource.Log(level, $"[{_name}] {data}");
       }
@@ -36,7 +40,7 @@ namespace WeatherRegistry
 
     public void Log(LogLevel level, string data)
     {
-      if (ConfigManager.LoggingLevels.Value.HasFlag(_defaultLoggingType))
+      if (ShouldLog(_defaultLoggingType))
       {
         _logSource.Log(level, $"[{_name}] {data}");
       }
