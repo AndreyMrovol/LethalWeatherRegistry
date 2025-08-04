@@ -74,7 +74,7 @@ namespace WeatherRegistry
 
           NewWeather[level] = LevelWeatherType.None;
 
-          MrovLib.WeightHandler<Weather> possibleWeathers = WeatherManager.GetPlanetWeightedList(level);
+          WeightHandler<Weather, WeatherWeightType> possibleWeathers = WeatherManager.GetPlanetWeightedList(level);
           Weather selectedWeather = possibleWeathers.Random();
 
           NewWeather[level] = selectedWeather.VanillaWeatherType;
