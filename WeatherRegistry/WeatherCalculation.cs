@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HarmonyLib;
+using MrovLib;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
@@ -42,7 +43,11 @@ namespace WeatherRegistry
         System.Random random = GetRandom(startOfRound);
         List<SelectableLevel> levels = MrovLib.LevelHelper.SortedLevels;
 
-        Logger.LogDebug($"Levels: {string.Join(';', levels.Select(level => ConfigHelper.GetAlphanumericName(level)))}");
+        Logger.LogCustom(
+          $"Levels: {string.Join(';', levels.Select(level => ConfigHelper.GetAlphanumericName(level)))}",
+          BepInEx.Logging.LogLevel.Debug,
+          LoggingType.Developer
+        );
 
         StringBuilder weatherLog = new();
 
@@ -55,11 +60,19 @@ namespace WeatherRegistry
           // possible weathers taken from level.randomWeathers (modified by me)
           // use random for seeded randomness
 
-          weatherLog.AppendLine($"Picking weather for {ConfigHelper.GetAlphanumericName(level)} ");
+          int longestPlanetName = LevelHelper.LongestPlanetName.Length;
+          bool isDebugLoggingEnabled = ConfigManager.LoggingLevels.Value >= LoggingType.Debug;
+
+          if (!isDebugLoggingEnabled)
+          {
+            weatherLog.Append($"\t");
+          }
+
+          weatherLog.Append($"[{ConfigHelper.GetAlphanumericName(level)}] ".PadRight(isDebugLoggingEnabled ? 0 : longestPlanetName + 4));
 
           if (level.overrideWeather)
           {
-            weatherLog.AppendLine($"Override weather present, changing weather to {level.overrideWeatherType}");
+            weatherLog.Append($"Override weather: {level.overrideWeatherType}");
             Weather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
 
             NewWeather[level] = overrideWeather.VanillaWeatherType;
@@ -69,9 +82,6 @@ namespace WeatherRegistry
             continue;
           }
 
-          weatherLog.AppendLine($"PreviousDayWeather: {WeatherCalculation.previousDayWeather[level.PlanetName]}");
-          weatherLog.AppendLine($"Possible weathers: {string.Join(", ", level.randomWeathers.Select(rw => rw.weatherType))}");
-
           NewWeather[level] = LevelWeatherType.None;
 
           WeightHandler<Weather, WeatherWeightType> possibleWeathers = WeatherManager.GetPlanetWeightedList(level);
@@ -80,13 +90,29 @@ namespace WeatherRegistry
           NewWeather[level] = selectedWeather.VanillaWeatherType;
           EventManager.WeatherChanged.Invoke((level, selectedWeather));
 
-          weatherLog.AppendLine(
-            $"Selected weather {selectedWeather.Name} with chance {possibleWeathers.Get(selectedWeather)} / {possibleWeathers.Sum} ({(float)possibleWeathers.Get(selectedWeather) / possibleWeathers.Sum * 100:F2}%)"
+          // with chance {possibleWeathers.Get(selectedWeather)} / {possibleWeathers.Sum}
+
+          weatherLog.Append(
+            $"Selected weather: {selectedWeather.Name} ({(float)possibleWeathers.Get(selectedWeather) / possibleWeathers.Sum * 100:F2}% chance)"
           );
+
+          if (isDebugLoggingEnabled)
+          {
+            weatherLog.AppendLine();
+
+            weatherLog.AppendLine($"PreviousDayWeather: {WeatherCalculation.previousDayWeather[level.PlanetName]}");
+            weatherLog.AppendLine($"Possible weathers: [{string.Join(", ", level.randomWeathers.Select(rw => rw.weatherType))}]");
+            weatherLog.AppendLine($"Used weights: ");
+            foreach (Weather weather in possibleWeathers.Keys)
+            {
+              weatherLog.AppendLine(
+                $"  Weather {weather.name} has {possibleWeathers.GetOrigin(weather).ToString().ToLowerInvariant()} weight ({possibleWeathers.Get(weather)})"
+              );
+            }
+          }
         }
 
         Logger.LogMessage(weatherLog.ToString());
-        // Logger.LogMessage("-------------");
 
         return NewWeather;
       }

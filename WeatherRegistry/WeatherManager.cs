@@ -133,7 +133,7 @@ namespace WeatherRegistry
 
       if (possibleWeathers == null || possibleWeathers.Count() == 0)
       {
-        Plugin.logger.LogError("Level's random weathers are null");
+        Plugin.logger.LogWarning("Level's random weathers are null");
         return [];
       }
 
@@ -149,13 +149,12 @@ namespace WeatherRegistry
 
       if (weatherTypes == null || weatherTypes.Count() == 0)
       {
-        Plugin.logger.LogError("Level's random weathers are null");
+        Plugin.logger.LogWarning("Level's random weathers are null");
         return weightedList;
       }
 
       foreach (var weather in weatherTypes)
       {
-        // clone the object
         Weather typeOfWeather = GetWeather(weather);
 
         (int weatherWeight, WeatherWeightType type) = typeOfWeather.GetWeightWithOrigin(level);
