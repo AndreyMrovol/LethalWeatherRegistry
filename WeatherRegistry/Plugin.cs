@@ -17,6 +17,7 @@ namespace WeatherRegistry
   [BepInDependency("evaisa.lethallib", BepInDependency.DependencyFlags.SoftDependency)]
   [BepInDependency("BMX.LobbyCompatibility", BepInDependency.DependencyFlags.SoftDependency)]
   [BepInDependency("mattymatty.LobbyControl", BepInDependency.DependencyFlags.SoftDependency)]
+  [BepInIncompatibility("Ozzymops.DisableStormyWeather")]
   public class Plugin : BaseUnityPlugin
   {
     [Obsolete("Use PluginInfo.PLUGIN_GUID instead")]
