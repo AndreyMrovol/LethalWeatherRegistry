@@ -81,6 +81,10 @@
         <Reference Include="Imperium" PrivateAssets="all">
             <HintPath>$(LibraryDirectory)/giosuel.Imperium.dll</HintPath>
         </Reference>
+
+        <Reference Include="Malfunctions" PrivateAssets="all" Publicize="true">
+            <HintPath>$(LibraryDirectory)/Malfunctions.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
