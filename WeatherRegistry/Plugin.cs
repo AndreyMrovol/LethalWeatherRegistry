@@ -33,6 +33,7 @@ namespace WeatherRegistry
     internal static FacilityMeltdownCompat FacilityMeltdownCompat;
     internal static OrbitsCompat OrbitsCompat;
     internal static ImperiumCompat ImperiumCompat;
+    internal static MalfunctionsCompat MalfunctionsCompat;
 
     internal static Hook WeatherTypeEnumHook;
 
@@ -105,6 +106,8 @@ namespace WeatherRegistry
       OrbitsCompat.Init();
 
       ImperiumCompat = new ImperiumCompat("giosuel.Imperium");
+
+      MalfunctionsCompat = new MalfunctionsCompat("com.zealsprince.malfunctions");
 
       // Plugin startup logic
       Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");

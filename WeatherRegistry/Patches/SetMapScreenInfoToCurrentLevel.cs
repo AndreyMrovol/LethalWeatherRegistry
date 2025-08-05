@@ -14,15 +14,25 @@ namespace WeatherRegistry.Patches
     [HarmonyPatch("SetMapScreenInfoToCurrentLevel")]
     [HarmonyPostfix]
     [HarmonyPriority(Priority.Last)]
+    [HarmonyBefore("com.zealsprince.malfunctions")]
     internal static void GameMethodPatch(
       ref TextMeshProUGUI ___screenLevelDescription,
       ref SelectableLevel ___currentLevel,
       StartOfRound __instance
     )
     {
+      Plugin.debugLogger.LogCustom($"SetMapScreenInfoToCurrentLevel called.", BepInEx.Logging.LogLevel.Debug, LoggingType.Developer);
+
       if (!WeatherManager.IsSetupFinished)
       {
         Plugin.logger.LogWarning("WeatherManager is not set up yet.");
+        return;
+      }
+
+      if (Plugin.MalfunctionsCompat.IsModPresent && Plugin.MalfunctionsCompat.IsNavigationalMalfunctionActive())
+      {
+        Plugin.MalfunctionsCompat.SetNotifiedToFalse();
+        Plugin.debugLogger.LogDebug("Navigation Malfunction is active, skipping map screen update.");
         return;
       }
 
