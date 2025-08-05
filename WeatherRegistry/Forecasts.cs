@@ -4,12 +4,12 @@ using System.Text;
 using ConsoleTables;
 using MrovLib;
 using UnityEngine;
+using WeatherRegistry.Managers;
 
 namespace WeatherRegistry
 {
   public static class Forecasts
   {
-    internal static Dictionary<TerminalNode, SelectableLevel> ForecastTerminalNodes = [];
     private static readonly Logger Logger = new("Forecast", LoggingType.Debug);
 
     public static (
@@ -60,7 +60,7 @@ namespace WeatherRegistry
         forecastNodes.Add(ForecastNode);
         forecastKeywords.Add(ForecastKeyword);
 
-        ForecastTerminalNodes.Add(ForecastNode, level);
+        TerminalNodeManager.ForecastTerminalNodes.Add(ForecastNode, level);
       });
 
       return (compatibleNouns, forecastNodes, forecastKeywords);

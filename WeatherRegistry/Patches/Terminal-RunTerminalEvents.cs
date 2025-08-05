@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HarmonyLib;
+using WeatherRegistry.Managers;
 
 namespace WeatherRegistry.Patches
 {
@@ -11,11 +12,11 @@ namespace WeatherRegistry.Patches
     [HarmonyPrefix]
     public static bool GameMethodPatch(Terminal __instance, ref TerminalNode node)
     {
-      if (Forecasts.ForecastTerminalNodes.Keys.Contains(node))
+      if (TerminalNodeManager.ForecastTerminalNodes.Keys.Contains(node))
       {
         Plugin.debugLogger.LogDebug($"Forecast for node {node.name} requested");
 
-        string displayText = Forecasts.GetForecast(Forecasts.ForecastTerminalNodes[node]);
+        string displayText = Forecasts.GetForecast(TerminalNodeManager.ForecastTerminalNodes[node]);
         __instance.currentText = displayText;
 
         return false;
