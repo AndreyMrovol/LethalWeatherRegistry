@@ -1,3 +1,30 @@
+# 0.7.0
+
+## Please re-generate your configs!
+
+New features:
+
+- [`WeatherDefinition`](/WeatherRegistry/Editor/WeatherDefinition.cs): a component for Unity Editor to create new weathers without writing code that's on par with code-based weather creation
+- `EffectOverride`: a component for Unity Editor to create new weather effect overrides
+- Configurable logging levels: `Basic`, `Debug` and `Developer`
+- `ConfigHelper` is now exposed
+- `ShowWeatherMultipliers` config option to show weather multipliers on the screen
+- Weather name will now be scaled down to fit the screen
+
+Breaking changes:
+
+- `Weather.LevelWeathers` is now obsolete
+- `WeatherManager.LevelWeathers` is now obsolete
+- `Weather.AnimationClip` is now obsolete
+- `WeatherManager.WeatherEffectOverrides` is moved to `WeatherOverrideManager.WeatherEffectOverrides`
+- removed `|Debugging` config options
+
+Fixes:
+
+- fixed an issue with `SelectableLevel.OverrideWeather` not being applied correctly in vanilla algorithm
+- fixed an issue with [Malfunctions](https://thunderstore.io/c/lethal-company/p/zealsprince/Malfunctions/) `NavigationMalfunction` not working correctly when active
+- `Weather.toString()` now returns the weather name instead of serialized weather
+
 # 0.6.1
 
 - fixed an issue with apparatus showing up its correct value
