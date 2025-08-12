@@ -39,8 +39,14 @@ namespace WeatherRegistry.Patches
             VanillaWeatherType = (LevelWeatherType)LethalLibWeatherEntry.Key,
             Origin = WeatherOrigin.LethalLib,
             Color = Defaults.LethalLibColor,
-            Config = { DefaultWeight = new(50), },
+            Config =
+            {
+              DefaultWeight = new(50),
+              FilteringOption = new(FilteringOption.Include),
+              LevelFilters = new(string.Join(";", llWeather.levels)),
+            }
           };
+
         weathers.Add(weather);
 
         WeatherManager.ModdedWeatherEnumExtension.Add(LethalLibWeatherEntry.Key, weather);
