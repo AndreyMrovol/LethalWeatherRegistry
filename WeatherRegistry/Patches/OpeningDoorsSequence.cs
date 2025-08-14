@@ -1,13 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Emit;
+using System.Text.RegularExpressions;
 using HarmonyLib;
-using Newtonsoft.Json;
-using WeatherRegistry.Definitions;
-using WeatherRegistry.Patches;
 
-namespace WeatherRegistry
+namespace WeatherRegistry.Patches
 {
   [HarmonyPatch(typeof(StartOfRound))]
   internal class OpeningDoorsSequencePatch
@@ -122,7 +118,10 @@ namespace WeatherRegistry
         instance.currentLevel.currentWeather != LevelWeatherType.None ? WeatherManager.GetCurrentWeatherName(instance.currentLevel) : "Clear";
       var weatherLine = $"WEATHER: {weatherName}";
 
-      return $"{weatherLine}\n{description}";
+      Regex regex = new("\n{2,}", RegexOptions.Compiled);
+      string modifiedDescription = regex.Replace(StartOfRound.Instance.currentLevel.LevelDescription, "\n");
+
+      return $"{weatherLine}\n{modifiedDescription}";
     }
 
     internal static void RunWeatherPatches()
