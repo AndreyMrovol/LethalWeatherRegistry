@@ -125,6 +125,16 @@ namespace WeatherRegistry
       WeatherManager.GetWeather(randomWeather.weatherType).WeatherVariables.Remove(level);
     }
 
+    public static void RemoveRandomWeather(SelectableLevel level, LevelWeatherType weatherType)
+    {
+      List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.Where(rw => rw.weatherType == weatherType).ToList();
+
+      foreach (RandomWeatherWithVariables randomWeather in randomWeathers)
+      {
+        RemoveRandomWeather(level, randomWeather);
+      }
+    }
+
     #endregion
 
     #region Weather effects
