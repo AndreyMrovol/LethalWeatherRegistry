@@ -14,7 +14,6 @@ namespace WeatherRegistry
     internal static DirectoryInfo pluginsFolder = new DirectoryInfo(Assembly.GetExecutingAssembly().Location).Parent.Parent;
     private static Dictionary<string, AssetBundle> LoadedBundles = [];
 
-    public static List<Weather> LoadedWeather { get; private set; } = [];
     private static List<EffectOverride> LoadedEffectOverrides = [];
     private static List<PlanetNameOverride> LoadedPlanetNameOverrides = [];
 
@@ -38,7 +37,7 @@ namespace WeatherRegistry
       LoadAllBundlesInFolder(bundlesPath);
 
       Logger.LogCustom(
-        $"Loaded {LoadedWeather.Count} weather definitions from asset bundles: {string.Join(", ", LoadedWeather.Select(w => (w.name, (int)w.VanillaWeatherType)))}",
+        $"Loaded {WeatherManager.RegisteredWeathers.Count} weather definitions from asset bundles: [{string.Join(", ", WeatherManager.RegisteredWeathers.Select(w => w.Name))}]",
         LogLevel.Info,
         LoggingType.Basic
       );
