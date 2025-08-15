@@ -217,7 +217,7 @@ namespace WeatherRegistry
           transitioning = false
         };
 
-        // WeatherEffect keyEffect = weatherList[entry.Key];
+        entry.Value.Effect.VanillaWeatherEffect = weatherList[entry.Key];
 
         if (weatherList[entry.Key].effectObject != null)
         {

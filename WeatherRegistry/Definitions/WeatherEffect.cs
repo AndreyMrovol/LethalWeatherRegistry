@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Managers;
@@ -31,7 +32,12 @@ namespace WeatherRegistry
     [field: SerializeField]
     public int DefaultVariable2 { get; set; } = 0;
 
-    public LevelWeatherType LevelWeatherType { get; set; } = LevelWeatherType.None;
+    public LevelWeatherType LevelWeatherType { get; internal set; }
+
+    //  <summary>
+    ////  Use TimeOfDay.Instance.effects[LevelWeatherType] wherever possible.
+    //  </summary>
+    public WeatherEffect VanillaWeatherEffect { get; internal set; }
 
     public virtual bool EffectEnabled
     {
@@ -79,6 +85,8 @@ namespace WeatherRegistry
     {
       EffectObject = weatherEffect.effectObject;
       WorldObject = weatherEffect.effectPermanentObject;
+
+      VanillaWeatherEffect = weatherEffect;
 
       EffectObject?.SetActive(false);
       WorldObject?.SetActive(false);
