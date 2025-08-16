@@ -18,7 +18,7 @@ namespace WeatherRegistry
     public static bool SelectWeathers { get; set; } = true;
 
     public static WeatherSelectionAlgorithm WeatherSelectionAlgorithm { get; set; } =
-      ConfigManager.UseWeatherWeights.Value ? WeatherCalculation.RegistryAlgorithm : WeatherCalculation.VanillaAlgorithm;
+      WeatherCalculation.WeatherAlgorithms[ConfigManager.WeatherAlgorithm.Value];
 
     public static bool ScrapMultipliers { get; set; } = ConfigManager.UseScrapMultipliers.Value;
 
