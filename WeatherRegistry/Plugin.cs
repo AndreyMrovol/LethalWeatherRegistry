@@ -46,11 +46,10 @@ namespace WeatherRegistry
 
       ConfigManager.Init(Config);
 
-      // #if DEVMODE
-      //       Plugin.logger.LogWarning("Dev build detected, enabling debug logging.");
-      //       ConfigManager.LoggingLevels.Value = LoggingType.Basic | LoggingType.Debug | LoggingType.Developer;
-      // #endif
-
+#if DEVMODE
+      Plugin.logger.LogWarning("Dev build detected, enabling full debug logging.");
+      ConfigManager.LoggingLevels.Value = LoggingType.Developer;
+#endif
 
       AssetBundleLoader.LoadAssetBundles();
 
