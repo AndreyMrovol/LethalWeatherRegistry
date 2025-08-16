@@ -14,44 +14,6 @@ namespace WeatherRegistry.Patches
 {
   internal class SunAnimator
   {
-    public static void Init()
-    {
-      // create separate harmony instance for Animator
-      var harmony = new Harmony("WeatherRegistry.SunAnimator");
-
-      // patch the Animator class with the SetBool method
-      harmony.Patch(
-        AccessTools.Method(typeof(UnityEngine.Animator), "SetBool", new Type[] { typeof(string), typeof(bool) }),
-        new HarmonyMethod(typeof(SunAnimator), "SetBoolStringPatch")
-      );
-      logger.LogDebug("Patching Animator.SetBool(string, bool)");
-    }
-
-    public static bool SetBoolPatch(Animator __instance, object nameOrId, bool value)
-    {
-      // string name = nameOrId as string;
-
-      // if (TimeOfDay.Instance == null)
-      // {
-      //   return true;
-      // }
-
-      // if (name == "overcast" || name == "eclipse")
-      // {
-      //   if (ConfigManager.SunAnimatorBlacklistLevels.Contains(StartOfRound.Instance.currentLevel))
-      //   {
-      //     return true;
-      //   }
-      // }
-
-      return true;
-    }
-
-    public static bool SetBoolStringPatch(Animator __instance, string name, bool value)
-    {
-      return SetBoolPatch(__instance, name, value);
-    }
-
     internal static Logger logger = new("SunAnimator", LoggingType.Debug);
 
     internal static Dictionary<string, LevelWeatherType> vanillaBools =
@@ -92,12 +54,6 @@ namespace WeatherRegistry.Patches
     public static void OverrideSunAnimator(LevelWeatherType weatherType)
     {
       Plugin.logger.LogDebug("OverrideSunAnimator called");
-
-      if (ConfigManager.SunAnimatorBlacklistLevels.Contains(StartOfRound.Instance.currentLevel))
-      {
-        logger.LogDebug($"Current level {StartOfRound.Instance.currentLevel} is blacklisted");
-        // return;
-      }
 
       if (TimeOfDay.Instance.sunAnimator == null)
       {
@@ -155,27 +111,7 @@ namespace WeatherRegistry.Patches
           { LevelWeatherType.None, clipNone },
         };
 
-        // TODO: this requires testing + correct implementation (to be extensible by weathertweaks)
-
-        if (WeatherManager.GetWeatherAnimationClip(weatherType) != null)
-        {
-          AnimationClip customAnimationClip = WeatherManager.GetWeatherAnimationClip(weatherType);
-
-          TimeOfDay.Instance.sunAnimator.runtimeAnimatorController.animationClips.Add(customAnimationClip);
-          animationClips.Add(customAnimationClip);
-          clips[weatherType] = customAnimationClip;
-
-          logger.LogInfo($"Added animation clip for weather type {weatherType}");
-
-          // log all clips
-          TimeOfDay
-            .Instance.sunAnimator.runtimeAnimatorController.animationClips.ToList()
-            .ForEach(clip =>
-            {
-              logger.LogInfo($"clip: {clip.name}");
-            });
-        }
-        else if (currentWeather.Type == WeatherType.Clear)
+        if (currentWeather.Type == WeatherType.Clear)
         {
           logger.LogDebug($"Weather is {currentWeather.Name}, setting clip to None");
           clips[weatherType] = clipNone;

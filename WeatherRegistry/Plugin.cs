@@ -51,7 +51,6 @@ namespace WeatherRegistry
       //       ConfigManager.LoggingLevels.Value = LoggingType.Basic | LoggingType.Debug | LoggingType.Developer;
       // #endif
 
-      SunAnimator.Init();
 
       AssetBundleLoader.LoadAssetBundles();
 

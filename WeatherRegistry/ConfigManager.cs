@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using BepInEx.Configuration;
 
 namespace WeatherRegistry
@@ -28,15 +30,9 @@ namespace WeatherRegistry
     internal static ConfigEntry<bool> UseWeatherWeights { get; private set; }
     internal static ConfigEntry<bool> UseScrapMultipliers { get; private set; }
 
-    // sun animator settings
-    internal static ConfigEntry<string> SunAnimatorBlacklist { get; set; }
-    internal static SelectableLevel[] SunAnimatorBlacklistLevels { get; set; }
-
     private ConfigManager(ConfigFile config)
     {
       configFile = config;
-
-      EventManager.SetupFinished.AddListener(StartupActions);
 
       LoggingLevels = configFile.Bind("|Logging", "Display Log Levels", LoggingType.Basic, "Select which logs to show.");
 
@@ -56,24 +52,6 @@ namespace WeatherRegistry
         true,
         "Use Registry's scrap multipliers. Disable if you prefer to use other mod's multiplier settings."
       );
-
-      SunAnimatorBlacklist = configFile.Bind(
-        "|SunAnimator",
-        "Blacklist",
-        "Asteroid-13;",
-        "Semicolon-separated list of level names to blacklist from being patched by sun animator"
-      );
-    }
-
-    private static void OnConfigChange(object sender, EventArgs eventArgs)
-    {
-      SunAnimatorBlacklistLevels = ConfigHelper.ConvertStringToLevels(SunAnimatorBlacklist.Value);
-    }
-
-    internal static void StartupActions()
-    {
-      SunAnimatorBlacklistLevels = ConfigHelper.ConvertStringToLevels(SunAnimatorBlacklist.Value);
-      SunAnimatorBlacklist.SettingChanged += OnConfigChange;
     }
   }
 }
