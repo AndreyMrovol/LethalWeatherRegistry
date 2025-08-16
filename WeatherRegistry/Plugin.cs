@@ -87,7 +87,7 @@ namespace WeatherRegistry
 
       WeatherTypeEnumHook = new Hook(
         typeof(Enum).GetMethod("ToString", []),
-        typeof(WeatherManager).GetMethod(nameof(WeatherManager.LevelWeatherTypeEnumHook))
+        typeof(EnumPatches).GetMethod(nameof(EnumPatches.LevelWeatherTypeEnumToStringHook))
       );
 
       if (Chainloader.PluginInfos.ContainsKey("BMX.LobbyCompatibility"))

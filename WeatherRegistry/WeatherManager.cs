@@ -106,20 +106,6 @@ namespace WeatherRegistry
       return string.Empty;
     }
 
-    public static string LevelWeatherTypeEnumHook(Func<Enum, string> orig, Enum self)
-    {
-      if (self.GetType() == typeof(LevelWeatherType))
-      {
-        // Plugin.logger.LogDebug($"LevelWeatherTypeEnumHook");
-        if (WeatherManager.ModdedWeatherEnumExtension.ContainsKey((int)(LevelWeatherType)self))
-        {
-          return WeatherManager.ModdedWeatherEnumExtension[(int)(LevelWeatherType)self].name;
-        }
-      }
-
-      return orig(self);
-    }
-
     internal static List<LevelWeatherType> GetPlanetPossibleWeathers(SelectableLevel level)
     {
       List<LevelWeatherType> possibleWeathers = level
