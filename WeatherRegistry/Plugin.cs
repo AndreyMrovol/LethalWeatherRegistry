@@ -58,6 +58,11 @@ namespace WeatherRegistry
       ForecastVerb.word = "forecast";
       ForecastVerb.isVerb = true;
 
+      MrovLib.EventManager.MainMenuLoaded.AddListener(() =>
+      {
+        MainMenuInit();
+      });
+
       EventManager.SetupFinished.AddListener(() =>
       {
         ContentManager.AddTerminalKeywords([ForecastVerb]);
@@ -67,9 +72,9 @@ namespace WeatherRegistry
         ForecastVerb.compatibleNouns = compatibleNouns.ToArray();
         ContentManager.AddTerminalNodes(forecastNodes);
         ContentManager.AddTerminalKeywords(forecastKeywords);
-      });
 
-      MrovLib.EventManager.MainMenuLoaded.AddListener(MainMenuInit);
+        ConfigManager.Instance.RemoveOrphanedEntries();
+      });
 
       EventManager.SetupFinished.AddListener(() => AssetBundleLoader.LoadWeatherOverrides());
 

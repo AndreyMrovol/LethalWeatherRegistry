@@ -53,5 +53,27 @@ namespace WeatherRegistry
         "Use Registry's scrap multipliers. Disable if you prefer to use other mod's multiplier settings."
       );
     }
+
+    internal void RemoveOrphanedEntries()
+    {
+      //remove orphaned config entries
+      Plugin.logger.LogInfo("Removing orphaned config entries...");
+      var orphanedEntriesProp = ConfigManager
+        .configFile.GetType()
+        .GetProperty("OrphanedEntries", BindingFlags.NonPublic | BindingFlags.Instance);
+      var orphanedEntries = (Dictionary<ConfigDefinition, string>)orphanedEntriesProp!.GetValue(ConfigManager.configFile, null);
+
+      var entriesToRemove = orphanedEntries.Where(entry => entry.Key.Section.Contains("|")).ToList();
+
+      Plugin.logger.LogWarning($"Found {entriesToRemove.Count} orphaned config entries.");
+
+      entriesToRemove.ForEach(entry =>
+      {
+        Plugin.debugLogger.LogWarning($"Removing orphaned config entry: {entry.Key.Section} - {entry.Key.Key}");
+        orphanedEntries.Remove(entry.Key);
+      });
+
+      ConfigManager.configFile.Save();
+    }
   }
 }
