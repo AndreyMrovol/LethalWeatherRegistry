@@ -419,7 +419,8 @@ namespace WeatherRegistry
         }
 
         // CASE 2: Handle Clear weather type
-        if (weather.Type == WeatherType.Clear)
+        // Keep Clear weather for vanilla algorithm as it increases Clear weather chance
+        if (weather.Type == WeatherType.Clear && Settings.WeatherSelectionAlgorithm != WeatherCalculation.VanillaAlgorithm)
         {
           randomWeathers.RemoveAll(rw => rw.weatherType == weather.VanillaWeatherType);
           level.randomWeathers = GetRandomWeathersWithVariables(randomWeathers);
@@ -451,7 +452,7 @@ namespace WeatherRegistry
         }
 
         // CASE 5: Handle different weather types
-        if (weather.Type == WeatherType.Vanilla)
+        if (weather.Type <= WeatherType.Vanilla)
         {
           // For vanilla weather, we don't need to do anything else
           // It's already in the level's randomWeathers
