@@ -87,7 +87,7 @@ internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
         foreach (Weather weather in possibleWeathers.Keys)
         {
           weatherLog.AppendLine(
-            $"  Weather {weather.name} has {possibleWeathers.GetOrigin(weather).ToString().ToLowerInvariant()} weight ({possibleWeathers.Get(weather)})"
+            $"  {weather.name} has {possibleWeathers.GetOrigin(weather).ToString().ToLowerInvariant()} weight ({possibleWeathers.Get(weather)})"
           );
         }
       }
