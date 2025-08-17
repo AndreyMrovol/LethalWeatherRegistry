@@ -54,9 +54,16 @@ namespace WeatherRegistry
       // only change the current effects
       if (!StartOfRound.Instance.inShipPhase)
       {
-        Logger.LogDebug("Ship has already landed, only changing weather effects");
-        SetWeatherEffects(weather);
-        return;
+        if (StartOfRound.Instance.currentLevel == level)
+        {
+          Logger.LogDebug("Ship has already landed, changing weather effects");
+          SetWeatherEffects(weather);
+          return;
+        }
+        else
+        {
+          Logger.LogDebug("Ship has already landed - cannot change weather effect on other level!");
+        }
       }
 
       WeatherManager.CurrentWeathers.SetWeather(level, weather);
