@@ -5,6 +5,7 @@ using System.Text;
 using ConsoleTables;
 using Newtonsoft.Json;
 using UnityEngine;
+using WeatherRegistry.Definitions;
 using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
@@ -421,7 +422,7 @@ namespace WeatherRegistry
         if (weather.Type == WeatherType.Clear)
         {
           randomWeathers.RemoveAll(rw => rw.weatherType == weather.VanillaWeatherType);
-          level.randomWeathers = randomWeathers.ToArray();
+          level.randomWeathers = GetRandomWeathersWithVariables(randomWeathers);
           weatherLog.Append("Clear weather type removed");
           continue;
         }
@@ -431,7 +432,7 @@ namespace WeatherRegistry
         {
           // Logger.LogDebug($"Removing weather {weather.Name} from the company moon {level.name}");
           randomWeathers.RemoveAll(rw => rw.weatherType == weather.VanillaWeatherType);
-          level.randomWeathers = randomWeathers.ToArray();
+          level.randomWeathers = GetRandomWeathersWithVariables(randomWeathers);
           weatherLog.Append("Removed from company moon");
           continue;
         }
@@ -443,7 +444,7 @@ namespace WeatherRegistry
           {
             // Logger.LogDebug($"Removing weather {weather.Name} from level {level.name}");
             randomWeathers.RemoveAll(rw => rw.weatherType == weather.VanillaWeatherType);
-            level.randomWeathers = randomWeathers.ToArray();
+            level.randomWeathers = GetRandomWeathersWithVariables(randomWeathers);
           }
           weatherLog.Append("Level not in list to apply weather to");
           continue;
@@ -481,12 +482,26 @@ namespace WeatherRegistry
             };
 
           randomWeathers.Add(newWeather);
-          level.randomWeathers = randomWeathers.ToArray();
+
+          level.randomWeathers = GetRandomWeathersWithVariables(randomWeathers);
         }
       }
 
       weatherLog.AppendLine();
       Logger.LogDebug(weatherLog.ToString());
+    }
+
+    private static ImprovedRandomWeatherWithVariables[] GetRandomWeathersWithVariables(List<RandomWeatherWithVariables> randomWeathers)
+    {
+      ImprovedRandomWeatherWithVariables[] improvedWeathers = randomWeathers
+        .Select(rw => new ImprovedRandomWeatherWithVariables
+        {
+          weatherType = rw.weatherType,
+          weatherVariable = rw.weatherVariable,
+          weatherVariable2 = rw.weatherVariable2
+        })
+        .ToArray();
+      return improvedWeathers;
     }
   }
 }
