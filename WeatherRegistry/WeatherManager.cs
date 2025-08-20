@@ -13,9 +13,6 @@ namespace WeatherRegistry
 
     public static List<Weather> RegisteredWeathers { get; internal set; } = [];
 
-    [Obsolete]
-    public static List<LevelWeather> LevelWeathers { get; internal set; } = [];
-
     [Obsolete("Use WeatherOverrideManager.WeatherEffectOverrides instead")]
     public static List<WeatherEffectOverride> WeatherEffectOverrides => WeatherOverrideManager.WeatherEffectOverrides;
 
@@ -81,8 +78,6 @@ namespace WeatherRegistry
         }
       });
 
-      // RegisteredWeathers.Clear();
-      LevelWeathers.Clear();
       Weathers.Clear();
       WeathersDictionary.Clear();
       ModdedWeatherEnumExtension.Clear();
