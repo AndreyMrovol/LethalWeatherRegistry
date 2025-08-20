@@ -57,7 +57,6 @@ internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
         Weather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
 
         NewWeather[level] = overrideWeather.VanillaWeatherType;
-        // WeatherManager.CurrentWeathers[level] = overrideWeather;
         EventManager.WeatherChanged.Invoke((level, overrideWeather));
 
         continue;
@@ -70,8 +69,6 @@ internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
 
       NewWeather[level] = selectedWeather.VanillaWeatherType;
       EventManager.WeatherChanged.Invoke((level, selectedWeather));
-
-      // with chance {possibleWeathers.Get(selectedWeather)} / {possibleWeathers.Sum}
 
       weatherLog.Append(
         $"Selected weather: {selectedWeather.Name} ({(float)possibleWeathers.Get(selectedWeather) / possibleWeathers.Sum * 100:F2}% chance)"
