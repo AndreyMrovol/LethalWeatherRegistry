@@ -167,8 +167,6 @@ namespace WeatherRegistry
 
     public Weather(string name = "None", ImprovedWeatherEffect effect = default)
     {
-      // Plugin.logger.LogDebug($"Called Weather constructor for weather {name}");
-
       // a small hack for Whimsical weather so it doesn't use <color> tags in their name
       Regex textTagsRegex = new(@"<.*?>");
       Name = textTagsRegex.Replace(name, "");
