@@ -1,12 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using BepInEx.Logging;
-using GameNetcodeStuff;
 using HarmonyLib;
 using MrovLib;
-using UnityEngine;
-using WeatherRegistry;
 
 namespace WeatherRegistry.Patches
 {

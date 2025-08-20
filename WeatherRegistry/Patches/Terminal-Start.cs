@@ -1,13 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using ConsoleTables;
 using HarmonyLib;
-using Newtonsoft.Json;
-using Unity.Netcode;
-using UnityEngine;
 
 namespace WeatherRegistry.Patches
 {

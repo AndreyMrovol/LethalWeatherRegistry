@@ -1,5 +1,3 @@
-using WeatherRegistry.Modules;
-
 namespace WeatherRegistry.Modules
 {
   public class WeatherModExtendedConfig : RegistryWeatherConfig

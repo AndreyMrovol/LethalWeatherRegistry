@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace WeatherRegistry.Editor
