@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using BepInEx.Configuration;
+using LoggingType = MrovLib.LoggingType;
 
 namespace WeatherRegistry
 {
