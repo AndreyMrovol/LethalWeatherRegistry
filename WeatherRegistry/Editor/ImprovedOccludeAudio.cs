@@ -94,7 +94,6 @@ namespace WeatherRegistry.Editor
 
       PlayerControllerB localPlayer = GameNetworkManager.Instance.localPlayerController;
 
-      bool isPlayerInFactory = localPlayer.isInsideFactory;
       bool isPlayerOnShip = localPlayer.isInHangarShipRoom && !localPlayer.isInsideFactory;
       bool isSpectatedPlayerInFactory =
         localPlayer.isPlayerDead && localPlayer.spectatedPlayerScript != null && localPlayer.spectatedPlayerScript.isInsideFactory;
@@ -120,16 +119,10 @@ namespace WeatherRegistry.Editor
         {
           Vector3 playerPosition = StartOfRound.Instance.audioListener.transform.position;
 
-          // Check if something is above the player (at least 10 units)
+          // Check if something is above the player
           if (Physics.Raycast(playerPosition, Vector3.up, out RaycastHit hit, 150f, 256, QueryTriggerInteraction.Ignore))
           {
-            // if (hit.distance < 5f)
-            // {
-            //   // If we hit something below 5 distance, do not occlude the audio
-            //   return false;
-            // }
-
-            // If we hit something above the player, occlude the audio
+            // If we hit something above the player, occlude
             return true;
           }
         }
