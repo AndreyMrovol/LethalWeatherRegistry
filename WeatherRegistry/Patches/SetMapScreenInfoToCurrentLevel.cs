@@ -2,8 +2,10 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using HarmonyLib;
+using MrovLib;
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using WeatherRegistry.Definitions;
 
 namespace WeatherRegistry.Patches

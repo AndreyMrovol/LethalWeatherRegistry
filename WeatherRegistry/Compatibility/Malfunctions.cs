@@ -1,3 +1,5 @@
+using MrovLib;
+
 namespace WeatherRegistry.Compatibility
 {
   internal class MalfunctionsCompat(string guid, string version = null) : MrovLib.Compatibility.CompatibilityBase(guid, version)

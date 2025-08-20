@@ -1,3 +1,5 @@
+using MrovLib;
+
 namespace WeatherRegistry.Managers
 {
   public static class WeatherEffectManager
