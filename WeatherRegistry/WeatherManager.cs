@@ -19,8 +19,6 @@ namespace WeatherRegistry
     [Obsolete("Use WeatherOverrideManager.WeatherEffectOverrides instead")]
     public static List<WeatherEffectOverride> WeatherEffectOverrides => WeatherOverrideManager.WeatherEffectOverrides;
 
-    public static List<WeatherMatcher> WeatherMatchers { get; internal set; } = [];
-
     // i would love to have weathers as an array with indexes corresponding to the enum values
     // but none is -1 so i have to do this
     public static List<Weather> Weathers => WeathersDictionary.Values.ToList();
