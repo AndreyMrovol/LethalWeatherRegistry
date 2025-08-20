@@ -86,8 +86,8 @@ namespace WeatherRegistry
 
       // Load all WeatherDefinition assets
       WeatherDefinition[] WeatherDefinitionAssets = bundle.LoadAllAssets<WeatherDefinition>();
-      LoadedEffectOverrides = bundle.LoadAllAssets<EffectOverride>().ToList();
-      LoadedPlanetNameOverrides = bundle.LoadAllAssets<PlanetNameOverride>().ToList();
+      LoadedEffectOverrides.AddRange(bundle.LoadAllAssets<EffectOverride>().ToList());
+      LoadedPlanetNameOverrides.AddRange(bundle.LoadAllAssets<PlanetNameOverride>().ToList());
 
       foreach (WeatherDefinition WeatherDefinition in WeatherDefinitionAssets)
       {
