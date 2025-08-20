@@ -6,12 +6,13 @@ namespace WeatherRegistry
 {
   public class Logger : MrovLib.Logger
   {
-    private new readonly ManualLogSource _logSource = BepInEx.Logging.Logger.CreateLogSource($"WeatherRegistry");
-    private new LoggingType _defaultLoggingType;
+    public override ManualLogSource LogSource { get; set; }
 
-    public Logger(string SourceName, LoggingType defaultLoggingType = LoggingType.Basic)
-      : base(SourceName, MrovLib.LoggingType.Basic)
+    public Logger(string SourceName, LoggingType defaultLoggingType = LoggingType.Debug)
+      : base(SourceName, defaultLoggingType)
     {
+      ModName = SourceName;
+      LogSource = BepInEx.Logging.Logger.CreateLogSource("WeatherRegistry");
       _defaultLoggingType = defaultLoggingType;
       _name = SourceName;
     }
