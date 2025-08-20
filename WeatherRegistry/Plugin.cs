@@ -79,6 +79,7 @@ namespace WeatherRegistry
       EventManager.SetupFinished.AddListener(() =>
       {
         AssetBundleLoader.LoadWeatherOverrides();
+        AssetBundleLoader.LoadModdedWeathersMatchers();
       });
 
       if (Chainloader.PluginInfos.ContainsKey("evaisa.lethallib"))

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using BepInEx.Logging;
+using MrovLib;
 using UnityEngine;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Editor;
@@ -16,6 +17,7 @@ namespace WeatherRegistry
 
     private static List<EffectOverride> LoadedEffectOverrides = [];
     private static List<PlanetNameOverride> LoadedPlanetNameOverrides = [];
+    private static List<ModdedWeathersMatcher> LoadedModdedWeathersMatchers = [];
 
     private static readonly Logger Logger = new("AssetBundleLoader", LoggingType.Debug);
 
@@ -88,6 +90,7 @@ namespace WeatherRegistry
       WeatherDefinition[] WeatherDefinitionAssets = bundle.LoadAllAssets<WeatherDefinition>();
       LoadedEffectOverrides.AddRange(bundle.LoadAllAssets<EffectOverride>().ToList());
       LoadedPlanetNameOverrides.AddRange(bundle.LoadAllAssets<PlanetNameOverride>().ToList());
+      LoadedModdedWeathersMatchers.AddRange(bundle.LoadAllAssets<ModdedWeathersMatcher>().ToList());
 
       foreach (WeatherDefinition WeatherDefinition in WeatherDefinitionAssets)
       {
@@ -169,6 +172,43 @@ namespace WeatherRegistry
             WeatherOverrideManager.PlanetOverrideNames.Add(newOverride, planetNameOverride.newPlanetName);
           }
         }
+      }
+    }
+
+    public static void LoadModdedWeathersMatchers()
+    {
+      // Load all ModdedWeathersMatcher assets
+      foreach (ModdedWeathersMatcher matcher in LoadedModdedWeathersMatchers)
+      {
+        if (matcher == null || matcher.Weathers == null || matcher.Level == null || matcher.Weathers.Length == 0)
+        {
+          Logger.LogWarning("ModdedWeathersMatcher is null or has no Weathers, skipping.");
+          continue;
+        }
+
+        SelectableLevel level = matcher.Level;
+
+        matcher
+          .Weathers.ToList()
+          .ForEach(weather =>
+          {
+            Weather matchedWeather = ConfigHelper.ResolveStringToWeather(weather.Name);
+            int matcherWeight = weather.DefaultLevelWeight;
+            if (matchedWeather == null)
+            {
+              Logger.LogDebug($"Weather {weather.Name} not found, skipping WeatherMatchingProperties.");
+              return;
+            }
+
+            LevelRarity[] WeatherConfigEntryName = matchedWeather.Config.LevelWeights.Value;
+            if (!WeatherConfigEntryName.Select(rarity => rarity.Level).Contains(level))
+            {
+              if (matchedWeather.Config.LevelWeights.ConfigEntryActive)
+              {
+                matchedWeather.Config.LevelWeights.ConfigEntry.Value += $";{ConfigHelper.GetAlphanumericName(level)}:{matcherWeight};";
+              }
+            }
+          });
       }
     }
   }
