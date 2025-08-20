@@ -1,6 +1,20 @@
-# 0.7.0
+# 0.7.1
 
-## Please re-generate your configs!
+- added a check to remove orphaned config entries - **this will not touch any of the weather configs!**
+- added `HybridAlgorithm` as a possible option - vanilla picking of moons, weighted picking of weathers (thanks, `endoxicom`!)
+- added [`ModdedWeathersMatcher`](/WeatherRegistry/Editor/ModdedWeathersMatcher.cs) to allow moon creators to set default weights for their moons
+- changed how the text is formatted during the landing sequence (thanks, `thecheesexd`!)
+- changed `WeatherAlgorithm` selection to use an enum
+- fixed `AssetBundleLoader` not logging loaded weathers correctly
+- fixed `AssetBundleLoader` only loading the last-loaded bundles
+- fixed an issue with LethalLib weathers not using their defined levels (thanks, `dragonov7733`!)
+- fixed an issue with `Imperium` changing local weather effects when selecting another moon
+- fixed an issue with Registry removing Clear weather when vanilla algorithm is used
+- removed all unused `SunAnimator` references and patches
+- removed `WeatherMatcher` (**breaking change**)
+- removed `WeatherManager.LevelWeathers` (**breaking change**)
+
+# 0.7.0
 
 New features:
 
