@@ -76,7 +76,10 @@ namespace WeatherRegistry
         ConfigManager.Instance.RemoveOrphanedEntries();
       });
 
-      EventManager.SetupFinished.AddListener(() => AssetBundleLoader.LoadWeatherOverrides());
+      EventManager.SetupFinished.AddListener(() =>
+      {
+        AssetBundleLoader.LoadWeatherOverrides();
+      });
 
       if (Chainloader.PluginInfos.ContainsKey("evaisa.lethallib"))
       {
