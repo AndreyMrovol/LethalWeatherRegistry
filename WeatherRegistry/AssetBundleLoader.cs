@@ -182,7 +182,7 @@ namespace WeatherRegistry
       {
         if (matcher == null || matcher.Weathers == null || matcher.Level == null || matcher.Weathers.Length == 0)
         {
-          Logger.LogWarning("ModdedWeathersMatcher is null or has no Weathers, skipping.");
+          Logger.LogWarning($"ModdedWeathersMatcher {matcher.name} is null or has no weathers!");
           continue;
         }
 
@@ -196,17 +196,30 @@ namespace WeatherRegistry
             int matcherWeight = weather.DefaultLevelWeight;
             if (matchedWeather == null)
             {
-              Logger.LogDebug($"Weather {weather.Name} not found, skipping WeatherMatchingProperties.");
+              Logger.LogDebug($"Weather {weather.Name} not found!");
               return;
             }
 
             LevelRarity[] WeatherConfigEntryName = matchedWeather.Config.LevelWeights.Value;
-            if (!WeatherConfigEntryName.Select(rarity => rarity.Level).Contains(level))
+
+            List<SelectableLevel> levels = WeatherConfigEntryName.Select(rarity => rarity.Level).ToList();
+            List<string> levelNames = levels.Select(planet => planet.PlanetName).ToList();
+
+            if (!levelNames.Contains(level.PlanetName))
             {
+              // if the level is not in the list, add it
+              Logger.LogDebug($"Level {level.PlanetName} not found in {matchedWeather.Name}");
+
+              // check if the config entry is enabled
               if (matchedWeather.Config.LevelWeights.ConfigEntryActive)
               {
-                matchedWeather.Config.LevelWeights.ConfigEntry.Value += $";{ConfigHelper.GetAlphanumericName(level)}:{matcherWeight};";
+                Logger.LogDebug($"Adding {level.PlanetName} to {matchedWeather.Name} with weight {matcherWeight}");
+                matchedWeather.Config.LevelWeights.ConfigEntry.Value += $";{ConfigHelper.GetAlphanumericName(level)}@{matcherWeight};";
               }
+            }
+            else
+            {
+              Logger.LogDebug($"Level {level.PlanetName} already exists in {matchedWeather.Name} LevelWeights, skipping.");
             }
           });
       }
