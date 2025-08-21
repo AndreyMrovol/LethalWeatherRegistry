@@ -196,8 +196,6 @@ namespace WeatherRegistry
         weatherList.Add(null);
       }
 
-      GameObject WeatherParent = GameObject.Find("TimeAndWeather");
-
       // then we set the custom weathers at their index
       foreach (KeyValuePair<int, Weather> entry in WeatherManager.ModdedWeatherEnumExtension)
       {
@@ -224,13 +222,11 @@ namespace WeatherRegistry
         if (weatherList[entry.Key].effectObject != null)
         {
           weatherList[entry.Key].effectObject.SetActive(false);
-          weatherList[entry.Key].effectObject.transform.SetParent(WeatherParent.transform, false);
         }
 
         if (weatherList[entry.Key].effectPermanentObject != null)
         {
           weatherList[entry.Key].effectPermanentObject.SetActive(false);
-          weatherList[entry.Key].effectPermanentObject.transform.SetParent(WeatherParent.transform, false);
         }
       }
       TimeOfDay.Instance.effects = weatherList.ToArray();
