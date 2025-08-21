@@ -1,3 +1,7 @@
+# 0.7.2
+
+- fixed weather objects being destroyed when leaving the lobby (thanks: `xuxiaolan`, `giaganticevan`!)
+
 # 0.7.1
 
 - added a check to remove orphaned config entries - **this will not touch any of the weather configs!**
