@@ -1,3 +1,7 @@
+# 0.7.3
+
+- fixed an issue with `HybridAlgorithm` using an empty list of levels (thanks, `.see_ya`!)
+
 # 0.7.2
 
 - fixed weather objects being destroyed when leaving the lobby (thanks: `xuxiaolan`, `giaganticevan`!)

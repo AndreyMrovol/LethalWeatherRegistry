@@ -38,7 +38,7 @@ internal class HybridWeatherSelection : WeatherSelectionAlgorithm
       startOfRound.levels.Length
     );
 
-    List<SelectableLevel> levels = LevelHelper.SortedLevels;
+    List<SelectableLevel> levels = LevelHelper.SortedLevels.ToList();
     int longestPlanetName = LevelHelper.LongestPlanetName.Length;
     bool isDebugLoggingEnabled = ConfigManager.LoggingLevels.Value >= LoggingType.Debug;
 
