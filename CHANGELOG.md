@@ -1,3 +1,7 @@
+# 0.7.4
+
+- fixed issues with replacing of modded WeatherEffects during the startup (thanks, `xuxiaolan`!)
+
 # 0.7.3
 
 - fixed an issue with `HybridAlgorithm` using an empty list of levels (thanks, `.see_ya`!)

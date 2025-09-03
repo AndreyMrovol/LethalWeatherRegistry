@@ -206,18 +206,27 @@ namespace WeatherRegistry
           entry.Value.Effect = new ImprovedWeatherEffect(null, null) { name = entry.Value.Name };
         }
 
-        weatherList[entry.Key] = new WeatherEffect()
+        if (entry.Value.Effect.VanillaWeatherEffect != null)
         {
-          name = entry.Value.Name,
-          effectObject = entry.Value.Effect.EffectObject,
-          effectPermanentObject = entry.Value.Effect.WorldObject,
-          sunAnimatorBool = entry.Value.Effect.SunAnimatorBool,
-          effectEnabled = false,
-          lerpPosition = false,
-          transitioning = false
-        };
+          entry.Value.Effect.name = entry.Value.Name;
+          weatherList[entry.Key] = entry.Value.Effect.VanillaWeatherEffect;
+          continue;
+        }
+        else
+        {
+          weatherList[entry.Key] = new WeatherEffect()
+          {
+            name = entry.Value.Name,
+            effectObject = entry.Value.Effect.EffectObject,
+            effectPermanentObject = entry.Value.Effect.WorldObject,
+            sunAnimatorBool = entry.Value.Effect.SunAnimatorBool,
+            effectEnabled = false,
+            lerpPosition = false,
+            transitioning = false
+          };
 
-        entry.Value.Effect.VanillaWeatherEffect = weatherList[entry.Key];
+          entry.Value.Effect.VanillaWeatherEffect = weatherList[entry.Key];
+        }
 
         if (weatherList[entry.Key].effectObject != null)
         {
