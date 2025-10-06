@@ -21,6 +21,13 @@
         <RepositoryUrl>https://github.com/AndreyMrovol/LethalWeatherRegistry/</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
 
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json;
+            https://nuget.samboy.dev/v3/index.json;
+            https://nuget.windows10ce.com/nuget/v3/index.json
+        </RestoreAdditionalProjectSources>
+
         <BepInExPluginGuid>$(PackageId)</BepInExPluginGuid>
     </PropertyGroup>
 
@@ -53,7 +60,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="*-*" Publicize="true">
+        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="73.0.0-ngd.0" Publicize="true">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
 
@@ -88,7 +95,7 @@
     </ItemGroup>
 
     <Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
-        <Exec Command="netcode-patch -nv 1.5.2 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')"/>
+        <Exec Command="dotnet tool run netcode-patch -uv 2022.3.62 -nv 1.12.0 -tv 1.0.0 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')"/>
     </Target>
 
     <PropertyGroup>
