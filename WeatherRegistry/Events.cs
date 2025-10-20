@@ -17,7 +17,9 @@ namespace WeatherRegistry
   }
 }
 
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace WeatherRegistry.Events
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 {
   public class WeatherRegistryEvent<T> : MrovLib.Events.CustomEvent<T> { }
 
