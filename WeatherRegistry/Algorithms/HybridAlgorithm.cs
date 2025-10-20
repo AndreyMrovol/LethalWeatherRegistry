@@ -4,6 +4,7 @@ using System.Text;
 using MrovLib;
 using UnityEngine;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Enums;
 
 namespace WeatherRegistry.Algorithms;
 
@@ -49,7 +50,7 @@ internal class HybridWeatherSelection : WeatherSelectionAlgorithm
       if (level.overrideWeather)
       {
         Logger.LogDebug($"Override weather present for {level.PlanetName}, changing weather to {level.overrideWeatherType}");
-        Weather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
+        ImprovedWeather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
 
         SelectedWeathers[level] = overrideWeather.VanillaWeatherType;
         EventManager.WeatherChanged.Invoke((level, overrideWeather));
@@ -73,8 +74,8 @@ internal class HybridWeatherSelection : WeatherSelectionAlgorithm
 
       if (selectableLevel.randomWeathers != null && selectableLevel.randomWeathers.Length != 0)
       {
-        WeightHandler<Weather, WeatherWeightType> possibleWeathers = WeatherManager.GetPlanetWeightedList(selectableLevel);
-        Weather selectedWeather = possibleWeathers.Random();
+        WeightHandler<ImprovedWeather, WeatherWeightType> possibleWeathers = WeatherManager.GetPlanetWeightedList(selectableLevel);
+        ImprovedWeather selectedWeather = possibleWeathers.Random();
 
         SelectedWeathers[selectableLevel] = selectedWeather.VanillaWeatherType;
         weatherLog.Append(
@@ -89,7 +90,7 @@ internal class HybridWeatherSelection : WeatherSelectionAlgorithm
           weatherLog.AppendLine($"PreviousDayWeather: {WeatherCalculation.previousDayWeather[selectableLevel.PlanetName]}");
           weatherLog.AppendLine($"Possible weathers: [{string.Join(", ", selectableLevel.randomWeathers.Select(rw => rw.weatherType))}]");
           weatherLog.AppendLine($"Used weights: ");
-          foreach (Weather weather in possibleWeathers.Keys)
+          foreach (ImprovedWeather weather in possibleWeathers.Keys)
           {
             weatherLog.AppendLine(
               $"  {weather.name} has {possibleWeathers.GetOrigin(weather).ToString().ToLowerInvariant()} weight ({possibleWeathers.Get(weather)})"

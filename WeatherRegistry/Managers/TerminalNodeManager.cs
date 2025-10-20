@@ -6,5 +6,6 @@ namespace WeatherRegistry.Managers
   {
     internal static List<TerminalNode> ManagedTerminalNodes = [];
     internal static Dictionary<TerminalNode, SelectableLevel> ForecastTerminalNodes = [];
+    internal static Dictionary<TerminalNode, ImprovedWeather> WeatherTerminalNodes = [];
   }
 }

@@ -1,5 +1,6 @@
 using System;
 using BepInEx.Configuration;
+using WeatherRegistry.Enums;
 
 namespace WeatherRegistry
 {
@@ -25,7 +26,7 @@ namespace WeatherRegistry
 
   public class WeatherRarity : Rarity
   {
-    public Weather Weather { get; set; }
+    public ImprovedWeather Weather { get; set; }
   }
 
   public abstract class ConfigHandler<T, CT> : Definitions.ConfigHandler<T, CT>
@@ -38,7 +39,7 @@ namespace WeatherRegistry
       Enabled = enabled;
     }
 
-    public void SetConfigEntry(Weather weather, string configTitle, ConfigDescription configDescription = null)
+    public void SetConfigEntry(ImprovedWeather weather, string configTitle, ConfigDescription configDescription = null)
     {
       if (Enabled)
       {

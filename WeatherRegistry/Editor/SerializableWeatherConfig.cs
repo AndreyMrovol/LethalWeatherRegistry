@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using WeatherRegistry.Enums;
 using WeatherRegistry.Modules;
 
 namespace WeatherRegistry.Editor
@@ -22,7 +23,7 @@ namespace WeatherRegistry.Editor
     [Header("Filtering options")]
     [SerializeField]
     [Tooltip("Whether to make the filter a whitelist or a blacklist.")]
-    public SerializableConfigElement<WeatherRegistry.FilteringOption> filteringOption = new(FilteringOption.Exclude);
+    public SerializableConfigElement<FilteringOption> filteringOption = new(FilteringOption.Exclude);
 
     [SerializeField]
     [Tooltip("Semicolon-separated list of level names that this weather applies to. This setting uses `Filtering Option` set above.")]

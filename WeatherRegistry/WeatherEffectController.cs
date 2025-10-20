@@ -44,19 +44,19 @@ namespace WeatherRegistry
     }
 
     [Obsolete("Use SetWeatherEffects(Weather[]) instead")]
-    public static void SetWeatherEffects(Weather weather)
+    public static void SetWeatherEffects(ImprovedWeather weather)
     {
       SetWeatherEffects([weather]);
     }
 
     // this is the overload that everything should resolve to
-    public static void SetWeatherEffects(Weather[] weathers)
+    public static void SetWeatherEffects(ImprovedWeather[] weathers)
     {
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
 
       DisableWeatherEffects(weathers);
 
-      foreach (Weather weather in weathers)
+      foreach (ImprovedWeather weather in weathers)
       {
         if (weather == null)
         {
@@ -129,11 +129,11 @@ namespace WeatherRegistry
 
     public static void SetWeatherEffects(LevelWeatherType[] weatherTypes)
     {
-      Weather[] weathers = weatherTypes.Select(WeatherManager.GetWeather).ToArray();
+      ImprovedWeather[] weathers = weatherTypes.Select(WeatherManager.GetWeather).ToArray();
       SetWeatherEffects(weathers);
     }
 
-    public static void DisableWeatherEffects(Weather[] newWeathers)
+    public static void DisableWeatherEffects(ImprovedWeather[] newWeathers)
     {
       // disable all weather effects
       foreach (WeatherEffectOverride effectOverride in WeatherOverrideManager.WeatherEffectOverrides)
@@ -146,7 +146,7 @@ namespace WeatherRegistry
         effectOverride.OverrideEffect.DisableEffect(true);
       }
 
-      foreach (Weather weather in WeatherManager.Weathers)
+      foreach (ImprovedWeather weather in WeatherManager.Weathers)
       {
         if (newWeathers.Contains(weather))
         {
@@ -186,7 +186,7 @@ namespace WeatherRegistry
 
       foreach (LevelWeatherType weatherType in WeatherManager.CurrentEffectTypes)
       {
-        Weather weather = WeatherManager.GetWeather(weatherType);
+        ImprovedWeather weather = WeatherManager.GetWeather(weatherType);
         weather.Effect.EffectEnabled = true;
         SetTimeOfDayEffect(weather.VanillaWeatherType, true);
       }

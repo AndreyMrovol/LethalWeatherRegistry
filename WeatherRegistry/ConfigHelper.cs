@@ -17,8 +17,8 @@ namespace WeatherRegistry
       return ConfigCleanerRegex.Replace(input, string.Empty).Trim();
     }
 
-    private static Dictionary<string, Weather> _weathersDictionary = null;
-    public static Dictionary<string, Weather> StringToWeather
+    private static Dictionary<string, ImprovedWeather> _weathersDictionary = null;
+    public static Dictionary<string, ImprovedWeather> StringToWeather
     {
       get
       {
@@ -27,7 +27,7 @@ namespace WeatherRegistry
           return _weathersDictionary;
         }
 
-        Dictionary<string, Weather> Weathers = [];
+        Dictionary<string, ImprovedWeather> Weathers = [];
 
         WeatherManager
           .Weathers.ToList()
@@ -45,12 +45,12 @@ namespace WeatherRegistry
       set { _weathersDictionary = value; }
     }
 
-    public static Weather ResolveStringToWeather(string str)
+    public static ImprovedWeather ResolveStringToWeather(string str)
     {
       return StringToWeather.GetValueOrDefault(str.ToLowerInvariant());
     }
 
-    public static List<Weather> ResolveStringToWeathers(string str)
+    public static List<ImprovedWeather> ResolveStringToWeathers(string str)
     {
       if (string.IsNullOrWhiteSpace(str))
       {
@@ -58,11 +58,11 @@ namespace WeatherRegistry
       }
 
       string[] weatherNames = ConvertStringToArray(str);
-      List<Weather> weathers = [];
+      List<ImprovedWeather> weathers = [];
 
       foreach (string weatherName in weatherNames)
       {
-        Weather weather = ResolveStringToWeather(weatherName);
+        ImprovedWeather weather = ResolveStringToWeather(weatherName);
 
         if (weather != null)
         {
@@ -88,7 +88,7 @@ namespace WeatherRegistry
       return new string(regex.Replace(level.PlanetName, ""));
     }
 
-    public static string GetAlphanumericName(Weather weather)
+    public static string GetAlphanumericName(ImprovedWeather weather)
     {
       Regex regex = new(@"^[0-9]+|[-_/\\\ ]");
       return new string(regex.Replace(weather.Name, ""));
@@ -174,12 +174,12 @@ namespace WeatherRegistry
       // i want to use the following format:
       // Weather@Weight;Weather@Weight;Weather@Weight
 
-      Dictionary<Weather, int> output = [];
+      Dictionary<ImprovedWeather, int> output = [];
       NameRarity[] nameRarities = ConvertStringToRarities(str);
 
       foreach (NameRarity nameRarity in nameRarities)
       {
-        Weather weather = ResolveStringToWeather(nameRarity.Name);
+        ImprovedWeather weather = ResolveStringToWeather(nameRarity.Name);
 
         if (weather == null)
         {

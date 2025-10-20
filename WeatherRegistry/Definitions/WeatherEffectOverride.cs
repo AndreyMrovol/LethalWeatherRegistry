@@ -1,10 +1,12 @@
+using System;
+using TMPro;
 using UnityEngine;
 
 namespace WeatherRegistry.Definitions
 {
   public class WeatherEffectOverride
   {
-    public Weather Weather { get; }
+    public ImprovedWeather Weather { get; }
     public SelectableLevel Level { get; }
 
     public ImprovedWeatherEffect OverrideEffect { get; }
@@ -12,10 +14,20 @@ namespace WeatherRegistry.Definitions
     public string DisplayName { get; set; }
     public Color DisplayColor { get; set; }
 
-    public WeatherEffectOverride(Weather weather, SelectableLevel level, ImprovedWeatherEffect effect)
+    public float Chance { get; set; } = 1f;
+
+    [Obsolete("Use the constructor that includes displayName and displayColor parameters instead.")]
+    public WeatherEffectOverride(ImprovedWeather weather, SelectableLevel level, ImprovedWeatherEffect effect)
       : this(weather, level, effect, null, default) { }
 
-    public WeatherEffectOverride(Weather weather, SelectableLevel level, ImprovedWeatherEffect effect, string displayName, Color displayColor)
+    public WeatherEffectOverride(
+      ImprovedWeather weather,
+      SelectableLevel level,
+      ImprovedWeatherEffect effect,
+      string displayName,
+      Color displayColor,
+      float chance = 1f
+    )
     {
       Weather = weather;
       Level = level;

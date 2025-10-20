@@ -9,7 +9,7 @@ namespace WeatherRegistry.Patches
     [HarmonyPrefix]
     public static void DisableWeathersPatch()
     {
-      foreach (Weather weather in WeatherManager.Weathers)
+      foreach (ImprovedWeather weather in WeatherManager.Weathers)
       {
         weather.Effect.DisableEffect(true);
       }

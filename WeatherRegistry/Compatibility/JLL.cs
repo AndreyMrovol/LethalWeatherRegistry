@@ -13,7 +13,7 @@ namespace WeatherRegistry.Compatibility
     {
       if (JWeatherOverride.Instance != null)
       {
-        Weather currentWeather = WeatherManager.GetCurrentLevelWeather();
+        ImprovedWeather currentWeather = WeatherManager.GetCurrentLevelWeather();
 
         if (currentWeather == WeatherManager.NoneWeather)
         {

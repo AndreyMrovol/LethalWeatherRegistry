@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 using MonoMod.RuntimeDetour;
+using WeatherRegistry.Enums;
 using static LethalLib.Modules.Weathers;
 
 namespace WeatherRegistry.Patches
@@ -14,10 +15,10 @@ namespace WeatherRegistry.Patches
       return LethalLib.Modules.Weathers.customWeathers;
     }
 
-    public static List<Weather> ConvertLLWeathers()
+    public static List<ImprovedWeather> ConvertLLWeathers()
     {
       Dictionary<int, CustomWeather> llWeathers = GetLethalLibWeathers();
-      List<Weather> weathers = [];
+      List<ImprovedWeather> weathers = [];
 
       // list through all entries
       foreach (KeyValuePair<int, CustomWeather> LethalLibWeatherEntry in llWeathers)
@@ -33,7 +34,7 @@ namespace WeatherRegistry.Patches
             DefaultVariable2 = llWeather.weatherVariable2,
           };
 
-        Weather weather =
+        ImprovedWeather weather =
           new(llWeather.name, effect)
           {
             VanillaWeatherType = (LevelWeatherType)LethalLibWeatherEntry.Key,

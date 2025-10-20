@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MrovLib;
 using UnityEngine;
+using WeatherRegistry.Enums;
 
 namespace WeatherRegistry.Patches
 {
@@ -85,7 +86,7 @@ namespace WeatherRegistry.Patches
 
       Dictionary<LevelWeatherType, AnimationClip> clips = [];
 
-      Weather currentWeather = WeatherManager.GetWeather(weatherType);
+      ImprovedWeather currentWeather = WeatherManager.GetWeather(weatherType);
 
       try
       {

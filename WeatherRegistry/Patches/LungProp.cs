@@ -34,7 +34,7 @@ namespace WeatherRegistry.Patches
       {
         Plugin.debugLogger.LogInfo($"ApparatusSpawnBefore: {__instance.scrapValue}");
 
-        Weather weather = WeatherManager.GetCurrentLevelWeather();
+        ImprovedWeather weather = WeatherManager.GetCurrentLevelWeather();
         Plugin.debugLogger.LogInfo($"Scrap multiplier: {weather.ScrapValueMultiplier}");
         __instance.SetScrapValue((int)(__instance.scrapValue * weather.ScrapValueMultiplier));
 

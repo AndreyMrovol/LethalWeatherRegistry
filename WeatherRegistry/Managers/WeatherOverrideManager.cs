@@ -8,7 +8,7 @@ namespace WeatherRegistry
     public static List<WeatherEffectOverride> WeatherEffectOverrides { get; internal set; } = [];
     public static Dictionary<WeatherEffectOverride, string> PlanetOverrideNames { get; internal set; } = [];
 
-    public static WeatherEffectOverride GetCurrentWeatherOverride(SelectableLevel level, Weather weather)
+    public static WeatherEffectOverride GetCurrentWeatherOverride(SelectableLevel level, ImprovedWeather weather)
     {
       weather.WeatherEffectOverrides.TryGetValue(level, out WeatherEffectOverride weatherEffectOverride);
 

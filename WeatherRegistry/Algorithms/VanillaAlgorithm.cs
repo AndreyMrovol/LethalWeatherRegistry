@@ -38,7 +38,7 @@ internal class VanillaWeatherSelection : WeatherSelectionAlgorithm
       if (level.overrideWeather)
       {
         Logger.LogDebug($"Override weather present for {level.PlanetName}, changing weather to {level.overrideWeatherType}");
-        Weather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
+        ImprovedWeather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
 
         vanillaSelectedWeather[level] = overrideWeather.VanillaWeatherType;
         // WeatherManager.CurrentWeathers[level] = overrideWeather;

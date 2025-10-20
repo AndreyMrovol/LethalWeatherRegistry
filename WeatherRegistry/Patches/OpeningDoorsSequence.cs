@@ -132,7 +132,7 @@ namespace WeatherRegistry.Patches
     internal static void SetWeatherEffects()
     {
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
-      Weather currentWeather = WeatherManager.GetCurrentWeather(currentLevel);
+      ImprovedWeather currentWeather = WeatherManager.GetCurrentWeather(currentLevel);
 
       if (StartOfRound.Instance.IsHost)
       {

@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Enums;
 
 namespace WeatherRegistry
 {
@@ -11,21 +12,21 @@ namespace WeatherRegistry
   {
     internal static bool IsSetupFinished = false;
 
-    public static List<Weather> RegisteredWeathers { get; internal set; } = [];
+    public static List<ImprovedWeather> RegisteredWeathers { get; internal set; } = [];
 
     [Obsolete("Use WeatherOverrideManager.WeatherEffectOverrides instead")]
     public static List<WeatherEffectOverride> WeatherEffectOverrides => WeatherOverrideManager.WeatherEffectOverrides;
 
     // i would love to have weathers as an array with indexes corresponding to the enum values
     // but none is -1 so i have to do this
-    public static List<Weather> Weathers => WeathersDictionary.Values.ToList();
-    public static Dictionary<LevelWeatherType, Weather> WeathersDictionary { get; internal set; } = [];
+    public static List<ImprovedWeather> Weathers => WeathersDictionary.Values.ToList();
+    public static Dictionary<LevelWeatherType, ImprovedWeather> WeathersDictionary { get; internal set; } = [];
 
-    public static Weather NoneWeather { get; internal set; }
+    public static ImprovedWeather NoneWeather { get; internal set; }
 
     public static List<LevelWeatherType> LevelWeatherTypes => Weathers.Select(weather => weather.VanillaWeatherType).ToList();
 
-    public static Dictionary<int, Weather> ModdedWeatherEnumExtension = [];
+    public static Dictionary<int, ImprovedWeather> ModdedWeatherEnumExtension = [];
 
     public static CurrentWeathers CurrentWeathers = new();
 
@@ -41,12 +42,12 @@ namespace WeatherRegistry
       }
     }
 
-    public static void RegisterWeather(Weather weather)
+    public static void RegisterWeather(ImprovedWeather weather)
     {
       RegisteredWeathers.Add(weather);
     }
 
-    public static Weather GetWeather(LevelWeatherType levelWeatherType)
+    public static ImprovedWeather GetWeather(LevelWeatherType levelWeatherType)
     {
       if (WeathersDictionary.ContainsKey(levelWeatherType))
       {
@@ -60,7 +61,7 @@ namespace WeatherRegistry
       }
     }
 
-    public static List<Weather> GetWeathers()
+    public static List<ImprovedWeather> GetWeathers()
     {
       return Weathers;
     }
@@ -74,7 +75,7 @@ namespace WeatherRegistry
         if (weather.Origin != WeatherOrigin.WeatherRegistry && weather.Origin != WeatherOrigin.WeatherTweaks)
         {
           GameObject.Destroy(weather.Effect);
-          GameObject.Destroy(weather);
+          // GameObject.Destroy(weather);
         }
       });
 
@@ -119,9 +120,9 @@ namespace WeatherRegistry
       return possibleWeathers;
     }
 
-    public static WeightHandler<Weather, WeatherWeightType> GetPlanetWeightedList(SelectableLevel level)
+    public static WeightHandler<ImprovedWeather, WeatherWeightType> GetPlanetWeightedList(SelectableLevel level)
     {
-      WeightHandler<Weather, WeatherWeightType> weightedList = new();
+      WeightHandler<ImprovedWeather, WeatherWeightType> weightedList = new();
       Logger logger = WeatherCalculation.Logger;
 
       List<LevelWeatherType> weatherTypes = GetPlanetPossibleWeathers(level);
@@ -134,7 +135,7 @@ namespace WeatherRegistry
 
       foreach (var weather in weatherTypes)
       {
-        Weather typeOfWeather = GetWeather(weather);
+        ImprovedWeather typeOfWeather = GetWeather(weather);
 
         (int weatherWeight, WeatherWeightType type) = typeOfWeather.GetWeightWithOrigin(level);
         weightedList.Add(typeOfWeather, weatherWeight);
@@ -143,7 +144,7 @@ namespace WeatherRegistry
       return weightedList;
     }
 
-    public static Weather GetCurrentWeather(SelectableLevel level)
+    public static ImprovedWeather GetCurrentWeather(SelectableLevel level)
     {
       if (!Settings.SetupFinished)
       {
@@ -154,7 +155,7 @@ namespace WeatherRegistry
       return CurrentWeathers.GetLevelWeather(level);
     }
 
-    public static Weather GetCurrentLevelWeather()
+    public static ImprovedWeather GetCurrentLevelWeather()
     {
       return GetCurrentWeather(StartOfRound.Instance.currentLevel);
     }
@@ -170,14 +171,8 @@ namespace WeatherRegistry
       return GetCurrentWeather(level).Name;
     }
 
-    [Obsolete]
-    internal static AnimationClip GetWeatherAnimationClip(LevelWeatherType weatherType)
-    {
-      return GetWeather(weatherType).AnimationClip;
-    }
-
     [Obsolete("Use WeatherOverrideManager.GetCurrentWeatherOverride instead")]
-    public static WeatherEffectOverride GetCurrentWeatherOverride(SelectableLevel level, Weather weather)
+    public static WeatherEffectOverride GetCurrentWeatherOverride(SelectableLevel level, ImprovedWeather weather)
     {
       return WeatherOverrideManager.GetCurrentWeatherOverride(level, weather);
     }

@@ -45,6 +45,8 @@ namespace WeatherRegistry
 
       ConfigManager.Init(Config);
 
+      NetcodePatcher.PatchNetcodeMethods();
+
 #if DEVMODE
       Plugin.logger.LogWarning("Dev build detected, enabling full debug logging.");
       ConfigManager.LoggingLevels.Value = LoggingType.Developer;

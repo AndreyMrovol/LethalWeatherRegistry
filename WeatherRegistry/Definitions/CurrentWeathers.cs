@@ -49,7 +49,7 @@ namespace WeatherRegistry.Definitions
       return _currentWeathers.ContainsValue(weatherType);
     }
 
-    public bool Contains(Weather weather)
+    public bool Contains(ImprovedWeather weather)
     {
       return Contains(weather.VanillaWeatherType);
     }
@@ -85,7 +85,7 @@ namespace WeatherRegistry.Definitions
       return _currentWeathers.TryGetValue(level, out LevelWeatherType weatherType) ? weatherType : LevelWeatherType.None;
     }
 
-    public Weather GetLevelWeather(SelectableLevel level)
+    public ImprovedWeather GetLevelWeather(SelectableLevel level)
     {
       return WeatherManager.GetWeather(GetWeatherType(level));
     }
@@ -97,7 +97,7 @@ namespace WeatherRegistry.Definitions
       CallSync();
     }
 
-    public void SetWeather(SelectableLevel level, Weather weather)
+    public void SetWeather(SelectableLevel level, ImprovedWeather weather)
     {
       SetWeather(level, weather.VanillaWeatherType);
     }

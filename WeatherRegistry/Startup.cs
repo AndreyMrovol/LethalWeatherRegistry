@@ -7,6 +7,7 @@ using MrovLib;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Enums;
 using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
@@ -65,7 +66,7 @@ namespace WeatherRegistry
 
       Logger.LogInfo("Creating NoneWeather type");
       // Register clear weather as a weather
-      Weather noneWeather =
+      ImprovedWeather noneWeather =
         new(effect: new ImprovedWeatherEffect(null, null))
         {
           Type = WeatherType.Clear,
@@ -108,7 +109,7 @@ namespace WeatherRegistry
         ImprovedWeatherEffect weatherEffect =
           new(effect.effectObject, effect.effectPermanentObject) { SunAnimatorBool = effect.sunAnimatorBool, };
 
-        Weather weather =
+        ImprovedWeather weather =
           new(weatherName, weatherEffect)
           {
             Type = weatherTypeType,
@@ -137,9 +138,9 @@ namespace WeatherRegistry
       {
         Logger.LogDebug("Getting LethalLib Weathers");
 
-        List<Weather> lethalLibWeathers = LethalLibPatch.ConvertLLWeathers();
+        List<ImprovedWeather> lethalLibWeathers = LethalLibPatch.ConvertLLWeathers();
 
-        foreach (Weather weather in lethalLibWeathers)
+        foreach (ImprovedWeather weather in lethalLibWeathers)
         {
           Logger.LogDebug($"LethalLib Weather: {weather.Name}");
 
@@ -182,7 +183,7 @@ namespace WeatherRegistry
 
       // This is LethalLib's patch for extending the enum
       int highestIndex = 0;
-      foreach (KeyValuePair<int, Weather> entry in WeatherManager.ModdedWeatherEnumExtension)
+      foreach (KeyValuePair<int, ImprovedWeather> entry in WeatherManager.ModdedWeatherEnumExtension)
       {
         if (entry.Key > highestIndex)
         {
@@ -197,65 +198,59 @@ namespace WeatherRegistry
       }
 
       // then we set the custom weathers at their index
-      foreach (KeyValuePair<int, Weather> entry in WeatherManager.ModdedWeatherEnumExtension)
+      foreach (KeyValuePair<int, ImprovedWeather> entry in WeatherManager.ModdedWeatherEnumExtension)
       {
-        // if there's no defined ImprovedWeatherEffect for the weather, we create an empty one
+        weatherList[entry.Key] = entry.Value;
 
+        // if there's no defined ImprovedWeatherEffect for the weather, we create an empty one
         if (entry.Value.Effect == null)
         {
           entry.Value.Effect = new ImprovedWeatherEffect(null, null) { name = entry.Value.Name };
         }
 
-        if (entry.Value.Effect.VanillaWeatherEffect != null)
-        {
-          entry.Value.Effect.name = entry.Value.Name;
-          weatherList[entry.Key] = entry.Value.Effect.VanillaWeatherEffect;
-          continue;
-        }
-        else
-        {
-          weatherList[entry.Key] = new WeatherEffect()
-          {
-            name = entry.Value.Name,
-            effectObject = entry.Value.Effect.EffectObject,
-            effectPermanentObject = entry.Value.Effect.WorldObject,
-            sunAnimatorBool = entry.Value.Effect.SunAnimatorBool,
-            effectEnabled = false,
-            lerpPosition = false,
-            transitioning = false
-          };
+        // if (entry.Value != null)
+        // {
+        //   entry.Value.Effect.name = entry.Value.Name;
+        //   weatherList[entry.Key] = entry.Value;
+        //   continue;
+        // }
+        // else
+        // {
+        //   weatherList[entry.Key] = new WeatherEffect()
+        //   {
+        //     name = entry.Value.Name,
+        //     effectObject = entry.Value.Effect.EffectObject,
+        //     effectPermanentObject = entry.Value.Effect.WorldObject,
+        //     sunAnimatorBool = entry.Value.Effect.SunAnimatorBool,
+        //     effectEnabled = false,
+        //     lerpPosition = false,
+        //     transitioning = false
+        //   };
 
-          entry.Value.Effect.VanillaWeatherEffect = weatherList[entry.Key];
-        }
+        //   // entry.Value = weatherList[entry.Key];
+        // }
 
-        if (weatherList[entry.Key].effectObject != null)
-        {
-          weatherList[entry.Key].effectObject.SetActive(false);
-        }
-
-        if (weatherList[entry.Key].effectPermanentObject != null)
-        {
-          weatherList[entry.Key].effectPermanentObject.SetActive(false);
-        }
+        weatherList[entry.Key].effectObject?.SetActive(false);
+        weatherList[entry.Key].effectPermanentObject?.SetActive(false);
       }
       TimeOfDay.Instance.effects = weatherList.ToArray();
 
       #endregion
 
-      List<Weather> RegisteredWeathers = WeatherManager.RegisteredWeathers.Distinct().ToList();
+      List<ImprovedWeather> RegisteredWeathers = WeatherManager.RegisteredWeathers.Distinct().ToList();
       RegisteredWeathers.Sort((a, b) => a.VanillaWeatherType.CompareTo(b.VanillaWeatherType));
 
       for (int i = 0; i < RegisteredWeathers.Count; i++)
       {
         Logger.LogInfo($"Registered Weather: {RegisteredWeathers[i].Name}");
 
-        Weather weather = RegisteredWeathers[i];
+        ImprovedWeather weather = RegisteredWeathers[i];
         WeatherManager.WeathersDictionary.Add(weather.VanillaWeatherType, weather);
       }
 
       Logger.LogDebug($"Weathers: {WeatherManager.Weathers.Count}");
 
-      foreach (Weather weather in WeatherManager.Weathers)
+      foreach (ImprovedWeather weather in WeatherManager.Weathers)
       {
         Settings.ScreenMapColors.Add(weather.Name, weather.Color);
         weather.Init();
@@ -400,7 +395,7 @@ namespace WeatherRegistry
       #endregion
     }
 
-    static void AddWeatherToLevels(Weather weather, List<SelectableLevel> LevelsToApply)
+    static void AddWeatherToLevels(ImprovedWeather weather, List<SelectableLevel> LevelsToApply)
     {
       weather.WeatherVariables.Clear();
       StringBuilder weatherLog = new();

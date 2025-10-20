@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using MrovLib;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Enums;
 
 namespace WeatherRegistry.Algorithms;
 
@@ -53,7 +54,7 @@ internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
       if (level.overrideWeather)
       {
         weatherLog.Append($"Override weather: {level.overrideWeatherType}");
-        Weather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
+        ImprovedWeather overrideWeather = WeatherManager.GetWeather(level.overrideWeatherType);
 
         NewWeather[level] = overrideWeather.VanillaWeatherType;
         EventManager.WeatherChanged.Invoke((level, overrideWeather));
@@ -63,8 +64,8 @@ internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
 
       NewWeather[level] = LevelWeatherType.None;
 
-      WeightHandler<Weather, WeatherWeightType> possibleWeathers = WeatherManager.GetPlanetWeightedList(level);
-      Weather selectedWeather = possibleWeathers.Random();
+      WeightHandler<ImprovedWeather, WeatherWeightType> possibleWeathers = WeatherManager.GetPlanetWeightedList(level);
+      ImprovedWeather selectedWeather = possibleWeathers.Random();
 
       NewWeather[level] = selectedWeather.VanillaWeatherType;
       EventManager.WeatherChanged.Invoke((level, selectedWeather));
@@ -80,7 +81,7 @@ internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
         weatherLog.AppendLine($"PreviousDayWeather: {WeatherCalculation.previousDayWeather[level.PlanetName]}");
         weatherLog.AppendLine($"Possible weathers: [{string.Join(", ", level.randomWeathers.Select(rw => rw.weatherType))}]");
         weatherLog.AppendLine($"Used weights: ");
-        foreach (Weather weather in possibleWeathers.Keys)
+        foreach (ImprovedWeather weather in possibleWeathers.Keys)
         {
           weatherLog.AppendLine(
             $"  {weather.name} has {possibleWeathers.GetOrigin(weather).ToString().ToLowerInvariant()} weight ({possibleWeathers.Get(weather)})"

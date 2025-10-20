@@ -45,7 +45,7 @@ namespace WeatherRegistry.Patches
       Regex multiNewLine = new(@"\n{2,}");
       string planetName = ___currentLevel.PlanetName;
 
-      Weather currentWeather = WeatherManager.GetCurrentWeather(___currentLevel);
+      ImprovedWeather currentWeather = WeatherManager.GetCurrentWeather(___currentLevel);
       if (WeatherOverrideManager.GetCurrentWeatherOverride(___currentLevel, currentWeather) is WeatherEffectOverride currentOverride)
       {
         string newName = WeatherOverrideManager.GetPlanetOverrideName(currentOverride);
@@ -101,7 +101,7 @@ namespace WeatherRegistry.Patches
     }
 
     // it's like that because of weathertweaks
-    private static string GetDisplayWeatherString(SelectableLevel level, Weather weather)
+    private static string GetDisplayWeatherString(SelectableLevel level, ImprovedWeather weather)
     {
       if (Settings.WeatherOverrideNames)
       {
@@ -117,7 +117,7 @@ namespace WeatherRegistry.Patches
 
     internal static string GetColoredString(SelectableLevel level)
     {
-      Weather currentWeather = WeatherManager.GetCurrentWeather(level);
+      ImprovedWeather currentWeather = WeatherManager.GetCurrentWeather(level);
       string currentWeatherString = GetDisplayWeatherString(level, currentWeather);
 
       if (!Settings.ColoredWeathers)

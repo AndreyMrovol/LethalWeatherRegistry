@@ -7,6 +7,7 @@ using MrovLib;
 using UnityEngine;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Editor;
+using WeatherRegistry.Enums;
 
 namespace WeatherRegistry
 {
@@ -124,17 +125,17 @@ namespace WeatherRegistry
             DefaultVariable2 = WeatherDefinition.Effect.DefaultVariable2
           };
 
-        Weather weather =
+        ImprovedWeather weather =
           new(WeatherDefinition.Name, newImprovedWeatherEffect)
           {
             Color = WeatherDefinition.Color,
             Origin = WeatherOrigin.WeatherRegistry,
             Type = WeatherType.Modded,
             Config = WeatherDefinition.Config.CreateFullConfig(),
-            hideFlags = HideFlags.HideAndDontSave
+            // hideFlags = HideFlags.HideAndDontSave
           };
 
-        GameObject.DontDestroyOnLoad(weather);
+        // GameObject.DontDestroyOnLoad(weather);
         WeatherManager.RegisterWeather(weather);
       }
     }
@@ -150,7 +151,7 @@ namespace WeatherRegistry
           continue;
         }
 
-        Weather weather = ConfigHelper.ResolveStringToWeather(effectOverride.weatherName);
+        ImprovedWeather weather = ConfigHelper.ResolveStringToWeather(effectOverride.weatherName);
         if (weather == null)
         {
           Logger.LogWarning($"Weather {effectOverride.weatherName} not found, skipping EffectOverride.");
@@ -192,7 +193,7 @@ namespace WeatherRegistry
           .Weathers.ToList()
           .ForEach(weather =>
           {
-            Weather matchedWeather = ConfigHelper.ResolveStringToWeather(weather.Name);
+            ImprovedWeather matchedWeather = ConfigHelper.ResolveStringToWeather(weather.Name);
             int matcherWeight = weather.DefaultLevelWeight;
             if (matchedWeather == null)
             {

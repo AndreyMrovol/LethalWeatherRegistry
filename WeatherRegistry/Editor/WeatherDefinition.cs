@@ -16,6 +16,10 @@ namespace WeatherRegistry.Editor
     [Tooltip("Your weather's color, displayed on the landing screen.")]
     public Color Color;
 
+    [SerializeField]
+    [Tooltip("Should your weather be loaded into the game?")]
+    public bool Enabled;
+
     [Header("Effect")]
     [Space(20)]
     [SerializeField]

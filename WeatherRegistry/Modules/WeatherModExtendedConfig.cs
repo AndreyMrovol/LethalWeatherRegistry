@@ -25,7 +25,7 @@ namespace WeatherRegistry.Modules
     // this is an example config entry that enables or disables the weather type
     public BooleanConfigHandler EnableWeather = new(true, true);
 
-    public override void Init(Weather weather)
+    public override void Init(ImprovedWeather weather)
     {
       EnableWeather.SetConfigEntry(weather, "Enable Weather", new("Enable this weather type"));
 

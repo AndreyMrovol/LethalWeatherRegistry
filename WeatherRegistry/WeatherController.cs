@@ -9,7 +9,7 @@ namespace WeatherRegistry
     private static Logger Logger = new("WeatherController", LoggingType.Basic);
 
     #region Change weather
-    public static void ChangeCurrentWeather(Weather weather)
+    public static void ChangeCurrentWeather(ImprovedWeather weather)
     {
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
 
@@ -25,13 +25,13 @@ namespace WeatherRegistry
 
     public static void ChangeWeather(SelectableLevel level, LevelWeatherType weatherType)
     {
-      Weather weather = WeatherManager.GetWeather(weatherType);
+      ImprovedWeather weather = WeatherManager.GetWeather(weatherType);
 
       ChangeWeather(level, weather);
     }
 
     // this is the one that every overload should resolve to
-    public static void ChangeWeather(SelectableLevel level, Weather weather)
+    public static void ChangeWeather(SelectableLevel level, ImprovedWeather weather)
     {
       // if something else is controlling the weather sync, don't change it
       if (!Settings.SelectWeathers)
@@ -149,7 +149,7 @@ namespace WeatherRegistry
       WeatherSync.Instance.SetWeatherEffectOnHost(weatherType);
     }
 
-    public static void SetWeatherEffects(Weather weather)
+    public static void SetWeatherEffects(ImprovedWeather weather)
     {
       SetWeatherEffects(weather.VanillaWeatherType);
     }
@@ -164,7 +164,7 @@ namespace WeatherRegistry
       WeatherSync.Instance.SetWeatherEffectsOnHost(effects.ToArray());
     }
 
-    public static void AddWeatherEffect(Weather weather)
+    public static void AddWeatherEffect(ImprovedWeather weather)
     {
       AddWeatherEffect(weather.VanillaWeatherType);
     }
