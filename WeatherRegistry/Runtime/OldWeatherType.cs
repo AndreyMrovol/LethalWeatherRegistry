@@ -4,33 +4,38 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 using UnityEngine;
+using WeatherRegistry.Enums;
 using WeatherRegistry.Modules;
 
 namespace WeatherRegistry
 {
-  public enum WeatherType
-  {
-    Clear,
-    Vanilla,
-    Modded,
-  }
+  // [Obsolete]
+  // public enum WeatherType
+  // {
+  //   Clear,
+  //   Vanilla,
+  //   Modded,
+  // }
 
-  public enum WeatherOrigin
-  {
-    Vanilla,
-    WeatherRegistry,
-    LethalLib,
-    LethalLevelLoader,
-    WeatherTweaks,
-  }
+  // [Obsolete]
+  // public enum WeatherOrigin
+  // {
+  //   Vanilla,
+  //   WeatherRegistry,
+  //   LethalLib,
+  //   LethalLevelLoader,
+  //   WeatherTweaks,
+  // }
 
-  public enum FilteringOption
-  {
-    Include,
-    Exclude,
-  }
+  // [Obsolete]
+  // public enum FilteringOption
+  // {
+  //   Include,
+  //   Exclude,
+  // }
 
   [JsonObject(MemberSerialization.OptIn)]
+  [Obsolete]
   public class Weather : ScriptableObject
   {
     #region Base properties
