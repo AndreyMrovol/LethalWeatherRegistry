@@ -6,25 +6,18 @@ namespace WeatherRegistry.Modules
 {
   public class RegistryWeatherConfig
   {
-    [JsonIgnore]
     public IntegerConfigHandler DefaultWeight = new(Defaults.DefaultWeight);
 
-    [JsonIgnore]
     public FloatConfigHandler ScrapAmountMultiplier = new(Defaults.ScrapAmountMultiplier);
 
-    [JsonIgnore]
     public FloatConfigHandler ScrapValueMultiplier = new(Defaults.ScrapValueMultiplier);
 
-    [JsonIgnore]
     public BooleanConfigHandler FilteringOption = new(Defaults.FilteringOption);
 
-    [JsonIgnore]
     public LevelListConfigHandler LevelFilters = new($"{String.Join(';', Defaults.DefaultLevelFilters)};");
 
-    [JsonIgnore]
     public LevelWeightsConfigHandler LevelWeights = new($"{String.Join(';', Defaults.DefaultLevelWeights)};");
 
-    [JsonIgnore]
     public WeatherWeightsConfigHandler WeatherToWeatherWeights = new($"{String.Join(';', Defaults.DefaultWeatherToWeatherWeights)};");
 
     public virtual void Init(ImprovedWeather weather)
