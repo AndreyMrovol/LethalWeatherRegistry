@@ -7,7 +7,18 @@ namespace WeatherRegistry.Helpers
   {
     public static TMP_ColorGradient ToTMPColorGradient(Color color)
     {
-      return new TMP_ColorGradient(color);
+      TMP_ColorGradient gradient = ScriptableObject.CreateInstance<TMP_ColorGradient>();
+      gradient.topLeft = color;
+      gradient.topRight = color;
+      gradient.bottomLeft = color;
+      gradient.bottomRight = color;
+
+      return gradient;
+    }
+
+    public static string ToHex(Color color)
+    {
+      return ColorUtility.ToHtmlStringRGB(color);
     }
   }
 }
