@@ -1,20 +1,11 @@
 using System;
 using UnityEngine;
 
-namespace WeatherRegistry
+namespace WeatherRegistry.Definitions
 {
   public class IWeatherEffectAbstraction : WeatherEffect
   {
-    public ImprovedWeatherEffect Effect;
-
-    #region Properties from vanilla WeatherEffect
-
-    // public new GameObject effectObject => Effect?.EffectObject;
-    // public GameObject effectPermanentObject => Effect.WorldObject;
-    // public bool effectEnabled => Effect.EffectEnabled;
-    // public string sunAnimatorBool => Effect.SunAnimatorBool;
-
-    #endregion
+    public ImprovedWeatherEffect Effect { get; internal set; }
   }
 
   public interface IWeatherEffect
