@@ -7,6 +7,7 @@ using MonoMod.RuntimeDetour;
 using MrovLib;
 using UnityEngine;
 using WeatherRegistry.Compatibility;
+using WeatherRegistry.Managers;
 using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
@@ -25,6 +26,8 @@ namespace WeatherRegistry
     internal static ManualLogSource logger;
     internal static Logger debugLogger = new("Debug", LoggingType.Debug);
     internal static Harmony harmony = new(PluginInfo.PLUGIN_GUID);
+
+    internal static AssetBundleManager AssetBundleManager;
 
     internal static bool IsLethalLibLoaded = false;
     internal static JLLCompat JLLCompat;
@@ -52,7 +55,9 @@ namespace WeatherRegistry
       ConfigManager.LoggingLevels.Value = LoggingType.Developer;
 #endif
 
-      AssetBundleLoader.LoadAssetBundles();
+      AssetBundleManager = new AssetBundleManager();
+      AssetBundleManager.LoadAllBundles();
+      AssetBundleManager.ConvertLoadedAssets();
 
       ForecastVerb = ScriptableObject.CreateInstance<TerminalKeyword>();
       ForecastVerb.name = "Forecast";
@@ -77,11 +82,12 @@ namespace WeatherRegistry
         ConfigManager.Instance.RemoveOrphanedEntries();
       });
 
-      EventManager.SetupFinished.AddListener(() =>
-      {
-        AssetBundleLoader.LoadWeatherOverrides();
-        AssetBundleLoader.LoadModdedWeathersMatchers();
-      });
+      // TODO: Re-implement this logic
+      // EventManager.SetupFinished.AddListener(() =>
+      // {
+      //   AssetBundleLoader.LoadWeatherOverrides();
+      //   AssetBundleLoader.LoadModdedWeathersMatchers();
+      // });
 
       if (Chainloader.PluginInfos.ContainsKey("evaisa.lethallib"))
       {
