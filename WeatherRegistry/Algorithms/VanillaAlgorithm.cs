@@ -47,7 +47,7 @@ internal class VanillaWeatherSelection : WeatherSelectionAlgorithm
     });
 
     Logger.LogMessage("Selected vanilla algorithm - weights are not being used!");
-    Logger.LogMessage($"Picking weathers for {num2} moons:");
+    Logger.LogMessage($"Picking weathers for {num2} moons (out of {list.Count}):");
     Logger.LogMessage("-------------");
 
     for (int index = 0; index < num2; ++index)
@@ -68,6 +68,11 @@ internal class VanillaWeatherSelection : WeatherSelectionAlgorithm
       }
       list.Remove(selectableLevel);
     }
+
+    list.ForEach(level =>
+    {
+      Logger.LogDebug($"Level {level.PlanetName} has weather {vanillaSelectedWeather[level].ToString()}");
+    });
 
     Logger.LogMessage("-------------");
 

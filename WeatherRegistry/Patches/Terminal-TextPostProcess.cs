@@ -85,10 +85,18 @@ namespace WeatherRegistry.Patches
     {
       Plugin.debugLogger.LogDebug($"GetPlanetWeatherDisplayString called for {level.PlanetName} with parentheses={parentheses}");
       string overrideString = WeatherManager.WeatherDisplayOverride(level);
+      Weather weather = WeatherManager.GetWeather(level.currentWeather);
 
       if (overrideString == string.Empty)
       {
-        return $"{(parentheses ? "(" : "")}{WeatherManager.GetWeather(level.currentWeather).Name}{(parentheses ? ")" : "")}";
+        if (weather == WeatherManager.NoneWeather)
+        {
+          return "";
+        }
+        else
+        {
+          return $"{(parentheses ? "(" : "")}{weather.Name}{(parentheses ? ")" : "")}";
+        }
       }
       else
       {
@@ -103,7 +111,7 @@ namespace WeatherRegistry.Patches
 
       string currentPlanetTime = GetPlanetWeatherDisplayString(level, false).ToLower();
 
-      if (currentPlanetTime == "none")
+      if (currentPlanetTime == "")
       {
         return "mild weather";
       }

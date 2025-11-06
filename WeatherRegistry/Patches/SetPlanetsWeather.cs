@@ -56,12 +56,23 @@ namespace WeatherRegistry.Patches
         }
         else
         {
-          Plugin.debugLogger.LogDebug("Weather selection algorithm: " + Settings.WeatherSelectionAlgorithm.GetType().Name);
+          Dictionary<SelectableLevel, LevelWeatherType> newWeathers = [];
 
-          Dictionary<SelectableLevel, LevelWeatherType> newWeathers = Settings.WeatherSelectionAlgorithm.SelectWeathers(
-            connectedPlayersOnServer,
-            __instance
-          );
+          if (ConfigManager.FirstDayClear.Value && __instance.gameStats.daysSpent == 0)
+          {
+            Plugin.logger.LogInfo("First Day Clear is enabled.");
+
+            foreach (SelectableLevel level in MrovLib.LevelHelper.Levels)
+            {
+              newWeathers[level] = LevelWeatherType.None;
+            }
+          }
+          else
+          {
+            Plugin.debugLogger.LogDebug("Weather selection algorithm: " + Settings.WeatherSelectionAlgorithm.GetType().Name);
+
+            newWeathers = Settings.WeatherSelectionAlgorithm.SelectWeathers(connectedPlayersOnServer, __instance);
+          }
 
           WeatherManager.CurrentWeathers.SetWeathers(newWeathers);
 

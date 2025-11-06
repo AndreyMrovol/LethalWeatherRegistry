@@ -23,6 +23,7 @@ namespace WeatherRegistry
 
     // algorithm settings
     internal static ConfigEntry<WeatherCalculation.WeatherAlgorithm> WeatherAlgorithm { get; private set; }
+    internal static ConfigEntry<bool> FirstDayClear { get; private set; }
 
     // map screen settings
     internal static ConfigEntry<bool> ColoredWeathers { get; private set; }
@@ -43,6 +44,12 @@ namespace WeatherRegistry
         "Weather Selection Algorithm",
         WeatherCalculation.WeatherAlgorithm.Registry,
         "Select the algorithm to use during weather selection."
+      );
+      FirstDayClear = configFile.Bind(
+        "|WeatherSelection",
+        "First Day Clear Weather",
+        false,
+        "If enabled, the first day will always have clear weather, on all planets, regardless of the selected algorithm."
       );
 
       ColoredWeathers = configFile.Bind("|General", "Colored Weathers", true, "Enable colored weathers on map screen");

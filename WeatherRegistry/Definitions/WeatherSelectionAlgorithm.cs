@@ -11,7 +11,7 @@ namespace WeatherRegistry.Definitions
 
     public virtual System.Random GetRandom(StartOfRound startOfRound)
     {
-      return new(startOfRound.randomMapSeed + 31);
+      return new(startOfRound.randomMapSeed + 35);
     }
 
     public virtual Dictionary<SelectableLevel, LevelWeatherType> SelectWeathers(int connectedPlayersOnServer, StartOfRound startOfRound)

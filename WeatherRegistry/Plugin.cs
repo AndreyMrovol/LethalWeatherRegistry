@@ -43,6 +43,8 @@ namespace WeatherRegistry
       logger = Logger;
       harmony.PatchAll();
 
+      NetcodePatcher.PatchNetcodeMethods();
+
       ConfigManager.Init(Config);
 
 #if DEVMODE
