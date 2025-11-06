@@ -1,3 +1,8 @@
+# 0.7.5
+- updated for v73
+- fixed the selection algorithms using wrong seed (thanks, `tomatobird8`!)
+- fixed clear weather showing up in the vanilla terminal
+
 # 0.7.4
 
 - fixed issues with replacing of modded WeatherEffects during the startup (thanks, `xuxiaolan`!)
