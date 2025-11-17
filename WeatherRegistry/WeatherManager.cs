@@ -4,6 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Enums;
 
 namespace WeatherRegistry
 {
@@ -190,6 +191,54 @@ namespace WeatherRegistry
         Formatting.None,
         new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }
       );
+    }
+
+    public static (int weight, WeatherWeightType type) GetWeatherWeightForLevel(SelectableLevel level, Weather weather)
+    {
+      Logger logger = WeatherCalculation.Logger;
+      var weatherWeight = weather.DefaultWeight;
+      WeatherWeightType weatherWeightType = WeatherWeightType.Default;
+
+      var previousWeather = WeatherManager.GetWeather(level.currentWeather);
+
+      if (previousWeather == null)
+      {
+        logger.LogError($"Previous weather is null for {level.name}");
+      }
+
+      // we have 3 weights possible:
+      // 1. level weight
+      // 2. weather-weather weights
+      // 3. default weight
+      // we want to execute them in this exact order
+
+      if (weather.LevelWeights.TryGetValue(level, out int levelWeight))
+      {
+        // (1) => level weight
+        // logger.LogDebug($"{this.Name} has level weight {levelWeight}");
+        weatherWeightType = WeatherWeightType.Level;
+        weatherWeight = levelWeight;
+      }
+      // try to get previous day weather (so - at this point - the current one)
+      // but not on first day because that's unreliable and random (from my testing)
+      else if (
+        previousWeather.WeatherWeights.TryGetValue(weather.VanillaWeatherType, out int weatherWeightFromWeather)
+        && StartOfRound.Instance.gameStats.daysSpent != 0
+      )
+      {
+        // (2) => weather-weather weights
+
+        // logger.LogDebug($"{this.Name} has weather>weather weight {weatherWeightFromWeather}");
+        weatherWeightType = WeatherWeightType.WeatherToWeather;
+        weatherWeight = weatherWeightFromWeather;
+      }
+      else
+      {
+        weatherWeightType = WeatherWeightType.Default;
+        // logger.LogDebug($"{this.Name} has default weight {weatherWeight}");
+      }
+
+      return (weatherWeight, weatherWeightType);
     }
   }
 }
