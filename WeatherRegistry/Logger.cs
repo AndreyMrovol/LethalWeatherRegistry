@@ -5,7 +5,7 @@ namespace WeatherRegistry
 {
   public class Logger : MrovLib.Logger
   {
-    public override ManualLogSource LogSource { get; protected set; }
+    public override ManualLogSource LogSource { get; set; }
 
     public Logger(string SourceName, LoggingType defaultLoggingType = LoggingType.Debug)
       : base(SourceName, defaultLoggingType)
