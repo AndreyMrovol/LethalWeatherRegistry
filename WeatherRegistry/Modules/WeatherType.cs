@@ -3,135 +3,64 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using TMPro;
 using UnityEngine;
+using WeatherRegistry.Enums;
+using WeatherRegistry.Helpers;
 using WeatherRegistry.Modules;
 
 namespace WeatherRegistry
 {
-  public enum WeatherType
-  {
-    Clear,
-    Vanilla,
-    Modded,
-  }
-
-  public enum WeatherOrigin
-  {
-    Vanilla,
-    WeatherRegistry,
-    LethalLib,
-    LethalLevelLoader,
-    WeatherTweaks,
-  }
-
-  public enum FilteringOption
-  {
-    Include,
-    Exclude,
-  }
-
-  [JsonObject(MemberSerialization.OptIn)]
-  public class Weather : ScriptableObject
+  public class Weather
   {
     #region Base properties
 
-    [JsonProperty]
-    public string Name;
+    public string Name { get; set; }
 
-    [JsonIgnore]
-    public ImprovedWeatherEffect Effect;
+    public ImprovedWeatherEffect Effect { get; internal set; }
 
-    [JsonProperty]
     public LevelWeatherType VanillaWeatherType { get; internal set; } = LevelWeatherType.None;
 
-    [JsonIgnore]
     internal WeatherOrigin Origin { get; set; } = WeatherOrigin.WeatherRegistry;
 
-    [JsonProperty]
     public WeatherType Type { get; internal set; } = WeatherType.Modded;
 
-    [JsonIgnore]
-    public Dictionary<SelectableLevel, LevelWeatherVariables> WeatherVariables = [];
-
-    [JsonIgnore]
-    [Obsolete]
-    public AnimationClip AnimationClip;
-
     [field: SerializeField]
-    public Color Color { get; set; } = Color.cyan;
+    public TMP_ColorGradient Color { get; set; } = ColorHelper.ToTMPColorGradient(UnityEngine.Color.cyan);
+    public TMP_ColorGradient Colour => Color;
 
-    [JsonIgnore]
     public RegistryWeatherConfig Config = new();
 
-    [JsonIgnore]
     internal Dictionary<SelectableLevel, Definitions.WeatherEffectOverride> WeatherEffectOverrides = [];
 
-    #endregion
-
-    #region backing fields
-
-    [Obsolete("Use Weather.Config.DefaultWeight instead")]
-    internal int _defaultWeight = 100;
-
-    [Obsolete("Use Weather.Config.ScrapAmountMultiplier instead")]
-    internal float _scrapAmountMultiplier = 1;
-
-    [Obsolete("Use Weather.Config.ScrapValueMultiplier instead")]
-    internal float _scrapValueMultiplier = 1;
+    [Obsolete]
+    public Dictionary<SelectableLevel, LevelWeatherVariables> WeatherVariables = [];
 
     #endregion
 
-    #region defaults
-
-    [property: SerializeField]
-    public int DefaultWeight
-    {
-      get { return Config.DefaultWeight.Value; }
-      [Obsolete("Use Weather.Config.DefaultWeight instead")]
-      set { _defaultWeight = value; }
-    }
+    #region defaults (all obsolete)
+    public int DefaultWeight => Config.DefaultWeight.Value;
 
     [Obsolete("Use Weather.Config.LevelFilters instead")]
-    public string[] DefaultLevelFilters
-    {
-      get { return this.Config.LevelFilters.DefaultValue.Split(";"); }
-      set { this.Config.LevelFilters = new(value); }
-    }
+    public string[] DefaultLevelFilters => this.Config.LevelFilters.DefaultValue.Split(";");
 
     [Obsolete("Use Weather.Config.LevelWeights instead")]
-    public string[] DefaultLevelWeights
-    {
-      get { return this.Config.LevelWeights.DefaultValue.Split(";"); }
-      set { this.Config.LevelWeights = new(value); }
-    }
+    public string[] DefaultLevelWeights => this.Config.LevelWeights.DefaultValue.Split(";");
 
     [Obsolete("Use Weather.Config.WeatherToWeatherWeights instead")]
-    public string[] DefaultWeatherToWeatherWeights
-    {
-      get { return this.Config.WeatherToWeatherWeights.DefaultValue.Split(";"); }
-      set { this.Config.WeatherToWeatherWeights = new(value); }
-    }
+    public string[] DefaultWeatherToWeatherWeights => this.Config.WeatherToWeatherWeights.DefaultValue.Split(";");
 
-    public float ScrapAmountMultiplier
-    {
-      get { return Config.ScrapAmountMultiplier.Value; }
-      [Obsolete("Use Weather.Config.ScrapAmountMultiplier instead")]
-      set { Config.ScrapAmountMultiplier = new(value); }
-    }
+    [Obsolete("Use Weather.Config.ScrapAmountMultiplier instead")]
+    public float ScrapAmountMultiplier => Config.ScrapAmountMultiplier.Value;
 
-    public float ScrapValueMultiplier
-    {
-      get { return Config.ScrapValueMultiplier.Value; }
-      [Obsolete("Use Weather.Config.ScrapValueMultiplier instead")]
-      set { Config.ScrapValueMultiplier = new(value); }
-    }
+    [Obsolete("Use Weather.Config.ScrapAmountMultiplier instead")]
+    public float ScrapValueMultiplier => Config.ScrapValueMultiplier.Value;
 
     #endregion
 
     #region stuff from config
 
     [property: SerializeField]
-    [JsonIgnore]
     public FilteringOption LevelFilteringOption
     {
       get { return Config.FilteringOption.Value ? FilteringOption.Include : FilteringOption.Exclude; }
@@ -139,19 +68,16 @@ namespace WeatherRegistry
       set { Config.FilteringOption = new(value == FilteringOption.Include); }
     }
 
-    [JsonIgnore]
     public List<SelectableLevel> LevelFilters
     {
       get { return Config.LevelFilters.Value.ToList(); }
     }
 
-    [JsonIgnore]
     public Dictionary<LevelWeatherType, int> WeatherWeights
     {
       get { return Config.WeatherToWeatherWeights.Value.ToDictionary(rarity => rarity.Weather.VanillaWeatherType, rarity => rarity.Weight); }
     }
 
-    [JsonIgnore]
     public Dictionary<SelectableLevel, int> LevelWeights
     {
       get { return Config.LevelWeights.Value.ToDictionary(rarity => rarity.Level, rarity => rarity.Weight); }
@@ -166,22 +92,19 @@ namespace WeatherRegistry
       // a small hack for Whimsical weather so it doesn't use <color> tags in their name
       Regex textTagsRegex = new(@"<.*?>");
       Name = textTagsRegex.Replace(name, "");
-      this.name = textTagsRegex.Replace(name, "");
 
       Effect = effect;
 
       if (effect != null)
       {
-        Effect.name = name;
+        Effect.name = Name;
       }
-
-      GameObject.DontDestroyOnLoad(this);
     }
 
     #endregion
 
     internal virtual string ConfigCategory =>
-      $"{(this.Type == WeatherType.Vanilla || this.Type == WeatherType.Clear ? "Vanilla" : "Modded")} Weather: {this.name.Replace(" ", "")}{(this.Origin != WeatherOrigin.WeatherRegistry && this.Origin != WeatherOrigin.Vanilla ? $" ({this.Origin})" : "")}";
+      $"{(this.Type == WeatherType.Vanilla || this.Type == WeatherType.Clear ? "Vanilla" : "Modded")} Weather: {this.Name.Replace(" ", "")}{(this.Origin != WeatherOrigin.WeatherRegistry && this.Origin != WeatherOrigin.Vanilla ? $" ({this.Origin})" : "")}";
 
     internal virtual void Init()
     {
@@ -192,8 +115,12 @@ namespace WeatherRegistry
         this.Effect.LevelWeatherType = this.VanillaWeatherType;
       }
 
-      this.hideFlags = HideFlags.HideAndDontSave;
+      // this.name = Name;
+      // this.effectObject = Effect?.EffectObject;
+      // this.effectPermanentObject = Effect?.WorldObject;
     }
+
+    #region Miscellaneous methods
 
     public override string ToString()
     {
@@ -289,25 +216,5 @@ namespace WeatherRegistry
     }
   }
 
-  public class LevelWeatherVariables
-  {
-    public SelectableLevel Level;
-
-    public int WeatherVariable1;
-    public int WeatherVariable2;
-  }
-
-  [Obsolete]
-  public class LevelWeather : LevelWeatherVariables
-  {
-    public Weather Weather;
-    public LevelWeatherVariables Variables;
-  }
-
-  public enum WeatherWeightType
-  {
-    Default,
-    WeatherToWeather,
-    Level,
-  }
+    #endregion
 }

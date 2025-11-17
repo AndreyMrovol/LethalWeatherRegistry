@@ -33,7 +33,7 @@ namespace WeatherRegistry.Managers
       {
         Logger.LogWarning($"Registering weather definition from asset bundle: {WeatherDefinition.Name}");
 
-        NewerWeatherDefinition ConvertedDefinition = ScriptableObject.CreateInstance<NewerWeatherDefinition>();
+        WeatherDefinition ConvertedDefinition = ScriptableObject.CreateInstance<WeatherDefinition>();
         ConvertedDefinition.Name = WeatherDefinition.Name;
         ConvertedDefinition.Color = ColorHelper.ToTMPColorGradient(WeatherDefinition.Color);
         ConvertedDefinition.Effect = WeatherDefinition.Effect;
@@ -53,7 +53,7 @@ namespace WeatherRegistry.Managers
           continue;
         }
 
-        ImprovedWeather weather = ConfigHelper.ResolveStringToWeather(effectOverride.weatherName);
+        Weather weather = ConfigHelper.ResolveStringToWeather(effectOverride.weatherName);
         if (weather == null)
         {
           Logger.LogWarning($"Weather {effectOverride.weatherName} not found, skipping EffectOverride.");
@@ -91,7 +91,7 @@ namespace WeatherRegistry.Managers
             .Weathers.ToList()
             .ForEach(weather =>
             {
-              ImprovedWeather matchedWeather = ConfigHelper.ResolveStringToWeather(weather.Name);
+              Weather matchedWeather = ConfigHelper.ResolveStringToWeather(weather.Name);
               int matcherWeight = weather.DefaultLevelWeight;
               if (matchedWeather == null)
               {

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 namespace WeatherRegistry.Definitions
@@ -10,12 +11,19 @@ namespace WeatherRegistry.Definitions
     public ImprovedWeatherEffect OverrideEffect { get; }
 
     public string DisplayName { get; set; }
-    public Color DisplayColor { get; set; }
+    public TMP_ColorGradient DisplayColor { get; set; }
 
     public WeatherEffectOverride(Weather weather, SelectableLevel level, ImprovedWeatherEffect effect)
       : this(weather, level, effect, null, default) { }
 
-    public WeatherEffectOverride(Weather weather, SelectableLevel level, ImprovedWeatherEffect effect, string displayName, Color displayColor)
+    public WeatherEffectOverride(
+      Weather weather,
+      SelectableLevel level,
+      ImprovedWeatherEffect effect,
+      string displayName,
+      TMP_ColorGradient displayColor,
+      float chance = 1f
+    )
     {
       Weather = weather;
       Level = level;
@@ -35,7 +43,7 @@ namespace WeatherRegistry.Definitions
       }
 
       // Add to collections after everything is initialized
-      WeatherOverrideManager.WeatherEffectOverrides.Add(this);
+      Managers.WeatherOverrideManager.WeatherEffectOverrides.Add(this);
       weather.WeatherEffectOverrides[level] = this;
     }
 
