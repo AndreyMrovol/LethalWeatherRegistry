@@ -74,7 +74,7 @@ namespace WeatherRegistry
         if (weather.Origin != WeatherOrigin.WeatherRegistry && weather.Origin != WeatherOrigin.WeatherTweaks)
         {
           GameObject.Destroy(weather.Effect);
-          GameObject.Destroy(weather);
+          // GameObject.Destroy(weather);
         }
       });
 
@@ -168,12 +168,6 @@ namespace WeatherRegistry
       }
 
       return GetCurrentWeather(level).Name;
-    }
-
-    [Obsolete]
-    internal static AnimationClip GetWeatherAnimationClip(LevelWeatherType weatherType)
-    {
-      return GetWeather(weatherType).AnimationClip;
     }
 
     [Obsolete("Use WeatherOverrideManager.GetCurrentWeatherOverride instead")]
