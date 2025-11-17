@@ -8,6 +8,8 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
 
+        <!-- <Nullable>enable</Nullable> -->
+
         <PackageId>mrov.WeatherRegistry</PackageId>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <IsPackable>true</IsPackable>
@@ -21,6 +23,13 @@
         <RepositoryUrl>https://github.com/AndreyMrovol/LethalWeatherRegistry/</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
 
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json;
+            https://nuget.samboy.dev/v3/index.json;
+            https://nuget.windows10ce.com/nuget/v3/index.json
+        </RestoreAdditionalProjectSources>
+
         <BepInExPluginGuid>$(PackageId)</BepInExPluginGuid>
     </PropertyGroup>
 
@@ -29,10 +38,15 @@
         <None Include="$(ProjectDir)../icon.png" Pack="true" PackagePath="/"/>
     </ItemGroup>
 
+    <!-- <ItemGroup Condition="$(Configuration) == 'Release'">>
+        <Compile Remove="DebugTools.cs" />
+    </ItemGroup> -->
+
     <PropertyGroup>
         <GameDirectory>V:\Steam\steamapps\common\Lethal Company</GameDirectory>
         <LibraryDirectory>../lib</LibraryDirectory>
         <DebugLibraryDirectory>V:\LC-ModLibraries</DebugLibraryDirectory>
+        <DebugProfile>V:\GaleModManager\gale\lethal-company\profiles\Andrey's Testing Profile\BepInEx\plugins\WeatherRegistry</DebugProfile>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
@@ -52,10 +66,23 @@
         <PackageReference Include="TeamBMX.LobbyCompatibility" Version="1.0.1" />
     </ItemGroup>
 
+    <!-- <Sdk Name="Evaisa.NetcodePatcher.MSBuild" Version="4.*" /> -->
+    <!-- <PropertyGroup>
+        <NetcodePatcherUnityVersion>2022.3.62</NetcodePatcherUnityVersion>
+        <NetcodePatcherNetcodeVersion>1.12.0</NetcodePatcherNetcodeVersion>
+        <NetcodePatcherTransportVersion>1.0.0</NetcodePatcherTransportVersion>
+    </PropertyGroup> -->
+    <!-- <ItemGroup>
+        <NetcodePatch Include="$(TargetPath)" />
+    </ItemGroup> -->
+
+
     <ItemGroup>
-        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="*-*" Publicize="true">
+        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="73.0.0-ngd.0" Publicize="true">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+
+        <!-- <PackageReference></PackageReference> -->
 
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*"/>
@@ -64,14 +91,14 @@
 
         <PackageReference Include="Evaisa.LethalLib" Version="0.16.0" />
 
-        <PackageReference Include="mrov.MrovLib" Version="*-*" >
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-
         <PackageReference Include="MinVer" Version="4.*" PrivateAssets="all" Private="false"/>
 
         <Reference Include="MMHOOK_Assembly-CSharp" PrivateAssets="all">
             <HintPath>$(LibraryDirectory)/MMHOOK_Assembly-CSharp.dll</HintPath>
+        </Reference>
+
+        <Reference Include="OdinSerializer" PrivateAssets="all">
+            <HintPath>$(LibraryDirectory)/OdinSerializer.dll</HintPath>
         </Reference>
 
         <Reference Include="JLL" PrivateAssets="all">
@@ -84,6 +111,10 @@
 
         <Reference Include="Malfunctions" PrivateAssets="all" Publicize="true">
             <HintPath>$(LibraryDirectory)/Malfunctions.dll</HintPath>
+        </Reference>
+
+        <Reference Include="MrovLib" PrivateAssets="all" Publicize="true">
+            <HintPath>$(DebugLibraryDirectory)/MrovLib.dll</HintPath>
         </Reference>
     </ItemGroup>
 
@@ -105,7 +136,7 @@
     <!-- MinVer Set Mod Version from Git -->
     <Target Name="SetPluginVersion" BeforeTargets="AddGeneratedFile" DependsOnTargets="MinVer">
         <PropertyGroup>
-            <PlainVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PlainVersion>
+            <PlainVersion>69.69.69</PlainVersion>
             <BepInExPluginVersion>$(PlainVersion)</BepInExPluginVersion>
         </PropertyGroup>
     </Target>
@@ -118,11 +149,11 @@
         <ItemGroup>
             <FilesToRename Include="$(ProjectDir)dist/*-$(PlainVersion).zip" />
         </ItemGroup>
-        <Move SourceFiles="@(FilesToRename)" DestinationFiles="@(FilesToRename -&gt; Replace($(PlainVersion), $(MinVerVersion)))" />
+        <Move SourceFiles="@(FilesToRename)" DestinationFiles="@(FilesToRename -&gt; Replace($(PlainVersion), $(PlainVersion)))" />
     </Target>
     
     <Target Name="PublishThunderstore" DependsOnTargets="SetPluginVersion">
-        <Exec Command="dotnet tcli publish --config-path $(ProjectDir)../assets/thunderstore.toml --file $(ProjectDir)dist/*-$(MinVerVersion).zip" />
+        <Exec Command="dotnet tcli publish --config-path $(ProjectDir)../assets/thunderstore.toml --file $(ProjectDir)dist/*-$(PlainVersion).zip" />
     </Target>
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
@@ -132,5 +163,7 @@
     <Target Name="CopyToDebugProfile" AfterTargets="NetcodePatch" Condition="'$(Configuration)' == 'Debug'">
         <Message Importance="high" Text="Copying To LibraryDir" />
         <Copy SourceFiles="$(TargetDir)$(AssemblyName).dll" DestinationFolder="$(DebugLibraryDirectory)" />
+
+        <Copy SourceFiles="$(TargetDir)$(AssemblyName).dll" DestinationFolder="$(DebugProfile)" />
     </Target>
 </Project>

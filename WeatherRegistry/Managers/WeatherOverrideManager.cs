@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using WeatherRegistry.Definitions;
 
-namespace WeatherRegistry
+namespace WeatherRegistry.Managers
 {
   public static class WeatherOverrideManager
   {

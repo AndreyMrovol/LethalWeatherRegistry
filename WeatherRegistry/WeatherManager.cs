@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Enums;
+using WeatherRegistry.Managers;
 
 namespace WeatherRegistry
 {

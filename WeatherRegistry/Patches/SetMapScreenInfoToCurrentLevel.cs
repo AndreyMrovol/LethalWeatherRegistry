@@ -46,9 +46,9 @@ namespace WeatherRegistry.Patches
       string planetName = ___currentLevel.PlanetName;
 
       Weather currentWeather = WeatherManager.GetCurrentWeather(___currentLevel);
-      if (WeatherOverrideManager.GetCurrentWeatherOverride(___currentLevel, currentWeather) is WeatherEffectOverride currentOverride)
+      if (Managers.WeatherOverrideManager.GetCurrentWeatherOverride(___currentLevel, currentWeather) is WeatherEffectOverride currentOverride)
       {
-        string newName = WeatherOverrideManager.GetPlanetOverrideName(currentOverride);
+        string newName = Managers.WeatherOverrideManager.GetPlanetOverrideName(currentOverride);
 
         planetName = !string.IsNullOrEmpty(newName) ? $"{planetName} ({newName})" : ___currentLevel.PlanetName;
       }
@@ -105,7 +105,7 @@ namespace WeatherRegistry.Patches
     {
       if (Settings.WeatherOverrideNames)
       {
-        WeatherEffectOverride currentOverride = WeatherOverrideManager.GetCurrentWeatherOverride(level, weather);
+        WeatherEffectOverride currentOverride = Managers.WeatherOverrideManager.GetCurrentWeatherOverride(level, weather);
         if (currentOverride != null && !string.IsNullOrEmpty(currentOverride.DisplayName))
         {
           return currentOverride.DisplayName;
@@ -134,25 +134,36 @@ namespace WeatherRegistry.Patches
         .ForEach(word =>
         {
           string newWord = word.Trim();
-          string pickedColorValue;
 
           // resolve weather name string into color using Settings.ScreenMapColors dictionary
           // so other mods (like weathertweaks) can add their own colors and symbols
 
-          UnityEngine.Color pickedColor = Settings.ScreenMapColors.TryGetValue(newWord, out Color value) ? value : Color.black;
-          if (pickedColor != Color.black)
+          TMP_ColorGradient pickedColor = Settings.ScreenMapColors.TryGetValue(newWord, out TMP_ColorGradient value)
+            ? value
+            : new TMP_ColorGradient();
+
+          if (pickedColor != new TMP_ColorGradient())
           {
             // add 10% of green value to make the editor color correctly display in-game (v70 screen color change)
-            pickedColor = new Color(pickedColor.r, pickedColor.g * 1.1f, pickedColor.b, pickedColor.a);
-            pickedColorValue = ColorUtility.ToHtmlStringRGB(pickedColor);
-          }
-          else
-          {
-            // if the color is not found, use black
-            pickedColorValue = "000000";
+            Color adjustedTopLeft = new(pickedColor.topLeft.r, pickedColor.topLeft.g * 1.1f, pickedColor.topLeft.b, pickedColor.topLeft.a);
+            Color adjustedTopRight = new(pickedColor.topRight.r, pickedColor.topRight.g * 1.1f, pickedColor.topRight.b, pickedColor.topRight.a);
+            Color adjustedBottomLeft =
+              new(pickedColor.bottomLeft.r, pickedColor.bottomLeft.g * 1.1f, pickedColor.bottomLeft.b, pickedColor.bottomLeft.a);
+            Color adjustedBottomRight =
+              new(pickedColor.bottomRight.r, pickedColor.bottomRight.g * 1.1f, pickedColor.bottomRight.b, pickedColor.bottomRight.a);
+
+            // Create a new gradient with adjusted colors (if you need to store it)
+            TMP_ColorGradient adjustedGradient =
+              new()
+              {
+                topLeft = adjustedTopLeft,
+                topRight = adjustedTopRight,
+                bottomLeft = adjustedBottomLeft,
+                bottomRight = adjustedBottomRight
+              };
           }
 
-          outputString += pickedColorValue != "000000" ? $"<color=#{pickedColorValue}>{word}</color>" : $"{newWord}";
+          outputString += pickedColor != new TMP_ColorGradient() ? $"<color=#{pickedColor}>{word}</color>" : $"{newWord}";
         });
 
       return outputString;
