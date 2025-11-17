@@ -33,7 +33,7 @@ namespace WeatherRegistry
           .Weathers.ToList()
           .ForEach(weather =>
           {
-            Weathers.TryAdd(weather.name.ToLowerInvariant(), weather);
+            // Weathers.TryAdd(weather.name.ToLowerInvariant(), weather);
             Weathers.TryAdd(weather.Name.ToLowerInvariant(), weather);
             Weathers.TryAdd(GetAlphanumericName(weather).ToLowerInvariant(), weather);
           });
