@@ -94,6 +94,12 @@ namespace WeatherRegistry
       return new string(regex.Replace(weather.Name, ""));
     }
 
+    public static string GetAlphanumericName(string str)
+    {
+      Regex regex = new(@"^[0-9]+|[-_/\\\ ]");
+      return new string(regex.Replace(str, ""));
+    }
+
     // convert string to array of strings
     public static string[] ConvertStringToArray(string str)
     {
