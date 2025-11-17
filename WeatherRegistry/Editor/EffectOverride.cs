@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 namespace WeatherRegistry.Editor
@@ -20,6 +21,6 @@ namespace WeatherRegistry.Editor
     public string weatherDisplayName;
 
     [Tooltip("Display color for the weather effect override")]
-    public Color weatherDisplayColor;
+    public TMP_ColorGradient weatherDisplayColor;
   }
 }

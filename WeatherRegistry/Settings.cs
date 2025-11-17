@@ -13,7 +13,7 @@ namespace WeatherRegistry
 
     public static bool IsPlayerInside { get; set; } = false;
 
-    public static Dictionary<string, Color> ScreenMapColors = [];
+    public static Dictionary<string, TMP_ColorGradient> ScreenMapColors = [];
 
     public static bool SelectWeathers { get; set; } = true;
 

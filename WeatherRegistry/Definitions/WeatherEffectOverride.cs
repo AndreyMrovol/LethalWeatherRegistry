@@ -12,7 +12,7 @@ namespace WeatherRegistry.Definitions
     public ImprovedWeatherEffect OverrideEffect { get; }
 
     public string DisplayName { get; set; }
-    public Color DisplayColor { get; set; }
+    public TMP_ColorGradient DisplayColor { get; set; }
 
     public float Chance { get; set; } = 1f;
 
@@ -25,7 +25,7 @@ namespace WeatherRegistry.Definitions
       SelectableLevel level,
       ImprovedWeatherEffect effect,
       string displayName,
-      Color displayColor,
+      TMP_ColorGradient displayColor,
       float chance = 1f
     )
     {
@@ -47,7 +47,7 @@ namespace WeatherRegistry.Definitions
       }
 
       // Add to collections after everything is initialized
-      WeatherOverrideManager.WeatherEffectOverrides.Add(this);
+      Managers.WeatherOverrideManager.WeatherEffectOverrides.Add(this);
       weather.WeatherEffectOverrides[level] = this;
     }
 
