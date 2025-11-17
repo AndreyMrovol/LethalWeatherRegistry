@@ -40,11 +40,4 @@ namespace WeatherRegistry.Enums
     public int WeatherVariable1;
     public int WeatherVariable2;
   }
-
-  [Obsolete]
-  public class LevelWeather : LevelWeatherVariables
-  {
-    public ImprovedWeather Weather;
-    public LevelWeatherVariables Variables;
-  }
 }
