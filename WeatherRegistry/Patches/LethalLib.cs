@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using HarmonyLib;
 using MonoMod.RuntimeDetour;
+using WeatherRegistry.Enums;
+using WeatherRegistry.Helpers;
 using static LethalLib.Modules.Weathers;
 
 namespace WeatherRegistry.Patches
@@ -38,7 +40,7 @@ namespace WeatherRegistry.Patches
           {
             VanillaWeatherType = (LevelWeatherType)LethalLibWeatherEntry.Key,
             Origin = WeatherOrigin.LethalLib,
-            Color = Defaults.LethalLibColor,
+            Color = ColorHelper.ToTMPColorGradient(Defaults.LethalLibColor),
             Config =
             {
               DefaultWeight = new(50),
