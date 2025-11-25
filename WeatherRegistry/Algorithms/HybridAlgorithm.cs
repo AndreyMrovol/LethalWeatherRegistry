@@ -4,6 +4,7 @@ using System.Text;
 using MrovLib;
 using UnityEngine;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Enums;
 
 namespace WeatherRegistry.Algorithms;
 
@@ -92,7 +93,7 @@ internal class HybridWeatherSelection : WeatherSelectionAlgorithm
           foreach (Weather weather in possibleWeathers.Keys)
           {
             weatherLog.AppendLine(
-              $"  {weather.name} has {possibleWeathers.GetOrigin(weather).ToString().ToLowerInvariant()} weight ({possibleWeathers.Get(weather)})"
+              $"  {weather.Name} has {possibleWeathers.GetOrigin(weather).ToString().ToLowerInvariant()} weight ({possibleWeathers.Get(weather)})"
             );
           }
         }

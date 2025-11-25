@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using MrovLib;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Enums;
 
 namespace WeatherRegistry.Algorithms;
 
@@ -83,7 +84,7 @@ internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
         foreach (Weather weather in possibleWeathers.Keys)
         {
           weatherLog.AppendLine(
-            $"  {weather.name} has {possibleWeathers.GetOrigin(weather).ToString().ToLowerInvariant()} weight ({possibleWeathers.Get(weather)})"
+            $"  {weather.Name} has {possibleWeathers.GetOrigin(weather).ToString().ToLowerInvariant()} weight ({possibleWeathers.Get(weather)})"
           );
         }
       }
