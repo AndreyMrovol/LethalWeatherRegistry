@@ -7,6 +7,8 @@ using MrovLib;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Enums;
+using WeatherRegistry.Helpers;
 using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
@@ -69,7 +71,7 @@ namespace WeatherRegistry
         new(effect: new ImprovedWeatherEffect(null, null))
         {
           Type = WeatherType.Clear,
-          Color = Defaults.VanillaWeatherColors[LevelWeatherType.None],
+          Color = ColorHelper.ToTMPColorGradient(Defaults.VanillaWeatherColors[LevelWeatherType.None]),
           VanillaWeatherType = LevelWeatherType.None,
           Origin = WeatherOrigin.Vanilla,
           Config =
@@ -112,7 +114,7 @@ namespace WeatherRegistry
           new(weatherName, weatherEffect)
           {
             Type = weatherTypeType,
-            Color = weatherColor,
+            Color = ColorHelper.ToTMPColorGradient(weatherColor),
             VanillaWeatherType = weatherType,
             Origin = WeatherOrigin.Vanilla,
             Config =

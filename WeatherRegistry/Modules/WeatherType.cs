@@ -17,6 +17,9 @@ namespace WeatherRegistry
 
     public string Name { get; set; }
 
+    [Obsolete("Use Weather.Name instead")]
+    public string name => Name;
+
     public ImprovedWeatherEffect Effect { get; internal set; }
 
     public LevelWeatherType VanillaWeatherType { get; internal set; } = LevelWeatherType.None;
@@ -114,6 +117,8 @@ namespace WeatherRegistry
       {
         this.Effect.LevelWeatherType = this.VanillaWeatherType;
       }
+
+      this.Color.name = $"Weather{this.GetAlphanumericName()}";
 
       // this.name = Name;
       // this.effectObject = Effect?.EffectObject;

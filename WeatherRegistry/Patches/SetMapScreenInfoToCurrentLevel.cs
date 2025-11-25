@@ -6,6 +6,7 @@ using MrovLib;
 using TMPro;
 using UnityEngine;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Helpers;
 
 namespace WeatherRegistry.Patches
 {
@@ -42,6 +43,8 @@ namespace WeatherRegistry.Patches
         return;
       }
 
+      DynamicGradientApplier gradientApplier = new(___screenLevelDescription);
+
       Regex multiNewLine = new(@"\n{2,}");
       string planetName = ___currentLevel.PlanetName;
 
@@ -67,6 +70,8 @@ namespace WeatherRegistry.Patches
 
       ___screenLevelDescription.fontWeight = FontWeight.Bold;
       ___screenLevelDescription.SetText(stringBuilder.ToString());
+
+      gradientApplier.ApplyGradientsFromTags(___screenLevelDescription.text);
 
       __instance.screenLevelVideoReel.enabled = Settings.PlanetVideos;
       Plugin.debugLogger.LogDebug("Video reel enabled: " + Settings.PlanetVideos);
@@ -142,28 +147,7 @@ namespace WeatherRegistry.Patches
             ? value
             : new TMP_ColorGradient();
 
-          if (pickedColor != new TMP_ColorGradient())
-          {
-            // add 10% of green value to make the editor color correctly display in-game (v70 screen color change)
-            Color adjustedTopLeft = new(pickedColor.topLeft.r, pickedColor.topLeft.g * 1.1f, pickedColor.topLeft.b, pickedColor.topLeft.a);
-            Color adjustedTopRight = new(pickedColor.topRight.r, pickedColor.topRight.g * 1.1f, pickedColor.topRight.b, pickedColor.topRight.a);
-            Color adjustedBottomLeft =
-              new(pickedColor.bottomLeft.r, pickedColor.bottomLeft.g * 1.1f, pickedColor.bottomLeft.b, pickedColor.bottomLeft.a);
-            Color adjustedBottomRight =
-              new(pickedColor.bottomRight.r, pickedColor.bottomRight.g * 1.1f, pickedColor.bottomRight.b, pickedColor.bottomRight.a);
-
-            // Create a new gradient with adjusted colors (if you need to store it)
-            TMP_ColorGradient adjustedGradient =
-              new()
-              {
-                topLeft = adjustedTopLeft,
-                topRight = adjustedTopRight,
-                bottomLeft = adjustedBottomLeft,
-                bottomRight = adjustedBottomRight
-              };
-          }
-
-          outputString += pickedColor != new TMP_ColorGradient() ? $"<color=#{pickedColor}>{word}</color>" : $"{newWord}";
+          outputString += pickedColor != new TMP_ColorGradient() ? $"<gradient={newWord}>{word}</gradient>" : $"{newWord}";
         });
 
       return outputString;
