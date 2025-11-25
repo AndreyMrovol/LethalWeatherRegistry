@@ -1,5 +1,6 @@
 using System;
 using BepInEx.Configuration;
+using WeatherRegistry.Enums;
 
 namespace WeatherRegistry
 {
