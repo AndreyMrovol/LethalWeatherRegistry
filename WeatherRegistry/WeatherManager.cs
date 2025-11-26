@@ -6,6 +6,7 @@ using UnityEngine;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Enums;
 using WeatherRegistry.Managers;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry
 {
