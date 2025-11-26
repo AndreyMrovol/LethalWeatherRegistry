@@ -5,6 +5,7 @@ using MrovLib;
 using UnityEngine;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Editor;
+using WeatherRegistry.Enums;
 using WeatherRegistry.Helpers;
 
 namespace WeatherRegistry.Managers
@@ -15,11 +16,13 @@ namespace WeatherRegistry.Managers
       : base()
     {
       BundleExtensions = ["weatherbundle"];
+      Logger = new("AssetBundleManager", LoggingType.Debug);
 
       AssetBundleLoadersByType.AddRange(
         new Dictionary<System.Type, AssetBundleLoader>
         {
-          { typeof(WeatherDefinition), new AssetBundleLoader<WeatherDefinition>() },
+          { typeof(Editor.WeatherDefinition), new AssetBundleLoader<Editor.WeatherDefinition>() },
+          { typeof(Editor.NewerWeatherDefinition), new AssetBundleLoader<Editor.NewerWeatherDefinition>() },
           { typeof(EffectOverride), new AssetBundleLoader<EffectOverride>() },
           { typeof(PlanetNameOverride), new AssetBundleLoader<PlanetNameOverride>() },
           { typeof(ModdedWeathersMatcher), new AssetBundleLoader<ModdedWeathersMatcher>() },
@@ -29,17 +32,96 @@ namespace WeatherRegistry.Managers
 
     public override void ConvertLoadedAssets()
     {
+      Plugin.logger.LogInfo(GetLoadedAssets<Editor.WeatherDefinition>().Count + " WeatherDefinition assets loaded.");
+
       foreach (Editor.WeatherDefinition WeatherDefinition in GetLoadedAssets<Editor.WeatherDefinition>())
       {
-        Logger.LogWarning($"Registering weather definition from asset bundle: {WeatherDefinition.Name}");
+        GameObject effectObject = null;
+        if (WeatherDefinition.Effect.EffectObject != null)
+        {
+          effectObject = GameObject.Instantiate(WeatherDefinition.Effect.EffectObject);
+          if (effectObject != null)
+          {
+            effectObject.hideFlags = HideFlags.HideAndDontSave;
+            GameObject.DontDestroyOnLoad(effectObject);
+          }
+        }
 
-        WeatherDefinition ConvertedDefinition = ScriptableObject.CreateInstance<WeatherDefinition>();
-        ConvertedDefinition.Name = WeatherDefinition.Name;
-        ConvertedDefinition.Color = ColorHelper.ToTMPColorGradient(WeatherDefinition.Color);
-        ConvertedDefinition.Effect = WeatherDefinition.Effect;
-        ConvertedDefinition.Config = WeatherDefinition.Config;
+        GameObject effectPermanentObject = null;
+        if (WeatherDefinition.Effect.WorldObject != null)
+        {
+          effectPermanentObject = GameObject.Instantiate(WeatherDefinition.Effect.WorldObject);
+          if (effectPermanentObject != null)
+          {
+            effectPermanentObject.hideFlags = HideFlags.HideAndDontSave;
+            GameObject.DontDestroyOnLoad(effectPermanentObject);
+          }
+        }
 
-        WeatherManager.RegisterWeather(ConvertedDefinition);
+        ImprovedWeatherEffect newImprovedWeatherEffect =
+          new(effectObject, effectPermanentObject)
+          {
+            SunAnimatorBool = WeatherDefinition.Effect.SunAnimatorBool,
+            DefaultVariable1 = WeatherDefinition.Effect.DefaultVariable1,
+            DefaultVariable2 = WeatherDefinition.Effect.DefaultVariable2
+          };
+
+        Weather weather =
+          new(WeatherDefinition.Name, newImprovedWeatherEffect)
+          {
+            Color = ColorHelper.ToTMPColorGradient(WeatherDefinition.Color),
+            Origin = WeatherOrigin.WeatherRegistry,
+            Type = WeatherType.Modded,
+            Config = WeatherDefinition.Config.CreateFullConfig(),
+          };
+
+        Plugin.logger.LogInfo($"Registering weather: {weather}");
+        WeatherManager.RegisterWeather(weather);
+      }
+
+      foreach (NewerWeatherDefinition WeatherDefinition in GetLoadedAssets<NewerWeatherDefinition>())
+      {
+        GameObject effectObject = null;
+        if (WeatherDefinition.Effect.EffectObject != null)
+        {
+          effectObject = GameObject.Instantiate(WeatherDefinition.Effect.EffectObject);
+          if (effectObject != null)
+          {
+            effectObject.hideFlags = HideFlags.HideAndDontSave;
+            GameObject.DontDestroyOnLoad(effectObject);
+          }
+        }
+
+        GameObject effectPermanentObject = null;
+        if (WeatherDefinition.Effect.WorldObject != null)
+        {
+          effectPermanentObject = GameObject.Instantiate(WeatherDefinition.Effect.WorldObject);
+          if (effectPermanentObject != null)
+          {
+            effectPermanentObject.hideFlags = HideFlags.HideAndDontSave;
+            GameObject.DontDestroyOnLoad(effectPermanentObject);
+          }
+        }
+
+        ImprovedWeatherEffect newImprovedWeatherEffect =
+          new(effectObject, effectPermanentObject)
+          {
+            SunAnimatorBool = WeatherDefinition.Effect.SunAnimatorBool,
+            DefaultVariable1 = WeatherDefinition.Effect.DefaultVariable1,
+            DefaultVariable2 = WeatherDefinition.Effect.DefaultVariable2
+          };
+
+        Weather weather =
+          new(WeatherDefinition.Name, newImprovedWeatherEffect)
+          {
+            Color = WeatherDefinition.Color,
+            Origin = WeatherOrigin.WeatherRegistry,
+            Type = WeatherType.Modded,
+            Config = WeatherDefinition.Config.CreateFullConfig(),
+          };
+
+        Plugin.logger.LogInfo($"Registering weather: {weather}");
+        WeatherManager.RegisterWeather(weather);
       }
 
       List<PlanetNameOverride> LoadedPlanetNameOverrides = GetLoadedAssets<PlanetNameOverride>();
