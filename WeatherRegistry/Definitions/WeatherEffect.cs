@@ -2,10 +2,11 @@ using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Managers;
 
-namespace WeatherRegistry
+namespace WeatherRegistry.Definitions
 {
   [CreateAssetMenu(fileName = "WeatherEffect", menuName = "WeatherRegistry/ImprovedWeatherEffect", order = 90)]
   public class ImprovedWeatherEffect : ScriptableObject
+  // , WeatherEffect
   {
     [JsonIgnore]
     [Tooltip("The GameObject that is visible only for the player, i.e. rain particles, sound effects etc.")]
