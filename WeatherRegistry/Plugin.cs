@@ -50,7 +50,7 @@ namespace WeatherRegistry
 
       ConfigManager.Init(Config);
 
-#if DEVMODE
+#if DEBUG
       Plugin.logger.LogWarning("Dev build detected, enabling full debug logging.");
       ConfigManager.LoggingLevels.Value = LoggingType.Developer;
 #endif

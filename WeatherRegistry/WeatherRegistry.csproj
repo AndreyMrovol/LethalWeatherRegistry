@@ -49,10 +49,6 @@
         <DebugProfile>V:\GaleModManager\gale\lethal-company\profiles\Andrey's Testing Profile\BepInEx\plugins\WeatherRegistry</DebugProfile>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <DefineConstants>DEVMODE</DefineConstants>
-    </PropertyGroup>
-
     <ItemGroup>
         <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1">
             <PrivateAssets>all</PrivateAssets>
