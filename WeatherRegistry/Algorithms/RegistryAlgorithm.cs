@@ -64,7 +64,7 @@ internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
 
       NewWeather[level] = LevelWeatherType.None;
 
-      WeightHandler<Weather, WeatherWeightType> possibleWeathers = WeatherManager.GetPlanetWeightedList(level);
+      Utils.WeightHandler<Weather, WeatherWeightType> possibleWeathers = WeatherManager.GetPlanetWeightedList(level);
       Weather selectedWeather = possibleWeathers.Random();
 
       NewWeather[level] = selectedWeather.VanillaWeatherType;

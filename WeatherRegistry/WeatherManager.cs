@@ -105,7 +105,7 @@ namespace WeatherRegistry
       return WeightsManager.GetPlanetPossibleWeathers(level);
     }
 
-    public static WeightHandler<Weather, WeatherWeightType> GetPlanetWeightedList(SelectableLevel level)
+    public static Utils.WeightHandler<Weather, WeatherWeightType> GetPlanetWeightedList(SelectableLevel level)
     {
       return WeightsManager.GetPlanetWeightedList(level);
     }

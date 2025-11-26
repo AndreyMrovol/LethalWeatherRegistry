@@ -30,9 +30,9 @@ namespace WeatherRegistry.Managers
       return possibleWeathers;
     }
 
-    public static WeightHandler<Weather, WeatherWeightType> GetPlanetWeightedList(SelectableLevel level)
+    public static Utils.WeightHandler<Weather, WeatherWeightType> GetPlanetWeightedList(SelectableLevel level)
     {
-      WeightHandler<Weather, WeatherWeightType> weightedList = new();
+      Utils.WeightHandler<Weather, WeatherWeightType> weightedList = new();
       Logger logger = WeatherCalculation.Logger;
 
       List<LevelWeatherType> weatherTypes = GetPlanetPossibleWeathers(level);
