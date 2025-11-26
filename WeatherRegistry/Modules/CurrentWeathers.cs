@@ -1,9 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
+using WeatherRegistry.Definitions;
 
-namespace WeatherRegistry.Definitions
+namespace WeatherRegistry.Modules
 {
+  /// <summary>
+  /// A module responsible for tracking, setting and restoring currently set weathers.
+  /// </summary>
   public class CurrentWeathers
   {
     private Dictionary<SelectableLevel, LevelWeatherType> _currentWeathers = [];
