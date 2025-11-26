@@ -49,9 +49,9 @@ namespace WeatherRegistry.Patches
       string planetName = ___currentLevel.PlanetName;
 
       Weather currentWeather = WeatherManager.GetCurrentWeather(___currentLevel);
-      if (Managers.WeatherOverrideManager.GetCurrentWeatherOverride(___currentLevel, currentWeather) is WeatherEffectOverride currentOverride)
+      if (Managers.OverridesManager.GetCurrentWeatherOverride(___currentLevel, currentWeather) is WeatherEffectOverride currentOverride)
       {
-        string newName = Managers.WeatherOverrideManager.GetPlanetOverrideName(currentOverride);
+        string newName = Managers.OverridesManager.GetPlanetOverrideName(currentOverride);
 
         planetName = !string.IsNullOrEmpty(newName) ? $"{planetName} ({newName})" : ___currentLevel.PlanetName;
       }
@@ -110,7 +110,7 @@ namespace WeatherRegistry.Patches
     {
       if (Settings.WeatherOverrideNames)
       {
-        WeatherEffectOverride currentOverride = Managers.WeatherOverrideManager.GetCurrentWeatherOverride(level, weather);
+        WeatherEffectOverride currentOverride = Managers.OverridesManager.GetCurrentWeatherOverride(level, weather);
         if (currentOverride != null && !string.IsNullOrEmpty(currentOverride.DisplayName))
         {
           return currentOverride.DisplayName;

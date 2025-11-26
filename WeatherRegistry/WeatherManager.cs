@@ -15,8 +15,8 @@ namespace WeatherRegistry
 
     public static List<Weather> RegisteredWeathers { get; internal set; } = [];
 
-    [Obsolete("Use WeatherOverrideManager.WeatherEffectOverrides instead")]
-    public static List<WeatherEffectOverride> WeatherEffectOverrides => WeatherOverrideManager.WeatherEffectOverrides;
+    [Obsolete("Use OverridesManager.WeatherEffectOverrides instead")]
+    public static List<WeatherEffectOverride> WeatherEffectOverrides => OverridesManager.WeatherEffectOverrides;
 
     // i would love to have weathers as an array with indexes corresponding to the enum values
     // but none is -1 so i have to do this
@@ -85,7 +85,7 @@ namespace WeatherRegistry
       ModdedWeatherEnumExtension.Clear();
       CurrentWeathers.Clear();
 
-      WeatherOverrideManager.WeatherEffectOverrides.Clear();
+      OverridesManager.WeatherEffectOverrides.Clear();
 
       Settings.ScreenMapColors.Clear();
 
@@ -172,10 +172,10 @@ namespace WeatherRegistry
       return GetCurrentWeather(level).Name;
     }
 
-    [Obsolete("Use WeatherOverrideManager.GetCurrentWeatherOverride instead")]
+    [Obsolete("Use OverridesManager.GetCurrentWeatherOverride instead")]
     public static WeatherEffectOverride GetCurrentWeatherOverride(SelectableLevel level, Weather weather)
     {
-      return WeatherOverrideManager.GetCurrentWeatherOverride(level, weather);
+      return OverridesManager.GetCurrentWeatherOverride(level, weather);
     }
 
     public static string GetWeatherList()
