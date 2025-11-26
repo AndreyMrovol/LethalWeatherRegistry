@@ -117,7 +117,7 @@ namespace WeatherRegistry.Managers
             Color = WeatherDefinition.Color,
             Origin = WeatherOrigin.WeatherRegistry,
             Type = WeatherType.Modded,
-            Config = WeatherDefinition.Config.CreateFullConfig(),
+            Config = WeatherDefinition.EditorConfig.CreateFullConfig(),
           };
 
         Plugin.logger.LogInfo($"Registering weather: {weather}");
