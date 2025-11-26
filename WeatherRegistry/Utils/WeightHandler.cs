@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace WeatherRegistry
+namespace WeatherRegistry.Utils
 {
   public class WeightHandler<T, OT> : MrovLib.WeightHandler<T>
   {

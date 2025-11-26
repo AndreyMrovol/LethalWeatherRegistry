@@ -74,7 +74,7 @@ internal class HybridWeatherSelection : WeatherSelectionAlgorithm
 
       if (selectableLevel.randomWeathers != null && selectableLevel.randomWeathers.Length != 0)
       {
-        WeightHandler<Weather, WeatherWeightType> possibleWeathers = WeatherManager.GetPlanetWeightedList(selectableLevel);
+        Utils.WeightHandler<Weather, WeatherWeightType> possibleWeathers = WeatherManager.GetPlanetWeightedList(selectableLevel);
         Weather selectedWeather = possibleWeathers.Random();
 
         SelectedWeathers[selectableLevel] = selectedWeather.VanillaWeatherType;
