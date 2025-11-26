@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using WeatherRegistry.Definitions;
+using WeatherRegistry.Managers;
 using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
