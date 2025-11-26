@@ -29,7 +29,7 @@ namespace WeatherRegistry
     public Weather Weather { get; set; }
   }
 
-  public abstract class ConfigHandler<T, CT> : Definitions.ConfigHandler<T, CT>
+  public abstract class ConfigHandler<T, CT> : Utils.ConfigHandler<T, CT>
   {
     public ConfigFile ConfigFile { get; set; } = ConfigManager.configFile;
 

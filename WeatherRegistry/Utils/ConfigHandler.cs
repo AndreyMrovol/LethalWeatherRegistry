@@ -1,6 +1,6 @@
 using BepInEx.Configuration;
 
-namespace WeatherRegistry.Definitions
+namespace WeatherRegistry.Utils
 {
   public abstract class ConfigHandler<T, CT> : MrovLib.ConfigHandler<T, CT>
   {
