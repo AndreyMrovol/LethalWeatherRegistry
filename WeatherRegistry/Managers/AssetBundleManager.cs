@@ -154,7 +154,7 @@ namespace WeatherRegistry.Managers
 
           if (planetNameOverride != null && !string.IsNullOrEmpty(planetNameOverride.newPlanetName))
           {
-            WeatherOverrideManager.PlanetOverrideNames.Add(newOverride, planetNameOverride.newPlanetName);
+            OverridesManager.PlanetOverrideNames.Add(newOverride, planetNameOverride.newPlanetName);
           }
         }
 

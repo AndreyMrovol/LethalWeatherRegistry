@@ -3,7 +3,10 @@ using WeatherRegistry.Definitions;
 
 namespace WeatherRegistry.Managers
 {
-  public static class WeatherOverrideManager
+  /// <summary>
+  /// Manager responsible for handling weather effects as well as planet name overrides.
+  /// </summary>
+  public static class OverridesManager
   {
     public static List<WeatherEffectOverride> WeatherEffectOverrides { get; internal set; } = [];
     public static Dictionary<WeatherEffectOverride, string> PlanetOverrideNames { get; internal set; } = [];

@@ -43,7 +43,7 @@ namespace WeatherRegistry.Definitions
       }
 
       // Add to collections after everything is initialized
-      Managers.WeatherOverrideManager.WeatherEffectOverrides.Add(this);
+      Managers.OverridesManager.WeatherEffectOverrides.Add(this);
       weather.WeatherEffectOverrides[level] = this;
     }
 
