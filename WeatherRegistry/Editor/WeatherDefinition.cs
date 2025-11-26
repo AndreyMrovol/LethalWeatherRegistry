@@ -1,15 +1,11 @@
 using Newtonsoft.Json;
-using TMPro;
 using UnityEngine;
-using WeatherRegistry.Definitions;
-using WeatherRegistry.Enums;
-using WeatherRegistry.Helpers;
 
 namespace WeatherRegistry.Editor
 {
   [JsonObject(MemberSerialization.OptIn)]
   [CreateAssetMenu(fileName = "Weather Definition", menuName = "WeatherRegistry/WeatherDefinition", order = 100)]
-  public class NewerWeatherDefinition : WeatherRegistry.WeatherDefinition
+  public class WeatherDefinition : ScriptableObject
   {
     [Header("Basic properties")]
     [SerializeField]
@@ -35,7 +31,7 @@ namespace WeatherRegistry.Editor
     {
       Name = string.Empty;
       Effect = null;
-      Color = ColorHelper.ToTMPColorGradient(UnityEngine.Color.cyan);
+      Color = Color.cyan;
 
       Config = new();
     }
