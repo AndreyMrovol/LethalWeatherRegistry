@@ -2,7 +2,7 @@ using System;
 using GameNetcodeStuff;
 using UnityEngine;
 
-namespace WeatherRegistry.Editor
+namespace WeatherRegistry.Components
 {
   [RequireComponent(typeof(AudioSource))]
   public class ImprovedOccludeAudio : MonoBehaviour
