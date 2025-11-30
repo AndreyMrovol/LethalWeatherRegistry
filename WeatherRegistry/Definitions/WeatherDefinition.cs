@@ -9,6 +9,8 @@ using WeatherRegistry.Modules;
 
 namespace WeatherRegistry.Definitions
 {
+  //TODO: is that really needed for anything?
+
   [JsonObject(MemberSerialization.OptIn)]
   public class WeatherDefinition : ScriptableObject
   {
