@@ -1,5 +1,8 @@
+using System;
 using Newtonsoft.Json;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace WeatherRegistry.Editor
 {
@@ -12,9 +15,13 @@ namespace WeatherRegistry.Editor
     [Tooltip("Your weather's name.")]
     public string Name;
 
+    [Obsolete]
+    public Color Color;
+
     [SerializeField]
     [Tooltip("Your weather's color, displayed on the landing screen.")]
-    public Color Color;
+    [FormerlySerializedAs("Color")]
+    public TMP_ColorGradient ColorGradient;
 
     [Header("Effect")]
     [Space(20)]
@@ -31,7 +38,8 @@ namespace WeatherRegistry.Editor
     {
       Name = string.Empty;
       Effect = null;
-      Color = Color.cyan;
+
+      Color = UnityEngine.Color.cyan;
 
       Config = new();
     }

@@ -71,7 +71,7 @@ namespace WeatherRegistry
         new(effect: new ImprovedWeatherEffect(null, null))
         {
           Type = WeatherType.Clear,
-          Color = ColorHelper.ToTMPColorGradient(Defaults.VanillaWeatherColors[LevelWeatherType.None]),
+          ColorGradient = ColorHelper.ToTMPColorGradient(Defaults.VanillaWeatherColors[LevelWeatherType.None]),
           VanillaWeatherType = LevelWeatherType.None,
           Origin = WeatherOrigin.Vanilla,
           Config =
@@ -114,7 +114,7 @@ namespace WeatherRegistry
           new(weatherName, weatherEffect)
           {
             Type = weatherTypeType,
-            Color = ColorHelper.ToTMPColorGradient(weatherColor),
+            ColorGradient = ColorHelper.ToTMPColorGradient(weatherColor),
             VanillaWeatherType = weatherType,
             Origin = WeatherOrigin.Vanilla,
             Config =
@@ -259,7 +259,7 @@ namespace WeatherRegistry
 
       foreach (Weather weather in WeatherManager.Weathers)
       {
-        Settings.ScreenMapColors.Add(weather.Name, weather.Color);
+        Settings.ScreenMapColors.Add(weather.Name, weather.ColorGradient);
         weather.Init();
 
         Logger.LogInfo($"Weather {weather.Name} has {weather.LevelFilteringOption} filtering option set up");
