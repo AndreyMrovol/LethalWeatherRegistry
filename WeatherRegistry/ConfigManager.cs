@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using BepInEx.Configuration;
+using WeatherRegistry.Enums;
+using WeatherRegistry.Modules;
 using LoggingType = MrovLib.LoggingType;
 
 namespace WeatherRegistry
@@ -22,7 +24,7 @@ namespace WeatherRegistry
     internal static ConfigEntry<LoggingType> LoggingLevels { get; private set; }
 
     // algorithm settings
-    internal static ConfigEntry<WeatherCalculation.WeatherAlgorithm> WeatherAlgorithm { get; private set; }
+    internal static ConfigEntry<WeatherAlgorithm> WeatherAlgorithm { get; private set; }
     internal static ConfigEntry<bool> FirstDayClear { get; private set; }
 
     // map screen settings
@@ -42,7 +44,7 @@ namespace WeatherRegistry
       WeatherAlgorithm = configFile.Bind(
         "|WeatherSelection",
         "Weather Selection Algorithm",
-        WeatherCalculation.WeatherAlgorithm.Registry,
+        Enums.WeatherAlgorithm.Registry,
         "Select the algorithm to use during weather selection."
       );
       FirstDayClear = configFile.Bind(

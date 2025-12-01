@@ -5,6 +5,7 @@ using MrovLib;
 using UnityEngine;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Enums;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry.Algorithms;
 
