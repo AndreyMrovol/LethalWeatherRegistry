@@ -4,6 +4,7 @@ using System.Text;
 using MrovLib;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Enums;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry.Algorithms;
 

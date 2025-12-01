@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using WeatherRegistry.Modules;
 
 namespace WeatherRegistry.Definitions
 {
