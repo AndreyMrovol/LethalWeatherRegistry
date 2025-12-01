@@ -132,7 +132,7 @@
     <!-- MinVer Set Mod Version from Git -->
     <Target Name="SetPluginVersion" BeforeTargets="AddGeneratedFile" DependsOnTargets="MinVer">
         <PropertyGroup>
-            <PlainVersion>69.69.69</PlainVersion>
+            <PlainVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PlainVersion>
             <BepInExPluginVersion>$(PlainVersion)</BepInExPluginVersion>
         </PropertyGroup>
     </Target>
@@ -145,11 +145,11 @@
         <ItemGroup>
             <FilesToRename Include="$(ProjectDir)dist/*-$(PlainVersion).zip" />
         </ItemGroup>
-        <Move SourceFiles="@(FilesToRename)" DestinationFiles="@(FilesToRename -&gt; Replace($(PlainVersion), $(PlainVersion)))" />
+        <Move SourceFiles="@(FilesToRename)" DestinationFiles="@(FilesToRename -&gt; Replace($(PlainVersion), $(MinVerVersion)))" />
     </Target>
     
     <Target Name="PublishThunderstore" DependsOnTargets="SetPluginVersion">
-        <Exec Command="dotnet tcli publish --config-path $(ProjectDir)../assets/thunderstore.toml --file $(ProjectDir)dist/*-$(PlainVersion).zip" />
+        <Exec Command="dotnet tcli publish --config-path $(ProjectDir)../assets/thunderstore.toml --file $(ProjectDir)dist/*-$(MinVerVersion).zip" />
     </Target>
 
     <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
