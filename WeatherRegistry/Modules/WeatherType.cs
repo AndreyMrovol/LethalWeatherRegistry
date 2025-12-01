@@ -20,7 +20,7 @@ namespace WeatherRegistry
     [Obsolete("Use Weather.Name instead")]
     public string name => Name;
 
-    public ImprovedWeatherEffect Effect { get; internal set; }
+    public ImprovedWeatherEffect Effect;
 
     public LevelWeatherType VanillaWeatherType { get; internal set; } = LevelWeatherType.None;
 
@@ -28,9 +28,14 @@ namespace WeatherRegistry
 
     public WeatherType Type { get; internal set; } = WeatherType.Modded;
 
-    [field: SerializeField]
-    public TMP_ColorGradient Color { get; set; } = ColorHelper.ToTMPColorGradient(UnityEngine.Color.cyan);
-    public TMP_ColorGradient Colour => Color;
+    public TMP_ColorGradient ColorGradient { get; set; } = ColorHelper.ToTMPColorGradient(UnityEngine.Color.cyan);
+
+    public Color Color
+    {
+      get { return ColorGradient.topLeft; }
+      [Obsolete("Use Weather.ColorGradient instead")]
+      set { ColorGradient = ColorHelper.ToTMPColorGradient(value); }
+    }
 
     public RegistryWeatherConfig Config = new();
 
@@ -118,7 +123,7 @@ namespace WeatherRegistry
         this.Effect.LevelWeatherType = this.VanillaWeatherType;
       }
 
-      this.Color.name = $"Weather{this.GetAlphanumericName()}";
+      this.ColorGradient.name = $"Weather{this.GetAlphanumericName()}";
 
       // this.name = Name;
       // this.effectObject = Effect?.EffectObject;

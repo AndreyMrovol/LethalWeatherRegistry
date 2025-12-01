@@ -40,7 +40,7 @@ namespace WeatherRegistry.Patches
           {
             VanillaWeatherType = (LevelWeatherType)LethalLibWeatherEntry.Key,
             Origin = WeatherOrigin.LethalLib,
-            Color = ColorHelper.ToTMPColorGradient(Defaults.LethalLibColor),
+            ColorGradient = ColorHelper.ToTMPColorGradient(Defaults.LethalLibColor),
             Config =
             {
               DefaultWeight = new(50),

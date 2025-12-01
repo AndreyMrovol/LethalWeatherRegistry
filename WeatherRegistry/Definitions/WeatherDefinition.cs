@@ -1,8 +1,6 @@
 using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
-using WeatherRegistry.Definitions;
-using WeatherRegistry.Editor;
 using WeatherRegistry.Enums;
 using WeatherRegistry.Helpers;
 using WeatherRegistry.Modules;
