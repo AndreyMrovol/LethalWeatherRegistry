@@ -2,6 +2,8 @@ using System;
 using GameNetcodeStuff;
 using UnityEngine;
 
+// TODO: rewrite this component into a transpiler of OccludeAudio
+
 namespace WeatherRegistry.Components
 {
   [RequireComponent(typeof(AudioSource))]
@@ -43,7 +45,7 @@ namespace WeatherRegistry.Components
       if (lowPassFilter == null)
       {
         lowPassFilter = gameObject.AddComponent<AudioLowPassFilter>();
-        lowPassFilter.cutoffFrequency = 20000f;
+        lowPassFilter.cutoffFrequency = 2500f;
       }
 
       // Set up reverb if needed
