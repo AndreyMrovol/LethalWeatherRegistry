@@ -107,7 +107,6 @@ namespace WeatherRegistry.Helpers
     }
 
     // Core gradient application method
-    //
     void ApplyGradient(int startChar, int endChar, TMP_ColorGradient gradient)
     {
       TMP_TextInfo textInfo = textComponent.textInfo;
