@@ -37,6 +37,12 @@ namespace WeatherRegistry.Managers
 
       foreach (Editor.WeatherDefinition WeatherDefinition in GetLoadedAssets<Editor.WeatherDefinition>())
       {
+        if (WeatherDefinition.Effect == null)
+        {
+          Logger.LogWarning($"WeatherDefinition {WeatherDefinition.Name} has no Effect assigned - skipping!");
+          continue;
+        }
+
         GameObject effectObject = null;
         if (WeatherDefinition.Effect.EffectObject != null)
         {
