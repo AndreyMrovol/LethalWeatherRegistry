@@ -122,12 +122,15 @@ namespace WeatherRegistry
       {
         this.Effect.LevelWeatherType = this.VanillaWeatherType;
       }
+      else
+      {
+        Plugin.logger.LogError($"Weather {this.Name} has no effect assigned!");
+      }
 
-      this.ColorGradient.name = $"Weather{this.GetAlphanumericName()}";
-
-      // this.name = Name;
-      // this.effectObject = Effect?.EffectObject;
-      // this.effectPermanentObject = Effect?.WorldObject;
+      if (this.ColorGradient != null)
+      {
+        this.ColorGradient.name = $"Weather{this.GetAlphanumericName()}";
+      }
     }
 
     #region Miscellaneous methods
