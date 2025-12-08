@@ -41,9 +41,6 @@ namespace WeatherRegistry
 
     internal Dictionary<SelectableLevel, Definitions.WeatherEffectOverride> WeatherEffectOverrides = [];
 
-    [Obsolete]
-    public Dictionary<SelectableLevel, LevelWeatherVariables> WeatherVariables = [];
-
     #endregion
 
     #region defaults (all obsolete)
@@ -132,6 +129,15 @@ namespace WeatherRegistry
         this.ColorGradient.name = $"Weather{this.GetAlphanumericName()}";
       }
     }
+
+    #region Getting stuff from vanilla
+
+    public List<RandomWeatherWithVariables> GetRandomWeathers(SelectableLevel level)
+    {
+      return level.randomWeathers.Where(rw => rw.weatherType == this.VanillaWeatherType).ToList();
+    }
+
+    #endregion
 
     #region Miscellaneous methods
 
