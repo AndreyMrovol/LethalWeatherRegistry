@@ -12,9 +12,9 @@ using WeatherRegistry.Helpers;
 using WeatherRegistry.Modules;
 using WeatherRegistry.Patches;
 
-namespace WeatherRegistry
+namespace WeatherRegistry.Managers
 {
-  public static class Startup
+  public class StartupManager
   {
     internal static WeatherEffect[] vanillaEffectsArray { get; private set; } = null;
 
@@ -405,7 +405,6 @@ namespace WeatherRegistry
 
     static void AddWeatherToLevels(Weather weather, List<SelectableLevel> LevelsToApply)
     {
-      weather.WeatherVariables.Clear();
       StringBuilder weatherLog = new();
       weatherLog.Append($"Weather: {weather.Name}");
 

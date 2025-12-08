@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Imperium.Core;
 
 namespace WeatherRegistry.Patches
 {
@@ -10,7 +11,7 @@ namespace WeatherRegistry.Patches
     [HarmonyPriority(Priority.First)]
     public static void Postfix(Terminal __instance)
     {
-      Startup.Init(__instance);
+      Managers.StartupManager.Init(__instance);
     }
   }
 }
