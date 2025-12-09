@@ -8,6 +8,7 @@ using MrovLib;
 using UnityEngine;
 using WeatherRegistry.Compatibility;
 using WeatherRegistry.Managers;
+using WeatherRegistry.Modules;
 using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
