@@ -6,7 +6,7 @@ using MrovLib;
 using UnityEngine;
 using WeatherRegistry.Managers;
 
-namespace WeatherRegistry
+namespace WeatherRegistry.Modules
 {
   public static class Forecasts
   {
