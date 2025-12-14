@@ -4,10 +4,10 @@ namespace WeatherRegistry.Enums
   {
     Vanilla,
     WeatherRegistry,
+    WeatherTweaks,
     LethalLib,
     LethalLevelLoader,
     DawnLib,
-    JacobLib,
-    WeatherTweaks,
+    UniversalRegistry,
   }
 }
