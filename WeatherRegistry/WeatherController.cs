@@ -39,6 +39,12 @@ namespace WeatherRegistry
         return;
       }
 
+      if (weather == null)
+      {
+        Logger.LogWarning("Weather is null, cannot change weather");
+        return;
+      }
+
       level.currentWeather = weather.VanillaWeatherType;
 
       if (StartOfRound.Instance.currentLevel == level)
