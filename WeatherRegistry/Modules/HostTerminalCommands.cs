@@ -1,0 +1,57 @@
+using System.Collections.Generic;
+using System.Reflection;
+using MrovLib.Definitions;
+using UnityEngine;
+using WeatherRegistry.Definitions;
+using WeatherRegistry.Managers;
+
+namespace WeatherRegistry.Modules
+{
+  public static class HostTerminalCommands
+  {
+    public static TerminalKeyword WeatherVerb;
+    public static List<WeatherCommandNode> RegisteredCommands = [];
+
+    public static void Init(TerminalKeyword verb)
+    {
+      WeatherVerb = verb;
+
+      WeatherCommandNode ChangeWeatherCommand = new("change") { Type = CommandType.Command, };
+      RegisteredCommands.Add(ChangeWeatherCommand);
+
+      foreach (Weather weather in WeatherManager.Weathers)
+      {
+        WeatherCommandNode ChangeWeatherSubCommand =
+          new(weather.GetAlphanumericName()) { CommandArgument = weather.GetAlphanumericName().ToLower(), };
+
+        ChangeWeatherCommand.Subcommands.Add(ChangeWeatherSubCommand);
+      }
+    }
+
+    public static TerminalNode RunWeatherCommand(TerminalNode node, string commandName, string subCommandName)
+    {
+      WeatherCommandNode command = RegisteredCommands.Find(c => c.Name == commandName);
+      WeatherCommandNode subCommand = command.Subcommands.Find(sc => sc.Name == subCommandName);
+
+      string result = subCommand.Execute();
+
+      node.displayText = result;
+      return node;
+    }
+
+    public static string RunWeatherChange(string weatherName)
+    {
+      SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
+      Weather weather = ConfigHelper.ResolveStringToWeather(weatherName);
+
+      if (weather == null)
+      {
+        return $"Weather '{weatherName}' not found.";
+      }
+
+      WeatherController.ChangeWeather(currentLevel, weather);
+
+      return $"Changed weather to {weatherName}";
+    }
+  }
+}
