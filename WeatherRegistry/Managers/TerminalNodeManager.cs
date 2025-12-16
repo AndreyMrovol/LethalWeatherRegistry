@@ -13,13 +13,11 @@ namespace WeatherRegistry.Managers
     internal static TerminalNode lastResolvedNode = null;
 
     internal static Dictionary<TerminalNode, SelectableLevel> ForecastTerminalNodes = [];
-    internal static List<TerminalNode> WeatherCommandNodes => HostTerminalCommands.WeatherCommandNodes;
 
     public static void Init()
     {
       ManagedTerminalNodes = [];
       ForecastTerminalNodes = [];
-      WeatherCommandNodes.Clear();
 
       Forecasts.InitializeForecastNodes(AddVerb("Forecast", "forecast"));
 
