@@ -12,11 +12,7 @@ namespace WeatherRegistry.Modules
   {
     private static readonly Logger Logger = new("Forecast", LoggingType.Debug);
 
-    public static (
-      List<CompatibleNoun> compatibleNouns,
-      List<TerminalNode> forecastNodes,
-      List<TerminalKeyword> forecastKeywords
-    ) InitializeForecastNodes()
+    public static void InitializeForecastNodes(TerminalKeyword ForecastVerb)
     {
       List<CompatibleNoun> compatibleNouns = [];
       List<TerminalNode> forecastNodes = [];
@@ -24,35 +20,18 @@ namespace WeatherRegistry.Modules
 
       MrovLib.LevelHelper.Levels.ForEach(level =>
       {
-        TerminalNode ForecastNode = new();
-        TerminalKeyword ForecastKeyword = new();
-        CompatibleNoun ForecastNoun = new();
-
         string LevelName = ConfigHelper.GetAlphanumericName(level);
 
-        ForecastKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
+        TerminalNode ForecastNode = TerminalNodeManager.CreateTerminalNode($"Forecast{level.PlanetName}", "forecast");
+        ForecastNode.displayText = GetForecast(level);
+
+        TerminalKeyword ForecastKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
         ForecastKeyword.word = $"{LevelName.ToLowerInvariant()}";
         ForecastKeyword.name = $"Forecast{LevelName}Keyword";
-        ForecastKeyword.defaultVerb = Plugin.ForecastVerb;
+        ForecastKeyword.defaultVerb = ForecastVerb;
 
-        ForecastNode = ScriptableObject.CreateInstance<TerminalNode>();
-        ForecastNode.name = $"Forecast{LevelName}";
-        ForecastNode.clearPreviousText = true;
-        ForecastNode.acceptAnything = true;
-        ForecastNode.terminalOptions = [];
-        ForecastNode.maxCharactersToType = 25;
-        ForecastNode.itemCost = 0;
-        ForecastNode.buyItemIndex = -1;
-        ForecastNode.buyVehicleIndex = -1;
-        ForecastNode.buyRerouteToMoon = -1;
-        ForecastNode.displayPlanetInfo = -1;
-        ForecastNode.shipUnlockableID = -1;
-        ForecastNode.creatureFileID = -1;
-        ForecastNode.storyLogFileID = -1;
-        ForecastNode.playSyncedClip = -1;
-        ForecastNode.terminalEvent = "forecast";
+        CompatibleNoun ForecastNoun = new();
 
-        ForecastNode.displayText = GetForecast(level);
         ForecastNoun = new CompatibleNoun() { noun = ForecastKeyword, result = ForecastNode, };
         ForecastKeyword.compatibleNouns = [ForecastNoun];
 
@@ -63,7 +42,10 @@ namespace WeatherRegistry.Modules
         TerminalNodeManager.ForecastTerminalNodes.Add(ForecastNode, level);
       });
 
-      return (compatibleNouns, forecastNodes, forecastKeywords);
+      TerminalNodeManager.AddTerminalContent(forecastNodes, forecastKeywords);
+      ForecastVerb.compatibleNouns = compatibleNouns.ToArray();
+
+      // return (compatibleNouns, forecastNodes, forecastKeywords);
     }
 
     public static string GetForecast(SelectableLevel level)
