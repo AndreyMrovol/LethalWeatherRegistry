@@ -40,8 +40,6 @@ namespace WeatherRegistry
 
     internal static Hook WeatherTypeEnumHook;
 
-    internal static TerminalKeyword ForecastVerb;
-
     private void Awake()
     {
       logger = Logger;
@@ -60,27 +58,15 @@ namespace WeatherRegistry
       AssetBundleManager.LoadAllBundles();
       AssetBundleManager.ConvertLoadedAssets();
 
-      ForecastVerb = ScriptableObject.CreateInstance<TerminalKeyword>();
-      ForecastVerb.name = "Forecast";
-      ForecastVerb.word = "forecast";
-      ForecastVerb.isVerb = true;
-
       MrovLib.EventManager.MainMenuLoaded.AddListener(() =>
       {
         MainMenuInit();
+        ConfigManager.Instance.RemoveOrphanedEntries();
       });
 
       EventManager.SetupFinished.AddListener(() =>
       {
-        ContentManager.AddTerminalKeywords([ForecastVerb]);
-
-        var (compatibleNouns, forecastNodes, forecastKeywords) = Forecasts.InitializeForecastNodes();
-
-        ForecastVerb.compatibleNouns = compatibleNouns.ToArray();
-        ContentManager.AddTerminalNodes(forecastNodes);
-        ContentManager.AddTerminalKeywords(forecastKeywords);
-
-        ConfigManager.Instance.RemoveOrphanedEntries();
+        TerminalNodeManager.Init();
       });
 
       if (Chainloader.PluginInfos.ContainsKey("evaisa.lethallib"))
