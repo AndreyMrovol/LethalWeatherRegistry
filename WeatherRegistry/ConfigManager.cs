@@ -66,6 +66,8 @@ namespace WeatherRegistry
       );
     }
 
+    // TODO: add change listeners to allow hot-reloading algorithm/weights/filters
+
     internal void RemoveOrphanedEntries()
     {
       //remove orphaned config entries
