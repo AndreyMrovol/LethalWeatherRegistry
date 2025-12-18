@@ -10,11 +10,15 @@ namespace WeatherRegistry.Modules
   public static class HostTerminalCommands
   {
     public static TerminalKeyword WeatherVerb;
+    public static TerminalNode CommandNode;
+
     public static List<WeatherCommandNode> RegisteredCommands = [];
 
     public static void Init(TerminalKeyword verb)
     {
       WeatherVerb = verb;
+      CommandNode = TerminalNodeManager.CreateTerminalNode("Weather Commands");
+      CommandNode.playSyncedClip = 3;
 
       WeatherCommandNode ChangeWeatherCommand = new("change") { Type = CommandType.Command, };
       RegisteredCommands.Add(ChangeWeatherCommand);
@@ -35,23 +39,8 @@ namespace WeatherRegistry.Modules
 
       string result = subCommand.Execute();
 
-      node.displayText = result;
-      return node;
-    }
-
-    public static string RunWeatherChange(string weatherName)
-    {
-      SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
-      Weather weather = ConfigHelper.ResolveStringToWeather(weatherName);
-
-      if (weather == null)
-      {
-        return $"Weather '{weatherName}' not found.";
-      }
-
-      WeatherController.ChangeWeather(currentLevel, weather);
-
-      return $"Changed weather to {weatherName}";
+      CommandNode.displayText = result;
+      return CommandNode;
     }
   }
 }
