@@ -22,12 +22,12 @@ namespace WeatherRegistry.Definitions
 
       if (weather == null)
       {
-        return $"Weather '{CommandArgument}' not found.";
+        return $"Weather '{this.CommandArgument}' not found.";
       }
 
       WeatherController.ChangeWeather(currentLevel, weather);
 
-      return $"Changed weather to {CommandArgument}";
+      return $"Changed weather to {weather.Name} on level {currentLevel.PlanetName}";
     }
   }
 }
