@@ -12,7 +12,7 @@ namespace WeatherRegistry.Modules
     public static TerminalKeyword WeatherVerb;
     public static TerminalNode CommandNode;
 
-    public static List<WeatherCommandNode> RegisteredCommands = [];
+    public static Dictionary<string, WeatherCommandNode> RegisteredCommands = [];
 
     public static void Init(TerminalKeyword verb)
     {
@@ -21,7 +21,7 @@ namespace WeatherRegistry.Modules
       CommandNode.playSyncedClip = 3;
 
       WeatherCommandNode ChangeWeatherCommand = new("change") { Type = CommandType.Command, };
-      RegisteredCommands.Add(ChangeWeatherCommand);
+      RegisteredCommands.Add(ChangeWeatherCommand.Name, ChangeWeatherCommand);
 
       foreach (Weather weather in WeatherManager.Weathers)
       {
@@ -34,7 +34,7 @@ namespace WeatherRegistry.Modules
 
     public static TerminalNode RunWeatherCommand(TerminalNode node, string commandName, string subCommandName)
     {
-      WeatherCommandNode command = RegisteredCommands.Find(c => c.Name == commandName);
+      RegisteredCommands.TryGetValue(commandName, out var command);
       WeatherCommandNode subCommand = command.Subcommands.Find(sc => sc.Name == subCommandName);
 
       string result = subCommand.Execute();
