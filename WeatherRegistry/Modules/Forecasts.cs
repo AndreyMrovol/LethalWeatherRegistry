@@ -2,8 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ConsoleTables;
+using LobbyCompatibility.Configuration;
 using MrovLib;
 using UnityEngine;
+using WeatherRegistry.Enums;
+using WeatherRegistry.Helpers;
 using WeatherRegistry.Managers;
 
 namespace WeatherRegistry.Modules
@@ -51,31 +54,28 @@ namespace WeatherRegistry.Modules
     public static string GetForecast(SelectableLevel level)
     {
       string LevelName = ConfigHelper.GetAlphanumericName(level);
-      ConsoleTable outputTable = new("Weather", "Tomorrow");
+      ConsoleTable outputTable = new("Weather", "Default", "W2W", "Level");
       StringBuilder outputText = new();
 
       outputText.AppendLine($"Forecasting weather for {LevelName}");
       outputText.AppendLine($"Current weather: {WeatherManager.GetCurrentWeather(level).Name}\n");
       outputText.AppendLine("Weights for next days:\n");
 
-      Dictionary<string, int> tomorrowWeights = [];
+      Dictionary<Weather, Dictionary<WeatherWeightType, int>> tomorrowWeights = [];
 
-      WeatherManager.GetWeathers().ForEach(weather => tomorrowWeights.Add(weather.Name, weather.GetWeight(level)));
-      int totalWeight = tomorrowWeights.Values.Sum();
-      tomorrowWeights = tomorrowWeights.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+      WeatherManager.GetWeathers().ForEach(weather => tomorrowWeights.Add(weather, WeightsManager.GetWeatherWeightsAllTypes(level, weather)));
+      int totalWeight = tomorrowWeights.Sum(x => x.Value.Values.Sum());
+      tomorrowWeights = tomorrowWeights.OrderByDescending(x => x.Value[WeatherWeightType.Default]).ToDictionary(x => x.Key, x => x.Value);
 
       Logger.LogDebug($"Total weight for {LevelName}: {totalWeight}");
 
       foreach (var weather in tomorrowWeights)
       {
-        // Logger.LogDebug(
-        //   $"Weather: {weather.Key}, Weight: {weather.Value}, Probability: {(float)(weather.Value / (double)totalWeight) * 100}%"
-        // );
-
         outputTable.AddRow(
-          // TODO: color
-          weather.Key,
-          $"{weather.Value.ToString().PadRight(5)} ({((float)(weather.Value / (double)totalWeight) * 100).ToString("0.00")}%)"
+          $"<color=#{ColorHelper.ToHex(weather.Key.ColorGradient.topLeft)}>{weather.Key.NameShort.PadRight(12)}</color>",
+          tomorrowWeights[weather.Key][WeatherWeightType.Default],
+          tomorrowWeights[weather.Key][WeatherWeightType.WeatherToWeather],
+          tomorrowWeights[weather.Key][WeatherWeightType.Level]
         );
       }
 
