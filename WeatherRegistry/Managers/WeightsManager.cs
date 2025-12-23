@@ -46,13 +46,50 @@ namespace WeatherRegistry.Managers
 
       foreach (var weather in weatherTypes)
       {
-        Weather typeOfWeather = WeatherManager.GetWeather(weather);
+        Weather WeatherType = WeatherManager.GetWeather(weather);
 
-        (int weatherWeight, WeatherWeightType type) = typeOfWeather.GetWeightWithOrigin(level);
-        weightedList.Add(typeOfWeather, weatherWeight);
+        (int weatherWeight, WeatherWeightType type) = WeatherType.GetWeightWithOrigin(level);
+        weightedList.Add(WeatherType, weatherWeight);
       }
 
       return weightedList;
+    }
+
+    public static Dictionary<WeatherWeightType, int> GetWeatherWeightsAllTypes(SelectableLevel level, Weather weather)
+    {
+      Dictionary<WeatherWeightType, int> weights = [];
+
+      foreach (WeatherWeightType weightType in System.Enum.GetValues(typeof(WeatherWeightType)))
+      {
+        int weightValue = 0;
+
+        switch (weightType)
+        {
+          case WeatherWeightType.Default:
+            weightValue = weather.DefaultWeight;
+            break;
+          case WeatherWeightType.Level:
+            if (weather.LevelWeights.TryGetValue(level, out int levelWeight))
+            {
+              weightValue = levelWeight;
+            }
+            break;
+          case WeatherWeightType.WeatherToWeather:
+            var previousWeather = WeatherManager.GetWeather(level.currentWeather);
+            if (
+              previousWeather != null
+              && previousWeather.WeatherWeights.TryGetValue(weather.VanillaWeatherType, out int weatherToWeatherWeight)
+            )
+            {
+              weightValue = weatherToWeatherWeight;
+            }
+            break;
+        }
+
+        weights[weightType] = weightValue;
+      }
+
+      return weights;
     }
 
     public static (int weight, WeatherWeightType type) GetWeatherWeightForLevel(SelectableLevel level, Weather weather)
