@@ -16,6 +16,7 @@ namespace WeatherRegistry
     #region Base properties
 
     public string Name { get; set; }
+    public virtual string NameShort => Name.Length <= 5 ? Name : Name[..5];
 
     [Obsolete("Use Weather.Name instead")]
     public string name => Name;
