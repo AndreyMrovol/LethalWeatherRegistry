@@ -54,12 +54,12 @@ namespace WeatherRegistry.Modules
     public static string GetForecast(SelectableLevel level)
     {
       string LevelName = ConfigHelper.GetAlphanumericName(level);
-      ConsoleTable outputTable = new("Weather", "Default", "W2W", "Level");
+      ConsoleTable outputTable = new("Weather", "Default", "W2W", "Level", "% chance");
       StringBuilder outputText = new();
 
       outputText.AppendLine($"Forecasting weather for {LevelName}");
       outputText.AppendLine($"Current weather: {WeatherManager.GetCurrentWeather(level).Name}\n");
-      outputText.AppendLine("Weights for next days:\n");
+      outputText.AppendLine("Weights for tomorrow:\n");
 
       Dictionary<Weather, Dictionary<WeatherWeightType, int>> tomorrowWeights = [];
 
@@ -71,11 +71,27 @@ namespace WeatherRegistry.Modules
 
       foreach (var weather in tomorrowWeights)
       {
+        int actuallyUsedWeight = 0;
+
+        if (weather.Value[WeatherWeightType.Level] != 0)
+        {
+          actuallyUsedWeight = weather.Value[WeatherWeightType.Level];
+        }
+        else if (weather.Value[WeatherWeightType.WeatherToWeather] != 0)
+        {
+          actuallyUsedWeight = weather.Value[WeatherWeightType.WeatherToWeather];
+        }
+        else
+        {
+          actuallyUsedWeight = weather.Value[WeatherWeightType.Default];
+        }
+
         outputTable.AddRow(
           $"<color=#{ColorHelper.ToHex(weather.Key.ColorGradient.topLeft)}>{weather.Key.NameShort.PadRight(12)}</color>",
           tomorrowWeights[weather.Key][WeatherWeightType.Default],
           tomorrowWeights[weather.Key][WeatherWeightType.WeatherToWeather],
-          tomorrowWeights[weather.Key][WeatherWeightType.Level]
+          tomorrowWeights[weather.Key][WeatherWeightType.Level],
+          $"{actuallyUsedWeight * 100f / totalWeight:0.00}%"
         );
       }
 
