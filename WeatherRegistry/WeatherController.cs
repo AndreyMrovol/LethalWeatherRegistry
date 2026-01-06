@@ -175,6 +175,16 @@ namespace WeatherRegistry
       AddWeatherEffect(weather.VanillaWeatherType);
     }
 
+    public static void RemoveWeatherEffect(LevelWeatherType weatherType)
+    {
+      Plugin.logger.LogDebug($"Removing weather effect {weatherType}");
+
+      List<LevelWeatherType> effects = WeatherSync.Instance.Effects.Effects.ToList();
+      effects.Remove(weatherType);
+
+      WeatherSync.Instance.SetWeatherEffectsOnHost(effects.ToArray());
+    }
+
     #endregion
   }
 }
