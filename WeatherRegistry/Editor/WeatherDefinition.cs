@@ -40,8 +40,6 @@ namespace WeatherRegistry.Editor
       Name = string.Empty;
       Effect = null;
 
-      Color = UnityEngine.Color.cyan;
-
       Config = new();
     }
   }
