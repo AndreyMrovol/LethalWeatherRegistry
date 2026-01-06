@@ -3,8 +3,9 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 
-namespace WeatherRegistry.Helpers
+namespace WeatherRegistry.Utils
 {
+  // based on https://discussions.unity.com/t/change-color-of-a-single-word/706810/12
   public class DynamicGradientApplier(TextMeshProUGUI textComponent)
   {
     public TextMeshProUGUI textComponent = textComponent;
