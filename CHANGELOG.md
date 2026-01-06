@@ -1,3 +1,42 @@
+# Unreleased (Since 0.7.5)
+
+## Code Restructuring and Improvements
+
+- restructured codebase with better organization:
+  - moved files to dedicated directories: `Managers/`, `Modules/`, `Utils/`, and `Helpers/`
+  - renamed `Startup.cs` to `StartupManager.cs`
+  - renamed `WeatherOverrideManager.cs` to `OverridesManager.cs`
+  - moved `ConfigHandler.cs` to `Utils/`
+  - moved `WeightHandler.cs` to `Utils/`
+  - moved `CurrentWeathers.cs` to `Modules/`
+  - moved `WeatherCalculation.cs` to `Modules/`
+- added color gradient support for weather displays:
+  - `WeatherDefinition` now uses `TMP_ColorGradient` instead of simple `Color` for weather colors
+  - added `DynamicGradientApplier` helper class for applying text color gradients dynamically
+  - added `ColorHelper` utility class
+- added new enum types for better type safety:
+  - `FilteringOption`
+  - `LevelWeatherVariables`
+  - `WeatherAlgorithm`
+  - `WeatherOrigin`
+  - `WeatherType`
+  - `WeatherWeightType`
+- added new component: `ImprovedOccludeAudio` for better audio handling
+- added new definitions:
+  - `CommandNode` for terminal command handling
+  - `WeatherDefinition` in the main definitions namespace
+- added `HostTerminalCommands` module for host-specific terminal commands
+- added `WeightsManager` for managing weather weights
+- added `AssetBundleManager` for improved asset bundle loading
+- removed `AssetBundleLoader.cs` (functionality moved to `AssetBundleManager`)
+- removed `Forecasts.cs` from root (moved to `Modules/`)
+- updated `LethalCompany.GameLibs.Steam` dependency to specific version `73.0.0-ngd.0`
+- updated map screen display logic for improved weather information presentation
+- added `Terminal-ParsePlayerSentence.cs` patch for terminal input handling
+- various code improvements and refactoring across multiple files
+
+**Note:** This is a development version on the `restructure` branch and has not been officially released yet.
+
 # 0.7.5
 - updated for v73
 - fixed the selection algorithms using wrong seed (thanks, `tomatobird8`!)
