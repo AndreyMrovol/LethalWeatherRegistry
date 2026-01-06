@@ -10,7 +10,7 @@ namespace WeatherRegistry.Patches
       {
         if (WeatherManager.ModdedWeatherEnumExtension.ContainsKey((int)(LevelWeatherType)self))
         {
-          return WeatherManager.ModdedWeatherEnumExtension[(int)(LevelWeatherType)self].name;
+          return WeatherManager.ModdedWeatherEnumExtension[(int)(LevelWeatherType)self].Name;
         }
       }
 
