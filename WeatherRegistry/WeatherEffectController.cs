@@ -64,7 +64,7 @@ namespace WeatherRegistry
           continue;
         }
 
-        // if weather is not flooded, stop player from sinking
+        // if weather is not flooded, stop player from sinking (thanks, zigzag!)
         if (weather.VanillaWeatherType != LevelWeatherType.Flooded)
         {
           var player = GameNetworkManager.Instance.localPlayerController;
@@ -168,6 +168,8 @@ namespace WeatherRegistry
           JLLEffect.effectObject?.SetActive(false);
         }
       }
+
+      
     }
 
     public static void EnableCurrentWeatherEffects()
