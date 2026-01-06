@@ -1,9 +1,9 @@
 using TMPro;
 using UnityEngine;
 
-namespace WeatherRegistry.Helpers
+namespace WeatherRegistry.Utils
 {
-  public static class ColorHelper
+  public static class ColorConverter
   {
     public static TMP_ColorGradient ToTMPColorGradient(Color color)
     {
