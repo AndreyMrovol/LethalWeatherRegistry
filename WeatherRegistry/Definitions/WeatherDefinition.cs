@@ -2,8 +2,8 @@ using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using WeatherRegistry.Enums;
-using WeatherRegistry.Helpers;
 using WeatherRegistry.Modules;
+using WeatherRegistry.Utils;
 
 namespace WeatherRegistry.Definitions
 {
@@ -14,7 +14,7 @@ namespace WeatherRegistry.Definitions
   {
     public string Name { get; set; }
 
-    public TMP_ColorGradient Color { get; set; } = ColorHelper.ToTMPColorGradient(UnityEngine.Color.cyan);
+    public TMP_ColorGradient Color { get; set; } = ColorConverter.ToTMPColorGradient(UnityEngine.Color.cyan);
 
     public ImprovedWeatherEffect Effect { get; set; }
 
@@ -27,7 +27,7 @@ namespace WeatherRegistry.Definitions
 
     public override string ToString()
     {
-      return $"<color=#{ColorHelper.ToHex(Color.topLeft)}>{Name} ({Origin}, {Type})</color>";
+      return $"<color=#{ColorConverter.ToHex(Color.topLeft)}>{Name} ({Origin}, {Type})</color>";
     }
   }
 }

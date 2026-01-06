@@ -6,8 +6,8 @@ using LobbyCompatibility.Configuration;
 using MrovLib;
 using UnityEngine;
 using WeatherRegistry.Enums;
-using WeatherRegistry.Helpers;
 using WeatherRegistry.Managers;
+using WeatherRegistry.Utils;
 
 namespace WeatherRegistry.Modules
 {
@@ -87,7 +87,7 @@ namespace WeatherRegistry.Modules
         }
 
         outputTable.AddRow(
-          $"<color=#{ColorHelper.ToHex(weather.Key.ColorGradient.topLeft)}>{weather.Key.NameShort.PadRight(12)}</color>",
+          $"<color=#{ColorConverter.ToHex(weather.Key.ColorGradient.topLeft)}>{weather.Key.NameShort.PadRight(12)}</color>",
           tomorrowWeights[weather.Key][WeatherWeightType.Default],
           tomorrowWeights[weather.Key][WeatherWeightType.WeatherToWeather],
           tomorrowWeights[weather.Key][WeatherWeightType.Level],
