@@ -8,7 +8,7 @@ using UnityEngine;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Editor;
 using WeatherRegistry.Enums;
-using WeatherRegistry.Helpers;
+using WeatherRegistry.Utils;
 
 namespace WeatherRegistry.Managers
 {
@@ -75,7 +75,7 @@ namespace WeatherRegistry.Managers
 
         if (WeatherDefinition.ColorGradient == null)
         {
-          WeatherDefinition.ColorGradient = ColorHelper.ToTMPColorGradient(WeatherDefinition.Color);
+          WeatherDefinition.ColorGradient = ColorConverter.ToTMPColorGradient(WeatherDefinition.Color);
         }
 
         Weather weather =

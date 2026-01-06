@@ -6,8 +6,8 @@ using Newtonsoft.Json;
 using TMPro;
 using UnityEngine;
 using WeatherRegistry.Enums;
-using WeatherRegistry.Helpers;
 using WeatherRegistry.Modules;
+using WeatherRegistry.Utils;
 
 namespace WeatherRegistry
 {
@@ -29,13 +29,13 @@ namespace WeatherRegistry
 
     public WeatherType Type { get; internal set; } = WeatherType.Modded;
 
-    public TMP_ColorGradient ColorGradient { get; set; } = ColorHelper.ToTMPColorGradient(UnityEngine.Color.cyan);
+    public TMP_ColorGradient ColorGradient { get; set; } = ColorConverter.ToTMPColorGradient(UnityEngine.Color.cyan);
 
     public Color Color
     {
       get { return ColorGradient.topLeft; }
       [Obsolete("Use Weather.ColorGradient instead")]
-      set { ColorGradient = ColorHelper.ToTMPColorGradient(value); }
+      set { ColorGradient = ColorConverter.ToTMPColorGradient(value); }
     }
 
     public RegistryWeatherConfig Config = new();

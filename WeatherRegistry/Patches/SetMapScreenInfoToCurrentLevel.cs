@@ -6,7 +6,7 @@ using MrovLib;
 using TMPro;
 using UnityEngine;
 using WeatherRegistry.Definitions;
-using WeatherRegistry.Helpers;
+using WeatherRegistry.Utils;
 
 namespace WeatherRegistry.Patches
 {

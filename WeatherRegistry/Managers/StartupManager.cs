@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Definitions;
 using WeatherRegistry.Enums;
-using WeatherRegistry.Helpers;
 using WeatherRegistry.Modules;
 using WeatherRegistry.Patches;
+using WeatherRegistry.Utils;
 
 namespace WeatherRegistry.Managers
 {
@@ -72,7 +72,7 @@ namespace WeatherRegistry.Managers
         new(effect: new ImprovedWeatherEffect(null, null))
         {
           Type = WeatherType.Clear,
-          ColorGradient = ColorHelper.ToTMPColorGradient(Defaults.VanillaWeatherColors[LevelWeatherType.None]),
+          ColorGradient = ColorConverter.ToTMPColorGradient(Defaults.VanillaWeatherColors[LevelWeatherType.None]),
           VanillaWeatherType = LevelWeatherType.None,
           Origin = WeatherOrigin.Vanilla,
           Config =
@@ -115,7 +115,7 @@ namespace WeatherRegistry.Managers
           new(weatherName, weatherEffect)
           {
             Type = weatherTypeType,
-            ColorGradient = ColorHelper.ToTMPColorGradient(weatherColor),
+            ColorGradient = ColorConverter.ToTMPColorGradient(weatherColor),
             VanillaWeatherType = weatherType,
             Origin = WeatherOrigin.Vanilla,
             Config =
