@@ -16,6 +16,7 @@ namespace WeatherRegistry.Editor
     public string Name;
 
     [Obsolete]
+    [HideInInspector]
     public Color Color;
 
     [SerializeField]
