@@ -40,6 +40,8 @@ namespace WeatherRegistry.Patches
         string SaveKey = $"{Defaults.WeatherSaveKey}-{StartOfRound.Instance.gameStats.daysSpent}";
         bool weathersAlreadySelected = ES3.KeyExists(SaveKey, GameNetworkManager.Instance.currentSaveFileName);
 
+        ConfigManager.ReloadConfigfile();
+
         Plugin.debugLogger.LogInfo($"Save file has weather data: {weathersAlreadySelected}");
 
         if (weathersAlreadySelected)
