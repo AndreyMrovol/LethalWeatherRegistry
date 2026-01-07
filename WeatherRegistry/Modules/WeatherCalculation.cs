@@ -28,7 +28,8 @@ namespace WeatherRegistry.Modules
     public static WeatherSelectionAlgorithm WeatherSelectionAlgorithm
     {
       get { return Settings.WeatherSelectionAlgorithm; }
-      set { Settings.WeatherSelectionAlgorithm = value; }
+      [Obsolete]
+      set { }
     }
   }
 }

@@ -62,6 +62,8 @@ namespace WeatherRegistry
       {
         MainMenuInit();
         ConfigManager.Instance.RemoveOrphanedEntries();
+
+        ConfigManager.configFile.SettingChanged += (sender, args) => ConfigManager.SettingChanged(sender, args);
       });
 
       EventManager.SetupFinished.AddListener(() =>

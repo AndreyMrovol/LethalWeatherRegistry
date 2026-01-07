@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using BepInEx.Configuration;
@@ -88,6 +89,21 @@ namespace WeatherRegistry
       });
 
       ConfigManager.configFile.Save();
+    }
+
+    internal static void ReloadConfigfile()
+    {
+      Plugin.logger.LogInfo("Reloading config file...");
+      configFile.Reload();
+    }
+
+    internal static void SettingChanged(object sender, SettingChangedEventArgs args)
+    {
+      ConfigEntryBase changedEntry = args.ChangedSetting;
+
+      Plugin.logger.LogInfo(
+        $"Setting changed: {changedEntry.Definition.Section}/{changedEntry.Definition.Key} changed to {changedEntry.BoxedValue}"
+      );
     }
   }
 }
