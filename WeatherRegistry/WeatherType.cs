@@ -56,13 +56,10 @@ namespace WeatherRegistry
     [Obsolete("Use Weather.Config.WeatherToWeatherWeights instead")]
     public string[] DefaultWeatherToWeatherWeights => this.Config.WeatherToWeatherWeights.DefaultValue.Split(";");
 
-    [Obsolete("Use Weather.Config.ScrapAmountMultiplier instead")]
-    public float ScrapAmountMultiplier => Config.ScrapAmountMultiplier.Value;
-
-    [Obsolete("Use Weather.Config.ScrapAmountMultiplier instead")]
-    public float ScrapValueMultiplier => Config.ScrapValueMultiplier.Value;
-
     #endregion
+
+    public float ScrapAmountMultiplier => Config.ScrapAmountMultiplier.Value;
+    public float ScrapValueMultiplier => Config.ScrapValueMultiplier.Value;
 
     #region stuff from config
 
