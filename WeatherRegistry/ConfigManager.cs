@@ -36,6 +36,9 @@ namespace WeatherRegistry
     // module toggles
     internal static ConfigEntry<bool> UseScrapMultipliers { get; private set; }
 
+    // patch toggles
+    internal static ConfigEntry<bool> EnableMeltdownPatch { get; private set; }
+
     private ConfigManager(ConfigFile config)
     {
       configFile = config;
@@ -64,6 +67,13 @@ namespace WeatherRegistry
         "Scrap multipliers",
         true,
         "Use Registry's scrap multipliers. Disable if you prefer to use other mod's multiplier settings."
+      );
+
+      EnableMeltdownPatch = configFile.Bind(
+        "|Patches",
+        "Enable Facility Meltdown Compatability Patch",
+        true,
+        "Allows you to disable FacilityMeltdown patch (for when the mod is not working correctly)"
       );
     }
 

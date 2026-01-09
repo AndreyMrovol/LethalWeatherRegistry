@@ -10,7 +10,7 @@ namespace WeatherRegistry.Patches
     [HarmonyPatch("Start")]
     public static bool StartPatch(LungProp __instance)
     {
-      if (Plugin.FacilityMeltdownCompat.IsModPresent)
+      if (Plugin.FacilityMeltdownCompat.IsModPresent && ConfigManager.EnableMeltdownPatch.Value)
       {
         Plugin.logger.LogInfo("FacilityMeltdown is present - WeatherRegistry will not run its apparatus patch.");
         return true;
