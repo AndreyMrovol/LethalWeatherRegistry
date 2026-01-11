@@ -73,7 +73,7 @@ namespace WeatherRegistry
 
       EnableMeltdownPatch = configFile.Bind(
         "|Patches",
-        "Enable Facility Meltdown Compatability Patch",
+        "Enable Facility Meltdown Compatibility Patch",
         true,
         "Allows you to disable FacilityMeltdown patch (for when the mod is not working correctly)"
       );
