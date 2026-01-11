@@ -59,7 +59,12 @@ namespace WeatherRegistry.Patches
       StringBuilder stringBuilder = new();
 
       stringBuilder.Append($"ORBITING: {ScaleDownName(planetName)}\n");
-      stringBuilder.Append($"WEATHER: {ScaleDownName(GetColoredString(___currentLevel))}\n");
+
+      if (currentWeather.Type == Enums.WeatherType.Clear && !ConfigManager.ShowClearWeather.Value) { }
+      else
+      {
+        stringBuilder.Append($"WEATHER: {ScaleDownName(GetColoredString(___currentLevel))}\n");
+      }
 
       if (ConfigManager.ShowWeatherMultipliers.Value)
       {
