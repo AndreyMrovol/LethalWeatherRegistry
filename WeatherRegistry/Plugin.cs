@@ -54,7 +54,7 @@ namespace WeatherRegistry
       ConfigManager.LoggingLevels.Value = LoggingType.Developer;
 #endif
 
-      AssetBundleManager = new AssetBundleManager();
+      AssetBundleManager = new AssetBundleManager() { BundleBlacklist = ConfigManager.BlacklistedBundles };
       AssetBundleManager.LoadAllBundles();
       AssetBundleManager.ConvertLoadedAssets();
 

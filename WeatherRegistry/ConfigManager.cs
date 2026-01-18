@@ -20,6 +20,11 @@ namespace WeatherRegistry
     }
 
     // general settings
+    internal static ConfigEntry<string> BundleBlacklist { get; private set; }
+    internal static List<string> BlacklistedBundles
+    {
+      get { return BundleBlacklist.Value.Split(';').Select(s => s.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList(); }
+    }
 
     // logs settings
     internal static ConfigEntry<LoggingType> LoggingLevels { get; private set; }
@@ -43,6 +48,13 @@ namespace WeatherRegistry
     private ConfigManager(ConfigFile config)
     {
       configFile = config;
+
+      BundleBlacklist = configFile.Bind(
+        "|General",
+        "Bundle Blacklist",
+        "",
+        "Semicolon-separated list of asset bundle names that shouldn't be loaded."
+      );
 
       LoggingLevels = configFile.Bind("|Logging", "Display Log Levels", LoggingType.Basic, "Select which logs to show.");
 
