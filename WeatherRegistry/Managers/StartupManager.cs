@@ -258,6 +258,8 @@ namespace WeatherRegistry.Managers
 
       Logger.LogDebug($"Weathers: {WeatherManager.Weathers.Count}");
 
+      RandomWeathersManager.Init();
+
       foreach (Weather weather in WeatherManager.Weathers)
       {
         Settings.ScreenMapColors.Add(weather.Name, weather.ColorGradient);
@@ -417,7 +419,10 @@ namespace WeatherRegistry.Managers
         // Get level data
         List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.ToList();
         RandomWeatherWithVariables randomWeather = level.randomWeathers.FirstOrDefault(rw => rw.weatherType == weather.VanillaWeatherType);
-        bool isLevelToApply = LevelsToApply.Contains(level);
+
+        bool isLevelToApply =
+          LevelsToApply.Contains(level)
+          && RandomWeathersManager.BlacklistedWeathers.GetValueOrDefault(level)?.Contains(weather.VanillaWeatherType) == false;
 
         // CASE 1: Skip vanilla weather that wasn't defined by a moon creator
         if (randomWeather == null && weather.Type == WeatherType.Vanilla)
@@ -473,6 +478,7 @@ namespace WeatherRegistry.Managers
         else if (weather.Type == WeatherType.Modded)
         {
           // For modded weather, add it to the level
+
           // this should never happen, but just in case
           if (randomWeather != null)
           {
