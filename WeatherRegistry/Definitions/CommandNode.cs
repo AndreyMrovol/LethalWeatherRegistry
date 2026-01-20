@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using MrovLib.Definitions;
 
 namespace WeatherRegistry.Definitions
 {

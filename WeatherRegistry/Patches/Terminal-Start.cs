@@ -1,5 +1,4 @@
 using HarmonyLib;
-using Imperium.Core;
 
 namespace WeatherRegistry.Patches
 {

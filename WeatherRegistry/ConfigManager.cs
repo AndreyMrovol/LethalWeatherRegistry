@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using BepInEx.Configuration;
 using WeatherRegistry.Enums;
-using WeatherRegistry.Modules;
 using LoggingType = MrovLib.LoggingType;
 
 namespace WeatherRegistry
