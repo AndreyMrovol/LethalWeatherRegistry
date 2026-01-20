@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using HarmonyLib;
-using Unity.Netcode;
 using UnityEngine;
 
 namespace WeatherRegistry.Patches

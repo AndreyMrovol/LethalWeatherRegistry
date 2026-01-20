@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BepInEx.Configuration;
 using BepInEx.Logging;
 using MrovLib;
 using WeatherRegistry.Definitions;
