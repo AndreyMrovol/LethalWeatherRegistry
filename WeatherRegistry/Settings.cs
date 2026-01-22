@@ -8,6 +8,7 @@ namespace WeatherRegistry
   public class Settings
   {
     public static bool SetupFinished => WeatherManager.IsSetupFinished;
+    public static WeatherSelectionAlgorithm WeatherSelectionAlgorithm => Modules.WeatherCalculation.WeatherSelectionAlgorithm;
 
     public static bool IsGameStarted { get; internal set; } = false;
 
@@ -16,9 +17,6 @@ namespace WeatherRegistry
     public static Dictionary<string, TMP_ColorGradient> ScreenMapColors = [];
 
     public static bool SelectWeathers { get; set; } = true;
-
-    public static WeatherSelectionAlgorithm WeatherSelectionAlgorithm =>
-      WeatherCalculation.WeatherAlgorithms[ConfigManager.WeatherAlgorithm.Value];
 
     public static bool ScrapMultipliers { get; set; } = ConfigManager.UseScrapMultipliers.Value;
 

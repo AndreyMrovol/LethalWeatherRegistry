@@ -24,12 +24,11 @@ namespace WeatherRegistry.Modules
         { WeatherAlgorithm.Hybrid, HybridAlgorithm },
       };
 
-    [Obsolete("Use Settings.WeatherSelectionAlgorithm instead")]
+    private static WeatherSelectionAlgorithm _weatherAlgorithm = WeatherAlgorithms[ConfigManager.WeatherAlgorithm.Value];
     public static WeatherSelectionAlgorithm WeatherSelectionAlgorithm
     {
-      get { return Settings.WeatherSelectionAlgorithm; }
-      [Obsolete]
-      set { }
+      get { return _weatherAlgorithm; }
+      set { _weatherAlgorithm = value; }
     }
   }
 }
