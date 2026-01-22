@@ -105,10 +105,10 @@ namespace WeatherRegistry
 
     #endregion
 
-    internal virtual string ConfigCategory =>
+    public virtual string ConfigCategory =>
       $"{(this.Type == WeatherType.Vanilla || this.Type == WeatherType.Clear ? "Vanilla" : "Modded")} Weather: {this.Name.Replace(" ", "")}{(this.Origin != WeatherOrigin.WeatherRegistry && this.Origin != WeatherOrigin.Vanilla ? $" ({this.Origin})" : "")}";
 
-    internal virtual void Init()
+    public virtual void Init()
     {
       this.Config.Init(this);
 
