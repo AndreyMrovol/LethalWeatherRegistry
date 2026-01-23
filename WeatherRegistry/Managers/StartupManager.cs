@@ -420,9 +420,10 @@ namespace WeatherRegistry.Managers
         List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.ToList();
         RandomWeatherWithVariables randomWeather = level.randomWeathers.FirstOrDefault(rw => rw.weatherType == weather.VanillaWeatherType);
 
-        bool isLevelToApply =
-          LevelsToApply.Contains(level)
-          && RandomWeathersManager.BlacklistedWeathers.GetValueOrDefault(level)?.Contains(weather.VanillaWeatherType) == false;
+        bool isLevelBlacklisted =
+          RandomWeathersManager.BlacklistedWeathers.GetValueOrDefault(level)?.Contains(weather.VanillaWeatherType) == true;
+
+        bool isLevelToApply = LevelsToApply.Contains(level) && !isLevelBlacklisted;
 
         // CASE 1: Skip vanilla weather that wasn't defined by a moon creator
         if (randomWeather == null && weather.Type == WeatherType.Vanilla)
