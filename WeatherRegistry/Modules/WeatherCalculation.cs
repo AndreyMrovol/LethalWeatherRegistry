@@ -24,10 +24,14 @@ namespace WeatherRegistry.Modules
         { WeatherAlgorithm.Hybrid, HybridAlgorithm },
       };
 
-    private static WeatherSelectionAlgorithm _weatherAlgorithm = WeatherAlgorithms[ConfigManager.WeatherAlgorithm.Value];
+    private static WeatherSelectionAlgorithm _weatherAlgorithm;
     public static WeatherSelectionAlgorithm WeatherSelectionAlgorithm
     {
-      get { return _weatherAlgorithm; }
+      get
+      {
+        _weatherAlgorithm ??= WeatherAlgorithms[ConfigManager.WeatherAlgorithm.Value];
+        return _weatherAlgorithm;
+      }
       set { _weatherAlgorithm = value; }
     }
   }
