@@ -2,19 +2,21 @@ using System.Collections.Generic;
 
 namespace WeatherRegistry.Definitions
 {
-  public abstract class CommandNode(string Name) : MrovLib.Definitions.CommandNode(Name)
+  public abstract class RegistryCommandNode(string Name) : MrovLib.Definitions.CommandNode(Name)
   {
-    public new List<WeatherCommandNode> Subcommands { get; set; } = [];
+    public new List<RegistryCommandNode> Subcommands { get; set; } = [];
 
-    public virtual string Execute()
+    public int TerminalSound { get; set; } = -1;
+
+    public virtual string Execute(string[] args)
     {
       return "";
     }
   }
 
-  public class WeatherCommandNode(string Name) : CommandNode(Name)
+  public class WeatherChangeCommandNode(string Name) : RegistryCommandNode(Name)
   {
-    public override string Execute()
+    public override string Execute(string[] args)
     {
       SelectableLevel currentLevel = StartOfRound.Instance.currentLevel;
       Weather weather = ConfigHelper.ResolveStringToWeather(this.CommandArgument);

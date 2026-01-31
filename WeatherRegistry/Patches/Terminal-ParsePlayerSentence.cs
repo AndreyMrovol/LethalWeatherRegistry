@@ -8,8 +8,8 @@ namespace WeatherRegistry.Patches
   [HarmonyPatch(typeof(Terminal), "ParsePlayerSentence")]
   class TerminalParsePlayerSentencePatch
   {
-    [HarmonyPostfix]
-    public static void GameMethodPatch(Terminal __instance, ref TerminalNode __result)
+    [HarmonyPrefix]
+    public static bool GameMethodPatch(Terminal __instance, ref TerminalNode __result)
     {
       string input = __instance.screenText.text[^__instance.textAdded..]; // what the fuck?
       input = __instance.RemovePunctuation(input);
@@ -26,19 +26,23 @@ namespace WeatherRegistry.Patches
 
           Plugin.debugLogger.LogWarning("Weather command detected, passing to WeatherCommandManager");
 
-          if (words.Count >= 3)
+          // weather command arg1 arg2
+          if (words.Count >= 2)
           {
             string command = words[1];
-            string weatherName = words[2];
+            string[] arguments = words.Skip(2).ToArray();
 
-            TerminalNode result = HostTerminalCommands.RunWeatherCommand(__result, command, weatherName);
+            TerminalNode result = HostTerminalCommands.RunWeatherCommand(command, arguments);
 
             __result = result;
+            return false;
           }
+
+          return true;
         }
       }
 
-      return;
+      return true;
     }
   }
 }
