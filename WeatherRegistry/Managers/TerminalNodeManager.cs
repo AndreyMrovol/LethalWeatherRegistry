@@ -19,8 +19,6 @@ namespace WeatherRegistry.Managers
       ManagedTerminalNodes = [];
       ForecastTerminalNodes = [];
 
-      Forecasts.InitializeForecastNodes(AddVerb("Forecast", "forecast"));
-
       if (Plugin.debugLogger.ShouldLog(LoggingType.Debug))
       {
         Plugin.debugLogger.LogInfo("Initializing Weather Host Terminal Commands");
