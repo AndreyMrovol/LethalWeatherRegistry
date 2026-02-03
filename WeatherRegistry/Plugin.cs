@@ -14,7 +14,6 @@ namespace WeatherRegistry
   [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
   [BepInDependency("MrovLib", BepInDependency.DependencyFlags.HardDependency)]
   [BepInDependency("evaisa.lethallib", BepInDependency.DependencyFlags.SoftDependency)]
-  [BepInDependency("BMX.LobbyCompatibility", BepInDependency.DependencyFlags.SoftDependency)]
   [BepInDependency("mattymatty.LobbyControl", BepInDependency.DependencyFlags.SoftDependency)]
   [BepInIncompatibility("Ozzymops.DisableStormyWeather")]
   public class Plugin : BaseUnityPlugin
@@ -83,11 +82,6 @@ namespace WeatherRegistry
         typeof(Enum).GetMethod("ToString", []),
         typeof(EnumPatches).GetMethod(nameof(EnumPatches.LevelWeatherTypeEnumToStringHook))
       );
-
-      if (Chainloader.PluginInfos.ContainsKey("BMX.LobbyCompatibility"))
-      {
-        LobbyCompatibilityCompatibility.Init();
-      }
 
       JLLCompat = new JLLCompat("JacobG5.JLL");
 
