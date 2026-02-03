@@ -75,13 +75,16 @@
         </PackageReference>
 
         <!-- <PackageReference></PackageReference> -->
-
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
         <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*"/>
         <PackageReference Include="Lib.Harmony" Version="2.3.3" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
-        <PackageReference Include="Evaisa.LethalLib" Version="0.16.0" />
+        <PackageReference Include="mrov.MrovLib" Version="*-*" Publicize="true" PrivateAssets="all"/>
+
+        <PackageReference Include="Evaisa.LethalLib" Version="*-*" />
+        <PackageReference Include="TeamXiaolan.DawnLib" Version="*-*" PrivateAssets="all"/>
+        <PackageReference Include="TeamXiaolan.DawnLib.DuskMod" Version="*-*" PrivateAssets="all"/>
 
         <PackageReference Include="MinVer" Version="4.*" PrivateAssets="all" Private="false"/>
 
@@ -105,9 +108,9 @@
             <HintPath>$(LibraryDirectory)/Malfunctions.dll</HintPath>
         </Reference>
 
-        <Reference Include="MrovLib" PrivateAssets="all" Publicize="true">
-            <HintPath>$(DebugLibraryDirectory)/MrovLib.dll</HintPath>
-        </Reference>
+        <!-- <Reference Include="MrovLib" PrivateAssets="all" Publicize="true">
+            <HintPath>$(LibraryDirectory)/MrovLib.dll</HintPath>
+        </Reference> -->
     </ItemGroup>
 
     <Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
