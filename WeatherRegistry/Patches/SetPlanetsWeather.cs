@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Newtonsoft.Json;
@@ -73,7 +74,16 @@ namespace WeatherRegistry.Patches
           {
             Plugin.debugLogger.LogDebug("Weather selection algorithm: " + Settings.WeatherSelectionAlgorithm.GetType().Name);
 
-            newWeathers = Settings.WeatherSelectionAlgorithm.SelectWeathers(connectedPlayersOnServer, __instance);
+            try
+            {
+              newWeathers = Settings.WeatherSelectionAlgorithm.SelectWeathers(connectedPlayersOnServer, __instance);
+            }
+            catch (Exception ex)
+            {
+              Plugin.logger.LogError("An error occurred during weather selection: " + ex.Message);
+              Plugin.debugLogger.LogCustom(ex.StackTrace, BepInEx.Logging.LogLevel.Error, MrovLib.LoggingType.Debug);
+              throw;
+            }
           }
 
           WeatherManager.CurrentWeathers.SetWeathers(newWeathers);
