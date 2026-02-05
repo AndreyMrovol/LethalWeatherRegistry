@@ -100,11 +100,7 @@ namespace WeatherRegistry
 
     public override LevelRarity[] Value
     {
-      get
-      {
-
-        return ConfigHelper.ConvertStringToLevelRarities(this.ConfigEntryActive ? ConfigEntry.Value : this.DefaultValue);
-      }
+      get { return ConfigHelper.ConvertStringToLevelRarities(this.ConfigEntryActive ? ConfigEntry.Value : this.DefaultValue); }
     }
   }
 
@@ -118,11 +114,7 @@ namespace WeatherRegistry
 
     public override WeatherRarity[] Value
     {
-      get
-      {
-
-        return ConfigHelper.ConvertStringToWeatherWeights(this.ConfigEntryActive ? ConfigEntry.Value : this.DefaultValue);
-      }
+      get { return ConfigHelper.ConvertStringToWeatherWeights(this.ConfigEntryActive ? ConfigEntry.Value : this.DefaultValue); }
     }
   }
 

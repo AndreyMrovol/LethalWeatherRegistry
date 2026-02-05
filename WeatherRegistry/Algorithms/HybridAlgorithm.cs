@@ -69,7 +69,7 @@ internal class HybridWeatherSelection : WeatherSelectionAlgorithm
 
       if (!isDebugLoggingEnabled)
       {
-        weatherLog.Append($"\t");
+        weatherLog.Append('\t');
       }
       weatherLog.Append($"[{ConfigHelper.GetAlphanumericName(selectableLevel)}] ".PadRight(isDebugLoggingEnabled ? 0 : longestPlanetName + 4));
 

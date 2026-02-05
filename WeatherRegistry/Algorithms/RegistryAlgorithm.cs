@@ -47,7 +47,7 @@ internal class WeatherRegistryWeatherSelection : WeatherSelectionAlgorithm
 
       if (!isDebugLoggingEnabled)
       {
-        weatherLog.Append($"\t");
+        weatherLog.Append('\t');
       }
 
       weatherLog.Append($"[{ConfigHelper.GetAlphanumericName(level)}] ".PadRight(isDebugLoggingEnabled ? 0 : longestPlanetName + 4));
