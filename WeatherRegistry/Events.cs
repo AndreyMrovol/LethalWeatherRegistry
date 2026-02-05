@@ -1,4 +1,4 @@
-using WeatherRegistry.Events;
+using WeatherRegistry.Definitions;
 
 namespace WeatherRegistry
 {
@@ -15,11 +15,4 @@ namespace WeatherRegistry
 
     public static WeatherRegistryEvent<(SelectableLevel level, Weather weather)> ShipLanding = new();
   }
-}
-
-namespace WeatherRegistry.Events
-{
-  public class WeatherRegistryEvent<T> : MrovLib.Events.CustomEvent<T> { }
-
-  public class WeatherRegistryEvent : MrovLib.Events.CustomEvent { }
 }

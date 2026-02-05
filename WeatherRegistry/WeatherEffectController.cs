@@ -12,7 +12,6 @@ namespace WeatherRegistry
     // TODO: this can be called while in orbit lol
     // TODO: allow for calling this from WeatherController
 
-
     /// <summary>
     /// Sets the enable state of a weather effect for the current time of day.
     /// </summary>
@@ -112,7 +111,6 @@ namespace WeatherRegistry
       try
       {
         // use biggest value from the vanilla weathers list in Defaults
-
         bool doesWeatherListContainVanillaOnes = weathers.Any(weather => Defaults.VanillaWeathers.Contains(weather.VanillaWeatherType));
 
         SunAnimator.OverrideSunAnimator(
@@ -168,8 +166,6 @@ namespace WeatherRegistry
           JLLEffect.effectObject?.SetActive(false);
         }
       }
-
-      
     }
 
     public static void EnableCurrentWeatherEffects()
