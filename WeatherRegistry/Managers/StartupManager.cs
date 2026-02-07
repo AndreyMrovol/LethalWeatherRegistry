@@ -258,7 +258,7 @@ namespace WeatherRegistry.Managers
 
       Logger.LogDebug($"Weathers: {WeatherManager.Weathers.Count}");
 
-      RandomWeathersManager.Init();
+      // TODO: this is where RandomWeatherManager should be called
 
       foreach (Weather weather in WeatherManager.Weathers)
       {
@@ -421,7 +421,8 @@ namespace WeatherRegistry.Managers
         RandomWeatherWithVariables randomWeather = level.randomWeathers.FirstOrDefault(rw => rw.weatherType == weather.VanillaWeatherType);
 
         bool isLevelBlacklisted =
-          RandomWeathersManager.BlacklistedWeathers.GetValueOrDefault(level)?.Contains(weather.VanillaWeatherType) == true;
+          // RandomWeathersManager.BlacklistedWeathers.GetValueOrDefault(level)?.Contains(weather.VanillaWeatherType) == true;
+          false;
 
         bool isLevelToApply = LevelsToApply.Contains(level) && !isLevelBlacklisted;
 
