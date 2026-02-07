@@ -32,7 +32,7 @@ namespace WeatherRegistry.Patches
             string command = words[1];
             string[] arguments = words.Skip(2).ToArray();
 
-            TerminalNode result = HostTerminalCommands.RunWeatherCommand(command, arguments);
+            TerminalNode result = TerminalCommands.RunWeatherCommand(command, arguments);
 
             __result = result;
             return false;

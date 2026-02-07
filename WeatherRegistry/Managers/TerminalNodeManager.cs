@@ -19,11 +19,7 @@ namespace WeatherRegistry.Managers
       ManagedTerminalNodes = [];
       ForecastTerminalNodes = [];
 
-      if (Plugin.debugLogger.ShouldLog(LoggingType.Debug))
-      {
-        Plugin.debugLogger.LogInfo("Initializing Weather Host Terminal Commands");
-        HostTerminalCommands.Init(AddVerb("Weather", "weather"));
-      }
+      TerminalCommands.Init(AddVerb("Weather", "weather"));
     }
 
     public static TerminalKeyword AddVerb(string name, string word)
