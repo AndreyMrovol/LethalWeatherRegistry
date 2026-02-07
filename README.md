@@ -1,6 +1,11 @@
 # WeatherRegistry
 
 A Lethal Company mod for controlling game's weather system.
+<div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
+  <img src="https://img.shields.io/codefactor/grade/github/andreymrovol/LethalWeatherRegistry?style=flat&logo=codefactor&logoColor=white&color=83E6FB&cacheSeconds=1200" alt="CodeFactor Grade">
+  <img src="https://img.shields.io/thunderstore/dt/mrov/WeatherRegistry?style=flat&logo=thunderstore&logoColor=white&color=83E6FB&cacheSeconds=1200" alt="Thunderstore Downloads">
+  <img src="https://img.shields.io/github/actions/workflow/status/AndreyMrovol/LethalWeatherRegistry/build.yml?branch=main&style=flat&logo=github&logoColor=white&color=83E6FB&cacheSeconds=1200" alt="GitHub Workflow Status">
+**Lethal Company mod for controlling the game's weather system.**
 
 ## Features
 
@@ -55,6 +60,10 @@ Thank you to everyone who contributed to this project, reported bugs and suggest
 - [XuXiaolan](https://thunderstore.io/c/lethal-company/p/XuXiaolan/) for helping me test the mod on various occasions
 - [Beanie](https://thunderstore.io/c/lethal-company/p/Beaniebe/), [Monty](https://thunderstore.io/c/lethal-company/p/super_fucking_cool_and_badass_team/Biodiversity/), [Kenji](https://thunderstore.io/c/lethal-company/p/rectorado/), [Autumnis](https://thunderstore.io/c/lethal-company/p/Autumnis/) for helping me playtest the mod _a lot of times_
 - [Zigzag](https://thunderstore.io/c/lethal-company/p/Zigzag/) for sending me multiple detailed bug reports
+
+and to **everyone** submitting their bug reports and testing the releases!
+
+<br>
 
 Code used in this project is based on the following works:
 
