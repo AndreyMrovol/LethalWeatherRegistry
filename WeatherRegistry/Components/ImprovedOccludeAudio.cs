@@ -2,8 +2,6 @@ using System;
 using GameNetcodeStuff;
 using UnityEngine;
 
-// TODO: rewrite this component into a transpiler of OccludeAudio
-
 namespace WeatherRegistry.Components
 {
   [RequireComponent(typeof(AudioSource))]
