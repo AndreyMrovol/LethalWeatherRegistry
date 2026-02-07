@@ -8,6 +8,13 @@ namespace WeatherRegistry.Definitions
 
     public int TerminalSound { get; set; } = -1;
 
+    public bool HostOnly = false;
+
+    public bool ShouldRun()
+    {
+      return (HostOnly && !StartOfRound.Instance.IsHost) ? false : true;
+    }
+
     public virtual string Execute(string[] args)
     {
       return "";

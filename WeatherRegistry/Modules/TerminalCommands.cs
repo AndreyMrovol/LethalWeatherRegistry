@@ -6,7 +6,7 @@ using static WeatherRegistry.Modules.Forecasts;
 
 namespace WeatherRegistry.Modules
 {
-  public static class HostTerminalCommands
+  public static class TerminalCommands
   {
     public static TerminalKeyword WeatherVerb;
     public static TerminalNode CommandNode;
@@ -19,19 +19,30 @@ namespace WeatherRegistry.Modules
       CommandNode = TerminalNodeManager.CreateTerminalNode("Weather Commands");
       CommandNode.acceptAnything = false;
 
-      WeatherChangeCommandNode ChangeWeatherCommand = new("change") { Type = CommandType.Command, TerminalSound = 3 };
+      WeatherChangeCommandNode ChangeWeatherCommand =
+        new("change")
+        {
+          Type = CommandType.Command,
+          TerminalSound = 3,
+          HostOnly = true,
+        };
       RegisteredCommands.Add(ChangeWeatherCommand.Name, ChangeWeatherCommand);
 
       foreach (Weather weather in WeatherManager.Weathers)
       {
         WeatherChangeCommandNode ChangeWeatherSubCommand =
-          new(weather.GetAlphanumericName()) { CommandArgument = weather.GetAlphanumericName().ToLower(), TerminalSound = 3, };
+          new(weather.GetAlphanumericName())
+          {
+            CommandArgument = weather.GetAlphanumericName().ToLower(),
+            TerminalSound = 3,
+            HostOnly = true
+          };
 
         ChangeWeatherCommand.Subcommands.Add(ChangeWeatherSubCommand);
       }
 
       WeatherForecastCommandNode ForecastWeatherCommand = new("forecast") { Type = CommandType.Command };
-      HostTerminalCommands.RegisteredCommands.Add(ForecastWeatherCommand.Name, ForecastWeatherCommand);
+      TerminalCommands.RegisteredCommands.Add(ForecastWeatherCommand.Name, ForecastWeatherCommand);
 
       foreach (SelectableLevel level in MrovLib.LevelHelper.Levels)
       {
