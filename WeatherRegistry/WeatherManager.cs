@@ -12,7 +12,7 @@ namespace WeatherRegistry
 {
   public static class WeatherManager
   {
-    internal static bool IsSetupFinished = false;
+    public static bool IsSetupFinished { get; internal set; } = false;
 
     public static List<Weather> RegisteredWeathers { get; internal set; } = [];
 
