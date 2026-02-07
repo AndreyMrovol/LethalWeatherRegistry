@@ -59,13 +59,23 @@ namespace WeatherRegistry
       {
         MainMenuInit();
         ConfigManager.Instance.RemoveOrphanedEntries();
-
-        ConfigManager.configFile.SettingChanged += (sender, args) => ConfigManager.SettingChanged(sender, args);
       });
+
+      MrovLib.EventManager.SceneLoaded.AddListener(
+        (scene) =>
+        {
+          if (scene == "MainMenu")
+          {
+            ConfigManager.configFile.SettingChanged -= (sender, args) => ConfigManager.SettingChanged(sender, args);
+          }
+        }
+      );
 
       EventManager.SetupFinished.AddListener(() =>
       {
         TerminalNodeManager.Init();
+
+        ConfigManager.configFile.SettingChanged += (sender, args) => ConfigManager.SettingChanged(sender, args);
       });
 
       if (Chainloader.PluginInfos.ContainsKey("evaisa.lethallib"))

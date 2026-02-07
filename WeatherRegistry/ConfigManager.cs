@@ -121,7 +121,7 @@ namespace WeatherRegistry
     {
       ConfigEntryBase changedEntry = args.ChangedSetting;
 
-      Plugin.logger.LogInfo(
+      Plugin.debugLogger.LogInfo(
         $"Setting changed: {changedEntry.Definition.Section}/{changedEntry.Definition.Key} changed to {changedEntry.BoxedValue}"
       );
     }
