@@ -100,7 +100,12 @@ namespace WeatherRegistry
 
       var entriesToRemove = orphanedEntries.Where(entry => entry.Key.Section.Contains("|")).ToList();
 
-      Plugin.logger.LogWarning($"Found {entriesToRemove.Count} orphaned config entries.");
+      if (entriesToRemove.Count == 0)
+      {
+        return;
+      }
+
+      Plugin.logger.LogWarning($"Found {entriesToRemove.Count} orphaned config entries, removing...");
 
       entriesToRemove.ForEach(entry =>
       {
