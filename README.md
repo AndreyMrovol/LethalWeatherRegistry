@@ -1,42 +1,60 @@
 # WeatherRegistry
 
-A Lethal Company mod for controlling game's weather system.
 <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
   <img src="https://img.shields.io/codefactor/grade/github/andreymrovol/LethalWeatherRegistry?style=flat&logo=codefactor&logoColor=white&color=83E6FB&cacheSeconds=1200" alt="CodeFactor Grade">
   <img src="https://img.shields.io/thunderstore/dt/mrov/WeatherRegistry?style=flat&logo=thunderstore&logoColor=white&color=83E6FB&cacheSeconds=1200" alt="Thunderstore Downloads">
   <img src="https://img.shields.io/github/actions/workflow/status/AndreyMrovol/LethalWeatherRegistry/build.yml?branch=main&style=flat&logo=github&logoColor=white&color=83E6FB&cacheSeconds=1200" alt="GitHub Workflow Status">
-**Lethal Company mod for controlling the game's weather system.**
+  <img src="https://img.shields.io/github/v/release/AndreyMrovol/LethalWeatherRegistry?style=flat&logo=github&logoColor=white&color=83E6FB&cacheSeconds=1200" alt="GitHub Release Version">
+
+  </div>
+<br><br>
+
+**A mod for Lethal Company allowing you to control the game's weather system.**
 
 ## Features
 
 - A system for registering custom weathers and weather effects
 - Weight-based weather selection system
+- Weather-to-weather transition weights for creating weather progression patterns
 - Level-based weather filtering system
 - Scrap value/amount multipliers based on active weather
 - Editor support for creating new weathers
-- Weather effect overrides for customizing existing weather visuals
+- Multiple weather selection algorithms (Registry weighted, Vanilla, and Hybrid)
+- Hot-reloadable configuration system that applies changes after completing the current day
+- Terminal commands for forecasting and changing weather conditions
+- and many more!
 
 ## Editor components
 
 WeatherRegistry provides Unity Editor components to help mod developers create custom weather systems:
 
-- `WeatherDefinition`: Create new weathers without writing code, offering the same capabilities as code-based weather creation
+- [`WeatherDefinition`](https://lethal.mrov.dev/weatherregistry/references/weatherdefinition/): Create new weathers without writing code, offering the same capabilities as code-based weather creation
+- [`ImprovedWeatherEffect`](https://lethal.mrov.dev/weatherregistry/references/improvedweathereffect/): Create custom weather effects with WeatherRegistry
 - `EffectOverride`: Design custom weather effect overrides directly in the Unity Editor
 - Visual tools for configuring weather properties, effects, and transitions
 
-## Command support
+## Terminal Commands
 
-- `Forecast` command for viewing probabilites of weathers
+WeatherRegistry supports terminal commands for managing and debugging weathers:
+
+- `weather forecast <moon>` for viewing probabilites of weathers
+- `weather change <weather>` for changing the current weather (host only)
 
 ## Weight-based weather selection system
 
-Contrary to the vanilla algorithm, this mod uses a weight-based system for selecting weathers. You can set the weights based on 3 criteria:
+WeatherRegistry uses a priority-based weight system instead of vanilla's hardcoded weather selection. Each weather can have multiple weight configurations, and the algorithm selects which one to use based on availability (checked in order):
 
-1. Level weight: the weight of the weather based on specific level
-2. Weather-to-weather weight: the weight of the weather based on the previous weather
-3. Default weight: the base weight of the weather
+1. **Level-specific weight**: Weight assigned to a specific moon (e.g., "Experimentation@200")
+2. **Weather-to-weather weight**: Weight based on the previous day's weather (e.g., if yesterday was Foggy, today's Rainy weather uses its "after Foggy" weight)
+3. **Default weight**: Fallback weight used when no specific conditions match
 
-During the weather selection process, the algorithm will try to use one of the weights in the order listed above.
+**Example:** If you want Rainy weather to be:
+
+- Common on Experimentation (weight: 200)
+- Very likely after Foggy weather (weight: 150)
+- Rare otherwise (default weight: 25)
+
+The algorithm automatically uses the most specific applicable weight during selection.
 
 ## For developers
 
@@ -46,7 +64,7 @@ Install the mod from [Nuget](https://www.nuget.org/packages/mrov.WeatherRegistry
 <PackageReference Include="mrov.WeatherRegistry" Version="*-*" />
 ```
 
-To install the mod in Unity Editor, add WeatherRegistry and [MrovLib](https://github.com/AndreyMrovol/LethalMrovLib/releases) dlls to your project. To create a new weather, create a new `WeatherDefinition` object.
+To install the mod in Unity Editor, add WeatherRegistry and [MrovLib](https://github.com/AndreyMrovol/LethalMrovLib/releases) dlls to your project. To create a new weather, create a new `WeatherDefinition` object. For more information, check out the [API documentation (WIP)](https://lethal.mrov.dev/weatherregistry/references/weatherdefinition/).
 
 ## License
 
