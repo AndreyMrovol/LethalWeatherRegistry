@@ -15,6 +15,8 @@ namespace WeatherRegistry.Modules
 
     public static void Init(TerminalKeyword verb)
     {
+      RegisteredCommands.Clear();
+
       WeatherVerb = verb;
       CommandNode = TerminalNodeManager.CreateTerminalNode("Weather Commands");
       CommandNode.acceptAnything = false;
