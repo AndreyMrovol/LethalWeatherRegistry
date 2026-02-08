@@ -94,13 +94,6 @@ namespace WeatherRegistry
       foreach (RandomWeatherWithVariables randomWeather in randomWeathers)
       {
         Logger.LogWarning($"Adding random weather {randomWeather.weatherType} to {levelName}");
-
-        // WeatherManager.GetWeather(randomWeather.weatherType).WeatherVariables[level] = new()
-        // {
-        //   Level = level,
-        //   WeatherVariable1 = randomWeather.weatherVariable,
-        //   WeatherVariable2 = randomWeather.weatherVariable2
-        // };
       }
     }
 
@@ -118,13 +111,6 @@ namespace WeatherRegistry
       level.randomWeathers = randomWeathers.Distinct().ToArray();
 
       Plugin.logger.LogInfo($"Adding random weather {randomWeather.weatherType} to {ConfigHelper.GetAlphanumericName(level)}");
-
-      // WeatherManager.GetWeather(randomWeather.weatherType).WeatherVariables[level] = new()
-      // {
-      //   Level = level,
-      //   WeatherVariable1 = randomWeather.weatherVariable,
-      //   WeatherVariable2 = randomWeather.weatherVariable2
-      // };
     }
 
     public static void RemoveRandomWeather(SelectableLevel level, RandomWeatherWithVariables randomWeather)
@@ -132,8 +118,6 @@ namespace WeatherRegistry
       List<RandomWeatherWithVariables> randomWeathers = level.randomWeathers.ToList();
       randomWeathers.Remove(randomWeather);
       level.randomWeathers = randomWeathers.ToArray();
-
-      // WeatherManager.GetWeather(randomWeather.weatherType).WeatherVariables.Remove(level);
     }
 
     public static void RemoveRandomWeather(SelectableLevel level, LevelWeatherType weatherType)
