@@ -64,7 +64,7 @@ Install the mod from [Nuget](https://www.nuget.org/packages/mrov.WeatherRegistry
 <PackageReference Include="mrov.WeatherRegistry" Version="*-*" />
 ```
 
-To install the mod in Unity Editor, add WeatherRegistry and [MrovLib](https://github.com/AndreyMrovol/LethalMrovLib/releases) dlls to your project. To create a new weather, create a new `WeatherDefinition` object. For more information, check out the [API documentation (WIP)](https://lethal.mrov.dev/weatherregistry/references/weatherdefinition/).
+To install the mod in Unity Editor, add WeatherRegistry and [MrovLib](https://github.com/AndreyMrovol/LethalMrovLib/releases) dlls to your project. To create a new weather, create a new `WeatherDefinition` object. For more information, check out the ["Creating and bundling weathers" guide (WIP)](https://lethal.mrov.dev/weatherregistry/guides/bundling/).
 
 ## License
 
