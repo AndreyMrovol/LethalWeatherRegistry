@@ -108,6 +108,10 @@
             <HintPath>$(LibraryDirectory)/Malfunctions.dll</HintPath>
         </Reference>
 
+        <Reference Include="CodeRebirth" PrivateAssets="all" Publicize="true">
+            <HintPath>$(LibraryDirectory)/CodeRebirth.dll</HintPath>
+        </Reference>
+
         <!-- <Reference Include="MrovLib" PrivateAssets="all" Publicize="true">
             <HintPath>$(LibraryDirectory)/MrovLib.dll</HintPath>
         </Reference> -->

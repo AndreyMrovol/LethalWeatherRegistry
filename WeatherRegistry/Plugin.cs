@@ -34,6 +34,7 @@ namespace WeatherRegistry
     internal static OrbitsCompat OrbitsCompat;
     internal static ImperiumCompat ImperiumCompat;
     internal static MalfunctionsCompat MalfunctionsCompat;
+    internal static CRCompat CRCompat;
 
     internal static Hook WeatherTypeEnumHook;
 
@@ -107,6 +108,8 @@ namespace WeatherRegistry
 
       MalfunctionsCompat = new MalfunctionsCompat("com.zealsprince.malfunctions");
 
+      CRCompat = new CRCompat("CodeRebirth", "1.4.1");
+
       // Plugin startup logic
       Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
@@ -114,6 +117,8 @@ namespace WeatherRegistry
     private void MainMenuInit()
     {
       ImperiumCompat.Init();
+
+      CRCompat.Init();
     }
   }
 }
