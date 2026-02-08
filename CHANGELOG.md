@@ -1,4 +1,47 @@
+# 0.8.0
+
+### **_Breaking changes_**:
+
+- moved `Events.RegistryWeatherEvent` to `Definitions.RegistryWeatherEvent`
+- changed `WeatherManager.IsSetupFinished` to be a property instead of a field
+- removed `Weather.WeatherVariables`
+
+---
+
+- `WeatherDefinition` now uses `TMP_ColorGradient` instead of simple `Color` for weather colors
+- completely reworked `AssetBundleManager` for improved asset bundle loading
+- added `TerminalCommands` module for terminal commands
+  - `weather forecast <planet>` - shows the possible weathers on the selected planet
+    - this replaces the old `forecast <planet> ` functionality
+  - `weather change <weather>` - changes the current weather to the selected one (only works if you're the host)
+- added a hot-reloading mechanism for configs
+  - all changed settings will be applied after completing the current day
+- added `ImprovedRandomWeathers` object for moon creators
+  - this allows them to set a custom list of weathers that can be randomly picked for their moon instead of using the vanilla's `randomWeathers` list
+  - removed `ModdedWeathersMatcher` since it's no longer needed
+- added `WeatherDependentObject` component for moon creators (thank you, `jacobg5`!)
+  - this allows them to make objects that are enabled/disabled based on the current weather
+  - it's a simpler version of [JWeatherObject](https://github.com/JacobG55/JLL/blob/main/Components/JWeatherObject.cs)
+- added bundle blacklist as a config option to prevent loading specific asset bundles
+- added a config option to hide `Weather: None` from the ship's map screen (fix for [#32](https://github.com/AndreyMrovol/LethalWeatherRegistry/issues/32))
+- added `Weather.ShortenedName` property for easier weather name display
+- added value multiplier option for `GiantKiwi` (Big Bird)
+- added value multiplier option for `LocustBees` (Locust Bees)
+- fixed an issue with `FacilityMeltdown` causing scrap multipliers to be applied twice (thanks, `zetaarcade`!)
+
+---
+
+- moved `ImprovedWeatherEffect` to `Definitions` namespace
+- moved `Startup` to `Managers/`
+- renamed `WeatherOverrideManager.cs` to `OverridesManager.cs`
+- moved `ConfigHandler.cs` to `Utils/`
+- moved `WeightHandler.cs` to `Utils/`
+- moved `CurrentWeathers.cs` to `Modules/`
+- moved `WeatherCalculation.cs` to `Modules/`
+- moved various enums into their own namespace
+
 # 0.7.5
+
 - updated for v73
 - fixed the selection algorithms using wrong seed (thanks, `tomatobird8`!)
 - fixed clear weather showing up in the vanilla terminal
