@@ -32,7 +32,7 @@ namespace WeatherRegistry.Patches
         new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(GiantKiwiAISpawnPatch), nameof(AdjustEggValuesForWeather)))
       );
 
-      Plugin.logger.LogInfo("Successfully patched SpawnNestEggs with weather multiplier adjustment!");
+      Plugin.logger.LogDebug("Successfully patched SpawnNestEggs with weather multiplier adjustment!");
       return matcher.InstructionEnumeration();
     }
 
