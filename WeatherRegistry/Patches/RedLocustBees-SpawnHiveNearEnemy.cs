@@ -15,8 +15,8 @@ namespace WeatherRegistry.Patches
     {
       if (Chainloader.PluginInfos.ContainsKey("butterystancakes.lethalcompany.butteryfixes"))
       {
-        Plugin.logger.LogInfo("ButteryFixes detected, using ButteryFixes transpiler");
-        return SpawnHiveButteryFixesTranspiler(instructions);
+        // i cannot get this motherfucking bullshit to work as a transpiler without breaking everything, i give up
+        return instructions;
       }
 
       var matcher = new CodeMatcher(instructions).MatchForward(
@@ -67,7 +67,7 @@ namespace WeatherRegistry.Patches
       return matcher.InstructionEnumeration();
     }
 
-    private static int GetAdjustedHiveValue(int originalValue)
+    internal static int GetAdjustedHiveValue(int originalValue)
     {
       Weather currentWeather = WeatherManager.GetCurrentLevelWeather();
 
