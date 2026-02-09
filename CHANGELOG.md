@@ -1,3 +1,9 @@
+# 0.8.1
+
+- fixed an error with old versions of CodeRebirth (thanks, `xuxiaolan`!)
+- fixed an issue with `TerminalCommand` module not working after lobby reload (thanks, `lunxara`!)
+- fixed an issue with beehive patches not working correctly with `ButteryFixes` present (thanks, `kybercrow`!)
+
 # 0.8.0
 
 ### **_Breaking changes_**:
