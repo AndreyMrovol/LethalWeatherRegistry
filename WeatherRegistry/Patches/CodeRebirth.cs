@@ -67,10 +67,20 @@ namespace WeatherRegistry.Patches
       // Remove the original 6 instructions
       matcher.RemoveInstructions(6);
 
+      // Get the property getter method
+      var dawnMoonInfoType = AccessTools.TypeByName("Dawn.DawnMoonInfo");
+      var levelProperty = AccessTools.Property(dawnMoonInfoType, "Level");
+
+      if (levelProperty == null)
+      {
+        Plugin.logger.LogError("Failed to find Dawn.DawnMoonInfo.Level property!");
+        return instructions;
+      }
+
       // Call to HandleWRSetupWithOxyde method with SelectableLevel parameter
       matcher.Insert(
         new CodeInstruction(OpCodes.Ldloc_0), // Load moonInfo
-        new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(AccessTools.TypeByName("Dawn.DawnMoonInfo"), "Level")), // Get moonInfo.Level
+        new CodeInstruction(OpCodes.Callvirt, levelProperty.GetGetMethod()), // Call moonInfo.get_Level()
         new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(CodeRebirthPatches), nameof(HandleWRSetupWithOxyde))),
         new CodeInstruction(OpCodes.Pop) // Pop the IEnumerator return value
       );
