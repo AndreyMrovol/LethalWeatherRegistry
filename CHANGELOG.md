@@ -1,3 +1,8 @@
+# 0.8.3
+
+- MAYBE HOPEFULLY fixed an issue with beehive patches not working correctly with `ButteryFixes` present again again (thanks, `satoru_satou0121`!)
+- fixed an issue with CodeRebirth patch using a wrong operand
+
 # 0.8.2
 
 - fixed an issue with beehive patches not working correctly with `ButteryFixes` present AGAIN (thanks: `pacoito`, `xan3000`, `kybercrow`!)
