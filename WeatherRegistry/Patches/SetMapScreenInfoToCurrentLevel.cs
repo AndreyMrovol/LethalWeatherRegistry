@@ -79,7 +79,6 @@ namespace WeatherRegistry.Patches
       gradientApplier.ApplyGradientsFromTags(___screenLevelDescription.text);
 
       __instance.screenLevelVideoReel.enabled = Settings.PlanetVideos;
-      Plugin.debugLogger.LogDebug("Video reel enabled: " + Settings.PlanetVideos);
 
       EventManager.MapScreenUpdated.Invoke(
         (level: ___currentLevel, weather: WeatherManager.GetCurrentWeather(___currentLevel), screenText: stringBuilder.ToString())
