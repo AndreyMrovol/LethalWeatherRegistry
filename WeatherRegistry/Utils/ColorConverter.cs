@@ -9,7 +9,7 @@ namespace WeatherRegistry.Utils
     {
       color.a = 1f;
 
-      TMP_ColorGradient gradient = CreateColorGradientInstance();
+      TMP_ColorGradient gradient = ScriptableObject.CreateInstance<TMP_ColorGradient>();
       gradient.colorMode = ColorMode.Single;
 
       gradient.topLeft = color;
@@ -18,11 +18,6 @@ namespace WeatherRegistry.Utils
       gradient.bottomRight = color;
 
       return gradient;
-    }
-
-    public static TMP_ColorGradient CreateColorGradientInstance()
-    {
-      return ScriptableObject.CreateInstance<TMP_ColorGradient>();
     }
 
     public static string ToHex(Color color)

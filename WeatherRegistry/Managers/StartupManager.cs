@@ -68,14 +68,8 @@ namespace WeatherRegistry.Managers
 
       Logger.LogInfo("Creating NoneWeather type");
       // Register clear weather as a weather
-
-      ImprovedWeatherEffect noneEffect = InstanceCreator.CreateInstance<ImprovedWeatherEffect>();
-      noneEffect.name = "None";
-      noneEffect.EffectObject = null;
-      noneEffect.WorldObject = null;
-
       Weather noneWeather =
-        new(effect: noneEffect)
+        new(effect: new ImprovedWeatherEffect(null, null))
         {
           Type = WeatherType.Clear,
           ColorGradient = ColorConverter.ToTMPColorGradient(Defaults.VanillaWeatherColors[LevelWeatherType.None]),
@@ -114,13 +108,8 @@ namespace WeatherRegistry.Managers
         WeatherType weatherTypeType = isVanilla ? WeatherType.Vanilla : WeatherType.Modded;
         Color weatherColor = isVanilla ? Defaults.VanillaWeatherColors[weatherType] : Color.blue;
 
-        ImprovedWeatherEffect weatherEffect = Utils.InstanceCreator.CreateInstance<ImprovedWeatherEffect>();
-        weatherEffect.EffectObject = effect.effectObject;
-        weatherEffect.WorldObject = effect.effectPermanentObject;
-        weatherEffect.SunAnimatorBool = effect.sunAnimatorBool;
-
-        weatherEffect.EffectObject?.SetActive(false);
-        weatherEffect.WorldObject?.SetActive(false);
+        ImprovedWeatherEffect weatherEffect =
+          new(effect.effectObject, effect.effectPermanentObject) { SunAnimatorBool = effect.sunAnimatorBool, };
 
         Weather weather =
           new(weatherName, weatherEffect)
@@ -217,17 +206,13 @@ namespace WeatherRegistry.Managers
 
         if (entry.Value.Effect == null)
         {
-          entry.Value.Effect = Utils.InstanceCreator.CreateInstance<ImprovedWeatherEffect>();
+          entry.Value.Effect = new ImprovedWeatherEffect(null, null) { name = entry.Value.Name };
         }
 
         if (entry.Value.Effect.VanillaWeatherEffect != null)
         {
           entry.Value.Effect.name = entry.Value.Name;
           weatherList[entry.Key] = entry.Value.Effect.VanillaWeatherEffect;
-
-          entry.Value.Effect.EffectObject?.SetActive(false);
-          entry.Value.Effect.WorldObject?.SetActive(false);
-
           continue;
         }
         else

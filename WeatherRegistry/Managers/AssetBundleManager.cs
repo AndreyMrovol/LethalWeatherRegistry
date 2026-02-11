@@ -63,12 +63,13 @@ namespace WeatherRegistry.Managers
           }
         }
 
-        ImprovedWeatherEffect newImprovedWeatherEffect = InstanceCreator.CreateInstance<ImprovedWeatherEffect>();
-        newImprovedWeatherEffect.EffectObject = effectObject;
-        newImprovedWeatherEffect.WorldObject = effectPermanentObject;
-        newImprovedWeatherEffect.SunAnimatorBool = WeatherDefinition.Effect.SunAnimatorBool;
-        newImprovedWeatherEffect.DefaultVariable1 = WeatherDefinition.Effect.DefaultVariable1;
-        newImprovedWeatherEffect.DefaultVariable2 = WeatherDefinition.Effect.DefaultVariable2;
+        ImprovedWeatherEffect newImprovedWeatherEffect =
+          new(effectObject, effectPermanentObject)
+          {
+            SunAnimatorBool = WeatherDefinition.Effect.SunAnimatorBool,
+            DefaultVariable1 = WeatherDefinition.Effect.DefaultVariable1,
+            DefaultVariable2 = WeatherDefinition.Effect.DefaultVariable2
+          };
 
         if (WeatherDefinition.ColorGradient == null)
         {

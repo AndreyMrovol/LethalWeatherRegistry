@@ -81,11 +81,9 @@ namespace WeatherRegistry.Utils
     // Get gradients from settings
     TMP_ColorGradient GetColoredString(string text)
     {
-      TMP_ColorGradient pickedColor = Settings.ScreenMapColors.TryGetValue(text, out TMP_ColorGradient value)
-        ? value
-        : ColorConverter.CreateColorGradientInstance();
+      TMP_ColorGradient pickedColor = Settings.ScreenMapColors.TryGetValue(text, out TMP_ColorGradient value) ? value : new TMP_ColorGradient();
 
-      if (pickedColor != ColorConverter.CreateColorGradientInstance())
+      if (pickedColor != new TMP_ColorGradient())
       {
         // add 10% of green value to make the editor color correctly display in-game (v70 screen color change)
         Color adjustedTopLeft = new(pickedColor.topLeft.r, pickedColor.topLeft.g * 1.1f, pickedColor.topLeft.b, pickedColor.topLeft.a);
@@ -96,15 +94,15 @@ namespace WeatherRegistry.Utils
           new(pickedColor.bottomRight.r, pickedColor.bottomRight.g * 1.1f, pickedColor.bottomRight.b, pickedColor.bottomRight.a);
 
         // Create a new gradient with adjusted colors (if you need to store it)
-        TMP_ColorGradient newPickedColor = ColorConverter.CreateColorGradientInstance();
-        newPickedColor.topLeft = adjustedTopLeft;
-        newPickedColor.topRight = adjustedTopRight;
-        newPickedColor.bottomLeft = adjustedBottomLeft;
-        newPickedColor.bottomRight = adjustedBottomRight;
-        newPickedColor.colorMode = pickedColor.colorMode;
-        newPickedColor.name = pickedColor.name;
-
-        pickedColor = newPickedColor;
+        pickedColor = new()
+        {
+          topLeft = adjustedTopLeft,
+          topRight = adjustedTopRight,
+          bottomLeft = adjustedBottomLeft,
+          bottomRight = adjustedBottomRight,
+          colorMode = pickedColor.colorMode,
+          name = pickedColor.name
+        };
       }
 
       Plugin.debugLogger.LogDebug($"Picked gradient for '{text}': {pickedColor.name}");
