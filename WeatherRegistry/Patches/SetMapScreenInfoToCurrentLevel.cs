@@ -136,9 +136,9 @@ namespace WeatherRegistry.Patches
       }
 
       string outputString = "";
-      Regex split = new(@"(\/)|(\?)|(>)|(\+)");
+      Regex splitRegex = new(@"(\/)|(\?)|(>)|(\+)");
 
-      split
+      splitRegex
         .Split(currentWeatherString)
         .ToList()
         .ForEach(word =>
@@ -148,11 +148,17 @@ namespace WeatherRegistry.Patches
           // resolve weather name string into color using Settings.ScreenMapColors dictionary
           // so other mods (like weathertweaks) can add their own colors and symbols
 
+          if (splitRegex.IsMatch(newWord))
+          {
+            newWord = Defaults.SpecialSymbolMap.TryGetValue(newWord, out string mapped) ? mapped : newWord;
+          }
+
           TMP_ColorGradient pickedColor = Settings.ScreenMapColors.TryGetValue(newWord, out TMP_ColorGradient value)
             ? value
             : new TMP_ColorGradient();
 
-          outputString += pickedColor != new TMP_ColorGradient() ? $"<gradient={newWord}>{word}</gradient>" : $"{newWord}";
+          string toAdd = pickedColor != new TMP_ColorGradient() ? $"<gradient={newWord}>{word}</gradient>" : $"{newWord}";
+          outputString += toAdd;
         });
 
       return outputString;
