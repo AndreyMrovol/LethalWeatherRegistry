@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
@@ -21,8 +22,10 @@ namespace WeatherRegistry.Utils
     public void ApplyGradientsFromTags(string text)
     {
       // Pattern to match <gradient=name>content</gradient>
-      string pattern = @"<gradient=""?([^"">]+)""?>(.*?)</gradient>";
-      MatchCollection matches = Regex.Matches(text, pattern);
+      string gradientPattern = @"<gradient=""?([^"">]+)""?>(.*?)</gradient>";
+      // Pattern to match any opening tag with attributes
+      string tagPattern = @"\<(?:size|cspace)+(?:\=[^\>]*)*?\>";
+      MatchCollection matches = Regex.Matches(text, gradientPattern);
 
       if (matches.Count == 0)
       {
@@ -56,12 +59,12 @@ namespace WeatherRegistry.Utils
       }
 
       // Remove all gradient tags from text
-      string cleanText = Regex.Replace(text, pattern, "$2");
+      string cleanText = Regex.Replace(text, gradientPattern, "$2");
       textComponent.text = cleanText;
       textComponent.ForceMeshUpdate();
 
       // Calculate actual positions and apply gradients
-      int cumulativeOffset = 0;
+      int cumulativeOffset = Regex.Matches(text, tagPattern).Sum(m => m.Length);
 
       foreach (GradientInfo info in gradientInfos)
       {
