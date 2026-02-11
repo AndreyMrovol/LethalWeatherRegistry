@@ -1,3 +1,8 @@
+# 0.8.4
+
+- fixed `>` symbol and `<size>` tags breaking gradient applying (thanks, `zigzagawaka`!)
+- fixed `ScriptableObject` warnings originating from Registry
+
 # 0.8.3
 
 - MAYBE HOPEFULLY fixed an issue with beehive patches not working correctly with `ButteryFixes` present again again (thanks, `satoru_satou0121`!)
