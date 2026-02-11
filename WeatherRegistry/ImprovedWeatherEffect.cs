@@ -1,3 +1,4 @@
+using System;
 using Newtonsoft.Json;
 using UnityEngine;
 using WeatherRegistry.Managers;
@@ -71,6 +72,7 @@ namespace WeatherRegistry
       }
     }
 
+    [Obsolete("Use Utils.InstanceCreator<ImprovedWeatherEffect> instead!")]
     public ImprovedWeatherEffect(GameObject effectObject, GameObject worldObject)
     {
       EffectObject = effectObject;
