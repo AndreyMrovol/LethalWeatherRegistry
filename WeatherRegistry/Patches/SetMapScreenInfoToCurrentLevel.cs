@@ -154,9 +154,9 @@ namespace WeatherRegistry.Patches
 
           TMP_ColorGradient pickedColor = Settings.ScreenMapColors.TryGetValue(newWord, out TMP_ColorGradient value)
             ? value
-            : new TMP_ColorGradient();
+            : ColorConverter.CreateColorGradientInstance();
 
-          string toAdd = pickedColor != new TMP_ColorGradient() ? $"<gradient={newWord}>{word}</gradient>" : $"{newWord}";
+          string toAdd = pickedColor != ColorConverter.CreateColorGradientInstance() ? $"<gradient={newWord}>{word}</gradient>" : $"{newWord}";
           outputString += toAdd;
         });
 
