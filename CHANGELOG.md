@@ -1,3 +1,7 @@
+# 0.8.5
+
+- reverted [3f2cf9](https://github.com/AndreyMrovol/LethalWeatherRegistry/commit/3f2cf9) breaking JLL
+
 # 0.8.4
 
 - fixed `>` symbol and `<size>` tags breaking gradient applying (thanks, `zigzagawaka`!)
