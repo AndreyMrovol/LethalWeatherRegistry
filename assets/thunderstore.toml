@@ -7,7 +7,7 @@ repository = "https://thunderstore.io"
 [package]
 namespace = "mrov"
 name = "WeatherRegistry"
-description = "A mod for controlling the game's weather system (scrap multipliers, weather chances, etc.)."
+description = "A mod for controlling the game's weather system: scrap multipliers, weather chances, blacklisting and more!"
 websiteUrl = "https://github.com/AndreyMrovol/LethalWeatherRegistry"
 containsNsfwContent = false
 
