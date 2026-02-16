@@ -41,6 +41,8 @@ namespace WeatherRegistry.Managers
           continue;
         }
 
+        Logger.LogCustom($"Starting to register weather {WeatherDefinition.Name}.", BepInEx.Logging.LogLevel.Debug, LoggingType.Developer);
+
         GameObject effectObject = null;
         if (WeatherDefinition.Effect.EffectObject != null)
         {
