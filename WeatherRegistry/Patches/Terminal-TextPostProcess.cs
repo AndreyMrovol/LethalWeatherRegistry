@@ -111,7 +111,7 @@ namespace WeatherRegistry.Patches
 
       string currentPlanetTime = GetPlanetWeatherDisplayString(level, false).ToLower();
 
-      if (currentPlanetTime == "")
+      if (currentPlanetTime == "" || currentPlanetTime == "none")
       {
         return "mild weather";
       }
