@@ -79,7 +79,6 @@ namespace WeatherRegistry
       }
     }
 
-    [Obsolete("Use Utils.InstanceCreator<ImprovedWeatherEffect> instead!")]
     public ImprovedWeatherEffect(GameObject effectObject, GameObject worldObject)
     {
       EffectObject = effectObject;
