@@ -82,7 +82,7 @@
 
         <PackageReference Include="mrov.MrovLib" Version="*-*" Publicize="true" PrivateAssets="all"/>
 
-        <PackageReference Include="Evaisa.LethalLib" Version="*-*" />
+        <PackageReference Include="Evaisa.LethalLib" Version="*-*" PrivateAssets="all"/>
         <PackageReference Include="TeamXiaolan.DawnLib" Version="*-*" PrivateAssets="all"/>
         <PackageReference Include="TeamXiaolan.DawnLib.DuskMod" Version="*-*" PrivateAssets="all"/>
 
