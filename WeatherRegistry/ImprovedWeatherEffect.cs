@@ -44,6 +44,13 @@ namespace WeatherRegistry
       get { return _effectEnabled; }
       set
       {
+        // i wish i was joking while writing this abysmal dogshit check but NO, it actually happened
+        if (this == null || !this)
+        {
+          WeatherEffectManager.Logger.LogDebug("Attempted to set EffectEnabled on a destroyed ImprovedWeatherEffect, skipping!");
+          return;
+        }
+
         WeatherEffectManager.Logger.LogDebug($"Setting effect {this.name} to {value} - is player inside? {Settings.IsPlayerInside}");
 
         if (!Settings.IsPlayerInside)
