@@ -258,6 +258,8 @@ namespace WeatherRegistry.Managers
 
       Logger.LogDebug($"Weathers: {WeatherManager.Weathers.Count}");
 
+      Settings.ScreenMapColors.Add("pink", ColorConverter.ToTMPColorGradient(Color.magenta));
+
       // TODO: this is where RandomWeatherManager should be called
 
       foreach (Weather weather in WeatherManager.Weathers)

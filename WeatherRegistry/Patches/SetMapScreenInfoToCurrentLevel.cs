@@ -13,6 +13,8 @@ namespace WeatherRegistry.Patches
   [HarmonyPatch(typeof(StartOfRound))]
   public static class SetMapScreenInfoToCurrentLevelPatch
   {
+    public static System.Random random = new(69420);
+
     [HarmonyPatch("SetMapScreenInfoToCurrentLevel")]
     [HarmonyPostfix]
     [HarmonyPriority(Priority.Last)]
@@ -129,10 +131,15 @@ namespace WeatherRegistry.Patches
       Weather currentWeather = WeatherManager.GetCurrentWeather(level);
       string currentWeatherString = GetDisplayWeatherString(level, currentWeather);
 
-      if (!Settings.ColoredWeathers)
+      if (random.NextDouble() <= 0.2)
       {
-        return currentWeatherString;
+        return $"<gradient=pink>as if i know</gradient>";
       }
+
+      // if (!Settings.ColoredWeathers)
+      // {
+      //   return currentWeatherString;
+      // }
 
       string outputString = "";
       Regex splitRegex = new(@"(\/)|(\?)|(>)|(\+)");

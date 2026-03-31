@@ -9,6 +9,8 @@ namespace WeatherRegistry.Patches
   [HarmonyPatch(typeof(Terminal))]
   internal class TerminalPostprocessPatch
   {
+    public static System.Random random = new(69420);
+
     [HarmonyTranspiler]
     [HarmonyPatch(typeof(Terminal), "TextPostProcess", MethodType.Normal)]
     static IEnumerable<CodeInstruction> MoonCatalogueListTranspiler(IEnumerable<CodeInstruction> instructions)
@@ -86,6 +88,11 @@ namespace WeatherRegistry.Patches
       Plugin.debugLogger.LogDebug($"GetPlanetWeatherDisplayString called for {level.PlanetName} with parentheses={parentheses}");
       string overrideString = WeatherManager.WeatherDisplayOverride(level);
       Weather weather = WeatherManager.GetWeather(level.currentWeather);
+
+      if (random.NextDouble() <= 0.65)
+      {
+        return $"( 0 _ 0 )";
+      }
 
       if (overrideString == string.Empty)
       {

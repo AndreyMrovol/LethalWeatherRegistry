@@ -20,11 +20,11 @@ namespace WeatherRegistry.Patches
         return false;
       }
 
-      if (!Settings.SelectWeathers)
-      {
-        Plugin.logger.LogDebug("Weather selection is disabled.");
-        return true;
-      }
+      // if (!Settings.SelectWeathers)
+      // {
+      //   Plugin.logger.LogDebug("Weather selection is disabled.");
+      //   return true;
+      // }
 
       if (__instance == null)
       {
@@ -64,11 +64,12 @@ namespace WeatherRegistry.Patches
           if (ConfigManager.FirstDayClear.Value && __instance.gameStats.daysSpent == 0)
           {
             Plugin.logger.LogInfo("First Day Clear is enabled.");
+            Plugin.logger.LogWarning("TOO BAD!");
 
-            foreach (SelectableLevel level in MrovLib.LevelHelper.Levels)
-            {
-              newWeathers[level] = LevelWeatherType.None;
-            }
+            // foreach (SelectableLevel level in MrovLib.LevelHelper.Levels)
+            // {
+            //   newWeathers[level] = LevelWeatherType.None;
+            // }
           }
           else
           {
