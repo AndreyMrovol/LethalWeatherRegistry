@@ -144,6 +144,11 @@ namespace WeatherRegistry.Patches
         {
           string newWord = word.Trim();
 
+          if (newWord == "")
+          {
+            return;
+          }
+
           // resolve weather name string into color using Settings.ScreenMapColors dictionary
           // so other mods (like weathertweaks) can add their own colors and symbols
 
