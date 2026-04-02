@@ -1,3 +1,11 @@
+# 0.8.7
+
+- reverted changes made for April Fools' Day
+
+# 0.8.6
+
+- it's april fools time!
+
 # 0.8.5
 
 - reverted [3f2cf9](https://github.com/AndreyMrovol/LethalWeatherRegistry/commit/3f2cf9) breaking JLL
