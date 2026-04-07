@@ -21,23 +21,18 @@ namespace WeatherRegistry.Patches
 
       var matcher = new CodeMatcher(instructions).MatchForward(
         false,
-        new CodeMatch(OpCodes.Ldarg_0),
-        new CodeMatch(OpCodes.Ldloc_2), // gameObject
-        new CodeMatch(OpCodes.Callvirt),
-        new CodeMatch(OpCodes.Call),
-        new CodeMatch(OpCodes.Ldloc_3) // num
+        new CodeMatch(OpCodes.Ldloc_S),
+        new CodeMatch(OpCodes.Ldloc_2),
+        new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(Vector3), nameof(Vector3.up)))
       );
 
       if (matcher.IsInvalid)
       {
-        Plugin.logger.LogError("Failed to find SpawnHiveClientRpc call in SpawnHiveNearEnemy!");
+        Plugin.logger.LogError("Failed to find SpawnHiveClientRpc argument sequence in SpawnHiveNearEnemy!");
         return instructions;
       }
 
-      // Advance to after ldloc_3 instruction
-      matcher.Advance(5);
-
-      // Insert our adjustment call which will consume the int from the stack and push the adjusted value
+      matcher.Advance(1);
       matcher.Insert(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(RedLocustBeesSpawnPatch), nameof(GetAdjustedHiveValue))));
 
       Plugin.logger.LogDebug("Successfully patched SpawnHiveNearEnemy with weather multiplier adjustment!");
