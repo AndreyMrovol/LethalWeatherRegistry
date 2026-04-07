@@ -74,37 +74,5 @@ namespace WeatherRegistry.Managers
 
       return terminalNode;
     }
-
-    public static (TerminalNode node, TerminalKeyword keyword, CompatibleNoun noun) CreateCommandNode(
-      TerminalKeyword verb,
-      string word,
-      string terminalEvent,
-      bool addToTerminal = true
-    )
-    {
-      TerminalNode commandNode = CreateTerminalNode($"{word}Node", terminalEvent);
-
-      TerminalKeyword commandKeyword = ScriptableObject.CreateInstance<TerminalKeyword>();
-      commandKeyword.word = word;
-      commandKeyword.name = $"{word}Keyword";
-      commandKeyword.defaultVerb = verb;
-
-      CompatibleNoun commandNoun = new() { noun = commandKeyword, result = commandNode, };
-      commandKeyword.compatibleNouns = [commandNoun];
-
-      if (verb != null)
-      {
-        List<CompatibleNoun> verbNouns = verb.compatibleNouns?.ToList() ?? [];
-        verbNouns.Add(commandNoun);
-        verb.compatibleNouns = verbNouns.ToArray();
-      }
-
-      if (addToTerminal)
-      {
-        AddTerminalContent([commandNode], [commandKeyword]);
-      }
-
-      return (commandNode, commandKeyword, commandNoun);
-    }
   }
 }
