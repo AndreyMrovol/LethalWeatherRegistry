@@ -36,6 +36,7 @@ namespace WeatherRegistry
     internal static MalfunctionsCompat MalfunctionsCompat;
     internal static CRCompat CRCompat;
     internal static ButteryFixesCompat ButteryFixesCompat;
+    internal static BrutalCompanyCompat BrutalCompanyCompat;
 
     internal static Hook WeatherTypeEnumHook;
 
@@ -113,6 +114,8 @@ namespace WeatherRegistry
 
       ButteryFixesCompat = new ButteryFixesCompat("butterystancakes.lethalcompany.butteryfixes");
 
+      BrutalCompanyCompat = new BrutalCompanyCompat("SoftDiamond.BrutalCompanyMinusExtraReborn");
+
       // Plugin startup logic
       Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
     }
@@ -122,6 +125,7 @@ namespace WeatherRegistry
       ImperiumCompat.Init();
       CRCompat.Init();
       ButteryFixesCompat.Init();
+      BrutalCompanyCompat.Init();
     }
   }
 }

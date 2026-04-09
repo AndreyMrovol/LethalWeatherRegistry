@@ -17,6 +17,15 @@ namespace WeatherRegistry.Patches
         return;
       }
 
+      if (Plugin.BrutalCompanyCompat.IsModPresent)
+      {
+        Plugin.logger.LogInfo(
+          $"Brutal Company detected, adding BC-ER scrap multipliers {Plugin.BrutalCompanyCompat.GetScrapValueMultiplier()} (value); {Plugin.BrutalCompanyCompat.GetScrapAmountMultiplier()} (amount)"
+        );
+        __instance.scrapValueMultiplier = Plugin.BrutalCompanyCompat.GetScrapValueMultiplier();
+        __instance.scrapAmountMultiplier = Plugin.BrutalCompanyCompat.GetScrapAmountMultiplier();
+      }
+
       Settings.IsGameStarted = true;
 
       Weather currentWeather = WeatherManager.GetCurrentWeather(__instance.currentLevel);
@@ -33,7 +42,7 @@ namespace WeatherRegistry.Patches
     private static void LogMultipliers(RoundManager __instance)
     {
       Plugin.logger.LogInfo(
-        $"Spawned scrap in level with multipliers: {__instance.scrapValueMultiplier} (value), {__instance.scrapAmountMultiplier} (amount)"
+        $"Spawned scrap in level with multipliers: {__instance.scrapValueMultiplier} (value); {__instance.scrapAmountMultiplier} (amount)"
       );
     }
   }
