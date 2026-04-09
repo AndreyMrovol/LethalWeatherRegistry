@@ -31,7 +31,6 @@ namespace WeatherRegistry
     internal static JLLCompat JLLCompat;
     internal static LobbyControlCompat LobbyControlCompat;
     internal static FacilityMeltdownCompat FacilityMeltdownCompat;
-    internal static OrbitsCompat OrbitsCompat;
     internal static ImperiumCompat ImperiumCompat;
     internal static MalfunctionsCompat MalfunctionsCompat;
     internal static CRCompat CRCompat;
@@ -102,9 +101,6 @@ namespace WeatherRegistry
       LobbyControlCompat.Init();
 
       FacilityMeltdownCompat = new FacilityMeltdownCompat("me.loaforc.facilitymeltdown");
-
-      OrbitsCompat = new OrbitsCompat("com.fiufki.orbits");
-      OrbitsCompat.Init();
 
       ImperiumCompat = new ImperiumCompat("giosuel.Imperium");
 
