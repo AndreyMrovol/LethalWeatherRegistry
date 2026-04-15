@@ -58,16 +58,6 @@
         <PackageReference Include="BepInEx.Core" Version="5.4.21" />
     </ItemGroup>
 
-    <!-- <Sdk Name="Evaisa.NetcodePatcher.MSBuild" Version="4.*" /> -->
-    <!-- <PropertyGroup>
-        <NetcodePatcherUnityVersion>2022.3.62</NetcodePatcherUnityVersion>
-        <NetcodePatcherNetcodeVersion>1.12.0</NetcodePatcherNetcodeVersion>
-        <NetcodePatcherTransportVersion>1.0.0</NetcodePatcherTransportVersion>
-    </PropertyGroup> -->
-    <!-- <ItemGroup>
-        <NetcodePatch Include="$(TargetPath)" />
-    </ItemGroup> -->
-
 
     <ItemGroup>
         <PackageReference Include="LethalCompany.GameLibs.Steam" Version="81.0.0-ngd.0" Publicize="true">
@@ -112,13 +102,17 @@
             <HintPath>$(LibraryDirectory)/CodeRebirth.dll</HintPath>
         </Reference>
 
+        <Reference Include="BrutalCompanyMinus" PrivateAssets="all" Publicize="true">
+            <HintPath>$(LibraryDirectory)/BrutalCompanyMinus.dll</HintPath>
+        </Reference>
+
         <!-- <Reference Include="MrovLib" PrivateAssets="all" Publicize="true">
             <HintPath>$(LibraryDirectory)/MrovLib.dll</HintPath>
         </Reference> -->
     </ItemGroup>
 
     <Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
-        <Exec Command="dotnet tool run netcode-patch -uv 2022.3.62 -nv 1.12.0 -tv 1.0.0 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')"/>
+        <Exec Command="dotnet netcode-patch -uv 2022.3.62 -nv 1.12.0 -tv 1.0.0 &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')"/>
     </Target>
 
     <PropertyGroup>
