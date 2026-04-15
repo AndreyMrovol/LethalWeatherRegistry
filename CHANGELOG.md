@@ -1,3 +1,8 @@
+# 0.8.8
+
+- fixed beehive patch breaking on v80
+- added compatibility with `BrutalCompanyMinusReborn`'s scrap multipliers (thanks, `softdiamond`!)
+
 # 0.8.7
 
 - reverted changes made for April Fools' Day
