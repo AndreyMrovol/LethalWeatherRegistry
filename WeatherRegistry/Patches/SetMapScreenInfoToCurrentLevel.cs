@@ -23,6 +23,8 @@ namespace WeatherRegistry.Patches
       StartOfRound __instance
     )
     {
+      // TODO: why does dawn break coloring on first startup?
+
       Plugin.debugLogger.LogCustom($"SetMapScreenInfoToCurrentLevel called.", BepInEx.Logging.LogLevel.Debug, LoggingType.Developer);
 
       if (!WeatherManager.IsSetupFinished)
