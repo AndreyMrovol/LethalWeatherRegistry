@@ -24,7 +24,7 @@ namespace WeatherRegistry
 
     public LevelWeatherType VanillaWeatherType { get; internal set; } = LevelWeatherType.None;
 
-    internal WeatherOrigin Origin { get; set; } = WeatherOrigin.WeatherRegistry;
+    public WeatherOrigin Origin { get; internal set; } = WeatherOrigin.WeatherRegistry;
 
     public WeatherType Type { get; internal set; } = WeatherType.Modded;
 
