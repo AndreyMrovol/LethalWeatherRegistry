@@ -23,14 +23,16 @@
         <RepositoryUrl>https://github.com/AndreyMrovol/LethalWeatherRegistry/</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
 
+        <BepInExPluginGuid>$(PackageId)</BepInExPluginGuid>
+    </PropertyGroup>
+
+    <PropertyGroup>
         <RestoreAdditionalProjectSources>
             https://api.nuget.org/v3/index.json;
             https://nuget.bepinex.dev/v3/index.json;
             https://nuget.samboy.dev/v3/index.json;
             https://nuget.windows10ce.com/nuget/v3/index.json
         </RestoreAdditionalProjectSources>
-
-        <BepInExPluginGuid>$(PackageId)</BepInExPluginGuid>
     </PropertyGroup>
 
     <ItemGroup>
@@ -38,77 +40,62 @@
         <None Include="$(ProjectDir)../icon.png" Pack="true" PackagePath="/"/>
     </ItemGroup>
 
-    <!-- <ItemGroup Condition="$(Configuration) == 'Release'">>
-        <Compile Remove="DebugTools.cs" />
-    </ItemGroup> -->
-
-    <PropertyGroup>
-        <GameDirectory>V:\Steam\steamapps\common\Lethal Company</GameDirectory>
-        <LibraryDirectory>../lib</LibraryDirectory>
-        <DebugLibraryDirectory>V:\LC-ModLibraries</DebugLibraryDirectory>
-        <DebugProfile>V:\GaleModManager\gale\lethal-company\profiles\Andrey's Testing Profile\BepInEx\plugins\WeatherRegistry</DebugProfile>
-    </PropertyGroup>
-
     <ItemGroup>
-        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1">
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
+        <PackageReference Include="BepInEx.Core" Version="5.*" />
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" PrivateAssets="all"/>
+
+        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <PackageReference Include="BepInEx.Core" Version="5.4.21" />
-    </ItemGroup>
-
-
-    <ItemGroup>
-        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="81.0.0-ngd.0" Publicize="true">
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-
-        <!-- <PackageReference></PackageReference> -->
-        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all"/>
-        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*"/>
-        <PackageReference Include="Lib.Harmony" Version="2.3.3" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-
-        <PackageReference Include="mrov.MrovLib" Version="*-*" Publicize="true" PrivateAssets="all"/>
-
-        <PackageReference Include="Evaisa.LethalLib" Version="*-*" PrivateAssets="all"/>
-        <PackageReference Include="TeamXiaolan.DawnLib" Version="*-*" PrivateAssets="all"/>
-        <PackageReference Include="TeamXiaolan.DawnLib.DuskMod" Version="*-*" PrivateAssets="all"/>
+        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="81.*-*" PrivateAssets="all" Private="false"/>
+        <PackageReference Include="UnityEngine.Modules" Version="2022.3.62" IncludeAssets="compile"/>
+        
+        <PackageReference Include="Microsoft.Unity.Analyzers" Version="1.26.0" PrivateAssets="all" />
 
         <PackageReference Include="MinVer" Version="4.*" PrivateAssets="all" Private="false"/>
+    </ItemGroup>
 
+<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+        <Reference Include="MrovLib" Publicize="true">
+            <HintPath>$(DebugLibraryDirectory)/MrovLib.dll</HintPath>
+        </Reference>
+
+        <Reference Include="TerminalUtils" Publicize="true">
+            <HintPath>$(DebugLibraryDirectory)/TerminalUtils.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+
+        <PackageReference Include="IAmBatby-LethalLevelLoader" Version="*-*" Publicize="true"/>
+
+        <PackageReference Include="Evaisa.LethalLib" Version="*-*" />
+        <PackageReference Include="TeamXiaolan-DawnLib" Version="*-*" PrivateAssets="all"/>
+        <PackageReference Include="TeamXiaolan.DawnLib.DuskMod" Version="*-*" PrivateAssets="all"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="JacobG5-JLL" Version="*-*" PrivateAssets="all"/>
+        <PackageReference Include="giosuel-Imperium" Version="*-*" PrivateAssets="all"/>
+        <PackageReference Include="zealsprince-Malfunctions" Version="*-*" PrivateAssets="all"/>
+        <PackageReference Include="XuXiaolan-CodeRebirth" Version="*-*" PrivateAssets="all"/>
+        <PackageReference Include="SoftDiamond-BrutalCompanyMinusExtraReborn" Version="*-*" PrivateAssets="all"/>
+    </ItemGroup>
+
+    
+    <ItemGroup Condition="'$(Configuration)' == 'Release'">
+        <PackageReference Include="mrov-MrovLib" Version="*-*" Publicize="true" PrivateAssets="all"/>
+        <PackageReference Include="mrov-TerminalUtils" Version="*-*" Publicize="true" PrivateAssets="all"/>
+    </ItemGroup>
+
+    <ItemGroup>
         <Reference Include="MMHOOK_Assembly-CSharp" PrivateAssets="all">
             <HintPath>$(LibraryDirectory)/MMHOOK_Assembly-CSharp.dll</HintPath>
         </Reference>
-
-        <Reference Include="OdinSerializer" PrivateAssets="all">
-            <HintPath>$(LibraryDirectory)/OdinSerializer.dll</HintPath>
-        </Reference>
-
-        <Reference Include="JLL" PrivateAssets="all">
-            <HintPath>$(LibraryDirectory)/JLL.dll</HintPath>
-        </Reference>
-
-        <Reference Include="Imperium" PrivateAssets="all">
-            <HintPath>$(LibraryDirectory)/giosuel.Imperium.dll</HintPath>
-        </Reference>
-
-        <Reference Include="Malfunctions" PrivateAssets="all" Publicize="true">
-            <HintPath>$(LibraryDirectory)/Malfunctions.dll</HintPath>
-        </Reference>
-
-        <Reference Include="CodeRebirth" PrivateAssets="all" Publicize="true">
-            <HintPath>$(LibraryDirectory)/CodeRebirth.dll</HintPath>
-        </Reference>
-
-        <Reference Include="BrutalCompanyMinus" PrivateAssets="all" Publicize="true">
-            <HintPath>$(LibraryDirectory)/BrutalCompanyMinus.dll</HintPath>
-        </Reference>
-
-        <!-- <Reference Include="MrovLib" PrivateAssets="all" Publicize="true">
-            <HintPath>$(LibraryDirectory)/MrovLib.dll</HintPath>
-        </Reference> -->
     </ItemGroup>
 
     <Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
@@ -129,7 +116,7 @@
     <!-- MinVer Set Mod Version from Git -->
     <Target Name="SetPluginVersion" BeforeTargets="AddGeneratedFile" DependsOnTargets="MinVer">
         <PropertyGroup>
-            <PlainVersion>$(MinVerMajor).$(MinVerMinor).$(MinVerPatch)</PlainVersion>
+            <PlainVersion>69.69.69</PlainVersion>
             <BepInExPluginVersion>$(PlainVersion)</BepInExPluginVersion>
         </PropertyGroup>
     </Target>
@@ -154,9 +141,12 @@
     </ItemGroup>
 
     <Target Name="CopyToDebugProfile" AfterTargets="NetcodePatch" Condition="'$(Configuration)' == 'Debug'">
-        <Message Importance="high" Text="Copying To LibraryDir" />
-        <Copy SourceFiles="$(TargetDir)$(AssemblyName).dll" DestinationFolder="$(DebugLibraryDirectory)" />
+        <Message Importance="high" Text="" />
 
-        <Copy SourceFiles="$(TargetDir)$(AssemblyName).dll" DestinationFolder="$(DebugProfile)" />
+        <Copy SourceFiles="$(TargetDir)$(AssemblyName).dll" DestinationFolder="$(DebugLibraryDirectory)" Condition="Exists('$(DebugLibraryDirectory)')" />
+        <Message Importance="high" Text="Copied to $(DebugLibraryDirectory)" Condition="Exists('$(DebugLibraryDirectory)')" />
+
+        <Copy SourceFiles="$(TargetDir)$(AssemblyName).dll" DestinationFolder="$(DebugProfile)/debug-$(AssemblyName)" Condition="Exists('$(DebugProfile)')" />
+        <Message Importance="high" Text="Copied to $(DebugProfile)/debug-$(AssemblyName)" Condition="Exists('$(DebugProfile)')" />
     </Target>
 </Project>

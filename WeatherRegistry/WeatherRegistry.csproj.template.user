@@ -1,0 +1,14 @@
+<Project>
+    <PropertyGroup>
+        <!-- A path where the Lethal Company .exe is located -->
+        <GameDirectory>C:/Program Files(x86)/Steam/steamapps/common/Lethal Company</GameDirectory>
+
+        <!-- A path to take .dll dependencies from -->
+        <LibraryDirectory>../lib</LibraryDirectory>
+
+        <!-- A path where the debug version of the plugin will be copied to -->
+        <DebugLibraryDirectory></DebugLibraryDirectory>
+        <!-- A path of your r2/gale testing profile where the debug version of the plugin will be copied to -->
+        <DebugProfile></DebugProfile>
+    </PropertyGroup>
+</Project>
