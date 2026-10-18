@@ -1,0 +1,24 @@
+- README
+  - how to setup step-by-step
+- events are not always firing
+- commands should be registered through TerminalUtils (when present)
+- registering network prefabs
+- imperium doesn't refresh weathers after round end
+- fix config spamming before init
+- change blacklist toggle to dropdown
+- there should be only one Weather/WeatherEffect/WeatherImprovedEffect component that's not an SO and has 2 ways of being created
+- all managers are doing weird bullshit - that needs to be streamlined
+- dawn still overrides the colors on first screen
+- god damn dawn v1 is coming
+- get rid of all obsolete bullshit
+- a new algorithm?
+- a way for combined/progressing weathers inside Registry itself?
+- a way for uncertain weathers inside Registry?
+- streamlined effect/name overrides
+- easier weather config?
+- read bundles from LLL and get the weathers from them
+- remove code rebirth patches
+- initialize weathers only during lobby load and not during whatever like now
+- tweaks: none should be renamed to Clear
+- tweaks: don't override the algorithm fully
+- lobbycontrol's `load` command
