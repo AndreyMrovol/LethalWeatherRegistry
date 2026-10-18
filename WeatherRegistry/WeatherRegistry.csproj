@@ -4,7 +4,7 @@
         <TargetFramework>netstandard2.1</TargetFramework>
         <AssemblyName>WeatherRegistry</AssemblyName>
         <Description>A Weather API for Lethal Company.</Description>
-        <Version>0.1.12</Version>
+        <Version>1.0.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
 
@@ -14,7 +14,6 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <IsPackable>true</IsPackable>
 
-        <RootNamespace>WeatherRegistry</RootNamespace>
         <PackageIcon>icon.png</PackageIcon>
         <PackageTags>lethal;company;bepinex;harmony;debug</PackageTags>
 
@@ -50,7 +49,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="81.*-*" PrivateAssets="all" Private="false"/>
+        <PackageReference Include="LethalCompany.GameLibs.Steam" Version="81.*-*" Publicize="true" PrivateAssets="all" Private="false"/>
         <PackageReference Include="UnityEngine.Modules" Version="2022.3.62" IncludeAssets="compile"/>
         
         <PackageReference Include="Microsoft.Unity.Analyzers" Version="1.26.0" PrivateAssets="all" />
@@ -58,7 +57,7 @@
         <PackageReference Include="MinVer" Version="4.*" PrivateAssets="all" Private="false"/>
     </ItemGroup>
 
-<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <ItemGroup Condition="'$(Configuration)' == 'Debug'">
         <Reference Include="MrovLib" Publicize="true">
             <HintPath>$(DebugLibraryDirectory)/MrovLib.dll</HintPath>
         </Reference>
@@ -66,6 +65,11 @@
         <Reference Include="TerminalUtils" Publicize="true">
             <HintPath>$(DebugLibraryDirectory)/TerminalUtils.dll</HintPath>
         </Reference>
+    </ItemGroup>
+    
+    <ItemGroup Condition="'$(Configuration)' == 'Release'">
+        <PackageReference Include="mrov-MrovLib" Version="*-*" Publicize="true" PrivateAssets="all"/>
+        <PackageReference Include="mrov-TerminalUtils" Version="*-*" Publicize="true" PrivateAssets="all"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -79,17 +83,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="JacobG5-JLL" Version="*-*" PrivateAssets="all"/>
-        <PackageReference Include="giosuel-Imperium" Version="*-*" PrivateAssets="all"/>
-        <PackageReference Include="zealsprince-Malfunctions" Version="*-*" PrivateAssets="all"/>
-        <PackageReference Include="SoftDiamond-BrutalCompanyMinusExtraReborn" Version="*-*" PrivateAssets="all"/>
+        <PackageReference Include="JacobG5-JLL" Version="*-*" PrivateAssets="all" Publicize="true"/>
+        <PackageReference Include="giosuel-Imperium" Version="*-*" PrivateAssets="all" Publicize="true"/>
+        <PackageReference Include="zealsprince-Malfunctions" Version="*-*" PrivateAssets="all" Publicize="true"/>
+        <PackageReference Include="SoftDiamond-BrutalCompanyMinusExtraReborn" Version="*-*" PrivateAssets="all" Publicize="true"/>
     </ItemGroup>
 
-    
-    <ItemGroup Condition="'$(Configuration)' == 'Release'">
-        <PackageReference Include="mrov-MrovLib" Version="*-*" Publicize="true" PrivateAssets="all"/>
-        <PackageReference Include="mrov-TerminalUtils" Version="*-*" Publicize="true" PrivateAssets="all"/>
-    </ItemGroup>
 
     <ItemGroup>
         <Reference Include="MMHOOK_Assembly-CSharp" PrivateAssets="all">
