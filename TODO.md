@@ -17,7 +17,6 @@
 - streamlined effect/name overrides
 - easier weather config?
 - read bundles from LLL and get the weathers from them
-- remove code rebirth patches
 - initialize weathers only during lobby load and not during whatever like now
 - tweaks: none should be renamed to Clear
 - tweaks: don't override the algorithm fully

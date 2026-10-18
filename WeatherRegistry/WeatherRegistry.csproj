@@ -82,7 +82,6 @@
         <PackageReference Include="JacobG5-JLL" Version="*-*" PrivateAssets="all"/>
         <PackageReference Include="giosuel-Imperium" Version="*-*" PrivateAssets="all"/>
         <PackageReference Include="zealsprince-Malfunctions" Version="*-*" PrivateAssets="all"/>
-        <PackageReference Include="XuXiaolan-CodeRebirth" Version="*-*" PrivateAssets="all"/>
         <PackageReference Include="SoftDiamond-BrutalCompanyMinusExtraReborn" Version="*-*" PrivateAssets="all"/>
     </ItemGroup>
 

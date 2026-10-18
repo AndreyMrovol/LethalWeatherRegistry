@@ -30,7 +30,6 @@ namespace WeatherRegistry
     internal static FacilityMeltdownCompat FacilityMeltdownCompat;
     internal static ImperiumCompat ImperiumCompat;
     internal static MalfunctionsCompat MalfunctionsCompat;
-    internal static CRCompat CRCompat;
     internal static ButteryFixesCompat ButteryFixesCompat;
     internal static BrutalCompanyCompat BrutalCompanyCompat;
 
@@ -103,8 +102,6 @@ namespace WeatherRegistry
 
       MalfunctionsCompat = new MalfunctionsCompat("com.zealsprince.malfunctions");
 
-      CRCompat = new CRCompat("CodeRebirth", "1.4.1");
-
       ButteryFixesCompat = new ButteryFixesCompat("butterystancakes.lethalcompany.butteryfixes");
 
       BrutalCompanyCompat = new BrutalCompanyCompat("SoftDiamond.BrutalCompanyMinusExtraReborn");
@@ -116,7 +113,6 @@ namespace WeatherRegistry
     private void MainMenuInit()
     {
       ImperiumCompat.Init();
-      CRCompat.Init();
       ButteryFixesCompat.Init();
       BrutalCompanyCompat.Init();
     }
