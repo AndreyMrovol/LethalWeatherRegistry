@@ -11,19 +11,16 @@ using WeatherRegistry.Patches;
 
 namespace WeatherRegistry
 {
-  [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
+  [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
   [BepInDependency("MrovLib", BepInDependency.DependencyFlags.HardDependency)]
   [BepInDependency("evaisa.lethallib", BepInDependency.DependencyFlags.SoftDependency)]
   [BepInDependency("mattymatty.LobbyControl", BepInDependency.DependencyFlags.SoftDependency)]
   [BepInIncompatibility("Ozzymops.DisableStormyWeather")]
   public class Plugin : BaseUnityPlugin
   {
-    [Obsolete("Use PluginInfo.PLUGIN_GUID instead")]
-    public const string GUID = PluginInfo.PLUGIN_GUID;
-
     internal static ManualLogSource logger;
     internal static Logger debugLogger = new("Debug", LoggingType.Debug);
-    internal static Harmony harmony = new(PluginInfo.PLUGIN_GUID);
+    internal static Harmony harmony = new(MyPluginInfo.PLUGIN_GUID);
 
     internal static AssetBundleManager AssetBundleManager;
 
@@ -113,7 +110,7 @@ namespace WeatherRegistry
       BrutalCompanyCompat = new BrutalCompanyCompat("SoftDiamond.BrutalCompanyMinusExtraReborn");
 
       // Plugin startup logic
-      Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+      Logger.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
     }
 
     private void MainMenuInit()
