@@ -20,6 +20,8 @@ namespace WeatherRegistry
   {
     internal static ManualLogSource logger;
     internal static Logger debugLogger = new("Debug", LoggingType.Debug);
+    internal static Logger devLogger = new("Dev", LoggingType.Developer);
+
     internal static Harmony harmony = new(MyPluginInfo.PLUGIN_GUID);
 
     internal static AssetBundleManager AssetBundleManager;
