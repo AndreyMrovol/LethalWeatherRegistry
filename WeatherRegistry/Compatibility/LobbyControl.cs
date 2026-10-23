@@ -4,26 +4,31 @@ using HarmonyLib;
 
 namespace WeatherRegistry.Compatibility
 {
-  internal class LobbyControlCompat(string guid, string version = null) : MrovLib.Compatibility.CompatibilityBase(guid, version)
+  internal class LobbyControlCompat(string guid, string version = null) : MrovLib.CompatibilityHandler(guid, version)
   {
-    public void Init()
+    public override void Init()
     {
       if (!this.IsModPresent)
       {
         return;
       }
 
-      // manually patch namespace LobbyControl.TerminalCommands private static bool ClearCommand
-
       Plugin.harmony.Patch(
         AccessTools.Method("LobbyControl.TerminalCommands.LobbyCommand:ClearCommand"),
-        postfix: new HarmonyMethod(typeof(LobbyControlCompat), nameof(LobbyControlClearCommand))
+        postfix: new HarmonyMethod(typeof(LobbyControlCompat), nameof(LobbyControlReload))
       );
 
-      Plugin.debugLogger.LogInfo("Patched LobbyControl.TerminalCommands.LobbyCommand:ClearCommand");
+      Plugin.devLogger.LogInfo("Patched LobbyControl.TerminalCommands.LobbyCommand:ClearCommand");
+
+      Plugin.harmony.Patch(
+        AccessTools.Method("LobbyControl.TerminalCommands.LobbyCommand:LoadCommand"),
+        postfix: new HarmonyMethod(typeof(LobbyControlCompat), nameof(LobbyControlReload))
+      );
+
+      Plugin.devLogger.LogInfo("Patched LobbyControl.TerminalCommands.LobbyCommand:LoadCommand");
     }
 
-    private static void LobbyControlClearCommand()
+    private static void LobbyControlReload()
     {
       WeatherEffect[] effects = TimeOfDay.Instance.effects;
       List<WeatherEffect> effectList = effects.ToList();
@@ -41,7 +46,7 @@ namespace WeatherRegistry.Compatibility
         return;
       }
 
-      Plugin.debugLogger.LogInfo($"Lowest modded index: {lowestModdedIndex}");
+      Plugin.devLogger.LogInfo($"Lowest modded index: {lowestModdedIndex}");
       for (int i = lowestModdedIndex; i < effects.Length; i++)
       {
         WeatherEffect effect = effects[i];
