@@ -46,6 +46,21 @@ namespace WeatherRegistry
       RegisteredWeathers.Add(weather);
     }
 
+    public static (int value1, int value2) GetWeatherValuesForLevel(SelectableLevel level, LevelWeatherType levelWeatherType)
+    {
+      Dictionary<LevelWeatherType, (int value1, int value2)> levelWeatherValues = level.randomWeathers.ToDictionary(
+        randomWeather => randomWeather.weatherType,
+        randomWeather => (randomWeather.weatherVariable, randomWeather.weatherVariable2)
+      );
+
+      return levelWeatherValues.ContainsKey(levelWeatherType) ? levelWeatherValues[levelWeatherType] : (0, 0);
+    }
+
+    public static List<SelectableLevel> GetLevelsWithWeather(LevelWeatherType levelWeatherType)
+    {
+      return MrovLib.LevelHelper.Levels.Where(level => level.randomWeathers.Any(weather => weather.weatherType == levelWeatherType)).ToList();
+    }
+
     public static Weather GetWeather(LevelWeatherType levelWeatherType)
     {
       if (WeathersDictionary.ContainsKey(levelWeatherType))
